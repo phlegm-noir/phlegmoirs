@@ -1,0 +1,117 @@
+UNDO -- LET'S GET THIS RIGHT
+
+how many ways do we have of modifying a text file?
+
+
+append a single byte *
+insert a single byte *
+overwrite a single byte *
+
+append/insert/overwrite multiple bytes through pasting *
+
+remove a single byte through delete/backspace *
+remove multiple bytes through a keyboard shortcut *
+
+
+replace highlighted text *
+delete highlighted text *
+modify highlighted text through menus or key shortcuts)
+
+modify many unhighlighted, unconnected bits of text through a menu command or key shortcut
+
+
+program automatically modifies text
+
+
+* = I think I've got a solution to all these starred modifications.  Srikingly, they require no more than three fields for each undo record.  Two of them are mere integers, and the third is only necessary for deletions.  Think about it.  For additions, the data is already there, and you have merely to specify which data.
+
+start position
+chars inserted (zero or greater.  for deletions use zero)
+buffer deleted (includes length of buffer)
+
+
+For the rest, saving the entire buffer will unfortunately be necessary.
+
+
+Damn you.  The star idea would work for undo, surely.  And then it would sit there blankly and have no idea how to handle the 99% of undoers who immediately request a "redo".  So here's what we need.
+
+Position as measured before the change.
+inserted buffer.
+deleted buffer.
+
+This is still a rather simple, elegant, and small solution.....
+
+Where to put it all, though?
+
+Wait, wait... if we don't mind changing this stuff as we go, we could very well basically keep that first design.
+
+start position, p
+chars inserted, inslength
+buffer deleted, cutbuffer
+
+...becomes, after passing over this record via undo...
+
+well, first, undoing will have this effect:
+
+temp=rtxtwrite(p:p+cutlength)
+rtxtWrite = rtxtwrite(0:p) + insbuffer + rtxtwrite(p+cutlength:EOF)
+cutlength=len(insbuffer)
+insbuffer=temp
+
+and then our same variables are meaning this:
+
+start position, p
+chars deleted, inslength
+buffer inserted, cutbuffer
+
+but it's actually almost identical, and to go the other way is *precisely* the same code.  I'm liking this.
+
+And let's not forget that this absolutely requires keeping track of our position in the undo record set.  Not that any other way wouldn't require that.
+
+
+oh by the way!  the others can use the same code, to replace an entire buffer.
+
+
+
+
+
+
+keyboard deleted chars:
+
+backspace
+del
+ctrl+backspace
+ctrl+del
+ctrl+k
+shift+ctrl+k
+
+count chars on keydown event (for del, backspace, and k)
+   size1 = len(rtxtWrite)
+	and selcache = seltext
+count chars on changed event and subtract
+	cutlength = size1 - len(rtxtWrite) - len(selcache)
+
+p = selstart
+inslength = 0
+cutbuffer = uh fucking oh.  ?????
+
+
+
+typing replaced chars:
+
+count chars on keydown event
+	and also sellength
+count chars on changed event and subtract
+	cutlength = size1-size2-sellength
+
+
+overwrite typing replaced single char without seltext
+
+
+paste replaced chars:
+
+data won't leave clipboard right away, so no point in pre-caching
+
+
+
+oh, don't forget this one: loading a file
