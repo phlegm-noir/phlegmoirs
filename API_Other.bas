@@ -4,18 +4,27 @@ Attribute VB_Name = "APIOther"
 ' *************************************************************
 
 Public Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
-        ByVal hwnd As Long, _
-        ByVal MSG As Long, _
-        wParam As Any, _
-        lParam As Any) As Long
-    'used everywhere, mainly sending EM_* messages to the agEditor
+       ByVal hWnd As Long, _
+       ByVal wMsg As Long, _
+       ByRef wParam As Any, _
+       ByRef lParam As Any) As Long
 
+Public Declare Function SendMessageStr Lib "user32.dll" Alias "SendMessageA" ( _
+       ByVal hWnd As Long, _
+       ByVal wMsg As Long, _
+       ByRef wParam As Any, _
+       ByRef lParam As String) As Long
 
 Public Type RECT
       Left As Long
       Top As Long
       Right As Long
       Bottom As Long
+End Type
+
+Public Type CHARRANGE
+      cpMin As Long
+      cpMax As Long
 End Type
 
 Public Type WINDOWPLACEMENT
@@ -27,18 +36,19 @@ Public Type WINDOWPLACEMENT
       rcNormalPosition As RECT
 End Type
 
+
 Public Const SW_MINIMIZE As Long = 6
 Public Const SW_RESTORE As Long = 9
 Public Const SW_SHOWMINIMIZED As Long = 2
 Public Const SW_SHOWNORMAL As Long = 1
 
 Public Declare Function GetWindowPlacement Lib "user32.dll" ( _
-      ByVal hwnd As Long, _
+      ByVal hWnd As Long, _
       ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
 
 Public Declare Function SetWindowPlacement Lib "user32.dll" ( _
-       ByVal hwnd As Long, _
+       ByVal hWnd As Long, _
        ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
       
@@ -54,7 +64,7 @@ Public Const SWP_SHOWWINDOW As Long = &H40
 
 
 Public Declare Function SetWindowPos Lib "user32.dll" ( _
-       ByVal hwnd As Long, _
+       ByVal hWnd As Long, _
        ByVal hWndInsertAfter As Long, _
        ByVal x As Long, _
        ByVal y As Long, _
@@ -64,7 +74,7 @@ Public Declare Function SetWindowPos Lib "user32.dll" ( _
 
        
 Public Declare Function ShowScrollBar Lib "user32.dll" ( _
-      ByVal hwnd As Long, _
+      ByVal hWnd As Long, _
       ByVal wBar As Long, _
       ByVal bShow As Long) As Long
       
@@ -77,22 +87,25 @@ Public Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" ( _
       ByVal Length As Long)
 
 Public Declare Function GetProp Lib "user32.dll" Alias "GetPropA" ( _
-       ByVal hwnd As Long, _
+       ByVal hWnd As Long, _
        ByVal lpString As String) As Long
 
 Public Declare Function SetProp Lib "user32.dll" Alias "SetPropA" ( _
-       ByVal hwnd As Long, _
+       ByVal hWnd As Long, _
        ByVal lpString As String, _
        ByVal hData As Long) As Long
 
 
 Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" ( _
-      ByVal hwnd As Long, _
+      ByVal hWnd As Long, _
      ByVal lpOperation As String, _
      ByVal lpFile As String, _
      ByVal lpParameters As String, _
      ByVal lpDirectory As String, _
      ByVal nShowCmd As Long) As Long
+
+Public Const SW_SHOW As Long = 5
+
 
 
 Public Declare Function WindowFromPoint Lib "user32.dll" ( _
@@ -101,7 +114,7 @@ Public Declare Function WindowFromPoint Lib "user32.dll" ( _
       'gets the control (aka, window) under the cursor.  FINALLY.
 
 Public Declare Function APISetFocus Lib "user32.dll" Alias "SetFocus" ( _
-       ByVal hwnd As Long) As Long
+       ByVal hWnd As Long) As Long
       ' why not just use a .SetFocus property?  'cause we were supplied an hWnd, that's why.
       
 'Public Declare Function GetFullPathName Lib "kernel32.dll" Alias "GetFullPathNameA" ( _
@@ -152,5 +165,53 @@ Public Declare Function GetTickCount Lib "kernel32.dll" () As Long
 
 Public Declare Function FindClose Lib "kernel32.dll" ( _
        ByVal hFindFile As Long) As Long
+
+
+Public Type SHELLEXECUTEINFO
+      cbSize As Long
+      fMask As Long
+      hWnd As Long
+      lpVerb As String
+      lpFile As String
+      lpParameters As String
+      lpDirectory As String
+      nShow As Long
+      hInstApp As Long
+      ' fields
+      lpIDList As Long
+      lpClass As String
+      hkeyClass As Long
+      dwHotKey As Long
+      hIcon As Long
+      hProcess As Long
+End Type
+
+Public Const SEE_MASK_INVOKEIDLIST As Long = &HC
+
+Public Declare Function ShellExecuteEx Lib "shell32.dll" ( _
+       ByRef lpExecInfo As SHELLEXECUTEINFO) As Long
+
+
+Public Type SHFILEOPSTRUCT
+      hWnd As Long
+      wFunc As Long
+      pFrom As String
+      pTo As String
+      fFlags As Integer
+      fAborted As Long
+      hNameMaps As Long
+      sProgress As String
+End Type
+
+Public Declare Function SHFileOperation Lib "shell32.dll" Alias "SHFileOperationA" ( _
+       ByRef lpFileOp As SHFILEOPSTRUCT) As Long
+Public Const FO_COPY As Long = &H2
+Public Const FO_DELETE As Long = &H3
+Public Const FO_MOVE As Long = &H1
+Public Const FO_RENAME As Long = &H4
+Public Const FOF_SILENT As Long = &H4
+Public Const FOF_NORECURSION As Long = &H1000
+Public Const FOF_NOCONFIRMMKDIR As Long = &H200
+Public Const FOF_ALLOWUNDO = &H40
 
 

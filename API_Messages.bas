@@ -19,8 +19,21 @@ Public Const EM_SETSEL = &HB1
     'p1 = position of first selected char, -1 for no selection
     'p2 = position of last selected char + 1
 
+Public Const EM_EXGETSEL As Long = (WM_USER + 52)
+      'p1 = 0
+      'p2 = pointer to a CHARRANGE structure to receive selection range.
+      ' if p2 = (0, -1) then range includes everything.
+
+Public Const EM_GETSELTEXT As Long = (WM_USER + 62)
+
 
 Public Const EM_GETLINECOUNT = 186
+
+Public Const EM_CHARFROMPOS As Long = &HD7
+      ' p1=0
+      ' p2 = POINTL (but I'll use POINTAPI) structure of coordinates.
+      ' ... I suspect these coordinates to mean line and column numbers.
+      ' returns 0 based character position.
 
 Public Const EM_GETMODIFY As Long = &HB8
 
