@@ -1,2 +1,9 @@
-frmMain = 196, 196, 581, 655, , 28, 14, 751, 651, C
-Module1 = 168, 168, 810, 627, 
+frmMain = 46, 42, 575, 492, , 22, 22, 555, 471, C
+modPhlegmoirs = 56, 56, 641, 509, C
+APICaret = 144, 144, 627, 624, C
+APIKeyb = 0, 0, 0, 0, C
+APIMenus = 72, 72, 555, 552, C
+APIMsg = 168, 168, 651, 648, C
+APIOther = 96, 96, 637, 465, C
+APIRegistry = 224, 224, 940, 684, C
+APISubclass = 88, 88, 589, 590, C
