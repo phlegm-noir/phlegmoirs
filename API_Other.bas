@@ -4,13 +4,13 @@ Attribute VB_Name = "APIOther"
 ' *************************************************************
 
 Public Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByVal wMsg As Long, _
        ByRef wParam As Any, _
        ByRef lParam As Any) As Long
 
 Public Declare Function SendMessageStr Lib "user32.dll" Alias "SendMessageA" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByVal wMsg As Long, _
        ByRef wParam As Any, _
        ByRef lParam As String) As Long
@@ -25,6 +25,12 @@ End Type
 Public Type CHARRANGE
       cpMin As Long
       cpMax As Long
+End Type
+
+Type FINDTEXTEX
+      chrg As CHARRANGE
+      lpstrText As String
+      chrgText As CHARRANGE
 End Type
 
 Public Type WINDOWPLACEMENT
@@ -43,12 +49,12 @@ Public Const SW_SHOWMINIMIZED As Long = 2
 Public Const SW_SHOWNORMAL As Long = 1
 
 Public Declare Function GetWindowPlacement Lib "user32.dll" ( _
-      ByVal hWnd As Long, _
+      ByVal hwnd As Long, _
       ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
 
 Public Declare Function SetWindowPlacement Lib "user32.dll" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
       
@@ -64,7 +70,7 @@ Public Const SWP_SHOWWINDOW As Long = &H40
 
 
 Public Declare Function SetWindowPos Lib "user32.dll" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByVal hWndInsertAfter As Long, _
        ByVal x As Long, _
        ByVal y As Long, _
@@ -74,7 +80,7 @@ Public Declare Function SetWindowPos Lib "user32.dll" ( _
 
        
 Public Declare Function ShowScrollBar Lib "user32.dll" ( _
-      ByVal hWnd As Long, _
+      ByVal hwnd As Long, _
       ByVal wBar As Long, _
       ByVal bShow As Long) As Long
       
@@ -87,17 +93,17 @@ Public Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" ( _
       ByVal Length As Long)
 
 Public Declare Function GetProp Lib "user32.dll" Alias "GetPropA" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByVal lpString As String) As Long
 
 Public Declare Function SetProp Lib "user32.dll" Alias "SetPropA" ( _
-       ByVal hWnd As Long, _
+       ByVal hwnd As Long, _
        ByVal lpString As String, _
        ByVal hData As Long) As Long
 
 
 Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" ( _
-      ByVal hWnd As Long, _
+      ByVal hwnd As Long, _
      ByVal lpOperation As String, _
      ByVal lpFile As String, _
      ByVal lpParameters As String, _
@@ -114,7 +120,7 @@ Public Declare Function WindowFromPoint Lib "user32.dll" ( _
       'gets the control (aka, window) under the cursor.  FINALLY.
 
 Public Declare Function APISetFocus Lib "user32.dll" Alias "SetFocus" ( _
-       ByVal hWnd As Long) As Long
+       ByVal hwnd As Long) As Long
       ' why not just use a .SetFocus property?  'cause we were supplied an hWnd, that's why.
       
 'Public Declare Function GetFullPathName Lib "kernel32.dll" Alias "GetFullPathNameA" ( _
@@ -170,7 +176,7 @@ Public Declare Function FindClose Lib "kernel32.dll" ( _
 Public Type SHELLEXECUTEINFO
       cbSize As Long
       fMask As Long
-      hWnd As Long
+      hwnd As Long
       lpVerb As String
       lpFile As String
       lpParameters As String
@@ -193,7 +199,7 @@ Public Declare Function ShellExecuteEx Lib "shell32.dll" ( _
 
 
 Public Type SHFILEOPSTRUCT
-      hWnd As Long
+      hwnd As Long
       wFunc As Long
       pFrom As String
       pTo As String

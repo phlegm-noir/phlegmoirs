@@ -18,8 +18,19 @@ Public Type MENUITEMINFO
       cch As Long
 End Type
 
+Public Const MIIM_STATE As Long = &H1
+Public Const MIIM_ID As Long = &H2
+Public Const MIIM_SUBMENU As Long = &H4
+Public Const MIIM_CHECKMARKS As Long = &H8
+Public Const MIIM_TYPE As Long = &H10
+Public Const MIIM_DATA As Long = &H20
+Public Const MFT_RADIOCHECK As Long = &H200
+Public Const MENU_IDENTIFIER As Long = &H1
+Public Const MFT_STRING As Long = &H0
+
+
 Public Declare Function GetMenu Lib "user32.dll" ( _
-     ByVal hwnd As Long) As Long
+     ByVal hWnd As Long) As Long
 
 Public Declare Function GetSubMenu Lib "user32.dll" ( _
        ByVal hMenu As Long, _

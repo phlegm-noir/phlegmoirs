@@ -2,7 +2,7 @@ Attribute VB_Name = "APISubclass"
 ' *************************************************************
 ' Windows API: Subclassing Functions
 ' *************************************************************
-      
+      ' TODO: change to SetWindowLongPtr for 64-bit compatibility as well as 32-bit.
 Public Declare Function SetWindowLong Lib "user32.dll" Alias "SetWindowLongA" ( _
        ByVal hwnd As Long, _
        ByVal nIndex As Long, _

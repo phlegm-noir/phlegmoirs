@@ -109,7 +109,7 @@ Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 '      WindowProc = CallWindowProc(gpOldProc, hwnd, uMsg, wParam, lParam)
 'End Function
 
-Public Function SuppressArrowKeysProc(ByVal hWnd As Long, ByVal uMsg As Long, _
+Public Function SuppressArrowKeysProc(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
 
       ' The problem: right arrow key wants to scroll forward.  I want it to do things
@@ -135,16 +135,16 @@ Public Function SuppressArrowKeysProc(ByVal hWnd As Long, ByVal uMsg As Long, _
                   
                   If wParam = vbKeyRight And Not IsKeyDown(VK_CONTROL) Then
                                     
-                        SuppressArrowKeysProc = CallWindowProc(gpOldLvwBrowserProc, hWnd, _
+                        SuppressArrowKeysProc = CallWindowProc(gpOldLvwBrowserProc, hwnd, _
                               WM_KEYDOWN, vbKeyF13, lParam)
                         Exit Function
                   End If
       End Select
                   
-      SuppressArrowKeysProc = CallWindowProc(gpOldLvwBrowserProc, hWnd, uMsg, wParam, lParam)
+      SuppressArrowKeysProc = CallWindowProc(gpOldLvwBrowserProc, hwnd, uMsg, wParam, lParam)
 End Function
 
-Public Function TrackMouseLeave(ByVal hWnd As Long, ByVal uMsg As Long, _
+Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
             
       Dim objPFB As Object
@@ -152,7 +152,7 @@ Public Function TrackMouseLeave(ByVal hWnd As Long, ByVal uMsg As Long, _
       If uMsg = WM_MOUSELEAVE Then
             Beep
       End If
-      TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hWnd, uMsg, wParam, lParam)
+      TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hwnd, uMsg, wParam, lParam)
 End Function
 
 
@@ -234,6 +234,25 @@ Public Function FileExists(ByVal sSource As String) As Boolean
    
 End Function
 
+Public Function FileSize(ByVal sSource As String) As Currency
+      
+      Dim WFD As WIN32_FIND_DATA
+      Dim hFile As Long
+      
+      hFile = FindFirstFile(sSource, WFD)
+      
+      If hFile > 0 And WFD.nFileSizeHigh = 0 Then
+            FileSize = WFD.nFileSizeLow
+      ElseIf hFile > 0 And WFD.nFileSizeHigh > 0 Then
+            FileSize = -1 ' TODO: account for the high order word which should be multiplied by the maximum long integer
+      Else
+            FileSize = -1 ' invalid handle value
+      End If
+      
+      FindClose (hFile)
+      
+End Function
+
 
 Public Function RecycleFile(ByVal sPath As String) As Integer
       ' Send a file to the Recycle Bin.
@@ -247,3 +266,110 @@ Public Function RecycleFile(ByVal sPath As String) As Integer
       End With
       RecycleFile = SHFileOperation(shfFileOperation)
 End Function
+
+' WARNING: these do not account for frame/picturebox borders.  Use informally.
+
+Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
+      Dim iMargins As Long
+      
+      On Error Resume Next
+      AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
+      If Err > 0 Then AbsoluteLeft = ctrl.Left
+      On Error GoTo 0
+End Function
+
+Public Function AbsoluteTop(ByRef ctrl As Control) As Long
+      Dim iMargins As Long
+      
+      On Error Resume Next
+      AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
+      If Err > 0 Then AbsoluteTop = ctrl.Top
+      On Error GoTo 0
+End Function
+
+Public Function AbsoluteRight(ByRef ctrl As Control) As Long
+      AbsoluteRight = AbsoluteLeft(ctrl) + ctrl.Width
+End Function
+
+Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
+      AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
+End Function
+
+' I can't believe it's this difficult to extract the character count, when counting only one character per
+' carriage return.  Cannot fucking believe it.
+
+Public Function CharacterCount(ByRef editor As agRichEdit) As Long
+      
+      Dim lLastLineLength As Long, lLastLineIndex As Long
+      
+      lLastLineIndex = SendMessage(editor.RichEdithWnd, EM_LINEINDEX, ByVal (editor.LineCount - 1), ByVal 0)
+      
+      lLastLineLength = SendMessage(editor.RichEdithWnd, EM_LINELENGTH, ByVal lLastLineIndex + 1, ByVal 0)
+
+      CharacterCount = lLastLineIndex + lLastLineLength
+End Function
+
+
+' DON'T NEED, COMMENTING OUT.  WORKS BUT NOT FOR POPUP MENUS.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Copyright ©1996-2004 VBnet, Randy Birch, All Rights Reserved.
+'' Some pages may also contain other copyrights by the author.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Distribution: You can freely use this code in your own
+''               applications, but you may not reproduce
+''               or publish this code on any web site,
+''               online service, or distribute as source
+''               on any media without express permission.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+'Public Sub SetRadioMenuChecksB(ByRef frm As Form, ByVal mnuBarIndex As Long, ByVal mnuItem As Long)
+'
+'      Dim hMenu As Long
+'      Dim hSubMenu As Long
+'      Dim mInfo As MENUITEMINFO
+'
+'      'get the menu handle
+'      hMenu = GetMenu(frm.hWnd)
+'
+'      'get the submenu handle
+'      hSubMenu = GetSubMenu(hMenu, mnuBarIndex)
+'
+'      'fill a structure to retrieve the current
+'      'item menu string by first calling
+'      'GetMenuItemInfo passing a null string.
+'      'The required size is returned in
+'      'mInfo.cch. Add 1 to accommodate the
+'      'null that will be added when called.
+'      With mInfo
+'            .cbSize = Len(mInfo)
+'            .fMask = MIIM_TYPE
+'            .fType = MFT_STRING
+'            .dwTypeData = vbNullString
+'            .cch = Len(mInfo.dwTypeData)
+'
+'            'get the needed buffer size
+'            Call GetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo)
+'
+'            'set the buffer
+'            .dwTypeData = Space$(mInfo.cch + 1)
+'            .cch = Len(mInfo.dwTypeData)
+'
+'      End With
+'
+'      'and get the data
+'      If GetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo) <> 0 Then
+'
+'            'copy its attributes, changing
+'            'the checkmark to a radio button
+'            With mInfo
+'                  .cbSize = Len(mInfo)
+'                  .fType = MFT_RADIOCHECK
+'                  .fMask = MIIM_TYPE
+'            End With
+'
+'            'modify the menu item
+'            Call SetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo)
+'
+'      End If
+'
+'End Sub

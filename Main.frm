@@ -1,21 +1,71 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MsComCtl.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "AGRICHEDIT.OCX"
+Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Begin VB.Form frmMain 
-   Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
-   Caption         =   "phlegmoirs"
-   ClientHeight    =   6465
+   Caption         =   "(New File)"
+   ClientHeight    =   8460
    ClientLeft      =   135
    ClientTop       =   690
-   ClientWidth     =   10080
+   ClientWidth     =   11175
    Icon            =   "Main.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
-   ScaleHeight     =   6465
-   ScaleWidth      =   10080
+   ScaleHeight     =   8460
+   ScaleWidth      =   11175
+   Begin VB.PictureBox picEditor 
+      BorderStyle     =   0  'None
+      Height          =   6360
+      Left            =   3000
+      ScaleHeight     =   6360
+      ScaleWidth      =   7575
+      TabIndex        =   33
+      TabStop         =   0   'False
+      Top             =   1080
+      Width           =   7572
+      Begin agRichEditBox.agRichEdit agEditor 
+         Height          =   5352
+         Left            =   2520
+         TabIndex        =   34
+         Top             =   1200
+         Width           =   5856
+         _ExtentX        =   10319
+         _ExtentY        =   9446
+         Version         =   1
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Tahoma"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   -2147483630
+         ViewMode        =   1
+         TextLimit       =   100000
+         TrapTab         =   0   'False
+         AutoURLDetect   =   0   'False
+         TextOnly        =   -1  'True
+         DisableNoScroll =   -1  'True
+      End
+      Begin VB.Image Image1 
+         Appearance      =   0  'Flat
+         Height          =   4560
+         Left            =   0
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   3600
+      End
+   End
+   Begin VB.Timer tmrRevertTips 
+      Enabled         =   0   'False
+      Interval        =   5000
+      Left            =   9240
+      Top             =   7920
+   End
    Begin MSComctlLib.ImageList ilsFileIcons 
       Left            =   720
       Top             =   3360
@@ -27,7 +77,7 @@ Begin VB.Form frmMain
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   8
+         NumListImages   =   12
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "Main.frx":179A
             Key             =   "Folder"
@@ -53,39 +103,58 @@ Begin VB.Form frmMain
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":3186
+            Picture         =   "Main.frx":3610
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":35D8
+            Picture         =   "Main.frx":3A62
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Main.frx":3EB6
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Main.frx":41D0
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Main.frx":44EA
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage12 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "Main.frx":4804
             Key             =   ""
          EndProperty
       EndProperty
    End
    Begin VB.PictureBox picBrowser 
+      Align           =   3  'Align Left
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000004&
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       DrawStyle       =   5  'Transparent
-      Height          =   5352
-      Left            =   60
-      MousePointer    =   1  'Arrow
-      ScaleHeight     =   5355
+      ForeColor       =   &H80000008&
+      Height          =   7560
+      Left            =   0
+      ScaleHeight     =   7560
       ScaleWidth      =   2415
-      TabIndex        =   7
+      TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   712
+      Top             =   600
       Width           =   2412
       Begin VB.CommandButton btnScrollToTop 
          Appearance      =   0  'Flat
          Height          =   264
          Left            =   1848
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":3A2C
+         Picture         =   "Main.frx":495E
          Style           =   1  'Graphical
-         TabIndex        =   18
+         TabIndex        =   13
          TabStop         =   0   'False
          ToolTipText     =   "Scroll To Top"
-         Top             =   300
+         Top             =   420
          Width           =   264
       End
       Begin VB.CommandButton btnCurrentDirectory 
@@ -95,10 +164,10 @@ Begin VB.Form frmMain
          Left            =   1584
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   12
+         TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
-         Top             =   300
+         Top             =   420
          Width           =   264
       End
       Begin VB.CommandButton btnDeleteSelected 
@@ -108,10 +177,49 @@ Begin VB.Form frmMain
          Left            =   1320
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   17
+         TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Delete File (Del)"
-         Top             =   300
+         Top             =   420
+         Width           =   264
+      End
+      Begin VB.CommandButton btnRefresh 
+         Appearance      =   0  'Flat
+         Caption         =   "R"
+         Height          =   264
+         Left            =   1056
+         MaskColor       =   &H80000000&
+         Style           =   1  'Graphical
+         TabIndex        =   8
+         TabStop         =   0   'False
+         ToolTipText     =   "Refresh Files (F5)"
+         Top             =   420
+         Width           =   264
+      End
+      Begin VB.CommandButton btnSort 
+         Appearance      =   0  'Flat
+         Height          =   264
+         Left            =   792
+         MaskColor       =   &H80000000&
+         Picture         =   "Main.frx":4AA8
+         Style           =   1  'Graphical
+         TabIndex        =   6
+         TabStop         =   0   'False
+         ToolTipText     =   "Reverse the sort order (Ctrl+H)"
+         Top             =   420
+         Width           =   264
+      End
+      Begin VB.CommandButton btnFolderUp 
+         Appearance      =   0  'Flat
+         Height          =   264
+         Left            =   528
+         MaskColor       =   &H80000000&
+         Picture         =   "Main.frx":4BAA
+         Style           =   1  'Graphical
+         TabIndex        =   3
+         TabStop         =   0   'False
+         ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
+         Top             =   420
          Width           =   264
       End
       Begin VB.CommandButton btnPathForward 
@@ -119,31 +227,31 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   264
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":3B76
+         Picture         =   "Main.frx":4F34
          Style           =   1  'Graphical
-         TabIndex        =   15
+         TabIndex        =   10
          TabStop         =   0   'False
          ToolTipText     =   "Go forward a directory (Alt+Right)"
-         Top             =   300
+         Top             =   420
          Width           =   264
       End
       Begin VB.ComboBox cboPath 
          Height          =   315
-         ItemData        =   "Main.frx":3CC0
+         ItemData        =   "Main.frx":507E
          Left            =   0
-         List            =   "Main.frx":3CC2
-         TabIndex        =   9
+         List            =   "Main.frx":5080
+         TabIndex        =   4
          Text            =   "*"
          ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
-         Top             =   0
-         Width           =   2292
+         Top             =   100
+         Width           =   2295
       End
       Begin MSComctlLib.ListView lvwBrowser 
          Height          =   4335
          Left            =   0
-         TabIndex        =   10
+         TabIndex        =   5
          Tag             =   "c:\test\"
-         Top             =   600
+         Top             =   720
          Width           =   2295
          _ExtentX        =   4048
          _ExtentY        =   7646
@@ -162,6 +270,15 @@ Begin VB.Form frmMain
          ForeColor       =   -2147483640
          BackColor       =   -2147483643
          Appearance      =   1
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Courier New"
+            Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          NumItems        =   2
          BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
             Key             =   "filename"
@@ -176,70 +293,31 @@ Begin VB.Form frmMain
             Object.Width           =   0
          EndProperty
       End
-      Begin VB.CommandButton btnSort 
-         Appearance      =   0  'Flat
-         Height          =   264
-         Left            =   792
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":3CC4
-         Style           =   1  'Graphical
-         TabIndex        =   11
-         TabStop         =   0   'False
-         ToolTipText     =   "Reverse the sort order (Ctrl+H)"
-         Top             =   300
-         Width           =   264
-      End
-      Begin VB.CommandButton btnFolderUp 
-         Appearance      =   0  'Flat
-         Height          =   264
-         Left            =   528
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":3DC6
-         Style           =   1  'Graphical
-         TabIndex        =   8
-         TabStop         =   0   'False
-         ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
-         Top             =   300
-         Width           =   264
-      End
-      Begin VB.CommandButton btnRefresh 
-         Appearance      =   0  'Flat
-         Caption         =   "R"
-         Height          =   264
-         Left            =   1056
-         MaskColor       =   &H80000000&
-         Style           =   1  'Graphical
-         TabIndex        =   13
-         TabStop         =   0   'False
-         ToolTipText     =   "Refresh Files (F5)"
-         Top             =   300
-         Width           =   264
-      End
       Begin VB.CommandButton btnPathBack 
          Appearance      =   0  'Flat
          Height          =   264
          Left            =   0
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":4150
+         Picture         =   "Main.frx":5082
          Style           =   1  'Graphical
-         TabIndex        =   14
+         TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Go back a directory (Alt+Left)"
-         Top             =   300
+         Top             =   420
          Width           =   264
       End
       Begin VB.Label lblDivider 
          BackStyle       =   0  'Transparent
          Height          =   25005
          Left            =   2295
-         TabIndex        =   16
+         TabIndex        =   11
          Top             =   0
          Width           =   375
       End
    End
    Begin MSComDlg.CommonDialog dlgFont 
-      Left            =   7920
-      Top             =   120
+      Left            =   9480
+      Top             =   1680
       _ExtentX        =   688
       _ExtentY        =   688
       _Version        =   393216
@@ -248,17 +326,39 @@ Begin VB.Form frmMain
       FontSize        =   12
    End
    Begin VB.PictureBox picToolBox 
+      Align           =   1  'Align Top
       ClipControls    =   0   'False
-      Height          =   612
-      Left            =   -130
-      ScaleHeight     =   555
-      ScaleWidth      =   8475
+      Height          =   600
+      Left            =   0
+      ScaleHeight     =   540
+      ScaleWidth      =   11115
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   0
-      Width           =   8532
+      Width           =   11175
+      Begin VB.CommandButton btnOptions 
+         Appearance      =   0  'Flat
+         Caption         =   "Opts."
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   10.5
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   10320
+         Style           =   1  'Graphical
+         TabIndex        =   38
+         TabStop         =   0   'False
+         ToolTipText     =   "Options..."
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   615
+      End
       Begin VB.CommandButton btnNextFile 
-         Caption         =   ">>"
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   13.5
@@ -268,15 +368,17 @@ Begin VB.Form frmMain
             Italic          =   -1  'True
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   580
-         Left            =   3720
-         TabIndex        =   20
+         Height          =   570
+         Left            =   4200
+         Picture         =   "Main.frx":51CC
+         Style           =   1  'Graphical
+         TabIndex        =   14
          TabStop         =   0   'False
+         ToolTipText     =   "Next file down"
          Top             =   0
-         Width           =   732
+         Width           =   615
       End
       Begin VB.CommandButton btnPrevFile 
-         Caption         =   "<<"
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   13.5
@@ -286,31 +388,15 @@ Begin VB.Form frmMain
             Italic          =   -1  'True
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   580
-         Left            =   3000
-         TabIndex        =   21
-         TabStop         =   0   'False
-         Top             =   0
-         Width           =   732
-      End
-      Begin VB.CommandButton btnSave 
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   580
-         Left            =   2280
-         Picture         =   "Main.frx":429A
+         Height          =   570
+         Left            =   3600
+         Picture         =   "Main.frx":560E
          Style           =   1  'Graphical
-         TabIndex        =   19
+         TabIndex        =   15
          TabStop         =   0   'False
+         ToolTipText     =   "Next file up"
          Top             =   0
-         Width           =   732
+         Width           =   615
       End
       Begin VB.CommandButton btnFont 
          Caption         =   "A"
@@ -323,29 +409,214 @@ Begin VB.Form frmMain
             Italic          =   -1  'True
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   580
-         Left            =   1560
-         TabIndex        =   6
+         Height          =   570
+         Left            =   3000
+         TabIndex        =   17
          TabStop         =   0   'False
          ToolTipText     =   "Set Font (Shift+Ctrl+F)"
          Top             =   0
-         Width           =   732
+         Width           =   615
       End
-      Begin VB.TextBox txtQueryBox 
-         Height          =   372
-         Left            =   5520
-         MaxLength       =   50
-         OLEDropMode     =   1  'Manual
-         TabIndex        =   5
-         Text            =   "query box"
-         Top             =   120
-         Width           =   3732
+      Begin VB.CheckBox chkReadOnly 
+         Caption         =   "read only"
+         CausesValidation=   0   'False
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   2400
+         Style           =   1  'Graphical
+         TabIndex        =   32
+         TabStop         =   0   'False
+         ToolTipText     =   "Toggle Read-Only mode"
+         Top             =   0
+         Width           =   615
+      End
+      Begin VB.PictureBox picQuery 
+         Appearance      =   0  'Flat
+         BorderStyle     =   0  'None
+         ClipControls    =   0   'False
+         ForeColor       =   &H80000008&
+         Height          =   555
+         Left            =   4800
+         ScaleHeight     =   555
+         ScaleWidth      =   3975
+         TabIndex        =   22
+         TabStop         =   0   'False
+         Top             =   0
+         Width           =   3975
+         Begin VB.TextBox txtQueryBox 
+            Height          =   375
+            Left            =   0
+            MaxLength       =   50
+            OLEDropMode     =   1  'Manual
+            TabIndex        =   25
+            ToolTipText     =   "Type something here, and search the file or on the web (F9)"
+            Top             =   245
+            Width           =   2895
+         End
+         Begin VB.CommandButton btnQueryExecute 
+            Appearance      =   0  'Flat
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   330
+            Left            =   2880
+            MaskColor       =   &H80000000&
+            Picture         =   "Main.frx":5A50
+            Style           =   1  'Graphical
+            TabIndex        =   24
+            TabStop         =   0   'False
+            ToolTipText     =   "Find next match (F3)"
+            Top             =   240
+            Width           =   495
+         End
+         Begin VB.CommandButton btnFindPrev 
+            Appearance      =   0  'Flat
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Left            =   2880
+            MaskColor       =   &H80000000&
+            Picture         =   "Main.frx":5B9A
+            Style           =   1  'Graphical
+            TabIndex        =   23
+            TabStop         =   0   'False
+            ToolTipText     =   "Find next match backwards"
+            Top             =   0
+            Width           =   495
+         End
+         Begin VB.CheckBox chkQueryDotDotDot 
+            Caption         =   "..."
+            CausesValidation=   0   'False
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Left            =   2520
+            Style           =   1  'Graphical
+            TabIndex        =   31
+            TabStop         =   0   'False
+            ToolTipText     =   "More search options..."
+            Top             =   0
+            Width           =   375
+         End
+         Begin VB.OptionButton optQueries 
+            Caption         =   "google"
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   3
+            Left            =   1800
+            Style           =   1  'Graphical
+            TabIndex        =   27
+            TabStop         =   0   'False
+            ToolTipText     =   "Search google"
+            Top             =   0
+            Width           =   735
+         End
+         Begin VB.OptionButton optQueries 
+            Caption         =   "thes"
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   2
+            Left            =   1200
+            Style           =   1  'Graphical
+            TabIndex        =   28
+            TabStop         =   0   'False
+            ToolTipText     =   "Look it up at thesaurus.reference.com (Ctrl+T)"
+            Top             =   0
+            Width           =   615
+         End
+         Begin VB.OptionButton optQueries 
+            Caption         =   "dict"
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   1
+            Left            =   600
+            Style           =   1  'Graphical
+            TabIndex        =   29
+            TabStop         =   0   'False
+            ToolTipText     =   "Look it up at dictionary.reference.com (Ctrl+D)"
+            Top             =   0
+            Width           =   615
+         End
+         Begin VB.OptionButton optQueries 
+            Caption         =   "find"
+            BeginProperty Font 
+               Name            =   "Small Fonts"
+               Size            =   6.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   0
+            Left            =   0
+            Style           =   1  'Graphical
+            TabIndex        =   26
+            TabStop         =   0   'False
+            ToolTipText     =   "Search within file (Ctrl+F)"
+            Top             =   0
+            Value           =   -1  'True
+            Width           =   615
+         End
       End
       Begin VB.CheckBox chkWordWrap 
          Caption         =   "W"
          CausesValidation=   0   'False
          BeginProperty Font 
-            Name            =   "Algerian"
+            Name            =   "Arial"
             Size            =   15.75
             Charset         =   0
             Weight          =   400
@@ -353,36 +624,182 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   580
-         Left            =   840
+         Height          =   570
+         Left            =   1800
          Style           =   1  'Graphical
-         TabIndex        =   3
+         TabIndex        =   18
          TabStop         =   0   'False
          ToolTipText     =   "Toggle Word Wrap (Ctrl+W)"
          Top             =   0
-         Width           =   732
+         Value           =   1  'Checked
+         Width           =   615
+      End
+      Begin VB.CommandButton btnSave 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   1200
+         Picture         =   "Main.frx":5CE4
+         Style           =   1  'Graphical
+         TabIndex        =   16
+         TabStop         =   0   'False
+         ToolTipText     =   "Save File (Ctrl+S)"
+         Top             =   0
+         Width           =   615
+      End
+      Begin VB.CommandButton btnNewFile 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   600
+         Picture         =   "Main.frx":6126
+         Style           =   1  'Graphical
+         TabIndex        =   30
+         TabStop         =   0   'False
+         ToolTipText     =   "New File (Ctrl+N)"
+         Top             =   0
+         Width           =   615
       End
       Begin VB.CheckBox chkFileBrowser 
          CausesValidation=   0   'False
-         Height          =   580
-         Left            =   120
-         Picture         =   "Main.frx":46DC
+         Height          =   570
+         Left            =   0
+         Picture         =   "Main.frx":6330
          Style           =   1  'Graphical
-         TabIndex        =   2
+         TabIndex        =   19
+         TabStop         =   0   'False
+         ToolTipText     =   "Show/Hide the File Browser (F8)"
+         Top             =   0
+         Value           =   1  'Checked
+         Width           =   615
+      End
+      Begin VB.CommandButton btnFileForward 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   5400
+         Picture         =   "Main.frx":6772
+         Style           =   1  'Graphical
+         TabIndex        =   20
          TabStop         =   0   'False
          Top             =   0
-         Width           =   732
+         Visible         =   0   'False
+         Width           =   615
+      End
+      Begin VB.CommandButton btnFileBack 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   9720
+         Picture         =   "Main.frx":6BB4
+         Style           =   1  'Graphical
+         TabIndex        =   21
+         TabStop         =   0   'False
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   615
+      End
+      Begin MSComctlLib.Slider sliZoom 
+         Height          =   570
+         Left            =   3000
+         TabIndex        =   37
+         TabStop         =   0   'False
+         ToolTipText     =   "Adjust picture zoom"
+         Top             =   0
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   1005
+         _Version        =   393216
+         Orientation     =   1
+         LargeChange     =   100
+         SmallChange     =   10
+         Max             =   500
+         SelStart        =   100
+         TickStyle       =   1
+         TickFrequency   =   100
+         Value           =   100
+         TextPosition    =   1
+      End
+      Begin VB.CommandButton btnZoomOut 
+         Appearance      =   0  'Flat
+         Caption         =   "-"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   10.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   300
+         Left            =   3360
+         TabIndex        =   36
+         TabStop         =   0   'False
+         ToolTipText     =   "Zoom Out"
+         Top             =   0
+         Width           =   252
+      End
+      Begin VB.CommandButton btnZoomIn 
+         Appearance      =   0  'Flat
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   10.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   288
+         Left            =   3360
+         TabIndex        =   35
+         TabStop         =   0   'False
+         ToolTipText     =   "Zoom In"
+         Top             =   290
+         Width           =   252
       End
    End
    Begin MSComctlLib.StatusBar staTusBar1 
       Align           =   2  'Align Bottom
-      Height          =   270
+      Height          =   300
       Left            =   0
       TabIndex        =   0
-      Top             =   6195
-      Width           =   10080
-      _ExtentX        =   17780
-      _ExtentY        =   476
+      Top             =   8160
+      Width           =   11175
+      _ExtentX        =   19711
+      _ExtentY        =   529
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
          NumPanels       =   5
@@ -410,8 +827,9 @@ Begin VB.Form frmMain
          EndProperty
          BeginProperty Panel4 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
-            Object.Width           =   882
-            MinWidth        =   882
+            Object.Width           =   1235
+            MinWidth        =   1235
+            Key             =   "seltext"
          EndProperty
          BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Object.Width           =   17639
@@ -419,32 +837,15 @@ Begin VB.Form frmMain
             Key             =   "statTips"
          EndProperty
       EndProperty
-   End
-   Begin agRichEditBox.agRichEdit agEditor 
-      Height          =   5352
-      Left            =   2572
-      TabIndex        =   4
-      Top             =   712
-      Width           =   5858
-      _ExtentX        =   10319
-      _ExtentY        =   9446
-      Version         =   1
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   12
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   -2147483630
-      ViewMode        =   1
-      TextLimit       =   100000
-      TrapTab         =   0   'False
-      AutoURLDetect   =   0   'False
-      TextOnly        =   -1  'True
-      DisableNoScroll =   -1  'True
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
@@ -581,10 +982,34 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuViewDiv2 
          Caption         =   "-"
       End
+      Begin VB.Menu mnuViewFind 
+         Caption         =   "&Find..."
+         Shortcut        =   ^F
+      End
+      Begin VB.Menu mnuViewFindNext 
+         Caption         =   "Find &Next Forward"
+         Shortcut        =   {F3}
+      End
+      Begin VB.Menu mnuViewFindBackwards 
+         Caption         =   "Find N&ext Backwards"
+         Shortcut        =   +{F3}
+      End
+      Begin VB.Menu mnuViewDiv3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuViewReadOnly 
+         Caption         =   "&Read Only"
+      End
       Begin VB.Menu mnuViewWordWrap 
          Caption         =   "&Word Wrap"
          Checked         =   -1  'True
          Shortcut        =   ^W
+      End
+      Begin VB.Menu mnuViewDiv5 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuViewOptions 
+         Caption         =   "Options..."
       End
    End
    Begin VB.Menu mnuBookmarks 
@@ -631,6 +1056,18 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuWindowSaveSettings 
          Caption         =   "Save Se&ttings"
+      End
+   End
+   Begin VB.Menu mnuHelp 
+      Caption         =   "&Help"
+      Begin VB.Menu mnuHelpReadme 
+         Caption         =   "&Readme.txt"
+      End
+      Begin VB.Menu mnuHelpDiv1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuHelpAbout 
+         Caption         =   "&About..."
       End
    End
    Begin VB.Menu mnuList 
@@ -689,6 +1126,47 @@ Begin VB.Form frmMain
          Caption         =   "Toggle Caps"
       End
    End
+   Begin VB.Menu mnuQuery 
+      Caption         =   "Query"
+      Visible         =   0   'False
+      Begin VB.Menu mnuQueryMatchCase 
+         Caption         =   "Match Case"
+      End
+      Begin VB.Menu mnuQueryWholeWord 
+         Caption         =   "Match Whole Word Only"
+      End
+      Begin VB.Menu mnuQueryDiv1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "groups.google.com"
+         Index           =   6
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "www.download.com"
+         Index           =   7
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "froogle.google.com"
+         Index           =   8
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "news.google.com"
+         Index           =   9
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "images.google.com"
+         Index           =   10
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "www.feedster.com"
+         Index           =   11
+      End
+      Begin VB.Menu mnuQueries 
+         Caption         =   "www.acronymfinder.com"
+         Index           =   12
+      End
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -714,10 +1192,12 @@ Dim mbTestByte() As Byte                  ' Scratch variables.  Comment them out
 Dim msTestArray() As String
 
 
-Const Debugging = False
+Const Debugging = True
 Const mfSkipMouseEventCrap = True
 Const msSettingsVersion = "0.8.8" ' Not the current build number, but the last time I changed the registry structure.
 Const MAX_HISTORY = 15
+Const MoveIncrement = 512
+'Const ZoomIncrement = 5
 
 Dim msPhlegmDate As String
 Dim mudtStats As TStatType
@@ -734,6 +1214,13 @@ Dim miBrowserShift As Integer
 
 Dim miPathRecent As Integer
 
+Dim miCurrentQuery As Integer
+Dim msLastFindQuery As String
+Dim mfFindQueryChanged As Boolean
+Dim miFindResults As Integer
+Dim mlBeginFindPos As Long
+Dim mfQueryMenuOpen As Boolean
+
 Dim msPhlegmKey As String
 
 'Dim EditorAccelTable() As ACCEL
@@ -743,16 +1230,27 @@ Dim msPhlegmKey As String
 Dim mudtSettings As TWindowPrefs
 Dim mudtCurrentFileSettings As TEditorPrefs
 
-Enum EFileIcon
+Dim miEditorMode As Integer
+Dim miImageWidthDefault As Integer, miImageHeightDefault As Integer
+Dim mfImageDragging As Boolean
+'Dim miImageZoom As Integer
+Dim miPrevX As Integer, miPrevY As Integer
+
+Enum EFileType
       Directory = 1
       Drive = 3
       Text = 4
       Other = 5
+      Picture = 6
       Error = 7
       Bookmark = 8
+      Floppy = 9
+      Network = 10
+      Cdrom = 11
+      rtf = 12
 End Enum
 
-Enum EStat  ' TODO: Seriously, rename this to something good.
+Enum EStat
       BrowserStats = 1
       Stats = 2
       Modified = 3
@@ -760,11 +1258,33 @@ Enum EStat  ' TODO: Seriously, rename this to something good.
       Tips = 5
 End Enum
 
+Enum EDirection
+      Forward = 1
+      back = -1
+End Enum
+
+Enum EQuery
+      Find = 0
+      Dictionary = 1
+      thesaurus = 2
+      Google = 3
+      ' reserved = 4
+      ' reserved = 5
+      Groups = 6
+      CNET = 7
+      Froogle = 8
+      News = 9
+      Images = 10
+      Feedster = 11
+      Acronymfinder = 12
+End Enum
+
 
 
 Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       Dim iIndex As Integer
 
+      sNewBookmark = CstringToVBstring(sNewBookmark)
       If sNewBookmark = "" Then Exit Sub
      
       iIndex = mnuBookmark.UBound + 1
@@ -782,6 +1302,7 @@ Private Sub AddToHistory(ByVal sNewHistory As String)
       Dim iIndex As Integer
       Dim sPrevTag As String
 
+      sNewHistory = CstringToVBstring(sNewHistory)
       If mnuFileHistory.UBound > 0 Then
             If sNewHistory = mnuFileHistory(1).Tag Then Exit Sub
       End If
@@ -873,11 +1394,14 @@ End Function
 Private Sub BrowserExecuteNext()
       Dim iIndex As Integer
 
-      If agEditor.Tag <> "" Then btnCurrentDirectory_Click
+       ' Selecting the item next to the open file, not next to whatever random thing is currently selected.
+      If (agEditor.Tag <> "") And (Not gBrowserData.BookmarkMode) Then btnCurrentDirectory_Click
+        ' TODO: that should still do the sync if in bookmark mode and *the open file is not a bookmark*.
+      
       If lvwBrowser.ListItems.Count = 0 Then Exit Sub
       iIndex = lvwBrowser.SelectedItem.Index
       If iIndex < lvwBrowser.ListItems.Count Then
-            If lvwBrowser.ListItems(iIndex + 1).Icon <> EFileIcon.Directory Then
+            If lvwBrowser.ListItems(iIndex + 1).Icon <> EFileType.Directory Then
                   lvwBrowser.ListItems(iIndex + 1).EnsureVisible
                   lvwBrowser.ListItems(iIndex + 1).Selected = True
                   BrowserExecuteItem lvwBrowser.ListItems(iIndex + 1)
@@ -892,15 +1416,23 @@ End Sub
 Private Sub BrowserExecutePrev()
       Dim iIndex As Integer
             
-      If agEditor.Tag <> "" Then btnCurrentDirectory_Click
+       ' Selecting the item next to the open file, not next to whatever random thing is currently selected.
+      If (agEditor.Tag <> "") And (Not gBrowserData.BookmarkMode) Then btnCurrentDirectory_Click
+        ' TODO: that should still do the sync if in bookmark mode and *the open file is not a bookmark*.
+        
       If lvwBrowser.ListItems.Count = 0 Then Exit Sub
-      iIndex = lvwBrowser.SelectedItem.Index
-      If iIndex > 1 Then
-            If lvwBrowser.ListItems(iIndex - 1).Icon <> EFileIcon.Directory Then
-                  lvwBrowser.ListItems(iIndex - 1).EnsureVisible
-                  lvwBrowser.ListItems(iIndex - 1).Selected = True
-                  DoEvents
-                  BrowserExecuteItem lvwBrowser.ListItems(iIndex - 1)
+      
+      If ActiveControl.name = "lvwBrowser" Then
+            SendKeys "{UP}{ENTER}"
+      Else
+            iIndex = lvwBrowser.SelectedItem.Index
+            If iIndex > 1 Then
+                  If lvwBrowser.ListItems(iIndex - 1).Icon <> EFileType.Directory Then
+                        lvwBrowser.ListItems(iIndex - 1).EnsureVisible
+                        lvwBrowser.ListItems(iIndex - 1).Selected = True
+                        DoEvents
+                        BrowserExecuteItem lvwBrowser.ListItems(iIndex - 1)
+                  End If
             End If
       End If
 End Sub
@@ -910,9 +1442,7 @@ End Sub
 ' *
 ' *  BrowserGetFilesAndFolders
 ' *
-' *  sBrowseDir - Directory whose files are to be listed in lvwBrowser.
-' *  sFilter - If specified, list only files matching sFilter.  May contain wildcards "?" and "*".
-' *  sPartialFileName - If specified, highlight the first filename beginning with sPartialFileName. TODO.
+' *  Takes the parsed data (BD) and fills lvwBrowser with the appropriate files.
 ' *
 ' *
 ' *********************************************
@@ -922,7 +1452,7 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
       Dim iIcon As Integer
       Dim curTotalBytes As Currency
       Dim litCurrentItem As ListItem
-      Dim hNextFile As Long, sFileName As String
+      Dim hNextFile As Long, sFileName As String, sEx As String
       Dim WFD As WIN32_FIND_DATA
       Dim fHadFocus As Boolean ', fDirUnchanged As Boolean
       'Dim sOldSelectedItem As String
@@ -952,20 +1482,16 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
             ' Divide the file types up slightly for icon selection
             
             sFileName = CstringToVBstring(WFD.cFileName) ' Lots of junk past the null character.
+            sEx = gFSO.getextensionname(sFileName)
             
             If (WFD.dwFileAttributes And FILE_ATTRIBUTE_DIRECTORY) Then
-                  iIcon = EFileIcon.Directory
-            
-            ElseIf Right(sFileName, 4) = ".txt" Then
-                  iIcon = EFileIcon.Text
-            
+                  iIcon = EFileType.Directory
             Else
-                  iIcon = EFileIcon.Other
-                  
+                  iIcon = FileTypeFromExtension(sEx)
             End If
 
             If Err > 0 Then
-                  iIcon = EFileIcon.Error
+                  iIcon = EFileType.Error
                   Debug.Print Err & ": " & Err.Description
             End If
             On Error GoTo 0
@@ -977,7 +1503,7 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
                   Set litCurrentItem = lvwBrowser.ListItems.Add(, , sFileName, iIcon, iIcon)
                   
                   ' here, let's keep an invisible second column for sorting by directory later
-                  If iIcon = EFileIcon.Directory Then
+                  If iIcon = EFileType.Directory Then
                         litCurrentItem.ListSubItems.Add , , 0
                   Else
                         litCurrentItem.ListSubItems.Add , , 1
@@ -1002,161 +1528,6 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
       'Debug.Print Timer - sngStartTime
 End Sub
 
-' *********************************************
-' *
-' *  BrowserGetFilesAndFolders
-' *
-' *  sBrowseDir - Directory whose files are to be listed in lvwBrowser.
-' *  sFilter - If specified, list only files matching sFilter.  May contain wildcards "?" and "*".
-' *  sPartialFileName - If specified, highlight the first filename beginning with sPartialFileName. TODO.
-' *
-' *
-' *********************************************
-'
-Private Sub BrowserGetFilesAndFolders_old(ByVal sBrowseDir As String, Optional ByVal sFilter As String, _
-      Optional ByVal sPartialFileName As String)
-            
-      Dim iIcon As Integer
-      Dim litCurrentItem As ListItem
-      Dim hNextFile As Long, sFileName As String
-      Dim WFD As WIN32_FIND_DATA
-      Dim fHadFocus As Boolean ', fDirUnchanged As Boolean
-      'Dim sOldSelectedItem As String
-      'Dim sngStartTime As Single
-      
-      With gBrowserData
-            .BookmarkMode = False
-            .DrivesMode = False
-            .Error = False
-            .ListEmpty = False
-            .DirPrev = .Dir
-            .Dir = sBrowseDir  ' TODO: this structure is to eventually replace lvwBrowser.Tag
-            .DirUnchanged = (.Dir = .DirPrev)
-            .GoingToParent = (.Dir = ParentDirectoryOf(.DirPrev)) And Not .DirUnchanged
-            If lvwBrowser.ListItems.Count > 0 Then .SelTextPrev = lvwBrowser.SelectedItem.Text
-            .Filter = sFilter
-      End With
-      
-      
-      On Error Resume Next    ' there won't be an active control during form_load, so skip this part.
-      fHadFocus = (ActiveControl.name = "lvwBrowser")
-      On Error GoTo 0
-      
-'      ' Keep track of whether we are loading a new directory or merely refreshing.
-'       If lvwBrowser.ListItems.Count > 0 Then
-'            fDirUnchanged = (sBrowseDir = lvwBrowser.Tag)
-'            sOldSelectedItem = lvwBrowser.SelectedItem.Text
-'      End If
-      
-      lvwBrowser.Tag = sBrowseDir
-      
-      lvwBrowser.Visible = False  ' a nice idea, but we don't want to lose focus while under.  OR DO WE ?
-      lvwBrowser.ListItems.Clear
-      lvwBrowser.SortKey = 0
-      lvwBrowser.Sorted = False ' Sorting each element would have to slow things down, wouldn't it?
-      
-      
-      'sngStartTime = Timer
-      If sFilter = "" Then sFilter = "*"
-      hNextFile = FindFirstFile(sBrowseDir & sFilter, WFD)
-      
-      Do
-            On Error Resume Next
-            
-            ' Divide the file types up slightly for icon selection
-            
-            sFileName = CstringToVBstring(WFD.cFileName) ' Lots of junk past the null character.
-            
-'            If sFileName = "" Then ' We'd like a return directory even when filtering out directories... or maybe NOT.
-'                  sFileName = ".."
-'                  WFD.dwFileAttributes = FILE_ATTRIBUTE_DIRECTORY
-'            End If
-            
-            If (WFD.dwFileAttributes And FILE_ATTRIBUTE_DIRECTORY) Then
-                  iIcon = EFileIcon.Directory
-            
-            ElseIf Right(sFileName, 4) = ".txt" Then
-                  iIcon = EFileIcon.Text
-            
-            Else
-                  iIcon = EFileIcon.Other
-                  
-            End If
-
-            If Err > 0 Then
-                  iIcon = EFileIcon.Error
-                  Debug.Print Err & ": " & Err.Description
-            End If
-            On Error GoTo 0
-            
-            
-            ' Add that file!
-            
-            If sFileName <> "." And sFileName <> "" Then ' just what is the point in providing them with a "." folder?
-                  Set litCurrentItem = lvwBrowser.ListItems.Add(, , sFileName, iIcon, iIcon)
-                  
-                  ' here, let's keep an invisible second column for sorting by directory later
-                  If iIcon = EFileIcon.Directory Then
-                        litCurrentItem.ListSubItems.Add , , 0
-                  Else
-                        litCurrentItem.ListSubItems.Add , , 1
-                  End If
-            End If
-      
-      Loop While FindNextFile(hNextFile, WFD) <> 0
-           
-      
-      If sFilter = "*" Then sFilter = ""
-      If lvwBrowser.ListItems.Count > 0 Then
-            PathAddRecent sBrowseDir & sFilter  ' Add to recent paths only if filtration was fruitful.
-      Else
-            gBrowserData.ListEmpty = True
-      End If
-      
-      lvwBrowser.Sorted = True
-      lvwBrowser.SortKey = 1
-      lvwBrowser.Visible = True
-      If fHadFocus Then lvwBrowser.SetFocus
-      
-'      ' Auto-select a file that matches that sPartialFileName.
-'
-'      If sPartialFileName <> "" And Not gBrowserData.ListEmpty Then
-'
-'            Set litCurrentItem = lvwBrowser.FindItem(sPartialFileName, , , lvwPartial)
-'            If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
-'            DoEvents
-'            lvwBrowser.SelectedItem.EnsureVisible ' Just doesn't seem to work without DoEvents first.
-      
-      ' Auto-select the directory we just moved out of, if doing a ParentDirectory.
-            
-      If gBrowserData.GoingToParent And Not gBrowserData.ListEmpty Then
-      
-            Set litCurrentItem = lvwBrowser.FindItem(gFSO.GetBaseName(gBrowserData.DirPrev))
-            If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
-            DoEvents
-            lvwBrowser.SelectedItem.EnsureVisible
-            
-      ' Auto-select the item previously selected, for a refresh.
-      
-      ElseIf gBrowserData.DirUnchanged And Not gBrowserData.ListEmpty Then
-            Set litCurrentItem = lvwBrowser.FindItem(gBrowserData.SelTextPrev)
-
-            If (litCurrentItem Is Nothing) Then
-                  lvwBrowser.ListItems(1).Selected = True
-            Else
-                  litCurrentItem.Selected = True
-                  DoEvents
-                  lvwBrowser.SelectedItem.EnsureVisible
-            End If
-            
-      ' Otherwise, auto-select the first item.
-            
-      ElseIf Not gBrowserData.ListEmpty Then
-            lvwBrowser.ListItems(1).Selected = True
-      End If
-      'Debug.Print Timer - sngStartTime
-End Sub
-
 
 Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Integer
       ' This is like a miniature RearrangeControls() for just picBrowser and everything within,
@@ -1165,6 +1536,7 @@ Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Int
       ' The return value is the difference (in twips) that picBrowser has grown.  Can be negative.
       
       Dim iOffset As Integer, iRealWidth As Integer, iScrollButtonX As Integer
+      
       
       If iSupposedWidth < 1000 Then
             iRealWidth = 1000
@@ -1192,6 +1564,77 @@ Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Int
       BrowserResizeHorizontal = iOffset
 End Function
 
+Private Sub EditorSetMode(iMode As Integer)
+      ' When we change the sort of data to display (text, picture, more to be determined),
+      ' there are some things that have to be set, hidden, etc.
+      
+      ' Use EFileType types for iMode
+      
+      ' Other routines that may be curious about the mode may use miEditorMode.
+      
+      If iMode = miEditorMode Then Exit Sub
+      
+      Select Case iMode
+            Case EFileType.Text, EFileType.rtf, EFileType.Other
+      
+                  miEditorMode = iMode
+                  agEditor.Visible = True
+                  Image1.Visible = False
+'                  btnZoomIn.Visible = False
+'                  btnZoomOut.Visible = False
+'                  sliZoom.Visible = False
+                  btnFont.Visible = True
+      
+            Case EFileType.Picture
+                  
+                  miEditorMode = EFileType.Picture
+                  agEditor.Visible = False
+                  Image1.Visible = True
+'                  btnZoomIn.Visible = True
+'                  btnZoomOut.Visible = True
+'                  sliZoom.Visible = True
+                  btnFont.Visible = False
+      End Select
+
+End Sub
+
+Private Function FileTypeFromExtension(sEx As String) As String
+      ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
+      ' which can be fed into EditorSetMode.
+      
+      ' Current possible modes:   EFileType.text, EFileType.rtf, EFileType.picture
+      
+      Select Case sEx
+            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur"
+                  FileTypeFromExtension = EFileType.Picture
+            Case "rtf"
+                  FileTypeFromExtension = EFileType.rtf
+            Case "txt"
+                  FileTypeFromExtension = EFileType.Text
+            Case Else
+                  FileTypeFromExtension = EFileType.Other
+      End Select
+End Function
+
+Private Sub ImageZoomIn(iStep As Integer)
+      ' goes up to the next zoom divisible by iStep
+      If sliZoom.Value >= sliZoom.Max Then Exit Sub
+      sliZoom.Value = sliZoom.Value + (iStep - (sliZoom.Value Mod iStep))
+End Sub
+
+Private Sub ImageZoomOut(iStep As Integer)
+      ' Sets zoom to the next lowest integer divisibly by iStep.
+      
+      If sliZoom.Value <= 0 Then Exit Sub
+      
+      If sliZoom.Value Mod iStep = 0 Then
+            sliZoom.Value = sliZoom.Value - iStep
+      Else
+            sliZoom.Value = sliZoom.Value - (sliZoom.Value Mod iStep)
+      End If
+End Sub
+
+
 Private Sub ListMenuDisable()
 
       If Not mnuListOpenDefault.Enabled Then Exit Sub
@@ -1217,10 +1660,10 @@ Private Sub ListMenuEnable(litHoverItem As ListItem)
       mnuListShowOnly.Enabled = True
       mnuListProperties.Enabled = True
       
-      If litHoverItem.Icon = EFileIcon.Directory Or litHoverItem.Icon = EFileIcon.Drive Then
+      If litHoverItem.Icon = EFileType.Directory Or litHoverItem.Icon = EFileType.Drive Then
             mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
             mnuListDelete = False
-            If litHoverItem.Text = ".." Or litHoverItem.Icon = EFileIcon.Drive Then mnuListRename = False
+            If litHoverItem.Text = ".." Or litHoverItem.Icon = EFileType.Drive Then mnuListRename = False
       End If
 
 End Sub
@@ -1289,7 +1732,7 @@ Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
                   If Right(sInput, 1) = "\" Then  ' c:\temp\   (just a plain old directory)
                         .Filter = ""
                   ElseIf sFileName Like ".*" And Not (sFileName Like "*.") Then  ' c:\temp\.txt  (wildcard implied)
-                        .Filter = "*." & gFSO.GetExtensionName(sFileName)
+                        .Filter = "*." & gFSO.getextensionname(sFileName)
                         
                   ElseIf sFileName Like "*[?*]*" Then  ' c:\temp\peni*   (contains wildcard(s) after the directory)
                         .Filter = sFileName
@@ -1347,7 +1790,7 @@ Private Sub BrowserGetBookmarks()
       lvwBrowser.Tag = "(Bookmarks)"
       For iIndex = 1 To mnuBookmark.UBound
             Set litCurrentItem = lvwBrowser.ListItems.Add(, , mnuBookmark(iIndex).Tag, _
-                  EFileIcon.Bookmark, EFileIcon.Bookmark)
+                  EFileType.Bookmark, EFileType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , 1
       Next iIndex
       
@@ -1396,6 +1839,12 @@ Private Sub ShowFileProperties(ByVal sPath As String)
       ShellExecuteEx seeEx
 End Sub
 
+'Private Sub StatusBarToolTip(ByVal sTip As String)
+'      staTusBar1.Panels(EStat.Tips) = sTip
+'
+'      tmrRevertTips.Enabled
+'End Sub
+
 Private Sub agEditor_ProgressStatus(ByVal lAmount As Long, ByVal lTotal As Long)
 '      Debug.Print "PROGRESS: "; lAmount & " " & lTotal
 
@@ -1410,6 +1859,21 @@ End Sub
 
 Private Sub btnDeleteSelected_Click()
       BrowserDeleteSelected
+End Sub
+
+Private Sub btnFindPrev_Click()
+      Dim lFoundMin As Long, lFoundMax As Long
+      Dim iFindOptions As Integer
+                  
+      'iFindOptions = ERECFindTypeOptions.FR_DOWN
+      If mnuQueryWholeWord.Checked Then iFindOptions = iFindOptions + ERECFindTypeOptions.FR_WHOLEWORD
+      If mnuQueryMatchCase.Checked Then iFindOptions = iFindOptions + ERECFindTypeOptions.FR_MATCHCASE
+      ' TODO: search within selection menu item
+      
+      agEditor.GetSelection lFoundMin, lFoundMax
+      agEditor.SetSelection lFoundMin, lFoundMin
+      agEditor.FindText txtQueryBox, iFindOptions, True, False, lFoundMin, lFoundMax
+      agEditor.SetSelection lFoundMin, lFoundMax
 End Sub
 
 Private Sub btnFolderUp_Click()
@@ -1445,8 +1909,16 @@ Private Sub btnFont_Click()
 End Sub
 
 
+Private Sub btnNewFile_Click()
+      mnuFileNew_Click
+End Sub
+
 Private Sub btnNextFile_Click()
       BrowserExecuteNext
+End Sub
+
+Private Sub btnOptions_Click()
+      frmOptions.Show
 End Sub
 
 Private Sub btnPathBack_Click()
@@ -1460,6 +1932,35 @@ End Sub
 
 Private Sub btnPrevFile_Click()
       BrowserExecutePrev
+End Sub
+
+Private Sub btnZoomIn_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+      ' Goes to the next zoom divisible by the zoom increment
+      If sliZoom.Value < 100 Then
+            ImageZoomIn 25
+      Else
+            ImageZoomIn sliZoom.LargeChange
+      End If
+End Sub
+
+Private Sub btnZoomOut_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+      ' Goes to the next lowest zoom % divisible by the zoom increment
+      
+      If sliZoom.Value <= 100 Then
+            ImageZoomOut 25
+      Else
+            ImageZoomOut sliZoom.LargeChange
+      End If
+End Sub
+
+Private Sub chkQueryDotDotDot_Click()
+      Debug.Print "chkQuery..._Click"
+      
+      If chkQueryDotDotDot.Value = vbChecked Then
+            PopupMenu mnuQuery, vbPopupMenuRightAlign, AbsoluteRight(chkQueryDotDotDot), _
+                  AbsoluteBottom(chkQueryDotDotDot)
+      End If
+
 End Sub
 
 Private Sub btnRefresh_Click()
@@ -1507,6 +2008,126 @@ Private Sub btnSort_Click()
       End With
       
       If gBrowserData.BookmarkMode Then BookmarkSaveChanges
+End Sub
+
+
+Private Sub btnScrolltotop_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnScrollToTop.ToolTipText
+End Sub
+
+Private Sub btnSort_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnSort.ToolTipText
+End Sub
+
+Private Sub btnSave_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnSave.ToolTipText
+End Sub
+
+Private Sub btnrefresh_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnRefresh.ToolTipText
+End Sub
+
+Private Sub chkQueryDotDotDot_LostFocus()
+      chkQueryDotDotDot.Value = vbUnchecked
+End Sub
+
+'Private Sub chkQueryDotDotDot_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+'      Debug.Print "chkQuery..._Mousedown"
+'      'PopupMenu mnuQuery, vbPopupMenuRightAlign
+'      If mfQueryMenuOpen = False Then
+'            PopupMenu mnuQuery, vbPopupMenuRightAlign, AbsoluteRight(chkQueryDotDotDot), _
+'                  AbsoluteBottom(chkQueryDotDotDot)
+'      End If
+'
+'End Sub
+
+
+
+Private Sub chkQueryDotdotdot_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = chkQueryDotDotDot.ToolTipText
+End Sub
+
+Private Sub btnprevfile_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnPrevFile.ToolTipText
+End Sub
+
+Private Sub btnpathforward_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnPathForward.ToolTipText
+End Sub
+
+Private Sub btnpathback_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnPathBack.ToolTipText
+End Sub
+
+Private Sub btnnextfile_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnNextFile.ToolTipText
+End Sub
+
+Private Sub btnnewfile_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnNewFile.ToolTipText
+End Sub
+
+Private Sub btnfont_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnFont.ToolTipText
+End Sub
+
+Private Sub btnfolderup_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnFolderUp.ToolTipText
+End Sub
+
+Private Sub btnfindprev_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnFindPrev.ToolTipText
+End Sub
+
+Private Sub btnQueryExecute_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnQueryExecute.ToolTipText
+End Sub
+
+Private Sub btnfileforward_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnFileForward.ToolTipText
+End Sub
+
+Private Sub btnfileback_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnFileBack.ToolTipText
+End Sub
+
+Private Sub btndeleteselected_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnDeleteSelected.ToolTipText
+End Sub
+
+Private Sub btncurrentdirectory_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = btnCurrentDirectory.ToolTipText
+End Sub
+
+Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      ' TODO: this needs to not happen, if frmMain is not the front window
+      
+      'Debug.Print Screen.ActiveForm.name
+      On Error Resume Next
+      If Screen.ActiveForm.name = "frmMain" And Not (ActiveControl.name = "agEditor") Then
+            agEditor.SetFocus
+      End If
+      On Error GoTo 0
+      staTusBar1.Panels(EStat.Tips).Text = ""
+End Sub
+
+Private Sub chkQueryDotDotDot_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+      Debug.Print "chkquery..._mouseup"
+End Sub
+
+Private Sub chkReadOnly_Click()
+      
+      mnuViewReadOnly.Checked = chkReadOnly.Value
+      agEditor.ReadOnly = chkReadOnly.Value
+      If chkReadOnly.Value = vbChecked Then
+            agEditor.BackColor = &H8000000F
+      Else
+            agEditor.BackColor = &H80000005
+      End If
+End Sub
+
+Private Sub form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = ""
 End Sub
 
 
@@ -1581,7 +2202,7 @@ Private Sub cboPath_GotFocus()
             
             Dim iExtensionLength As Integer
             
-            iExtensionLength = Len(gFSO.GetExtensionName(cboPath))
+            iExtensionLength = Len(gFSO.getextensionname(cboPath))
             If iExtensionLength > 0 Then iExtensionLength = iExtensionLength + 1 ' include the dot
             cboPath.SelStart = Len(cboPath) - iExtensionLength
       End If
@@ -1616,6 +2237,10 @@ Private Sub cboPath_KeyDown(KeyCode As Integer, Shift As Integer)
       End Select
 End Sub
 
+Private Sub chkFileBrowser_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      staTusBar1.Panels(EStat.Tips).Text = chkFileBrowser.ToolTipText
+End Sub
+
 Private Sub chkWordWrap_Click()
       
       mnuViewWordWrap.Checked = chkWordWrap.Value
@@ -1623,20 +2248,146 @@ Private Sub chkWordWrap_Click()
       
 End Sub
 
+Private Sub btnQueryExecute_Click()
+      
+      If txtQueryBox = "" Then txtQueryBox = agEditor.SelectedText
+            
+      
+      Select Case miCurrentQuery
+            Case EQuery.Find
+            
+                  Dim lFoundMin As Long, lFoundMax As Long, lStartMin As Long, lStartMax As Long
+                  Dim lFindRetval As Long, fFindInSelection As Boolean
+                  Dim iFindOptions As Integer
+                  
+                  ' TODO: keep track of this start position (lStartMax)
+                  agEditor.GetSelection lStartMin, lStartMax
+                  
+                  If (txtQueryBox <> msLastFindQuery) Or (mfFindQueryChanged = True) Then
+                        mfFindQueryChanged = True
+                        miFindResults = 0
+                        msLastFindQuery = txtQueryBox
+                        mlBeginFindPos = lStartMax
+                  End If
+                              
+                  
+                  lFindRetval = EditorFindText(txtQueryBox, Forward, lStartMax, agEditor.CharacterCount, lFoundMin, lFoundMax)
+                  If lFindRetval >= 0 Then
+                        agEditor.SetSelection lFoundMin, lFoundMax
+                        miFindResults = miFindResults + 1
+                        staTusBar1.Panels(EStat.Tips) = "Search results: " & miFindResults & " found"
+                  End If
+                  
+            Case EQuery.Dictionary
+                  ShellExecute 0, "open", "http://dictionary.reference.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.thesaurus
+                  ShellExecute 0, "open", "http://thesaurus.reference.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.Google
+                  ShellExecute 0, "open", "http://www.google.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.Froogle
+                  ShellExecute 0, "open", "http://froogle.google.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.Groups
+                  ShellExecute 0, "open", "http://groups.google.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.Images
+                  ShellExecute 0, "open", "http://images.google.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.News
+                  ShellExecute 0, "open", "http://news.google.com/search?q=" & txtQueryBox, 0, "", 8
+            Case EQuery.Acronymfinder
+                  ShellExecute 0, "open", _
+                        "http://www.acronymfinder.com/af-query.asp?String=exact&Acronym=" _
+                        & txtQueryBox & "&Find=Find", 0, "", 8
+                              
+            Case EQuery.Feedster
+                  ShellExecute 0, "open", _
+                        "http://feedster.com/search.php?q=" & txtQueryBox & "&hl=en&ie=UTF-8&sort=date", 0, "", 8
+                        
+            Case EQuery.CNET
+                  ShellExecute 0, "open", _
+                        "http://www.download.com/3120-20-0.html?qt=" & txtQueryBox & _
+                        "&tg=dl-2001&part=opera&subj=windows&tag=search", 0, "", 8
+      End Select
+
+      txtQueryBox.SetFocus
+End Sub
+
+' EditorFindText
+'   Finds the search string sFindMe in agEditor between values of lRangeStart and lRangeEnd.
+'
+'  The way EM_FINDTEXTEX works is that it goes from lRangeStart to lRangeEnd in the
+'  specified direction.  That means the start position has to come first.  NOT the lower of the values first.
+'
+'  lFoundMin and lFoundMax receive the start and end positions of the found string.
+'  Returns -1 if nothing found, returns lFoundMin if successful.
+
+Private Function EditorFindText( _
+            ByVal sFindme As String, ByVal iDirection As EDirection, _
+            ByVal lRangeStart As Long, ByVal lRangeEnd As Long, _
+            ByRef lFoundMin As Long, ByRef lFoundMax As Long) As Long
+      
+      Const FR_MATCHCASE As Long = &H4
+      Const FR_WHOLEWORD As Long = &H2
+      Const FR_DOWN As Long = &H1
+'      Const EM_FINDTEXT As Long = (WM_USER + 56)
+      Const EM_FINDTEXTEX As Long = (WM_USER + 79)
+
+      Dim fFindNext As Boolean, fFindInSelection As Boolean
+      Dim lFindOptions As Long
+      Dim fexFindData As FINDTEXTEX
+      
+      If iDirection = Forward Then lFindOptions = FR_DOWN ' fr_down = go from lStartMin to end of editor.
+      If mnuQueryWholeWord.Checked Then lFindOptions = lFindOptions + FR_WHOLEWORD
+      If mnuQueryMatchCase.Checked Then lFindOptions = lFindOptions + FR_MATCHCASE
+      
+      fexFindData.chrg.cpMin = lRangeStart
+      fexFindData.chrg.cpMax = lRangeEnd
+      fexFindData.lpstrText = sFindme & Chr(0) ' it wants a C string
+      
+      EditorFindText = SendMessage(agEditor.RichEdithWnd, EM_FINDTEXTEX, ByVal lFindOptions, fexFindData)
+      
+      lFoundMin = fexFindData.chrgText.cpMin
+      lFoundMax = fexFindData.chrgText.cpMax
+End Function
+
 Private Sub Form_Unload(Cancel As Integer)
       If Not Debugging Then
-            SetWindowLong lvwBrowser.hWnd, GWL_WNDPROC, gpOldLvwBrowserProc
+            SetWindowLong lvwBrowser.hwnd, GWL_WNDPROC, gpOldLvwBrowserProc
             gpOldLvwBrowserProc = 0
       End If
       
       SaveWindowSettings
 End Sub
 
+
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+      miPrevX = x
+      miPrevY = y
+      If Button = vbLeftButton Then
+            mfImageDragging = True
+            picEditor.SetFocus
+      End If
+End Sub
+
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      On Error Resume Next
+      If Not (ActiveControl.name = "picEditor") Then picEditor.SetFocus
+      On Error GoTo 0
+            
+      If mfImageDragging Then
+            Image1.Move Image1.Left + x - miPrevX, Image1.Top + y - miPrevY, Image1.Width, Image1.Height
+      End If
+End Sub
+
+Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+      mfImageDragging = False
+End Sub
+
+
+'
+'  lvwBrowser_AfterLabelEdit (in other words, "rename")
+'
 Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
 
       ' TODO: finish this, and make it work for directories.
-      ' Trap errors, particularly, Name can't create a directory.
-      ' If there's a slash in the name, look for it without lvwBrowser.tag, and then refresh.
       
       Dim sFolder As String, sOldPath As String
       
@@ -1709,6 +2460,7 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
       End If
       
       btnRefresh_Click
+      btnCurrentDirectory_Click
 End Sub
 
 Private Sub lvwBrowser_BeforeLabelEdit(Cancel As Integer)
@@ -1728,11 +2480,7 @@ Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
       
       Select Case Item.Icon
       
-            Case EFileIcon.Text, EFileIcon.Other
-                  ' Open the file.
-                  EditorLoadFile gBrowserData.Dir & Item.Text
-                  
-            Case EFileIcon.Directory, EFileIcon.Drive
+            Case EFileType.Directory, EFileType.Drive, EFileType.Floppy, EFileType.Cdrom, EFileType.Network
                   ' Open the folder, or go up a folder.
                   If Item.Text = ".." Then
                         mnuFileParentDirectory_Click
@@ -1740,9 +2488,14 @@ Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
                         cboPath = gBrowserData.Dir & Item.Text & "\"
                   End If
             
-            Case EFileIcon.Bookmark
-                  ' Open the bookmarked file.
-                  EditorLoadFile Item.Text
+            Case EFileType.Bookmark
+                  ' Open the bookmarked file.  TODO: make it work for folders
+                  EditorLoadFile Item.Text, FileTypeFromExtension(gFSO.getextensionname(Item.Text))
+            
+            Case Else
+                  ' Open the file.  EditorLoadFile knows what to do.
+                  
+                  EditorLoadFile gBrowserData.Dir & Item.Text, Item.Icon
       End Select
 End Sub
 
@@ -1764,10 +2517,10 @@ Private Sub lvwBrowser_ItemClick(ByVal Item As MSComctlLib.ListItem)
 '      mnuListShowOnly.Enabled = True
 '      mnuListProperties.Enabled = True
 '
-'      If Item.Icon = EFileIcon.Directory Or Item.Icon = EFileIcon.Drive Then
+'      If Item.Icon = EFileType.Directory Or Item.Icon = EFileType.Drive Then
 '            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
 '            mnuListDelete = False
-'            If Item.Text = ".." Or Item.Icon = EFileIcon.Drive Then mnuListRename = False
+'            If Item.Text = ".." Or Item.Icon = EFileType.Drive Then mnuListRename = False
 '      End If
 End Sub
 
@@ -1787,9 +2540,6 @@ End Sub
 Private Sub lvwBrowser_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
       'debug.print "lvwBrowser_MOUSEDOWN "; Button & " " & Shift
       
-      ' TODO: decide how Shift is going to affect all this.
-      ' With a one-click open-file, we'd like shift-click to leave it alone, at the very least.
-      
       lvwBrowser_MouseMove Button, Shift, x, y
       mfBrowserItemClicked = False
       miBrowserMouseButton = Button
@@ -1801,6 +2551,10 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, x As Singl
 '      Debug.Print "lvwBROWSER MOUSEMOVE, X: " & x
 
       Dim litHoverItem As ListItem
+      
+      On Error Resume Next
+      If Not (ActiveControl.name = "lvwBrowser") Then lvwBrowser.SetFocus
+      On Error GoTo 0
       
       Set litHoverItem = lvwBrowser.HitTest(x, y)  ' To see if we're over an item.
       
@@ -1818,10 +2572,18 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, x As Singl
       
       End If
       
+'      If GetCapture <> lvwBrowser.hwnd Then
+'            SetCapture (lvwBrowser.hwnd)
+'      End If
+      'Caption = x & " " & y
 End Sub
 
 Private Sub mnuBookmark_Click(Index As Integer)
-      EditorLoadFile mnuBookmark(Index).Tag
+      Dim sEx As String
+      
+      sEx = gFSO.getextensionname(mnuBookmark(Index).Tag)
+      EditorLoadFile mnuBookmark(Index).Tag, FileTypeFromExtension(sEx)
+      
       mnuFileCurrentDirectory_Click
 End Sub
 
@@ -1880,10 +2642,10 @@ Private Sub mnuBrowser_Click()
       End If
       
       With lvwBrowser.SelectedItem
-            If .Icon = EFileIcon.Directory Or .Icon = EFileIcon.Drive Then
+            If .Icon = EFileType.Directory Or .Icon = EFileType.Drive Then
                   mnuBrowserOpenDefault.Caption = "Explore Selected..." & vbTab & "Shift+Ctrl+Enter"
                   mnuBrowserDelete = False
-                  If .Text = ".." Or .Icon = EFileIcon.Drive Then mnuBrowserRename = False
+                  If .Text = ".." Or .Icon = EFileType.Drive Then mnuBrowserRename = False
             End If
       End With
 
@@ -1966,6 +2728,11 @@ Private Sub mnuEditUndo_Click()
       agEditor.Undo
 End Sub
 
+'
+'   What this really does is:
+'      1. go to directory containing open file
+'      2. select open file from list
+'
 Private Sub mnuFileCurrentDirectory_Click()
       Dim litCurrentFile As ListItem
       
@@ -1991,7 +2758,11 @@ Private Sub mnuFileExit_Click()
 End Sub
 
 Private Sub mnuFileHistory_Click(Index As Integer)
-      EditorLoadFile mnuFileHistory(Index).Tag
+      Dim sEx As String
+      
+      sEx = gFSO.getextensionname(mnuFileHistory(Index).Tag)
+      EditorLoadFile mnuFileHistory(Index).Tag, FileTypeFromExtension(sEx)
+      
       mnuFileCurrentDirectory_Click
 End Sub
 
@@ -2088,6 +2859,7 @@ Private Sub mnuFileRename_Click()
                   Caption = "Rename successful: " & sNewPath
                   agEditor.Tag = sNewPath
                   btnRefresh_Click
+                  btnCurrentDirectory_Click
             End If
             On Error GoTo 0
       
@@ -2099,29 +2871,55 @@ Private Sub mnuFileSaveAs_Click()
       Dim dteSaveTime As Date
       Dim vDate As Variant
 
+      If Not agEditor.Visible Then
+            Caption = "ERROR: can't save in image mode."
+            Exit Sub
+      ElseIf chkReadOnly.Value = vbChecked Then
+            Caption = "ERROR: can't save in Read Only mode."
+            Exit Sub
+      End If
+      
       vDate = Date
       msPhlegmDate = Year(vDate) & "-" & Format(Month(vDate), "0#") & _
             "-" & Format(Day(vDate), "0#")
      
-      'If lvwBrowser.Tag = "(Bookmarks)" Or lvwBrowser.Tag = "" Or lvwBrowser.Tag = "(Error)" Then
-      If gBrowserData.ValidPath Then
-            sDefaultPath = gBrowserData.Dir
+      ' here we decide on a default file name to suggest to the user,
+      ' based on a whether the editor.tag is empty, and whether the file browser is at a valid folder.
+      If agEditor.Tag <> "" Then
+            sDefaultPath = agEditor.Tag  ' It means this is not a new file we're saving.  Default to old name.
+            
+      ElseIf gBrowserData.ValidPath Then
+            sDefaultPath = gBrowserData.Dir & msPhlegmDate & ".txt"  ' New file, good directory in browser.
       Else
-            sDefaultPath = CurDir & "\"
+            sDefaultPath = CurDir & "\" & msPhlegmDate & ".txt"  ' New file, no good directory present.
       End If
       
-      sFileName = InputBox("File name:", "Save", sDefaultPath & msPhlegmDate & ".txt")
+      sFileName = InputBox("File name:", "Save", sDefaultPath)
       fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
       dteSaveTime = Now
+      
+      If Not fSuccess Then  ' That SaveToFile gives an error after successfully saving a blank.  Make special case for it.
+            If FileExists(sDefaultPath) And agEditor.Text = "" Then fSuccess = True
+      End If  ' TODO: should have checked for zero file length to match agEditor emptiness.
 
       If fSuccess Then
             staTusBar1.Panels(EStat.Modified) = ""
             agEditor.Tag = sFileName
             Caption = sFileName & "  (" & agEditor.CharacterCount & " bytes saved on " & dteSaveTime & ")"
             btnRefresh_Click
-      Else
+            btnCurrentDirectory_Click
+      
+      ElseIf sFileName <> "" Then  ' Empty string would have meant the user hit "Cancel".
             frmMain.Caption = "ERROR: cannot save to " & sFileName
       End If
+End Sub
+
+Private Sub mnuHelpAbout_Click()
+      MsgBox "phlegmoirs " & App.Major & "." & App.Minor & "." & App.Revision, , ""
+End Sub
+
+Private Sub mnuHelpReadme_Click()
+      EditorLoadFile CurDir & "\progress.txt"
 End Sub
 
 Private Sub mnuList_Click()
@@ -2180,10 +2978,11 @@ Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, x As Singl
       Dim iOffset As Integer
 
       If lblDivider.MousePointer = vbSizeWE And lblDivider.Tag = "Resizing" Then
-            With agEditor
+            With picEditor
 '                  .Visible = False
                   iOffset = BrowserResizeHorizontal(x + lblDivider.Left)
                   .Move .Left + iOffset, .Top, .Width - iOffset, .Height
+                  agEditor.Move 0, 0, picEditor.Width, picEditor.Height
 '                  .Visible = True
             End With
       Else
@@ -2235,10 +3034,156 @@ End Sub
 Private Sub mnuListShowOnly_Click()
       Dim sEx As String
       
-      sEx = gFSO.GetExtensionName(lvwBrowser.SelectedItem)
+      sEx = gFSO.getextensionname(lvwBrowser.SelectedItem)
       If sEx <> "" Then sEx = "." & sEx
       cboPath = gBrowserData.Dir & sEx
 End Sub
+
+Private Sub mnuQueries_Click(Index As Integer)
+      Dim iQuery As Integer
+      
+      ' Uncheck everything except the menu item clicked.
+      ' This sub can be called with a bogus Index as the parameter, to deselect everything.
+      
+      For iQuery = mnuQueries.LBound To mnuQueries.UBound
+            mnuQueries(iQuery).Checked = (iQuery = Index)
+      Next iQuery
+      
+      If Index >= mnuQueries.LBound Then  ' if it's not a bogus index...
+            
+            ' Deselect the option buttons, too, since all the queries are mutually exclusive.
+            
+            For iQuery = optQueries.LBound To optQueries.UBound
+                  optQueries(iQuery).Value = False
+            Next iQuery
+            
+            miCurrentQuery = Index
+      End If
+End Sub
+
+Private Sub mnuQuery_Click()
+      Debug.Print "mnuQuery_Click"
+End Sub
+
+Private Sub mnuQueryMatchCase_Click()
+      mnuQueryMatchCase.Checked = Not mnuQueryMatchCase.Checked
+End Sub
+
+Private Sub mnuQueryWholeWord_Click()
+      mnuQueryWholeWord.Checked = Not mnuQueryWholeWord.Checked
+End Sub
+
+
+Private Sub mnuViewFind_Click()
+      If ActiveControl.name = "agEditor" Then txtQueryBox = Trim(agEditor.SelectedText)
+      
+      optQueries(EQuery.Find).Value = True
+      txtQueryBox.SetFocus
+End Sub
+
+Private Sub mnuViewFindBackwards_Click()
+      btnFindPrev_Click
+End Sub
+
+Private Sub mnuViewFindNext_Click()
+      btnQueryExecute_Click
+End Sub
+
+Private Sub mnuViewOptions_Click()
+      frmOptions.Show
+End Sub
+
+Private Sub mnuViewReadOnly_Click()
+      chkReadOnly.Value = Abs(chkReadOnly.Value - 1)
+End Sub
+
+Private Sub optQueries_Click(Index As Integer)
+      '
+      
+      mnuQueries_Click (-1) '  Deselect the menu queries.
+      
+      miCurrentQuery = Index
+      'If txtQueryBox <> "" Then btnQueryExecute_Click
+      txtQueryBox.SetFocus
+End Sub
+
+
+Private Sub optQueries_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+      Select Case Index
+      
+            Case EQuery.Find
+                  'btnQueryExecute_Click
+                  
+      End Select
+End Sub
+
+
+
+
+Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
+      
+      'Debug.Print KeyCode
+      Select Case KeyCode
+            Case 107, 187 ' "+" and Keypad "+"
+                  If Shift = 0 Then
+                        ImageZoomIn sliZoom.SmallChange
+                  ElseIf Shift = vbCtrlMask Then
+                        ImageZoomIn sliZoom.LargeChange
+                  End If
+            Case 109, 189 ' "-" and Keypad "-"
+                  If Shift = 0 Then
+                        ImageZoomOut sliZoom.SmallChange
+                  ElseIf Shift = vbCtrlMask Then
+                        ImageZoomOut sliZoom.LargeChange
+                  End If
+            Case vbKey0, 106 ' 0 and Keypad "*" -- reset position and size.
+                  sliZoom.Value = 100
+                  Image1.Move 0, 0, miImageWidthDefault, miImageHeightDefault
+            Case 107, 55   ' 7 and Keypad 7
+                  sliZoom.Value = sliZoom.Value / 2
+            Case 104, 56   ' 8 and Keypad 8
+                  sliZoom.Value = sliZoom.Value * 2
+            Case vbKeyDown
+                  Image1.Top = Image1.Top + MoveIncrement
+            Case vbKeyUp
+                  Image1.Top = Image1.Top - MoveIncrement
+            Case vbKeyLeft
+                  Image1.Left = Image1.Left - MoveIncrement
+            Case vbKeyRight
+                  Image1.Left = Image1.Left + MoveIncrement
+                  
+            Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
+                  If Shift = 0 Then BrowserExecuteNext
+            Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
+                  If Shift = 0 Then BrowserExecutePrev
+      End Select
+End Sub
+
+Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      On Error Resume Next
+      If Not (ActiveControl.name = "picEditor") Then picEditor.SetFocus
+      On Error GoTo 0
+End Sub
+
+Private Sub sliZoom_Change()
+      ImageSetZoom (sliZoom.Value)
+End Sub
+
+Private Sub sliZoom_Scroll()
+      ImageSetZoom (sliZoom.Value)
+End Sub
+
+
+'Private Sub tmrMouseDown_Timer()
+'      tmrMouseDown.Tag = CInt(tmrMouseDown.Tag) + 1
+'      'if tmrmousedown.Tag >
+'End Sub
+
+Private Sub tmrRevertTips_Timer()
+      staTusBar1.Panels(EStat.Tips) = staTusBar1.Panels(EStat.Tips).Tag
+      tmrRevertTips.Enabled = False
+End Sub
+
 
 'Private Sub txtQueryBox_Change()
 '      Dim pos As Integer
@@ -2255,16 +3200,17 @@ Private Sub txtQueryBox_GotFocus()
       txtQueryBox.SelLength = Len(txtQueryBox)
 End Sub
 
-Private Sub txtQueryBox_KeyPress(KeyAscii As Integer)
-      If KeyAscii = vbKeyReturn Then
-          ShellExecute 0, "open", _
-                  "http://dictionary.reference.com/search?q=" & txtQueryBox, 0, "", 8
+Private Sub txtQueryBox_KeyDown(KeyCode As Integer, Shift As Integer)
+      If KeyCode = vbKeyReturn And Shift = 0 Then
+            If txtQueryBox <> "" Then btnQueryExecute_Click
+      ElseIf KeyCode = vbKeyReturn And Shift = vbShiftMask And miCurrentQuery = EQuery.Find Then
+            If txtQueryBox <> "" Then btnFindPrev_Click
       End If
 End Sub
 
 Private Sub txtQueryBox_OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single)
       txtQueryBox = Data.GetData(vbCFText)
-      txtQueryBox_KeyPress vbKeyReturn
+      txtQueryBox_KeyDown vbKeyReturn, 0
 End Sub
 
 Private Sub txtQueryBox_OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single, State As Integer)
@@ -2275,6 +3221,10 @@ End Sub
 Private Sub agEditor_KeyDown(KeyCode As Integer, Shift As Integer)
 '      gpOldProc = SetWindowLong(agEditor.RichEdithWnd, GWL_WNDPROC, AddressOf WindowProc)
       Select Case KeyCode
+            Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
+                  If Shift = 0 And chkReadOnly.Value = vbChecked Then BrowserExecuteNext
+            Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
+                  If Shift = 0 And chkReadOnly.Value = vbChecked Then BrowserExecutePrev
 '            Case vbKeyAdd
 '                  If Shift = vbAltMask Then
 '                        SendMessage agEditor.RichEdithWnd, EM_SETFONTSIZE, ByVal 1, 0
@@ -2312,14 +3262,15 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
                 .y = lLineIndex + 1
                 
                 ' We want mudtStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
-                .i = lMin + 1
+                .i = lMin
                 SendMessage agEditor.RichEdithWnd, EM_EXGETSEL, 0, chrSelection
                 .x = lMin - lCharIndex + 1
                 .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal lCharIndex, 0) + 1
             End With
         
             FillStats
-            staTusBar1.Panels(EStat.SelText) = Len(agEditor.SelectedContents(SF_TEXT))
+            'staTusBar1.Panels(EStat.SelText) = Len(agEditor.SelectedContents(SF_TEXT))
+            staTusBar1.Panels(EStat.SelText) = lMax - lMin
       End If
 End Sub
 
@@ -2359,7 +3310,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                         SendKeys "{TAB}"
                   End If
                   
-            Case vbKeyReturn           ' Properties window!
+            Case vbKeyReturn           ' File Properties window from Explorer!
                   If Shift And vbAltMask Then
                         If ActiveControl.name = "lvwBrowser" And lvwBrowser.ListItems.Count > 0 Then
                               ShowFileProperties gBrowserData.Dir & lvwBrowser.SelectedItem
@@ -2369,8 +3320,33 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                   End If
                   
             Case vbKeyF
-                  If Shift = vbCtrlMask + vbShiftMask Then
+                  If Shift = vbCtrlMask + vbShiftMask Then ' TODO: this is still writing letters to the editor.
                         btnFont_Click
+                  End If
+            
+            Case 221 ' Right Bracket "]"
+                  If Shift = vbCtrlMask Then BrowserExecuteNext
+            
+            Case 219 ' Left Bracket "["
+                  If Shift = vbCtrlMask Then BrowserExecutePrev
+            
+            Case 190 ' Period (".") -- opens popup menu for find options
+                  If Shift = vbAltMask Then
+                        If chkQueryDotDotDot.Value = vbUnchecked Then
+                              chkQueryDotDotDot.SetFocus
+                              chkQueryDotDotDot.Value = vbChecked
+                              
+                        ElseIf chkQueryDotDotDot.Value = vbChecked Then
+                              ' Same button closes menu, if already opened
+                              chkQueryDotDotDot.Value = vbUnchecked
+                        End If
+                  End If
+            
+            Case vbKeyEscape  ' Hotfix, popup menu doesn't wanna die by itself
+                  If Shift = 0 Then
+                        If chkQueryDotDotDot.Value = vbChecked Then
+                              chkQueryDotDotDot.Value = vbUnchecked
+                        End If
                   End If
       End Select
 End Sub
@@ -2387,6 +3363,10 @@ Private Sub Form_Load()
       
       gBrowserData.ListEmpty = True
       
+      miEditorMode = EFileType.Text
+
+'      miImageZoom = 100
+      
       'Debug.Print "command line sayeth: [" & Command() & "]"
       sCommandFile = Trim(Command())
       If Left(sCommandFile, 1) = Chr(34) Then sCommandFile = Mid(sCommandFile, 2, Len(sCommandFile) - 2)
@@ -2400,12 +3380,12 @@ Private Sub Form_Load()
             "-" & Format(Day(vDate), "0#")
       
       GetWindowSettings
-      mudtStats.imax = agEditor.CharacterCount
+      mudtStats.imax = CharacterCount(agEditor)
       FillStats
       staTusBar1.Panels(EStat.Modified) = ""
 
       If Not Debugging Then
-            gpOldLvwBrowserProc = SetWindowLong(lvwBrowser.hWnd, GWL_WNDPROC, _
+            gpOldLvwBrowserProc = SetWindowLong(lvwBrowser.hwnd, GWL_WNDPROC, _
                   AddressOf SuppressArrowKeysProc)
       End If
       
@@ -2428,6 +3408,13 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
 
       GetCursorPos poiCursor
       ctrlhWnd = WindowFromPoint(poiCursor.x, poiCursor.y)
+      
+      On Error Resume Next
+      If Screen.ActiveControl.Container.name = "picQuery" Then
+            txtQueryBox.SetFocus
+      End If
+      On Error GoTo 0
+      
 '      If Not mfSkipMouseEventCrap And ctrlhWnd = agEditor.RichEdithWnd Then
 '            mouse_event MOUSEEVENTF_LEFTDOWN, poiCursor.x, poiCursor.y, 0, 0
 '            mouse_event MOUSEEVENTF_LEFTUP, poiCursor.x, poiCursor.y, 0, 0
@@ -2497,10 +3484,10 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   If Shift = 0 Then BrowserDeleteSelected
                   
             Case 219 ' Left Bracket [
-                  BrowserExecutePrev
+                  If Shift = 0 Then BrowserExecutePrev
             
             Case 221 ' Right Bracket ]
-                  BrowserExecuteNext
+                  If Shift = 0 Then BrowserExecuteNext
                   
             Case 220 ' Backslash \
                   If Shift = 0 Then SendKeys "{TAB}"
@@ -2557,14 +3544,31 @@ Private Sub mnuFileNew_Click()
             
       End If
       
+      Image1.Visible = False
+'      Image1.Picture = LoadPicture
       agEditor.Text = ""
       agEditor.Tag = ""
+      EditorSetMode EFileType.Text
       frmMain.Caption = "(New File)"
 End Sub
 
 Private Sub mnuFileSave_Click()
       Dim fSuccess As Boolean
       Dim dteSaveTime As Date
+      
+      If agEditor.Tag = "" Then  ' Saving a nameless New File
+            mnuFileSaveAs_Click
+            Exit Sub
+      
+      ElseIf Not agEditor.Visible Then
+            Caption = "ERROR: can't save in image mode."
+            Exit Sub
+      End If
+      
+      If chkReadOnly.Value = vbChecked Then
+            Caption = "ERROR: can't save in Read Only mode."
+            Exit Sub
+      End If
       
       fSuccess = agEditor.SaveToFile(agEditor.Tag, SF_TEXT)
       dteSaveTime = Now
@@ -2578,15 +3582,21 @@ Private Sub mnuFileSave_Click()
 End Sub
 
 Private Sub mnuViewDictionary_Click()
-      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
-      If txtQueryBox.Visible Then
-            txtQueryBox.SetFocus
-      Else
-            txtQueryBox_GotFocus
+      If ActiveControl.name = "agEditor" And Trim(agEditor.SelectedText) <> "" Then
+            txtQueryBox = Trim(agEditor.SelectedText)
       End If
-      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
-      txtQueryBox.SetFocus
-      If agEditor.SelectedText <> "" Then txtQueryBox_KeyPress vbKeyReturn
+      optQueries(EQuery.Dictionary).Value = True
+      
+      
+'      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
+'      If txtQueryBox.Visible Then
+'            txtQueryBox.SetFocus
+'      Else
+'            txtQueryBox_GotFocus
+'      End If
+'      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
+'      txtQueryBox.SetFocus
+'      If agEditor.SelectedText <> "" Then txtQueryBox_KeyPress vbKeyReturn
 End Sub
 
 Private Sub mnuViewFilebrowser_Click()
@@ -2599,12 +3609,15 @@ Private Sub agEditor_Change()
       
       If staTusBar1.Visible Then
             With mudtStats
-                .imax = agEditor.CharacterCount
+                .imax = CharacterCount(agEditor)
                 .ymax = agEditor.LineCount
             End With
             
             FillStats
       End If
+      
+      mfFindQueryChanged = True
+      miFindResults = 0
 End Sub
 
 Private Sub agEditor_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2636,9 +3649,10 @@ Private Sub RearrangeControls()
       Dim sHadFocus As String
       
       Const topmargin = 100
-      Const leftmargin = 60
+      Const leftmargin = 0
       Const rightmargin = 150
       Const midspace = 100
+      Const bottommargin = 60
       
       If Me.WindowState = vbMinimized Then Exit Sub
       
@@ -2646,15 +3660,17 @@ Private Sub RearrangeControls()
       iRedoResizeY = frmMain.Height
       iRedoResizeX = frmMain.Width
       
-      sHadFocus = ActiveControl.name
-      agEditor.Visible = False ' MUCH faster if you turn him off while thinking
+      If Not (ActiveControl Is Nothing) Then  ' activecontrol is nothing if image1 is up front...
+            sHadFocus = ActiveControl.name                               ' images cannot take focus.
+            picEditor.Visible = False ' MUCH faster if you turn him off while thinking (unless he's empty).
+      End If
       
       ' Calculate control positions...
       
-      iEdTop = 0
-      If mnuViewToolbar.Checked Then iEdTop = iEdTop + picToolBox.Height + midspace
+      iEdTop = topmargin
+      If mnuViewToolbar.Checked Then iEdTop = iEdTop + picToolBox.Height
       
-      iEdHeight = frmMain.ScaleHeight - iEdTop - topmargin
+      iEdHeight = frmMain.ScaleHeight - iEdTop - bottommargin
       If mnuViewStatusBar.Checked Then iEdHeight = iEdHeight - staTusBar1.Height
       
       iEdLeft = leftmargin
@@ -2685,18 +3701,17 @@ Private Sub RearrangeControls()
       End If
       
       If Not fValidWindowSize Then
-            Move Left, Top, iRedoResizeX, iRedoResizeY
+            frmMain.Move Left, Top, iRedoResizeX, iRedoResizeY
             Exit Sub
       End If
       
       ' It's all good.  Move the controls now!
       
-      agEditor.Move iEdLeft, iEdTop, iEdWidth, iEdHeight
-      With picBrowser
-            .Move .Left, iEdTop, .Width, iEdHeight
-      End With
-      lvwBrowser.Height = iEdHeight - lvwBrowser.Top
-      picToolBox.Width = frmMain.Width
+      picEditor.Move iEdLeft, iEdTop, iEdWidth, iEdHeight
+      agEditor.Move 0, 0, iEdWidth, iEdHeight
+      
+      lvwBrowser.Height = iEdHeight - lvwBrowser.Top + topmargin
+            
             
       ' a few things in the statusbar could change in a window resize:
       '   x, xmax, y, ymax
@@ -2718,8 +3733,8 @@ Private Sub RearrangeControls()
             FillStats
       End If
       
-      agEditor.Visible = True
-      If sHadFocus = "agEditor" Then agEditor.SetFocus
+      picEditor.Visible = True
+      'If sHadFocus = "agEditor" Then agEditor.SetFocus
 End Sub
 
 Private Sub mnuViewStatusBar_Click()
@@ -2729,16 +3744,21 @@ Private Sub mnuViewStatusBar_Click()
 End Sub
 
 Private Sub mnuViewThesaurus_Click()
-      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
-      If txtQueryBox.Visible Then
-            txtQueryBox.SetFocus
-      Else
-            txtQueryBox_GotFocus
+      If ActiveControl.name = "agEditor" And Trim(agEditor.SelectedText) <> "" Then
+            txtQueryBox = Trim(agEditor.SelectedText)
       End If
-      If agEditor.SelectedText <> "" Then
-            ShellExecute 0, "open", "http://thesaurus.reference.com/search?q=" & txtQueryBox, 0, "", 8
-            Me.SetFocus
-      End If
+      optQueries(EQuery.thesaurus).Value = True
+      
+'      If agEditor.SelectedText <> "" Then txtQueryBox = agEditor.SelectedText
+'      If txtQueryBox.Visible Then
+'            txtQueryBox.SetFocus
+'      Else
+'            txtQueryBox_GotFocus
+'      End If
+'      If agEditor.SelectedText <> "" Then
+'            ShellExecute 0, "open", "http://thesaurus.reference.com/search?q=" & txtQueryBox, 0, "", 8
+'            Me.SetFocus
+'      End If
 End Sub
 
 Private Sub InitializeMenus()
@@ -2778,7 +3798,7 @@ Private Function BrowserGetDrives() As Integer
       Dim sDrivesFixed As String * 255
       Dim sDriveString As String
       Dim sDriveArray() As String
-      Dim sNextDrive As String
+      Dim sNextDrive As String, iDriveIcon As Integer
       Dim lLength As Long
       Dim iIndex As Integer
       Dim litCurrentItem As ListItem
@@ -2799,8 +3819,14 @@ Private Function BrowserGetDrives() As Integer
       
       Do While (sNextDrive <> "") And (sNextDrive <> Chr(0))
             
+            Select Case gFSO.getdrive(sNextDrive).drivetype
+                  Case 1: iDriveIcon = EFileType.Floppy
+                  Case 2: iDriveIcon = EFileType.Drive
+                  Case 3: iDriveIcon = EFileType.Network
+                  Case 4: iDriveIcon = EFileType.Cdrom
+            End Select
             Set litCurrentItem = lvwBrowser.ListItems.Add( _
-                  1, , sNextDrive, EFileIcon.Drive, EFileIcon.Drive)
+                  1, , sNextDrive, iDriveIcon, iDriveIcon)
             litCurrentItem.ListSubItems.Add , , 0
             
             iIndex = iIndex + 1
@@ -2813,7 +3839,6 @@ Private Function BrowserGetDrives() As Integer
       
       staTusBar1.Panels(EStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " drives"
 End Function
-
 Private Sub mnuViewToolbar_Click()
       picToolBox.Visible = Not picToolBox.Visible
       mnuViewToolbar.Checked = Not mnuViewToolbar.Checked
@@ -2856,34 +3881,83 @@ Private Sub mnuWritePaste_Click()
       agEditor.Paste
 End Sub
 
-Private Function EditorLoadFile(sFileName As String) As Boolean
+Private Function EditorLoadFile(sFileName As String, Optional iMode As Integer = EFileType.Text) As Boolean
       
-      ' TODO: IMPORTANT:
+      ' TODO: (un)IMPORTANT:
       ' To manage file loading properly, I cannot use LoadFromFile.
       ' For one thing, it returns false for an empty file.  I'd rather it make a distinction between an error
-      ' and an empty.  And there's the issue of interrupting the display.  It's great that I can
+      ' and an empty (FIXED).  And there's the issue of interrupting the display.  It's great that I can
       ' interrupt the loading of the file to a buffer of some sort, but displaying that buffer is slower.
+      
+      Dim fLoadSuccess As Boolean
       
       If mfEditorLoading Then agEditor.Text = ""
       mfEditorLoading = True
       
-      ' pass along the boolean return value, if anyone wants it.
-      EditorLoadFile = agEditor.LoadFromFile(sFileName, SF_TEXT)
+      If Trim(sFileName) = "" Then  ' Blank means start a new file.  For when the registry settings come up empty.
+            mnuFileNew_Click
       
-      If (EditorLoadFile = True) Then    ' Success!
-            agEditor.Tag = sFileName
-            frmMain.Caption = sFileName
-            staTusBar1.Panels(EStat.Modified) = ""
-            agEditor.SetSelection 0, 0
-            AddToHistory sFileName
-            
-      Else  ' Failure!
-            frmMain.Caption = "ERROR.  command() = " & Command() & " Tag: " & sFileName
+      ElseIf Not FileExists(sFileName) Then
+            frmMain.Caption = "ERROR: file does not exist."
             agEditor.Tag = ""
+            
+      Else ' Normal file load.
+            
+            EditorSetMode iMode
+            
+            Select Case iMode
+                  
+                  ' TODO: MUCH BIGGER PROBLEM WITH EDITORLOADFILE:
+                  ' can't handle too long a filename.  127 characters was too long.  I dunno the limit just yet.
+                  
+                  Case EFileType.Text, EFileType.Other, EFileType.rtf
+                        ' pass along the boolean return value, if anyone wants it.
+                        fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
+                  
+'                  Case EFileType.rtf
+'                        fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_RTF)
+                        
+                  Case EFileType.Picture
+                        fLoadSuccess = True
+                        On Error Resume Next
+                        Image1.Picture = LoadPicture(sFileName)
+                        If Err > 0 Then
+                              Caption = "ERROR: " & sFileName & ", picture couldn't load"
+                              fLoadSuccess = False
+                        End If
+                        On Error GoTo 0
+                        
+                        miImageWidthDefault = Image1.Picture.Width * 0.567  ' HiMetric to Twip conversion
+                        miImageHeightDefault = Image1.Picture.Height * 0.567
+                        ImageSetZoom (sliZoom.Value)
+            End Select
+                  
+            If (fLoadSuccess = True) Or (FileSize(sFileName) = 0) Then  ' Success!
+                  
+                  agEditor.Tag = sFileName
+                  frmMain.Caption = sFileName
+                  staTusBar1.Panels(EStat.Modified) = ""
+                  agEditor.SetSelection 0, 0
+                  AddToHistory sFileName
+            
+            Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
+                  frmMain.Caption = "WEIRD ERROR.  command() = " & Chr(34) & Command() & Chr(34) _
+                        & "; Tag = " & Chr(34) & sFileName & Chr(34)
+                  agEditor.Tag = ""
+            End If
       End If
       
+      EditorLoadFile = fLoadSuccess
       mfEditorLoading = False
 End Function
+
+Private Sub ImageSetZoom(iZoom As Integer)
+      Image1.Stretch = True
+      Image1.Move Image1.Left, Image1.Top, miImageWidthDefault * CSng(iZoom) / 100#, _
+            miImageHeightDefault * CSng(iZoom) / 100#
+'      miImageZoom = iZoom
+      Caption = agEditor.Tag & "  (" & iZoom & "%)"
+End Sub
 
 Private Sub SaveWindowSettings()
       Dim lMin As Long, lMax As Long, lKey As Long, lRetVal As Long
@@ -2898,7 +3972,7 @@ Private Sub SaveWindowSettings()
       
       With mudtSettings
             .WNP.Length = LenB(.WNP)
-            GetWindowPlacement hWnd, .WNP
+            GetWindowPlacement hwnd, .WNP
             If .WNP.showCmd = SW_MINIMIZE Then
                   .WNP.showCmd = SW_RESTORE
             ElseIf .WNP.showCmd = SW_SHOWMINIMIZED Then  '  <-- It'll be this one, not SW_MINIMIZE.
@@ -2997,6 +4071,7 @@ Private Sub GetWindowSettings()
       Dim sTemp As String * 255
       Dim fntTemp As New StdFont
       Dim iBookm As Integer, iHistIndex As Integer
+      Dim sEx As String
       
       Dim udtWindowPlacement As WINDOWPLACEMENT
       Dim rectRestored As RECT
@@ -3012,7 +4087,7 @@ Private Sub GetWindowSettings()
                   BrowserResizeHorizontal .BrowserWidth
                   
                   .WNP.Length = LenB(.WNP)
-                  SetWindowPlacement hWnd, .WNP
+                  SetWindowPlacement hwnd, .WNP
                   
                   lvwBrowser.SortOrder = .SortMethod
                   If agEditor.Tag = "" Then agEditor.Tag = Trim(CstringToVBstring(.AutoLoadFile))
@@ -3049,7 +4124,7 @@ Private Sub GetWindowSettings()
             cboPath = ""
       End If
       
-      If Trim(Command()) = "" Then ' no command line argument was given
+'      If Trim(Command()) = "" Then ' no command line argument was given
             lValueSize = LenB(mudtCurrentFileSettings)
             lRetVal = RegQueryValueExAny(lKey, "agEditor", 0, lDataType, ByVal mudtCurrentFileSettings, lValueSize)
             If lRetVal = 0 Then
@@ -3070,8 +4145,9 @@ Private Sub GetWindowSettings()
                         ' Otherwise agEditor's display routines are called again and again for an entire file,
                         ' rather than for a blank editor.
                         
-                        EditorLoadFile agEditor.Tag
-      
+                        sEx = gFSO.getextensionname(agEditor.Tag)
+                        EditorLoadFile agEditor.Tag, FileTypeFromExtension(sEx)
+                        
                         ' If the file has been changed so that selection and scroll positions are meaningless,
                         ' just skip them...
                         
@@ -3081,11 +4157,11 @@ Private Sub GetWindowSettings()
                         On Error GoTo 0
                   End With
             End If
-      Else
-      
-            EditorLoadFile agEditor.Tag ' If there's a command line argument, just load it plain here
-                                                            ' and let the command line decide the rest.
-      End If
+'      Else
+'
+'            EditorLoadFile agEditor.Tag ' If there's a command line argument, just load it plain here
+'                                                            ' and let the command line decide the rest.
+'      End If
       
       RegCloseKey lKey
 End Sub

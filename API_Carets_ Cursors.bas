@@ -61,3 +61,9 @@ Public Const TME_CANCEL As Long = &H80000000
 Public Const TME_LEAVE As Long = &H2
 Public Const WM_MOUSELEAVE As Long = &H2A3
 
+Public Const WM_CAPTURECHANGED As Long = &H215
+
+Public Declare Function SetCapture Lib "user32.dll" (ByVal hwnd As Long) As Long
+Public Declare Function GetCapture Lib "user32.dll" () As Long
+Public Declare Function ReleaseCapture Lib "user32.dll" () As Long
+

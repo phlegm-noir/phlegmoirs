@@ -18,6 +18,9 @@ Public Const EM_LINELENGTH = &HC1
 Public Const EM_SETSEL = &HB1
     'p1 = position of first selected char, -1 for no selection
     'p2 = position of last selected char + 1
+    
+Public Const EM_GETSEL As Long = &HB0
+
 
 Public Const EM_EXGETSEL As Long = (WM_USER + 52)
       'p1 = 0
