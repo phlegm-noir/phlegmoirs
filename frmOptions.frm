@@ -1,19 +1,19 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MsComCtl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmOptions 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Options"
-   ClientHeight    =   5970
-   ClientLeft      =   2565
+   ClientHeight    =   5976
+   ClientLeft      =   2568
    ClientTop       =   1500
-   ClientWidth     =   6645
+   ClientWidth     =   6648
    Icon            =   "frmOptions.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5970
-   ScaleWidth      =   6645
+   ScaleHeight     =   5976
+   ScaleWidth      =   6648
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame fraSample1 
@@ -46,8 +46,8 @@ Begin VB.Form frmOptions
          TabStop         =   0   'False
          Top             =   360
          Width           =   2292
-         _ExtentX        =   4048
-         _ExtentY        =   8281
+         _ExtentX        =   4043
+         _ExtentY        =   8276
          View            =   3
          LabelEdit       =   1
          LabelWrap       =   -1  'True
@@ -80,7 +80,7 @@ Begin VB.Form frmOptions
       Index           =   3
       Left            =   -20000
       ScaleHeight     =   3780
-      ScaleWidth      =   5685
+      ScaleWidth      =   5688
       TabIndex        =   5
       TabStop         =   0   'False
       Top             =   480
@@ -100,7 +100,7 @@ Begin VB.Form frmOptions
       Index           =   2
       Left            =   -20000
       ScaleHeight     =   3780
-      ScaleWidth      =   5685
+      ScaleWidth      =   5688
       TabIndex        =   4
       TabStop         =   0   'False
       Top             =   480
@@ -120,7 +120,7 @@ Begin VB.Form frmOptions
       Index           =   1
       Left            =   -20000
       ScaleHeight     =   3780
-      ScaleWidth      =   5685
+      ScaleWidth      =   5688
       TabIndex        =   3
       TabStop         =   0   'False
       Top             =   480

@@ -27,6 +27,57 @@ Public Type CHARRANGE
       cpMax As Long
 End Type
 
+Public Const LF_FACESIZE As Long = 32
+
+Public Type CHARFORMAT2
+      cbSize As Long
+      dwMask As Long
+      dwEffects As Long
+      yHeight As Long
+      yOffset As Long
+      crTextColor As Long
+      bCharSet As Byte
+      bPitchAndFamily As Byte
+      szFaceName(LF_FACESIZE) As Byte
+'      szFaceName As String * LF_FACESIZE
+      wWeight As Integer
+      sSpacing As Integer
+      crBackColor As Long
+      lcid As Long
+      dwReserved As Long
+       sStyle As Integer
+      wKerning As Integer
+      bUnderlineType As Byte
+      bAnimation As Byte
+      bRevAuthor As Byte
+      bReserved1 As Byte
+End Type
+
+' charformat constants:
+'Public Const CFE_SUBSCRIPT As Long = &H10000
+'Public Const CFE_SUPERSCRIPT As Long = &H20000
+'Public Const CFM_BACKCOLOR As Long = &H4000000
+'Public Const CFM_BOLD As Long = &H1
+'Public Const CFM_CHARSET As Long = &H8000000
+'Public Const CFM_COLOR As Long = &H40000000
+'Public Const CFM_EMBOSS As Long = &H800
+'Public Const CFM_FACE As Long = &H20000000
+'Public Const CFM_HIDDEN As Long = &H100
+'Public Const CFM_ITALIC As Long = &H2
+'Public Const CFM_OFFSET As Long = &H10000000
+'Public Const CFM_OUTLINE As Long = &H200
+'Public Const CFM_PROTECTED As Long = &H10
+'Public Const CFM_SIZE As Long = &H80000000
+'Public Const CFM_SMALLCAPS As Long = &H40
+'Public Const CFM_SPACING As Long = &H200000
+'Public Const CFM_STYLE As Long = &H80000
+'Public Const CFM_SUBSCRIPT As Long = CFE_SUBSCRIPT Or CFE_SUPERSCRIPT
+'Public Const CFM_SUPERSCRIPT As Long = CFM_SUBSCRIPT
+'Public Const CFM_UNDERLINE As Long = &H4
+'Public Const CFM_UNDERLINETYPE As Long = &H800000
+'Public Const CFM_WEIGHT As Long = &H400000
+
+
 Type FINDTEXTEX
       chrg As CHARRANGE
       lpstrText As String
@@ -57,7 +108,14 @@ Public Declare Function SetWindowPlacement Lib "user32.dll" ( _
        ByVal hwnd As Long, _
        ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
-      
+Public Declare Function GetWindowRect Lib "user32.dll" ( _
+       ByVal hwnd As Long, _
+       ByRef lpRect As RECT) As Long
+
+Public Declare Function GetClientRect Lib "user32.dll" ( _
+       ByVal hwnd As Long, _
+       ByRef lpRect As RECT) As Long
+
 Public Const SWP_HIDEWINDOW As Long = &H80
 Public Const SWP_NOACTIVATE As Long = &H10
 Public Const SWP_NOCOPYBITS As Long = &H100
@@ -72,12 +130,13 @@ Public Const SWP_SHOWWINDOW As Long = &H40
 Public Declare Function SetWindowPos Lib "user32.dll" ( _
        ByVal hwnd As Long, _
        ByVal hWndInsertAfter As Long, _
-       ByVal x As Long, _
-       ByVal y As Long, _
+       ByVal X As Long, _
+       ByVal Y As Long, _
        ByVal cx As Long, _
        ByVal cy As Long, _
        ByVal wFlags As Long) As Long
 
+Public Declare Function GetForegroundWindow Lib "user32.dll" () As Long
        
 Public Declare Function ShowScrollBar Lib "user32.dll" ( _
       ByVal hwnd As Long, _
@@ -139,6 +198,25 @@ Public Type FILETIME
       dwLowDateTime As Long
       dwHighDateTime As Long
 End Type
+
+Public Type SYSTEMTIME
+      wYear As Integer
+      wMonth As Integer
+      wDayOfWeek As Integer
+      wDay As Integer
+      wHour As Integer
+      wMinute As Integer
+      wSecond As Integer
+      wMilliseconds As Integer
+End Type
+
+Public Declare Function FileTimeToSystemTime Lib "kernel32.dll" ( _
+       ByRef lpFileTime As FILETIME, _
+       ByRef lpSystemTime As SYSTEMTIME) As Long
+       
+Public Declare Function FileTimeToLocalFileTime Lib "kernel32.dll" ( _
+       ByRef lpFileTime As FILETIME, _
+       ByRef lpLocalFileTime As FILETIME) As Long
 
 Public Const MAX_PATH As Long = 260
 
@@ -223,3 +301,67 @@ Public Const FOF_ALLOWUNDO = &H40
 Public Declare Function GetLastError Lib "kernel32.dll" () As Long
 Public Const ERROR_CANCELLED As Long = 1223&
 
+
+Public Declare Function OleTranslateColor Lib "oleaut32.dll" ( _
+       ByVal lOleColor As Long, _
+       ByVal lHPalette As Long, _
+       ByRef lColorRef As Long) As Long
+       
+Public Type LVHITTESTINFO
+      pt As POINTAPI
+      flags As Long
+      iItem As Long
+      iSubItem As Long
+ End Type
+
+Public Const LVM_FIRST As Long = &H1000
+Public Const LVM_HITTEST As Long = (LVM_FIRST + 18)
+Public Const LVM_SUBITEMHITTEST As Long = (LVM_FIRST + 57)
+      ' p1 = byval 0
+      ' p2 = LVHITTESTINFO
+      ' returns LVHITTESTINFO.iItem, I believe.  Or -1, if not over an item.
+
+
+
+
+Function TranslateColor(ByVal clr As OLE_COLOR, _
+            Optional ByVal hPal As Long = 0) As Long
+      
+      Const CLR_INVALID As Long = &HFFFF&
+
+      If OleTranslateColor(clr, hPal, TranslateColor) Then
+            TranslateColor = CLR_INVALID
+      End If
+End Function
+
+' Y = high order word
+' X = low order word
+
+Public Function MAKEPOINT(ByVal lParam As Long) As POINTAPI
+      ' BE CAREFUL WITH THESE PESKY AMPERSANDS!
+      ' &n = octal n
+      ' &Hn = hexadecimal n
+      ' n& = Long integer n
+      ' &HFFFF = -1   (hex, but NOT A LONG!)
+      ' &HFFFF& = 65535   (hex, long)
+      ' See the difference?
+      
+      ' For ints that aren't longs:
+      ' &H0001 = 1
+      ' &H7FFF = 32767
+      ' &H8000 = -32767
+      ' &H8001 = -32766
+      ' ...
+      ' &HFFFE = -2
+      ' &HFFFF = -1
+      
+      MAKEPOINT.Y = lParam / &H10000    ' remainderless division to get high order word
+      MAKEPOINT.X = lParam And &H7FFF&    ' mask to get low order word
+End Function
+
+Public Function MakePOINTAPI(ByVal lx As Integer, ByVal ly As Integer) As POINTAPI
+      ' This just takes two values, and makes a point.  So there's no messy declarations where it matters.
+      
+      MakePOINTAPI.X = lx
+      MakePOINTAPI.Y = ly
+End Function

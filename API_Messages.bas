@@ -62,6 +62,7 @@ Public Const WM_RBUTTONUP = &H205
       'p2=(ycoord * &H10000) + xcoord
       
 Public Const MK_CONTROL = &H8
+Public Const MK_LBUTTON = &H1
 Public Const MK_MBUTTON = &H10
 Public Const MK_RBUTTON = &H2
 Public Const MK_SHIFT = &H4
@@ -69,6 +70,17 @@ Public Const MK_XBUTTON1 = &H20
 Public Const MK_XBUTTON2 = &H40
       ' note that these MKs are modifier key constants;
       '     are not sendable messages
+      
+Public Const WM_MOUSEWHEEL As Long = &H20A
+      ' lparam low = virtual keys
+      ' lparam high = distance wheel is rotated, in multiples of WHEEL_DELTA
+      ' wparam low = x-coordinate of pointer   (in pixels, in relation to the screen)
+      ' wparam high = y-coordinate of pointer
+Public Const WHEEL_DELTA As Long = 120
+
+Public Const WM_HSCROLL As Long = &H114
+      ' p1 low = scrolling request
+      ' p1 high & p2 = nevermind.
 
 Public Const EM_STOPGROUPTYPING As Long = (WM_USER + 88)
       'for rich edit 2.0+ only
@@ -82,6 +94,18 @@ Public Const EM_SETFONTSIZE As Long = (WM_USER + 223)
       'p1=amount to increase by (can be negative)
       'p2=0
 
+Public Const EM_SETCHARFORMAT As Long = (WM_USER + 68)
+      ' parameters not unlike EM_GETCHARFORMAT
+Public Const SCF_DEFAULT As Long = &H0
+Public Const SCF_SELECTION As Long = &H1
+Public Const SCF_ALL As Long = &H4
+
+
+
+Public Const EM_GETCHARFORMAT As Long = (WM_USER + 58)
+      ' p1 = default character formatting, nonzero = current selection's formatting
+      ' p2 = CHARFORMAT2 structure (or CHARFORMAT, for richedit < 2.0)
+
 Public Const LVM_FIRST As Long = &H1000
 
 Public Const LVM_EDITLABELA As Long = (LVM_FIRST + 23)
@@ -89,7 +113,15 @@ Public Const LVM_EDITLABELA As Long = (LVM_FIRST + 23)
       'p2 = 0
       'returns handle to edit control if successful
 
+'Public Const LVM_SORTITEMSEX As Long = (LVM_FIRST + 81)
+      ' p1 = sort parameter
+      ' p2 = addressof callback function
 
+Public Const LVM_SETCOLUMNWIDTH As Long = (LVM_FIRST + 30)
+      ' p1 = zero-based column index
+      ' p2 = new column width in pixels
+Public Const LVSCW_AUTOSIZE As Long = -1
+Public Const LVSCW_AUTOSIZE_USEHEADER As Long = -2
 
 
 
