@@ -41,6 +41,7 @@ Public Type TWindowPrefs
       ShowStatusBar As Boolean
       ShowToolBar As Boolean
       BookmarkCount As Integer
+      HistoryCount As Integer
       AutoLoadFile As String * 255
       cboPath As String * 255
 End Type
@@ -50,9 +51,11 @@ Public Type TBrowserData
       DirPrev As String
       InputPrev As String
       Filter As String
+      FilterPrev As String
       PartialFileName As String
       SelTextPrev As String
       DirUnchanged As Boolean
+      FilterUnchanged As Boolean
       GoingToParent As Boolean
       BookmarkMode As Boolean
       DrivesMode As Boolean
@@ -232,7 +235,7 @@ Public Function FileExists(ByVal sSource As String) As Boolean
 End Function
 
 
-Public Sub RecycleFile(ByVal sPath As String)
+Public Function RecycleFile(ByVal sPath As String) As Integer
       ' Send a file to the Recycle Bin.
       
       Dim shfFileOperation As SHFILEOPSTRUCT
@@ -242,5 +245,5 @@ Public Sub RecycleFile(ByVal sPath As String)
             .pFrom = sPath
             .fFlags = FOF_ALLOWUNDO
       End With
-      SHFileOperation shfFileOperation
-End Sub
+      RecycleFile = SHFileOperation(shfFileOperation)
+End Function

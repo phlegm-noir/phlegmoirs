@@ -8,8 +8,9 @@ Begin VB.Form frmMain
    Caption         =   "phlegmoirs"
    ClientHeight    =   6465
    ClientLeft      =   135
-   ClientTop       =   540
+   ClientTop       =   690
    ClientWidth     =   10080
+   Icon            =   "Main.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
@@ -28,35 +29,35 @@ Begin VB.Form frmMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   8
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":0000
+            Picture         =   "Main.frx":179A
             Key             =   "Folder"
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":0452
+            Picture         =   "Main.frx":1BEC
             Key             =   "OpenFolder"
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":08A4
+            Picture         =   "Main.frx":203E
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":0CF6
+            Picture         =   "Main.frx":2490
             Key             =   "textfile"
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":1148
+            Picture         =   "Main.frx":28E2
             Key             =   "otherfile"
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":159A
+            Picture         =   "Main.frx":2D34
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":19EC
+            Picture         =   "Main.frx":3186
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":1E3E
+            Picture         =   "Main.frx":35D8
             Key             =   ""
          EndProperty
       EndProperty
@@ -79,7 +80,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   1848
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":2292
+         Picture         =   "Main.frx":3A2C
          Style           =   1  'Graphical
          TabIndex        =   18
          TabStop         =   0   'False
@@ -96,30 +97,20 @@ Begin VB.Form frmMain
          Style           =   1  'Graphical
          TabIndex        =   12
          TabStop         =   0   'False
-         ToolTipText     =   "Jump to the directory containing your open file..."
+         ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
          Top             =   300
          Width           =   264
-      End
-      Begin MSComctlLib.ImageList ImageList1 
-         Left            =   1080
-         Top             =   4185
-         _ExtentX        =   1005
-         _ExtentY        =   1005
-         BackColor       =   -2147483643
-         MaskColor       =   12632256
-         _Version        =   393216
       End
       Begin VB.CommandButton btnDeleteSelected 
          Appearance      =   0  'Flat
          Caption         =   "X"
-         Enabled         =   0   'False
          Height          =   264
          Left            =   1320
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
          TabIndex        =   17
          TabStop         =   0   'False
-         ToolTipText     =   "Delete"
+         ToolTipText     =   "Delete File (Del)"
          Top             =   300
          Width           =   264
       End
@@ -128,7 +119,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   264
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":23DC
+         Picture         =   "Main.frx":3B76
          Style           =   1  'Graphical
          TabIndex        =   15
          TabStop         =   0   'False
@@ -137,10 +128,10 @@ Begin VB.Form frmMain
          Width           =   264
       End
       Begin VB.ComboBox cboPath 
-         Height          =   288
-         ItemData        =   "Main.frx":2526
+         Height          =   315
+         ItemData        =   "Main.frx":3CC0
          Left            =   0
-         List            =   "Main.frx":2528
+         List            =   "Main.frx":3CC2
          TabIndex        =   9
          Text            =   "*"
          ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
@@ -190,11 +181,11 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   792
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":252A
+         Picture         =   "Main.frx":3CC4
          Style           =   1  'Graphical
          TabIndex        =   11
          TabStop         =   0   'False
-         ToolTipText     =   "Reverse the sort order"
+         ToolTipText     =   "Reverse the sort order (Ctrl+H)"
          Top             =   300
          Width           =   264
       End
@@ -203,11 +194,11 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   528
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":262C
+         Picture         =   "Main.frx":3DC6
          Style           =   1  'Graphical
          TabIndex        =   8
          TabStop         =   0   'False
-         ToolTipText     =   "Go up a directory (Left arrow key)"
+         ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
          Top             =   300
          Width           =   264
       End
@@ -220,7 +211,7 @@ Begin VB.Form frmMain
          Style           =   1  'Graphical
          TabIndex        =   13
          TabStop         =   0   'False
-         ToolTipText     =   "Refresh Files"
+         ToolTipText     =   "Refresh Files (F5)"
          Top             =   300
          Width           =   264
       End
@@ -229,7 +220,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   0
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":29B6
+         Picture         =   "Main.frx":4150
          Style           =   1  'Graphical
          TabIndex        =   14
          TabStop         =   0   'False
@@ -266,6 +257,61 @@ Begin VB.Form frmMain
       TabStop         =   0   'False
       Top             =   0
       Width           =   8532
+      Begin VB.CommandButton btnNextFile 
+         Caption         =   ">>"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   580
+         Left            =   3720
+         TabIndex        =   20
+         TabStop         =   0   'False
+         Top             =   0
+         Width           =   732
+      End
+      Begin VB.CommandButton btnPrevFile 
+         Caption         =   "<<"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   580
+         Left            =   3000
+         TabIndex        =   21
+         TabStop         =   0   'False
+         Top             =   0
+         Width           =   732
+      End
+      Begin VB.CommandButton btnSave 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   580
+         Left            =   2280
+         Picture         =   "Main.frx":429A
+         Style           =   1  'Graphical
+         TabIndex        =   19
+         TabStop         =   0   'False
+         Top             =   0
+         Width           =   732
+      End
       Begin VB.CommandButton btnFont 
          Caption         =   "A"
          BeginProperty Font 
@@ -281,12 +327,13 @@ Begin VB.Form frmMain
          Left            =   1560
          TabIndex        =   6
          TabStop         =   0   'False
+         ToolTipText     =   "Set Font (Shift+Ctrl+F)"
          Top             =   0
          Width           =   732
       End
       Begin VB.TextBox txtQueryBox 
          Height          =   372
-         Left            =   3480
+         Left            =   5520
          MaxLength       =   50
          OLEDropMode     =   1  'Manual
          TabIndex        =   5
@@ -294,22 +341,32 @@ Begin VB.Form frmMain
          Top             =   120
          Width           =   3732
       End
-      Begin VB.CheckBox chkDummy 
+      Begin VB.CheckBox chkWordWrap 
+         Caption         =   "W"
          CausesValidation=   0   'False
+         BeginProperty Font 
+            Name            =   "Algerian"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   580
          Left            =   840
          Style           =   1  'Graphical
          TabIndex        =   3
          TabStop         =   0   'False
+         ToolTipText     =   "Toggle Word Wrap (Ctrl+W)"
          Top             =   0
-         Value           =   1  'Checked
          Width           =   732
       End
       Begin VB.CheckBox chkFileBrowser 
          CausesValidation=   0   'False
          Height          =   580
          Left            =   120
-         Picture         =   "Main.frx":2B00
+         Picture         =   "Main.frx":46DC
          Style           =   1  'Graphical
          TabIndex        =   2
          TabStop         =   0   'False
@@ -328,16 +385,22 @@ Begin VB.Form frmMain
       _ExtentY        =   476
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
-         NumPanels       =   6
+         NumPanels       =   5
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
-            Object.Width           =   5292
-            MinWidth        =   5292
-            Text            =   "Char: 0/00000  Ln: 0/000  Col: 0/000"
-            TextSave        =   "Char: 0/00000  Ln: 0/000  Col: 0/000"
-            Key             =   "statStats"
+            Object.Width           =   4410
+            MinWidth        =   4410
+            Text            =   "0000 Files, 000000 Bytes Total"
+            TextSave        =   "0000 Files, 000000 Bytes Total"
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Alignment       =   1
+            Object.Width           =   6174
+            MinWidth        =   6174
+            Text            =   "Char: 0/00000  Ln: 0/000  Col: 0/000"
+            TextSave        =   "Char: 0/00000  Ln: 0/000  Col: 0/000"
+         EndProperty
+         BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
             Object.Width           =   1764
             MinWidth        =   1764
@@ -345,29 +408,14 @@ Begin VB.Form frmMain
             TextSave        =   "Modified"
             Key             =   "statModified"
          EndProperty
-         BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         BeginProperty Panel4 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
             Object.Width           =   882
             MinWidth        =   882
-            Text            =   "Ins"
-            TextSave        =   "Ins"
-            Key             =   "statInsert"
-         EndProperty
-         BeginProperty Panel4 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Alignment       =   1
-            Text            =   "Seltext: 000"
-            TextSave        =   "Seltext: 000"
-            Key             =   "statSelText"
          EndProperty
          BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Object.Width           =   7056
-            MinWidth        =   7056
-         EndProperty
-         BeginProperty Panel6 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
-            Object.Width           =   3528
-            MinWidth        =   3528
-            Text            =   "Tips and things"
-            TextSave        =   "Tips and things"
+            Object.Width           =   17639
+            MinWidth        =   17639
             Key             =   "statTips"
          EndProperty
       EndProperty
@@ -395,6 +443,7 @@ Begin VB.Form frmMain
       TextLimit       =   100000
       TrapTab         =   0   'False
       AutoURLDetect   =   0   'False
+      TextOnly        =   -1  'True
       DisableNoScroll =   -1  'True
    End
    Begin VB.Menu mnuFile 
@@ -427,6 +476,14 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuFileExit 
          Caption         =   "E&xit"
          Shortcut        =   ^Q
+      End
+      Begin VB.Menu mnuFileDiv3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuFileHistory 
+         Caption         =   ""
+         Index           =   0
+         Visible         =   0   'False
       End
    End
    Begin VB.Menu mnuEdit 
@@ -476,7 +533,7 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuFileParentDirectory 
          Caption         =   "Parent Directo&ury"
-         Shortcut        =   ^U
+         Shortcut        =   ^{F6}
       End
       Begin VB.Menu mnuBrowserRefresh 
          Caption         =   "&Refresh"
@@ -657,9 +714,10 @@ Dim mbTestByte() As Byte                  ' Scratch variables.  Comment them out
 Dim msTestArray() As String
 
 
-Const Debugging = True
+Const Debugging = False
 Const mfSkipMouseEventCrap = True
-Const msSettingsVersion = "0.8.2" ' Not the current build number, but the last time I changed the registry structure.
+Const msSettingsVersion = "0.8.8" ' Not the current build number, but the last time I changed the registry structure.
+Const MAX_HISTORY = 15
 
 Dim msPhlegmDate As String
 Dim mudtStats As TStatType
@@ -695,12 +753,11 @@ Enum EFileIcon
 End Enum
 
 Enum EStat  ' TODO: Seriously, rename this to something good.
-      Stats = 1
-      Modified = 2
-      Insert = 3
+      BrowserStats = 1
+      Stats = 2
+      Modified = 3
       SelText = 4
-      LastSaved = 5
-      Tips = 6
+      Tips = 5
 End Enum
 
 
@@ -710,14 +767,48 @@ Private Sub AddToBookmarks(ByVal sNewBookmark As String)
 
       If sNewBookmark = "" Then Exit Sub
      
-      iIndex = mnuBookmark.Ubound + 1
+      iIndex = mnuBookmark.UBound + 1
       Load mnuBookmark(iIndex)
       With mnuBookmark(iIndex)
             .Tag = sNewBookmark  ' exact path here, for safe keeping
-            .Caption = "&" & iIndex & "   " & sNewBookmark ' here, to make it look all nice
+            .Caption = iIndex & "   " & sNewBookmark ' here, to make it look all nice
+            If iIndex <= 10 Then .Caption = "&" & .Caption
             .Visible = True
       End With
 
+End Sub
+
+Private Sub AddToHistory(ByVal sNewHistory As String)
+      Dim iIndex As Integer
+      Dim sPrevTag As String
+
+      If mnuFileHistory.UBound > 0 Then
+            If sNewHistory = mnuFileHistory(1).Tag Then Exit Sub
+      End If
+      If sNewHistory = "" Then Exit Sub
+     
+      If mnuFileHistory.UBound < MAX_HISTORY Then
+            Load mnuFileHistory(mnuFileHistory.UBound + 1)
+            mnuFileHistory(mnuFileHistory.UBound).Visible = True
+      End If
+      
+      For iIndex = mnuFileHistory.UBound To 2 Step -1
+            sPrevTag = mnuFileHistory(iIndex - 1).Tag
+            mnuFileHistory(iIndex).Tag = sPrevTag
+            If iIndex < 10 Then
+                  mnuFileHistory(iIndex).Caption = "&" & iIndex & " " & sPrevTag
+            ElseIf iIndex = 10 Then
+                  mnuFileHistory(iIndex).Caption = "1&0 " & sPrevTag
+            Else
+                  mnuFileHistory(iIndex).Caption = iIndex & " " & sPrevTag
+            End If
+      Next iIndex
+      
+      With mnuFileHistory(1)
+            .Tag = sNewHistory ' exact path here, for safe keeping
+            .Caption = "&1 " & sNewHistory ' here, to make it look all nice
+      End With
+      
 End Sub
 
 Private Sub BookmarkSaveChanges()
@@ -728,9 +819,187 @@ Private Sub BookmarkSaveChanges()
             mnuBookmark(iIndex).Caption = iIndex & "   " & lvwBrowser.ListItems(iIndex)
       Next iIndex
       
-      For iIndex = iIndex To mnuBookmark.Ubound
+      For iIndex = iIndex To mnuBookmark.UBound
             Unload mnuBookmark(iIndex)
       Next iIndex
+End Sub
+
+'   BrowserAutoSelectListItem:
+'
+'
+'
+Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
+      Dim litCurrentItem As ListItem
+      
+      If BD.ListEmpty Or BD.BookmarkMode Then Exit Function
+      
+      ' Auto-select first filename to match partialfilename, if given.
+      
+      If BD.PartialFileName <> "" Then
+            Set litCurrentItem = lvwBrowser.FindItem(BD.PartialFileName, , , lvwPartial)
+            If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
+      
+      ' Auto-select the directory we just moved out of, if doing a ParentDirectory.
+            
+      ElseIf BD.GoingToParent Then
+      
+            Set litCurrentItem = lvwBrowser.FindItem(gFSO.GetBaseName(BD.DirPrev))
+            If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
+            
+      ' Auto-select the item previously selected, for a refresh.
+      
+      ElseIf BD.DirUnchanged Then
+            Set litCurrentItem = lvwBrowser.FindItem(BD.SelTextPrev)
+
+            If (litCurrentItem Is Nothing) Then
+                  lvwBrowser.ListItems(1).Selected = True
+            Else
+                  litCurrentItem.Selected = True
+            End If
+            
+      ' Otherwise, auto-select the first item.
+            
+      Else
+            lvwBrowser.ListItems(1).Selected = True
+      End If
+                  
+      DoEvents
+      lvwBrowser.SelectedItem.EnsureVisible ' Just doesn't seem to work without DoEvents first.
+End Function
+
+'   BrowserExecuteNext
+'   Select the next item after the selection, and open it.
+'
+Private Sub BrowserExecuteNext()
+      Dim iIndex As Integer
+
+      If agEditor.Tag <> "" Then btnCurrentDirectory_Click
+      If lvwBrowser.ListItems.Count = 0 Then Exit Sub
+      iIndex = lvwBrowser.SelectedItem.Index
+      If iIndex < lvwBrowser.ListItems.Count Then
+            If lvwBrowser.ListItems(iIndex + 1).Icon <> EFileIcon.Directory Then
+                  lvwBrowser.ListItems(iIndex + 1).EnsureVisible
+                  lvwBrowser.ListItems(iIndex + 1).Selected = True
+                  BrowserExecuteItem lvwBrowser.ListItems(iIndex + 1)
+                  DoEvents
+            End If
+      End If
+End Sub
+
+'   BrowserExecutePrev
+'   Select the item previous to the one selected, and open it.
+'
+Private Sub BrowserExecutePrev()
+      Dim iIndex As Integer
+            
+      If agEditor.Tag <> "" Then btnCurrentDirectory_Click
+      If lvwBrowser.ListItems.Count = 0 Then Exit Sub
+      iIndex = lvwBrowser.SelectedItem.Index
+      If iIndex > 1 Then
+            If lvwBrowser.ListItems(iIndex - 1).Icon <> EFileIcon.Directory Then
+                  lvwBrowser.ListItems(iIndex - 1).EnsureVisible
+                  lvwBrowser.ListItems(iIndex - 1).Selected = True
+                  DoEvents
+                  BrowserExecuteItem lvwBrowser.ListItems(iIndex - 1)
+            End If
+      End If
+End Sub
+
+
+' *********************************************
+' *
+' *  BrowserGetFilesAndFolders
+' *
+' *  sBrowseDir - Directory whose files are to be listed in lvwBrowser.
+' *  sFilter - If specified, list only files matching sFilter.  May contain wildcards "?" and "*".
+' *  sPartialFileName - If specified, highlight the first filename beginning with sPartialFileName. TODO.
+' *
+' *
+' *********************************************
+'
+Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
+            
+      Dim iIcon As Integer
+      Dim curTotalBytes As Currency
+      Dim litCurrentItem As ListItem
+      Dim hNextFile As Long, sFileName As String
+      Dim WFD As WIN32_FIND_DATA
+      Dim fHadFocus As Boolean ', fDirUnchanged As Boolean
+      'Dim sOldSelectedItem As String
+      'Dim sngStartTime As Single
+      
+      
+      On Error Resume Next    ' there won't be an active control during form_load, so skip this part.
+      fHadFocus = (ActiveControl.name = "lvwBrowser")
+      On Error GoTo 0
+      
+      
+      lvwBrowser.Tag = BD.Dir
+      
+      lvwBrowser.Visible = False  ' a nice idea, but we don't want to lose focus while under.  OR DO WE ?
+      lvwBrowser.ListItems.Clear
+      lvwBrowser.SortKey = 0
+      lvwBrowser.Sorted = False ' Sorting each element would have to slow things down, wouldn't it?
+      
+      
+      'sngStartTime = Timer
+      If BD.Filter = "" Then BD.Filter = "*"
+      hNextFile = FindFirstFile(BD.Dir & BD.Filter, WFD)
+      
+      Do
+            On Error Resume Next
+            
+            ' Divide the file types up slightly for icon selection
+            
+            sFileName = CstringToVBstring(WFD.cFileName) ' Lots of junk past the null character.
+            
+            If (WFD.dwFileAttributes And FILE_ATTRIBUTE_DIRECTORY) Then
+                  iIcon = EFileIcon.Directory
+            
+            ElseIf Right(sFileName, 4) = ".txt" Then
+                  iIcon = EFileIcon.Text
+            
+            Else
+                  iIcon = EFileIcon.Other
+                  
+            End If
+
+            If Err > 0 Then
+                  iIcon = EFileIcon.Error
+                  Debug.Print Err & ": " & Err.Description
+            End If
+            On Error GoTo 0
+            
+            
+            ' Add that file!
+            
+            If sFileName <> "." And sFileName <> "" Then ' just what is the point in providing them with a "." folder?
+                  Set litCurrentItem = lvwBrowser.ListItems.Add(, , sFileName, iIcon, iIcon)
+                  
+                  ' here, let's keep an invisible second column for sorting by directory later
+                  If iIcon = EFileIcon.Directory Then
+                        litCurrentItem.ListSubItems.Add , , 0
+                  Else
+                        litCurrentItem.ListSubItems.Add , , 1
+                        curTotalBytes = curTotalBytes + WFD.nFileSizeLow
+                  End If
+            End If
+      
+      Loop While FindNextFile(hNextFile, WFD) <> 0
+           
+      
+      If BD.Filter = "*" Then BD.Filter = ""
+      BD.ListEmpty = (lvwBrowser.ListItems.Count = 0)
+      
+      lvwBrowser.Sorted = True
+      lvwBrowser.SortKey = 1
+      lvwBrowser.Visible = True
+      If fHadFocus Then lvwBrowser.SetFocus
+      
+      staTusBar1.Panels(EStat.BrowserStats).Text = FormatNumber(curTotalBytes, 0) & " bytes in " & _
+            lvwBrowser.ListItems.Count & " objects"
+      
+      'Debug.Print Timer - sngStartTime
 End Sub
 
 ' *********************************************
@@ -744,7 +1013,7 @@ End Sub
 ' *
 ' *********************************************
 '
-Private Sub BrowserGetFilesAndFolders(ByVal sBrowseDir As String, Optional ByVal sFilter As String, _
+Private Sub BrowserGetFilesAndFolders_old(ByVal sBrowseDir As String, Optional ByVal sFilter As String, _
       Optional ByVal sPartialFileName As String)
             
       Dim iIcon As Integer
@@ -888,6 +1157,7 @@ Private Sub BrowserGetFilesAndFolders(ByVal sBrowseDir As String, Optional ByVal
       'Debug.Print Timer - sngStartTime
 End Sub
 
+
 Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Integer
       ' This is like a miniature RearrangeControls() for just picBrowser and everything within,
       ' and it happens to only affect their horizontal components.
@@ -922,6 +1192,39 @@ Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Int
       BrowserResizeHorizontal = iOffset
 End Function
 
+Private Sub ListMenuDisable()
+
+      If Not mnuListOpenDefault.Enabled Then Exit Sub
+      
+      mnuListOpenDefault.Enabled = False
+      mnuListOpen.Enabled = False
+      mnuListDelete.Enabled = False
+      mnuListRename.Enabled = False
+      mnuListCopyPath.Enabled = False
+      mnuListShowOnly.Enabled = False
+      mnuListProperties.Enabled = False
+End Sub
+
+Private Sub ListMenuEnable(litHoverItem As ListItem)
+      If mnuListOpenDefault.Enabled Then Exit Sub  ' don't wanna bother doing all this on every single mousemove!
+      
+      mnuListOpenDefault.Enabled = True
+      mnuListOpen.Enabled = True
+      mnuListOpenDefault.Caption = "Open With Default Program..." & vbTab & "Shift+Ctrl+Enter"
+      mnuListDelete.Enabled = True
+      mnuListRename.Enabled = True
+      mnuListCopyPath.Enabled = True
+      mnuListShowOnly.Enabled = True
+      mnuListProperties.Enabled = True
+      
+      If litHoverItem.Icon = EFileIcon.Directory Or litHoverItem.Icon = EFileIcon.Drive Then
+            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
+            mnuListDelete = False
+            If litHoverItem.Text = ".." Or litHoverItem.Icon = EFileIcon.Drive Then mnuListRename = False
+      End If
+
+End Sub
+
 Private Function ParentDirectoryOf(ByVal sPath As String)
       Dim iSlash As Integer
       
@@ -945,49 +1248,58 @@ Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
       Dim sFileName As String
       
       sInput = Trim(sInput)
-      sFileName = SnipPath(sInput)
       
       With BD
       
             .BookmarkMode = False
             .DrivesMode = False
-            .ListEmpty = (lvwBrowser.ListItems.Count > 0)
+            .ListEmpty = (lvwBrowser.ListItems.Count = 0)
+            .DirPrev = .Dir
+            .FilterPrev = .Filter
             
-            If sInput = "(Bookmarks)" Then .BookmarkMode = True
             
-            ElseIf sInput = "" Then .DrivesMode = True
+            
+            If sInput = "(Bookmarks)" Then  ' We are in Manage Bookmarks mode.
+                  .BookmarkMode = True
+                  .Dir = "(Bookmarks)"  ' Just so that (.Dir = X) never accidentally returns true.
+                  .Filter = ""
+                  .PartialFileName = ""
+                  .ValidPath = False
             
             Else
-                  If Not (sInput Like "*:\*") Then
+                  If Not (sInput Like "*:\*") Then  ' Drives mode, root of the file system.
                         .ValidPath = False
-                  Else
+                        .DrivesMode = True
+                        .PartialFileName = sInput
+                        .Dir = ""
+                  Else                                            ' Ordinary (folder) mode.
                         .ValidPath = True
-                        .DirPrev = .Dir
                         .Dir = SnipFileName(sInput)
-                        .DirUnchanged = (.Dir = .DirPrev)
-                        .GoingToParent = (.Dir = ParentDirectoryOf(.DirPrev)) And Not .DirUnchanged
                         If Not gFSO.FolderExists(.Dir) Then .ValidPath = False
                   End If
+                  .DirUnchanged = (.Dir = .DirPrev)
+                  .GoingToParent = (.Dir = ParentDirectoryOf(.DirPrev)) And Not .DirUnchanged
             End If
             
-            
+            sFileName = SnipPath(sInput)
             
             If .ValidPath Then
                   
-                  If Right(sInput, 1) = "\" Then
-                        
-                  ElseIf sFileName Like ".*" And Not (sFileName Like "*.") Then
+                  .PartialFileName = ""
+                  If Right(sInput, 1) = "\" Then  ' c:\temp\   (just a plain old directory)
+                        .Filter = ""
+                  ElseIf sFileName Like ".*" And Not (sFileName Like "*.") Then  ' c:\temp\.txt  (wildcard implied)
                         .Filter = "*." & gFSO.GetExtensionName(sFileName)
                         
-                  ElseIf sFileName Like "*[?*]*" Then
+                  ElseIf sFileName Like "*[?*]*" Then  ' c:\temp\peni*   (contains wildcard(s) after the directory)
                         .Filter = sFileName
-                        .PartialFileName = ""
                         
-                  ElseIf Not .ListEmpty Then
+                  ElseIf Not .ListEmpty Then  ' c:\temp\peni   (some trailing characters, but no wildcard)
                         .Filter = ""
                         .PartialFileName = sFileName
                   End If
             End If
+            .FilterUnchanged = (.Filter = .FilterPrev)
             
             If Not .ListEmpty Then .SelTextPrev = lvwBrowser.SelectedItem.Text
             
@@ -1031,22 +1343,15 @@ Private Sub BrowserGetBookmarks()
       Dim iIndex As Integer
       Dim litCurrentItem As ListItem
       
-      With gBrowserData
-            .BookmarkMode = True
-            .DrivesMode = False
-            .Error = False
-            .ListEmpty = (mnuBookmark.Ubound = 0)
-            .DirPrev = .Dir
-            .Dir = ""
-      End With
-      
       lvwBrowser.ListItems.Clear
       lvwBrowser.Tag = "(Bookmarks)"
-      For iIndex = 1 To mnuBookmark.Ubound
+      For iIndex = 1 To mnuBookmark.UBound
             Set litCurrentItem = lvwBrowser.ListItems.Add(, , mnuBookmark(iIndex).Tag, _
                   EFileIcon.Bookmark, EFileIcon.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , 1
       Next iIndex
+      
+      staTusBar1.Panels(EStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " bookmarks"
 End Sub
 
 Private Function PathBack() As Boolean
@@ -1140,6 +1445,10 @@ Private Sub btnFont_Click()
 End Sub
 
 
+Private Sub btnNextFile_Click()
+      BrowserExecuteNext
+End Sub
+
 Private Sub btnPathBack_Click()
       PathBack
 End Sub
@@ -1149,14 +1458,38 @@ Private Sub btnPathForward_Click()
 End Sub
 
 
+Private Sub btnPrevFile_Click()
+      BrowserExecutePrev
+End Sub
+
 Private Sub btnRefresh_Click()
-    
+      ' A lot like invoking cboPath_Change, but with the distinction that
+      ' there is no check for gBrowserData.DirUnchanged, and
+      ' there is no need to re-parse gBrowserData.
+            
+      With gBrowserData
+            .DirPrev = .Dir
+            .FilterPrev = .Filter
+            .DirUnchanged = True
+            .FilterUnchanged = True
+            .GoingToParent = False
+            
+            If .BookmarkMode Then
+                  BrowserGetBookmarks
+                  
+            ElseIf .DrivesMode Then
+                  BrowserGetDrives
+            Else
+                  BrowserGetFilesAndFolders gBrowserData
+            End If
+      End With
       
-      If cboPath.ListCount > 0 And cboPath.Text <> cboPath.List(miPathRecent) Then
-            cboPath.ListIndex = miPathRecent
-      Else
-            cboPath_Change
-      End If
+      BrowserAutoSelectListItem gBrowserData
+      
+End Sub
+
+Private Sub btnSave_Click()
+      mnuFileSave_Click
 End Sub
 
 Private Sub btnScrollToTop_Click()
@@ -1173,9 +1506,30 @@ Private Sub btnSort_Click()
             .SortKey = 1
       End With
       
-      If lvwBrowser.Tag = "(Bookmarks)" Then BookmarkSaveChanges
+      If gBrowserData.BookmarkMode Then BookmarkSaveChanges
 End Sub
 
+
+Private Sub cboPath_Change()
+      
+      ParsePath cboPath, gBrowserData
+      
+      If gBrowserData.BookmarkMode Then
+            BrowserGetBookmarks
+            PathAddRecent "(Bookmarks)"
+            
+      ElseIf gBrowserData.DrivesMode Then
+            BrowserGetDrives
+            PathAddRecent ""
+            
+      ElseIf Not (gBrowserData.DirUnchanged And gBrowserData.FilterUnchanged) Then
+            BrowserGetFilesAndFolders gBrowserData
+            ' Add to recent paths only if filtration was fruitful.
+            If Not gBrowserData.ListEmpty Then PathAddRecent gBrowserData.Dir & gBrowserData.Filter
+      End If
+      
+      BrowserAutoSelectListItem gBrowserData
+End Sub
 
 Private Sub cboPath_Click()
       'debug.print "cboPath_CLICK!!!! " & cboPath.ListIndex
@@ -1206,100 +1560,15 @@ Private Sub cboPath_Scroll()
 End Sub
 
 Private Sub chkFileBrowser_Click()
-      ' TODO: Fix this.  Button must sync with menu, registry, and actual Browser visibility.
       
       picBrowser.Visible = chkFileBrowser.Value
       mnuViewFilebrowser.Checked = chkFileBrowser.Value
       mnuBrowser.Enabled = chkFileBrowser.Value
+      staTusBar1.Panels(EStat.BrowserStats).Visible = chkFileBrowser.Value
       
       RearrangeControls
       'agEditor.SetFocus
 End Sub
-
-Private Sub cboPath_Change()
-      ' Type a directory into cboPath.  Valid paths will be loaded as you type.
-      
-      Dim sDirRetval As String
-      Dim sFileName As String, sPath As String
-      Dim iIndex As Integer
-      Dim litCurrentItem As ListItem
-      
-      'debug.print "cboPath_CHANGE.   text: " & cboPath.Text
-      
-      mfValidCboPath = True
-      
-      If cboPath = "" Then
-      
-            ' Top of the tree.  Display all drives in lvwBrowser.
-            
-            lvwBrowser.Tag = ""
-            BrowserGetDrives
-            PathAddRecent ""
-            Exit Sub
-      
-      ElseIf cboPath = "(Bookmarks)" Then
-      
-            ' Manage bookmarks (load them into the browser with little paperclip icons)
-      
-            lvwBrowser.Tag = "(Bookmarks)"
-            BrowserGetBookmarks
-            PathAddRecent "(Bookmarks)"
-            Exit Sub
-      
-      ElseIf Not (cboPath Like "*:\*") Then  ' We only take full paths.
-            mfValidCboPath = False
-      End If
-      
-      ' Monitor cboPath at each Change, see if a valid directory appeared.
-            
-      If mfValidCboPath Then
-            sPath = SnipFileName(Trim(cboPath))
-            If Not gFSO.FolderExists(sPath) Then mfValidCboPath = False
-      End If
-      
-      sFileName = SnipPath(cboPath)
-      
-      
-      ' Found a bad directory.
-      
-      If mfValidCboPath = False Then
-                                                            
-            If Right(cboPath, 1) = "\" Then
-                  lvwBrowser.ListItems.Clear
-                  lvwBrowser.Tag = "(Error)"
-                  gBrowserData.Error = True
-            End If
-                          
-      
-      ' Found a good directory!
-      
-      ' TODO: Don't reload when all you need is to scroll down to sFileName!
-      ' TODO: Um.. SOMETIMES WE NEED TO DO BOTH THE LOADING AND THE SCROLLING.
-                          
-      ElseIf Right(cboPath, 1) = "\" Then ' A good, normal directory, even!
-            BrowserGetFilesAndFolders (sPath)
-      
-      ElseIf sFileName Like ".*" And Not (sFileName Like "*.") Then  ' Contains one extension.  Example - C:\temp\.txt
-            BrowserGetFilesAndFolders sPath, "*." & gFSO.GetExtensionName(cboPath)
-            
-            
-      ElseIf sFileName Like "*[?*]*" Then  ' Contains any wildcard.  Example - C:\temp\f?cking*licker.*
-      
-            BrowserGetFilesAndFolders sPath, sFileName
-            
-      ElseIf lvwBrowser.ListItems.Count > 0 Then
-                   ' Contains no wildcard, only a filename or part of one. Example - C:\temp\fuckingcockli
-                        ' Auto-select a file that matches that sPartialFileName.
-            Set litCurrentItem = lvwBrowser.FindItem(sFileName, , , lvwPartial)
-            If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
-            DoEvents
-            lvwBrowser.SelectedItem.EnsureVisible ' Just doesn't seem to work without DoEvents first.
-            
-            'BrowserGetFilesAndFolders sPath, , sFileName
-      End If
-      
-End Sub
-
 
 '
 '   cbopath_GotFocus
@@ -1347,6 +1616,13 @@ Private Sub cboPath_KeyDown(KeyCode As Integer, Shift As Integer)
       End Select
 End Sub
 
+Private Sub chkWordWrap_Click()
+      
+      mnuViewWordWrap.Checked = chkWordWrap.Value
+      agEditor.ViewMode = chkWordWrap.Value
+      
+End Sub
+
 Private Sub Form_Unload(Cancel As Integer)
       If Not Debugging Then
             SetWindowLong lvwBrowser.hWnd, GWL_WNDPROC, gpOldLvwBrowserProc
@@ -1364,7 +1640,7 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
       
       Dim sFolder As String, sOldPath As String
       
-      sFolder = lvwBrowser.Tag
+      sFolder = gBrowserData.Dir
       
       If sFolder = "(Bookmarks)" Then
             ' We'll take their renamed bookmark, and if it's not a valid file, let that be
@@ -1379,7 +1655,7 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
             
       
       If NewString Like "*:\*" Then sFolder = ""  ' If it looks like a full path, treat it like one.
-      sOldPath = lvwBrowser.Tag & lvwBrowser.SelectedItem
+      sOldPath = gBrowserData.Dir & lvwBrowser.SelectedItem
       
       If FileExists(sOldPath) = False Then
             Caption = "Can't rename what's not there: " & sOldPath
@@ -1441,13 +1717,7 @@ End Sub
 
 Private Sub lvwBrowser_Click()
       'debug.print "lvwBrowser_CLICK"
-      If mfBrowserItemClicked = True Then
-            If miBrowserMouseButton = vbLeftButton And miBrowserShift = 0 Then
-                  BrowserExecuteItem lvwBrowser.SelectedItem
-            End If
-      Else
-            If Not gBrowserData.ListEmpty Then lvwBrowser.SelectedItem.Selected = False
-      End If
+      
       
       miBrowserMouseButton = 0  ' These probably an overcaution --
       miBrowserShift = 0                  ' They are reset in the next MouseDown anyway.
@@ -1460,14 +1730,14 @@ Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
       
             Case EFileIcon.Text, EFileIcon.Other
                   ' Open the file.
-                  EditorLoadFile lvwBrowser.Tag & Item.Text
+                  EditorLoadFile gBrowserData.Dir & Item.Text
                   
             Case EFileIcon.Directory, EFileIcon.Drive
                   ' Open the folder, or go up a folder.
                   If Item.Text = ".." Then
                         mnuFileParentDirectory_Click
                   Else
-                        cboPath = lvwBrowser.Tag & Item.Text & "\"
+                        cboPath = gBrowserData.Dir & Item.Text & "\"
                   End If
             
             Case EFileIcon.Bookmark
@@ -1486,19 +1756,19 @@ Private Sub lvwBrowser_ItemClick(ByVal Item As MSComctlLib.ListItem)
             
       mfBrowserItemClicked = True
       
-      mnuListOpenDefault.Enabled = True
-      mnuListOpenDefault.Caption = "Open With Default Program..." & vbTab & "Shift+Ctrl+Enter"
-      mnuListDelete.Enabled = True
-      mnuListRename.Enabled = True
-      mnuListCopyPath.Enabled = True
-      mnuListShowOnly.Enabled = True
-      mnuListProperties.Enabled = True
-      
-      If Item.Icon = EFileIcon.Directory Or Item.Icon = EFileIcon.Drive Then
-            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
-            mnuListDelete = False
-            If Item.Text = ".." Or Item.Icon = EFileIcon.Drive Then mnuListRename = False
-      End If
+'      mnuListOpenDefault.Enabled = True
+'      mnuListOpenDefault.Caption = "Open With Default Program..." & vbTab & "Shift+Ctrl+Enter"
+'      mnuListDelete.Enabled = True
+'      mnuListRename.Enabled = True
+'      mnuListCopyPath.Enabled = True
+'      mnuListShowOnly.Enabled = True
+'      mnuListProperties.Enabled = True
+'
+'      If Item.Icon = EFileIcon.Directory Or Item.Icon = EFileIcon.Drive Then
+'            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
+'            mnuListDelete = False
+'            If Item.Text = ".." Or Item.Icon = EFileIcon.Drive Then mnuListRename = False
+'      End If
 End Sub
 
 Private Sub lvwBrowser_KeyPress(KeyAscii As Integer)
@@ -1520,23 +1790,39 @@ Private Sub lvwBrowser_MouseDown(Button As Integer, Shift As Integer, x As Singl
       ' TODO: decide how Shift is going to affect all this.
       ' With a one-click open-file, we'd like shift-click to leave it alone, at the very least.
       
+      lvwBrowser_MouseMove Button, Shift, x, y
       mfBrowserItemClicked = False
       miBrowserMouseButton = Button
       miBrowserShift = Shift
+      
 End Sub
 
 Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 '      Debug.Print "lvwBROWSER MOUSEMOVE, X: " & x
 
-'      If picBrowser.MousePointer = vbSizeWE Then
-'            picBrowser.Tag = ""
-'            picBrowser.MousePointer = 0
-'      End If
-      'staTusBar1.Panels(EStat.LastSaved) = ppppppp
+      Dim litHoverItem As ListItem
+      
+      Set litHoverItem = lvwBrowser.HitTest(x, y)  ' To see if we're over an item.
+      
+      If Not (litHoverItem Is Nothing) Then
+            staTusBar1.Panels(EStat.Tips).Text = litHoverItem.Text
+            ListMenuEnable litHoverItem
+            
+            If Button = vbLeftButton Or Button = vbRightButton Then
+                  litHoverItem.Selected = True
+            End If
+      
+      Else
+            staTusBar1.Panels(EStat.Tips).Text = ""
+            ListMenuDisable
+      
+      End If
+      
 End Sub
 
 Private Sub mnuBookmark_Click(Index As Integer)
       EditorLoadFile mnuBookmark(Index).Tag
+      mnuFileCurrentDirectory_Click
 End Sub
 
 Private Sub mnuBookmarksAdd_Click()
@@ -1545,7 +1831,7 @@ Private Sub mnuBookmarksAdd_Click()
       ' TODO: ctrl+M doesn't work from the Editor
       ' find a better shortcut, and see what else doesn't work from the editor.
       
-      For iBookm = 1 To mnuBookmark.Ubound
+      For iBookm = 1 To mnuBookmark.UBound
             If mnuBookmark(iBookm).Tag = agEditor.Tag Then
                               ' Oops, got that bookmark already.
                   Exit Sub  ' Nothing left to do here!
@@ -1554,13 +1840,13 @@ Private Sub mnuBookmarksAdd_Click()
       
       AddToBookmarks agEditor.Tag
       
-      If lvwBrowser.Tag = "(Bookmarks)" Then btnRefresh_Click
+      If gBrowserData.BookmarkMode Then btnRefresh_Click
 End Sub
 
 Private Sub mnuBookmarksAddPath_Click()
       Dim iBookm As Integer
       
-      For iBookm = 1 To mnuBookmark.Ubound
+      For iBookm = 1 To mnuBookmark.UBound
             If mnuBookmark(iBookm).Tag = cboPath Then
                               ' Oops, got that bookmark already.
                   Exit Sub  ' Nothing left to do here!
@@ -1608,48 +1894,47 @@ Private Sub mnuBrowserDelete_Click()
 End Sub
 
 Private Sub BrowserDeleteSelected()
-      Dim iBookm As Integer
+      Dim iBookm As Integer, iRetVal As Integer
       Dim sTheDamned As String
       
       If lvwBrowser.ListItems.Count = 0 Then Exit Sub
       
-      sTheDamned = lvwBrowser.Tag & lvwBrowser.SelectedItem
+      sTheDamned = gBrowserData.Dir & lvwBrowser.SelectedItem
       
-      With lvwBrowser
-            If .Tag = "(Bookmarks)" Then
-                  
-                  iBookm = .SelectedItem.Index      ' TODO: FIIIIIIIIXXXXXXXXX
-                  .ListItems.Remove iBookm
-                  
-                  BookmarkSaveChanges
-                  
-            ElseIf .Tag = "" Then
-                  Caption = "I WILL NOT DELETE YOUR DISK.  FIND SOMEONE ELSE."
-            ElseIf Not FileExists(sTheDamned) Then
-                  Caption = "Can't delete what isn't there: " & sTheDamned
-            ElseIf sTheDamned = agEditor.Tag Then
-                  Caption = "Can't delete your open file.  Sorry."
-            ElseIf GetAttr(sTheDamned) And vbDirectory Then
-                  Caption = "This program would rather not be held responsible for mass deletions.  Please use another."
+      If gBrowserData.BookmarkMode Then
+            
+            iBookm = lvwBrowser.SelectedItem.Index      ' TODO: FIIIIIIIIXXXXXXXXX
+            lvwBrowser.ListItems.Remove iBookm
+            
+            BookmarkSaveChanges
+            
+      ElseIf gBrowserData.DrivesMode Then
+            Caption = "I WILL NOT DELETE YOUR DISK.  FIND SOMEONE ELSE."
+      ElseIf Not FileExists(sTheDamned) Then
+            Caption = "Can't delete what isn't there: " & sTheDamned
+'      ElseIf sTheDamned = agEditor.Tag Then  'TODO: refresh or something here.
+'            Caption = "Can't delete your open file.  Sorry."
+      ElseIf GetAttr(sTheDamned) And vbDirectory Then
+            Caption = "This program would rather not be held responsible for mass deletions.  Please use another."
 
 '                  RmDir sTheDamned
 '                  Caption = "Folder deleted successfully: " & sTheDamned
 '                  btnRefresh_Click
+      Else
+            On Error Resume Next
+            iRetVal = RecycleFile(sTheDamned)
+            If Err > 0 Then
+                  Caption = Err.Number & ": " & Err.Description
+                  
+            ElseIf iRetVal <> 0 Then
+                  Caption = "Error " & iRetVal
             Else
-                  On Error Resume Next
-                  'Kill sTheDamned
-                  RecycleFile (sTheDamned)
-                  If Err > 0 Then
-                        Caption = Err.Number & ": " & Err.Description
-                  Else
-                        If sTheDamned = agEditor.Tag Then mnuFileNew_Click
-                        Caption = "File deleted successfully: " & sTheDamned
-                        ' TODO: this is no better a refresh than cboPath_change.  fix.
-                        btnRefresh_Click
-                  End If
-                  On Error GoTo 0
+                  If sTheDamned = agEditor.Tag Then mnuFileNew_Click
+                  Caption = "File deleted successfully: " & sTheDamned
+                  btnRefresh_Click
             End If
-      End With
+            On Error GoTo 0
+      End If
 End Sub
 
 Private Sub mnuBrowserOpenDefault_Click()
@@ -1684,16 +1969,32 @@ End Sub
 Private Sub mnuFileCurrentDirectory_Click()
       Dim litCurrentFile As ListItem
       
-      cboPath = SnipFileName(agEditor.Tag)
+      If agEditor.Tag = "" Then Exit Sub
+      
       Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.Tag))
+      
       If litCurrentFile Is Nothing Then
-            MsgBox "It seems that your file was deleted by another application." & _
-                  "  If you wish to keep it, save at once!"
-      Else
-            litCurrentFile.Selected = True
-            litCurrentFile.EnsureVisible
+            cboPath = SnipFileName(agEditor.Tag)
+            Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.Tag))
+            If litCurrentFile Is Nothing Then
+                  MsgBox "It seems that your file was deleted by another application." & _
+                        "  If you wish to keep it, save at once!"
+                  Exit Sub
+            End If
       End If
+      litCurrentFile.Selected = True
+      litCurrentFile.EnsureVisible
 End Sub
+
+Private Sub mnuFileExit_Click()
+      Unload Me
+End Sub
+
+Private Sub mnuFileHistory_Click(Index As Integer)
+      EditorLoadFile mnuFileHistory(Index).Tag
+      mnuFileCurrentDirectory_Click
+End Sub
+
 
 Private Sub mnuFileOpen_Click()
       If mnuViewFilebrowser.Checked = False Then
@@ -1796,12 +2097,17 @@ Private Sub mnuFileSaveAs_Click()
       Dim sDefaultPath As String, sFileName As String
       Dim fSuccess As Boolean
       Dim dteSaveTime As Date
-      
-      If lvwBrowser.Tag = "(Bookmarks)" Or lvwBrowser.Tag = "" Or lvwBrowser.Tag = "(Error)" Then
+      Dim vDate As Variant
+
+      vDate = Date
+      msPhlegmDate = Year(vDate) & "-" & Format(Month(vDate), "0#") & _
+            "-" & Format(Day(vDate), "0#")
+     
+      'If lvwBrowser.Tag = "(Bookmarks)" Or lvwBrowser.Tag = "" Or lvwBrowser.Tag = "(Error)" Then
+      If gBrowserData.ValidPath Then
+            sDefaultPath = gBrowserData.Dir
+      Else
             sDefaultPath = CurDir & "\"
-            
-      Else   ' If none of the special cases, the tag should be a valid path
-            sDefaultPath = lvwBrowser.Tag
       End If
       
       sFileName = InputBox("File name:", "Save", sDefaultPath & msPhlegmDate & ".txt")
@@ -1830,14 +2136,14 @@ Private Sub mnuList_Click()
       ' mfBrowserItemClicked is set to False on the MouseDown, and True on the ItemClick.
       ' So if it gets here as False, that means ItemClick did not happen on this mouse event.
       
-      If Not mfBrowserItemClicked Then
-            mnuListOpenDefault.Enabled = False
-            mnuListDelete.Enabled = False
-            mnuListRename.Enabled = False
-            mnuListCopyPath.Enabled = False
-            mnuListShowOnly.Enabled = False
-            mnuListProperties.Enabled = False
-      End If
+'      If Not mfBrowserItemClicked Then
+'            mnuListOpenDefault.Enabled = False
+'            mnuListDelete.Enabled = False
+'            mnuListRename.Enabled = False
+'            mnuListCopyPath.Enabled = False
+'            mnuListShowOnly.Enabled = False
+'            mnuListProperties.Enabled = False
+'      End If
 End Sub
 
 Private Sub mnuListCancel_Click()
@@ -1846,10 +2152,10 @@ End Sub
 
 Private Sub mnuListCopyPath_Click()
       Clipboard.Clear
-      If lvwBrowser.Tag = "(Bookmarks)" Then
+      If gBrowserData.BookmarkMode Then
             Clipboard.SetText lvwBrowser.SelectedItem
       Else
-            Clipboard.SetText lvwBrowser.Tag & lvwBrowser.SelectedItem
+            Clipboard.SetText gBrowserData.Dir & lvwBrowser.SelectedItem
       End If
 End Sub
 
@@ -1903,16 +2209,14 @@ End Sub
 Private Sub mnuListOpenDefault_Click()
       Dim sPath As String
       
-      With lvwBrowser
-            If .ListItems.Count > 0 Then
-                  If .Tag = "(Bookmarks)" Then
-                        sPath = .SelectedItem.Text
-                  Else
-                        sPath = .Tag & .SelectedItem.Text
-                  End If
-                  ShellExecute 0, "open", sPath, 0, "", SW_RESTORE
+      If lvwBrowser.ListItems.Count > 0 Then
+            If gBrowserData.BookmarkMode Then
+                  sPath = lvwBrowser.SelectedItem.Text
+            Else
+                  sPath = gBrowserData.Dir & lvwBrowser.SelectedItem.Text
             End If
-      End With
+            ShellExecute 0, "open", sPath, 0, "", SW_RESTORE
+      End If
 End Sub
 
 Private Sub mnuListProperties_Click()
@@ -2063,6 +2367,11 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                               ShowFileProperties agEditor.Tag
                         End If
                   End If
+                  
+            Case vbKeyF
+                  If Shift = vbCtrlMask + vbShiftMask Then
+                        btnFont_Click
+                  End If
       End Select
 End Sub
 
@@ -2070,13 +2379,19 @@ End Sub
 
 Private Sub Form_Load()
       Dim vDate As Variant
+      Dim sCommandFile As String
 
       InitializeMenus
             
       Set gFSO = CreateObject("Scripting.FileSystemObject") ' Just so I'll never have to do this again.
       
-      Debug.Print "command line sayeth: [" & Command() & "]"
-      agEditor.Tag = Trim(Command())
+      gBrowserData.ListEmpty = True
+      
+      'Debug.Print "command line sayeth: [" & Command() & "]"
+      sCommandFile = Trim(Command())
+      If Left(sCommandFile, 1) = Chr(34) Then sCommandFile = Mid(sCommandFile, 2, Len(sCommandFile) - 2)
+      If sCommandFile <> "" And Not (sCommandFile Like "*:\*") Then sCommandFile = CurDir & "\" & sCommandFile
+      agEditor.Tag = sCommandFile
       
       msPhlegmKey = "Software\" & App.Title & "\" & msSettingsVersion
       
@@ -2179,16 +2494,23 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   ' Ctrl+right = scroll right.  (Requires no additional code.)
                   
             Case vbKeyDelete
-                  If Shift = vbShiftMask + vbCtrlMask Then BrowserDeleteSelected
+                  If Shift = 0 Then BrowserDeleteSelected
                   
             Case 219 ' Left Bracket [
-                  SendKeys "{UP}{ENTER}"
+                  BrowserExecutePrev
             
             Case 221 ' Right Bracket ]
-                  SendKeys "{DOWN}{ENTER}"
+                  BrowserExecuteNext
                   
             Case 220 ' Backslash \
                   If Shift = 0 Then SendKeys "{TAB}"
+            
+            Case 93 ' That keyboard button that usually means right click.
+                  Dim iItemX As Integer, iItemY As Integer
+                  
+                  iItemX = picBrowser.Left + lvwBrowser.Left + lvwBrowser.SelectedItem.Left + lvwBrowser.SelectedItem.Width
+                  iItemY = picBrowser.Top + lvwBrowser.Top + lvwBrowser.SelectedItem.Top + lvwBrowser.SelectedItem.Height
+                  Me.PopupMenu mnuList, , iItemX, iItemY, mnuListOpen
                   
       End Select
 End Sub
@@ -2200,11 +2522,26 @@ Private Sub lvwBrowser_MouseUp(Button As Integer, Shift As Integer, x As Single,
 '            FuckIHateThis = True
 '      End If
       
+      Dim litHoverItem As ListItem
+      
+      Set litHoverItem = lvwBrowser.HitTest(x, y)  ' To see if we're over an item.
+      
       If (Button = vbRightButton And Shift = 0) Then
             Me.PopupMenu mnuList
+      
+      ElseIf Button = vbLeftButton And Shift = 0 Then
+            
+            If Not (litHoverItem Is Nothing) Then
+                  ' Open the file/folder on an ordinary left click.
+                  BrowserExecuteItem lvwBrowser.SelectedItem
+            Else
+                  ' Clicking on empty space deselects the selected item.
+                  If Not gBrowserData.ListEmpty Then lvwBrowser.SelectedItem.Selected = False
+            End If
+      
       End If
       
-      ' For use in the click event, so we know what was clicked.
+      ' For use in the click event, so we know what was clicked.  OBSOLETE.
       miBrowserMouseButton = Button
       miBrowserShift = Shift
 End Sub
@@ -2415,6 +2752,7 @@ Private Sub InitializeMenus()
       mnuEditIncFont.Caption = "&Increase Font Size" & vbTab & "Alt+="
       mnuEditUndo.Caption = "Undo" & vbTab & "Ctrl+Z"
       mnuEditRedo.Caption = "Redo" & vbTab & "Ctrl+Y"
+      mnuEditFont.Caption = "Font..." & vbTab & "Shift+Ctrl+F"
       
       
       mnuWriteCut.Caption = "Cu&t" & vbTab & "Ctrl+X"
@@ -2426,7 +2764,9 @@ Private Sub InitializeMenus()
       mnuWindowMaximize.Caption = mnuWindowMaximize.Caption & vbTab & "Alt+F12"
       mnuWindowRestore.Caption = mnuWindowRestore.Caption & vbTab & "Alt+F11"
       
-      mnuListDelete.Caption = mnuListDelete.Caption & vbTab & "Shift+Ctrl+Del"
+      mnuBrowserDelete.Caption = mnuBrowserDelete.Caption & vbTab & "Del"
+      
+      mnuListDelete.Caption = mnuListDelete.Caption & vbTab & "Del"
       mnuListProperties.Caption = "&Properties" & vbTab & "Alt+Enter"
       mnuListCancel.Caption = "&Cancel" & vbTab & "Esc"
 End Sub
@@ -2435,26 +2775,18 @@ Private Function BrowserGetDrives() As Integer
       ' Find all logical drives and display them in lvwBrowser
       ' Returns the number of logical drives found.
       
-      Dim sFix As String * 255
-      Dim sVar As String
-      Dim sArray() As String
+      Dim sDrivesFixed As String * 255
+      Dim sDriveString As String
+      Dim sDriveArray() As String
+      Dim sNextDrive As String
       Dim lLength As Long
       Dim iIndex As Integer
       Dim litCurrentItem As ListItem
       
             
-      With gBrowserData
-            .DrivesMode = True
-            .BookmarkMode = False
-            .ListEmpty = False
-            .Error = False
-            .DirPrev = .Dir
-            .Dir = ""
-      End With
-      
-      lLength = GetLogicalDriveStrings(100, sFix)
-      sVar = Left(sFix, lLength)
-      sArray = Split(sVar, Chr(0)) ' "(x,x, , )" is an error.  don't put in more commas unless
+      lLength = GetLogicalDriveStrings(100, sDrivesFixed)
+      sDriveString = Left(sDrivesFixed, lLength)
+      sDriveArray = Split(sDriveString, Chr(0)) ' "(x,x, , )" is an error.  don't put in more commas unless
       lvwBrowser.ListItems.Clear          ' they lead to something.
       lvwBrowser.Tag = ""
       
@@ -2462,22 +2794,24 @@ Private Function BrowserGetDrives() As Integer
       lvwBrowser.Sorted = False ' Sorting each element would have to slow things down, wouldn't it?
       
       
-      iIndex = LBound(sArray)
-      sVar = TrimTrailingSlash(sArray(iIndex))
+      iIndex = LBound(sDriveArray)
+      sNextDrive = TrimTrailingSlash(sDriveArray(iIndex))
       
-      Do While (sVar <> "") And (sVar <> Chr(0))
+      Do While (sNextDrive <> "") And (sNextDrive <> Chr(0))
             
             Set litCurrentItem = lvwBrowser.ListItems.Add( _
-                  1, , sVar, EFileIcon.Drive, EFileIcon.Drive)
+                  1, , sNextDrive, EFileIcon.Drive, EFileIcon.Drive)
             litCurrentItem.ListSubItems.Add , , 0
             
             iIndex = iIndex + 1
-            sVar = TrimTrailingSlash(sArray(iIndex))
+            sNextDrive = TrimTrailingSlash(sDriveArray(iIndex))
       Loop
       
       lvwBrowser.Sorted = True
       lvwBrowser.SortKey = 1
       BrowserGetDrives = iIndex - 1
+      
+      staTusBar1.Panels(EStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " drives"
 End Function
 
 Private Sub mnuViewToolbar_Click()
@@ -2487,8 +2821,7 @@ Private Sub mnuViewToolbar_Click()
 End Sub
 
 Private Sub mnuViewWordWrap_Click()
-      agEditor.ViewMode = Abs(agEditor.ViewMode - 1)
-      mnuViewWordWrap.Checked = Not mnuViewWordWrap.Checked
+      chkWordWrap.Value = Abs(chkWordWrap.Value - 1)
 End Sub
 
 Private Sub mnuWindowMaximize_Click()
@@ -2542,6 +2875,7 @@ Private Function EditorLoadFile(sFileName As String) As Boolean
             frmMain.Caption = sFileName
             staTusBar1.Panels(EStat.Modified) = ""
             agEditor.SetSelection 0, 0
+            AddToHistory sFileName
             
       Else  ' Failure!
             frmMain.Caption = "ERROR.  command() = " & Command() & " Tag: " & sFileName
@@ -2552,7 +2886,7 @@ Private Function EditorLoadFile(sFileName As String) As Boolean
 End Function
 
 Private Sub SaveWindowSettings()
-      Dim lMin As Long, lMax As Long, lKey As Long, lRetval As Long
+      Dim lMin As Long, lMax As Long, lKey As Long, lRetVal As Long
       Dim lNewOrUsed As Long, lValueSize As Long
       Dim iIndex As Integer
       
@@ -2578,7 +2912,8 @@ Private Sub SaveWindowSettings()
             .SortMethod = lvwBrowser.SortOrder
             .AutoLoadFile = agEditor.Tag
             .cboPath = cboPath
-            .BookmarkCount = mnuBookmark.Ubound
+            .BookmarkCount = mnuBookmark.UBound
+            .HistoryCount = mnuFileHistory.UBound
       End With
       
       agEditor.GetSelection lMin, lMax
@@ -2587,7 +2922,7 @@ Private Sub SaveWindowSettings()
             .FirstVisibleLine = agEditor.FirstVisibleLine
             .SelEnd = lMax
             .SelStart = lMin
-            .WordWrap = agEditor.ViewMode
+            .WordWrap = chkWordWrap.Value
             
             Set fntTemp = agEditor.GetFont
             .FontBold = fntTemp.Bold
@@ -2602,59 +2937,76 @@ Private Sub SaveWindowSettings()
       End With
       
             
+      ' Create storage key.
       
-      
-      lRetval = RegCreateKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, "", 0, _
+      lRetVal = RegCreateKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, "", 0, _
                   KEY_ALL_ACCESS, ByVal 0, lKey, lNewOrUsed)
-      If lRetval <> 0 Then MsgBox "RegCreateKey Failed: " & lKey
+      If lRetVal <> 0 Then MsgBox "RegCreateKey Failed: " & lKey
+      
+      ' Store the Window Settings.
       
       lValueSize = LenB(mudtSettings)
-      lRetval = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, _
+      lRetVal = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, _
                   ByVal mudtSettings, lValueSize)
-      If lRetval <> 0 Then MsgBox "RegSetValueEx Failed.  settings: " & _
+      If lRetVal <> 0 Then MsgBox "RegSetValueEx Failed.  settings: " & _
                   LenB(mudtSettings) & " " & lKey, , App.Title
       
+      ' Store the File Settings.
+      
       lValueSize = LenB(mudtCurrentFileSettings)
-      lRetval = RegSetValueExAny(lKey, "agEditor", 0, REG_NONE, _
+      lRetVal = RegSetValueExAny(lKey, "agEditor", 0, REG_NONE, _
                   ByVal mudtCurrentFileSettings, lValueSize)
-      If lRetval <> 0 Then MsgBox "RegSetValueEx Failed.  mudtCurrentFileSettings: " & _
+      If lRetVal <> 0 Then MsgBox "RegSetValueEx Failed.  mudtCurrentFileSettings: " & _
                   LenB(mudtCurrentFileSettings) & " " & lKey, , App.Title
       
+      ' Store Bookmarks.
       
-      For iIndex = 1 To mnuBookmark.Ubound
+      For iIndex = 1 To mnuBookmark.UBound
             lValueSize = LenB(mnuBookmark(iIndex).Tag)
-            lRetval = RegSetValueExString(lKey, "Bookmark" & CStr(iIndex), 0, REG_SZ, _
+            lRetVal = RegSetValueExString(lKey, "Bookmark" & CStr(iIndex), 0, REG_SZ, _
                         ByVal mnuBookmark(iIndex).Tag, lValueSize)
       Next iIndex
       
-      For iIndex = mnuBookmark.Ubound + 1 To mudtSettings.BookmarkCount
+      For iIndex = mnuBookmark.UBound + 1 To mudtSettings.BookmarkCount
             RegDeleteValue lKey, "Bookmark" & CStr(iIndex)
+      Next iIndex
+      
+      ' Store History.
+      
+      For iIndex = 1 To mnuFileHistory.UBound
+            lValueSize = LenB(mnuFileHistory(iIndex).Tag)
+            lRetVal = RegSetValueExString(lKey, "History" & CStr(iIndex), 0, REG_SZ, _
+                  ByVal mnuFileHistory(iIndex).Tag, lValueSize)
+      Next iIndex
+      
+      For iIndex = mnuFileHistory.UBound + 1 To mudtSettings.HistoryCount
+            RegDeleteValue lKey, "History" & CStr(iIndex)
       Next iIndex
       
       ' TODO: Gotta remember to delete bookmarks in the regisy that were
       ' deleted in the program!
 
-      lRetval = RegCloseKey(lKey)
+      lRetVal = RegCloseKey(lKey)
 End Sub
 
 Private Sub GetWindowSettings()
-      Dim lRetval As Long, lKey As Long
+      Dim lRetVal As Long, lKey As Long
       Dim lDataType As Long ' receiving only
       Dim lValueSize As Long ' in/out
       Dim poiFirstLine As POINTAPI
       Dim sTemp As String * 255
       Dim fntTemp As New StdFont
-      Dim iBookm As Integer
+      Dim iBookm As Integer, iHistIndex As Integer
       
       Dim udtWindowPlacement As WINDOWPLACEMENT
       Dim rectRestored As RECT
       Dim poiTemp As POINTAPI
       
-      lRetval = RegOpenKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, KEY_QUERY_VALUE, lKey)
+      lRetVal = RegOpenKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, KEY_QUERY_VALUE, lKey)
       
       lValueSize = LenB(mudtSettings)
-      lRetval = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal mudtSettings, lValueSize)
-      If lRetval = 0 Then
+      lRetVal = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal mudtSettings, lValueSize)
+      If lRetVal = 0 Then
             With mudtSettings
                   mfSkipFormResize = True
                   BrowserResizeHorizontal .BrowserWidth
@@ -2665,12 +3017,18 @@ Private Sub GetWindowSettings()
                   lvwBrowser.SortOrder = .SortMethod
                   If agEditor.Tag = "" Then agEditor.Tag = Trim(CstringToVBstring(.AutoLoadFile))
                   
-                  For iBookm = 1 To mudtSettings.BookmarkCount ' TODO: THIS BEFORE SETTINGS... SOMEHOW...
+                  For iBookm = 1 To .BookmarkCount ' TODO: THIS BEFORE SETTINGS... SOMEHOW...
                         lValueSize = 255 * 2
-                        lRetval = RegQueryValueExString(lKey, "Bookmark" & CStr(iBookm), 0, lDataType, _
+                        lRetVal = RegQueryValueExString(lKey, "Bookmark" & CStr(iBookm), 0, lDataType, _
                                     ByVal sTemp, lValueSize)
                         AddToBookmarks Left(sTemp, lValueSize - 1) ' size included the null
                   Next iBookm
+                  
+                  For iHistIndex = 1 To .HistoryCount
+                        lValueSize = 255 * 2
+                        lRetVal = RegQueryValueExString(lKey, "History" & CStr(iHistIndex), 0, lDataType, ByVal sTemp, lValueSize)
+                        AddToHistory Left(sTemp, lValueSize - 1)
+                  Next iHistIndex
       
                   cboPath = Trim(CstringToVBstring(.cboPath))
       
@@ -2691,13 +3049,14 @@ Private Sub GetWindowSettings()
             cboPath = ""
       End If
       
-      If Trim(Command()) = "" Then
+      If Trim(Command()) = "" Then ' no command line argument was given
             lValueSize = LenB(mudtCurrentFileSettings)
-            lRetval = RegQueryValueExAny(lKey, "agEditor", 0, lDataType, ByVal mudtCurrentFileSettings, lValueSize)
-            If lRetval = 0 Then
+            lRetVal = RegQueryValueExAny(lKey, "agEditor", 0, lDataType, ByVal mudtCurrentFileSettings, lValueSize)
+            If lRetVal = 0 Then
                   With mudtCurrentFileSettings
-                        agEditor.ViewMode = .WordWrap
-                        
+                        chkWordWrap.Value = .WordWrap
+                        chkWordWrap_Click
+                  
                         fntTemp.Bold = .FontBold
                         fntTemp.Charset = .FontCharset
                         fntTemp.Italic = .FontItalic

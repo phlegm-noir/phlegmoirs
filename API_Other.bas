@@ -214,4 +214,6 @@ Public Const FOF_NORECURSION As Long = &H1000
 Public Const FOF_NOCONFIRMMKDIR As Long = &H200
 Public Const FOF_ALLOWUNDO = &H40
 
+Public Declare Function GetLastError Lib "kernel32.dll" () As Long
+Public Const ERROR_CANCELLED As Long = 1223&
 
