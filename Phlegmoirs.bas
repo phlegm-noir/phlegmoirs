@@ -72,6 +72,7 @@ Public Type TBrowserData
       GoingToParent As Boolean
       BookmarkMode As Boolean
       DrivesMode As Boolean
+      HistoryMode As Boolean
       ValidPath As Boolean
       Error As Boolean
       ListEmpty As Boolean
@@ -87,8 +88,8 @@ Public Type TImageData
       OutPic As Object
       DefaultHeight As Integer
       DefaultWidth As Integer
-      PrevX As Integer
-      PrevY As Integer
+      PrevX As Single
+      PrevY As Single
       
       Dragging As Boolean
       Moved As Boolean
@@ -99,12 +100,13 @@ End Type
 ' Global enumerations
 ' *************************************************************
 
-
-Enum EFileType
+' eMode is meant to encompass browser modes, editor modes, and file types.
+Enum eMode
       Directory = 1
+      Properties = 2
       Drive = 3
       Text = 4
-      Other = 5
+      other = 5
       Picture = 6
       Error = 7
       Bookmark = 8
@@ -114,7 +116,7 @@ Enum EFileType
       rtf = 12
 End Enum
 
-Enum EStat
+Enum eStat
       BrowserStats = 1
       Stats = 2
       Modified = 3
@@ -122,12 +124,12 @@ Enum EStat
       Tips = 5
 End Enum
 
-Enum EDirection
+Enum eDirection
       Forward = 1
       back = -1
 End Enum
 
-Enum EQuery
+Enum eQuery
       Find = 0
 End Enum
 
@@ -142,10 +144,10 @@ Public objtest As Object
 Public gFSO As Object  ' nothing I hate more than declaring one of these in each function, for one tiny little purpose.
 Public gBrowserData As TBrowserData
 Public gImageData As TImageData
-Public giEditorMode As Integer  ' use EFileType
+Public giEditorMode As eMode  ' use eMode
 Public gfFullScreenMode As Integer
 
-Public Const MoveIncrement = 512
+Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 Public QUOT As String ' = Chr(34) can't do this in the declaration, I see!
 
@@ -329,19 +331,18 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                         .pt.Y = MAKEPOINT(lParam).Y - recClient.Top
                   End With
                   lRetVal = SendMessage(hwnd, LVM_HITTEST, ByVal 0, HitTestInfo)
-                  Debug.Print "from wm_mousewheel:     x: "; HitTestInfo.pt.X & " y: " & HitTestInfo.pt.Y & "   " & HitTestInfo.flags
+'                  Debug.Print "from wm_mousewheel:     x: "; HitTestInfo.pt.X & " y: " & HitTestInfo.pt.Y & _
+                        "   " & HitTestInfo.flags & "    wheel turns: " & lWheelTurns
 
-'                  If (HitTestInfo.flags And LVHT_BELOW) Or (HitTestInfo.flags And LVHT_ABOVE) Then
-                  If Not CBool(HitTestInfo.flags And LVHT_TORIGHT) Then
+                  If (HitTestInfo.flags And LVHT_BELOW) Or (HitTestInfo.flags And LVHT_ABOVE) Then
+'                  If Not CBool(HitTestInfo.flags And LVHT_TORIGHT) Then
                         
                   ' For the moment, as you can see above, I'm commenting out the above/below condition.
                   ' I'm thinking it's better to always mousewheel left/right, and scroll manually for updown.
                   ' Since the listview is pretty thin, and the scrollbar is just right there begging to be touched.
                   ' Also, we DO NOT want them attempting left/right buttons to move the scrollbar!
                   ' That'll find them in some hot water, but at least it doesn't open files (just folders/drives).
-                  
-                  ' On second thought, letting it scroll up/down ONLY if hovering over the vscrollbar.
-                  
+                                    
                         Dim iTurn As Integer
                         If lWheelTurns > 0 Then
                               For iTurn = 1 To lWheelTurns * 3
@@ -775,3 +776,58 @@ End Function
 '      End If
 '
 'End Sub
+
+
+
+
+
+Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
+      ' Retrieve the informations contained into the standard ID3 tag
+      ' of the specified MP3 file
+      ' Return an array of 6 elements with the following meaning:
+      '   - index 0: song title
+      '   - index 1: artist
+      '   - index 2: album
+      '   - index 3: year
+      '   - index 4: comment
+      '   - index 5: genre: this is an integer value --> use any MP3 player,
+      '  such as Winamp,
+      '       to look for the descriptions
+
+'      Dim infoRet(5) As String
+'      Dim mp3info As MP3TagInfo
+      
+      On Error Resume Next
+      ' open the specified file
+      Open sFileName For Binary As #1
+      ' fill the strct's fileds
+      
+      With mp3info
+            Get #1, FileLen(sFileName) - 127, .tag
+            If Not .tag = "TAG" Then
+                  Close #1
+                  Exit Function
+            End If
+            Get #1, , .title
+            Get #1, , .artist
+            Get #1, , .album
+            Get #1, , .year
+            Get #1, , .comment
+            Get #1, , .genre
+            Close #1
+      End With
+      
+      ' I'm altering what I copied.  This will pass on the structre instead of returning a string array.
+
+'      ' from struct to array
+'      infoRet(0) = Trim$(mp3info.title)
+'      infoRet(1) = Trim$(mp3info.artist)
+'      infoRet(2) = Trim$(mp3info.album)
+'      infoRet(3) = Trim$(mp3info.year)
+'      infoRet(4) = Trim$(mp3info.comment)
+'      infoRet(5) = CInt(Asc(Trim$(mp3info.genre))) - 1
+'      'return the array
+'      GetMP3Info = infoRet
+End Function
+
+

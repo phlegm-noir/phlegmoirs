@@ -1,53 +1,71 @@
 VERSION 5.00
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{35E55124-D2A7-4467-955F-19C1DCB7F1CB}#1.1#0"; "RichEdit.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{6D940288-9F11-11CE-83FD-02608C3EC08A}#2.2#0"; "ImgEdit.ocx"
+Object = "{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}#1.1#0"; "shdocvw.dll"
 Begin VB.Form frmAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "phlegmoirs - UNREGISTERED"
-   ClientHeight    =   9825
+   ClientHeight    =   9690
    ClientLeft      =   2340
    ClientTop       =   1935
-   ClientWidth     =   10410
+   ClientWidth     =   10275
    ClipControls    =   0   'False
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6781.39
+   ScaleHeight     =   6688.211
    ScaleMode       =   0  'User
-   ScaleWidth      =   9775.528
+   ScaleWidth      =   9648.756
    ShowInTaskbar   =   0   'False
-   Begin RichTextLib.RichTextBox RichTextBox1 
-      Height          =   2655
-      Left            =   4200
+   Begin SHDocVwCtl.WebBrowser WebBrowser1 
+      Height          =   6375
+      Left            =   240
       TabIndex        =   13
-      Top             =   3360
-      Width           =   4335
-      _ExtentX        =   7646
-      _ExtentY        =   4683
-      _Version        =   393217
-      TextRTF         =   $"About.frx":0000
+      Top             =   3000
+      Width           =   3855
+      ExtentX         =   6800
+      ExtentY         =   11245
+      ViewMode        =   0
+      Offline         =   0
+      Silent          =   0
+      RegisterAsBrowser=   0
+      RegisterAsDropTarget=   1
+      AutoArrange     =   0   'False
+      NoClientEdge    =   0   'False
+      AlignLeft       =   0   'False
+      NoWebView       =   0   'False
+      HideFileNames   =   0   'False
+      SingleClick     =   0   'False
+      SingleSelection =   0   'False
+      NoFolders       =   0   'False
+      Transparent     =   0   'False
+      ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
+      Location        =   ""
    End
-   Begin RECtl.RichEdit RichEdit1 
-      Height          =   3015
+   Begin ImgeditLibCtl.ImgEdit imgEdit 
+      Height          =   6495
       Left            =   4320
       TabIndex        =   12
-      Top             =   120
-      Width           =   4335
-      _ExtentX        =   7646
-      _ExtentY        =   5318
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Verdana"
-         Size            =   24
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   -9999997
-      HideSelection   =   -1  'True
+      Top             =   2880
+      Width           =   5775
+      _Version        =   131074
+      _ExtentX        =   10186
+      _ExtentY        =   11456
+      _StockProps     =   96
+      BorderStyle     =   1
+      Image           =   "F:\Dox\My Pictures\oizo.gif"
+      ImageControl    =   "ImgEdit1"
+      UndoBufferSize  =   58651392
+      OcrZoneVisibility=   -3516
+      AnnotationOcrType=   25801
+      ForceFileLinking1x=   -1  'True
+      MagnifierZoom   =   25801
+      sReserved1      =   -3516
+      sReserved2      =   -3516
+      lReserved1      =   1241728
+      lReserved2      =   1241728
+      bReserved1      =   -1  'True
+      bReserved2      =   -1  'True
    End
    Begin VB.Timer timReg 
       Interval        =   2500
@@ -124,9 +142,9 @@ Begin VB.Form frmAbout
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1575
-      Left            =   6120
+      Left            =   240
       TabIndex        =   5
-      Top             =   6120
+      Top             =   7680
       Width           =   2535
       Begin VB.OptionButton optUnregistered 
          Caption         =   "Unregistered"
@@ -172,7 +190,7 @@ Begin VB.Form frmAbout
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   240
-      Picture         =   "About.frx":008B
+      Picture         =   "About.frx":0000
       ScaleHeight     =   337.12
       ScaleMode       =   0  'User
       ScaleWidth      =   337.12
@@ -184,300 +202,11 @@ Begin VB.Form frmAbout
       Cancel          =   -1  'True
       Caption         =   "OK"
       Default         =   -1  'True
-      Height          =   345
-      Left            =   2040
+      Height          =   2385
+      Left            =   5400
       TabIndex        =   0
-      Top             =   2640
-      Width           =   1260
-   End
-   Begin TabDlg.SSTab SSTab1 
-      Height          =   5895
-      Left            =   1080
-      TabIndex        =   14
-      Top             =   7080
-      Visible         =   0   'False
-      Width           =   5055
-      _ExtentX        =   8916
-      _ExtentY        =   10398
-      _Version        =   393216
-      Style           =   1
-      Tabs            =   1
-      TabHeight       =   520
-      ShowFocusRect   =   0   'False
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      TabCaption(0)   =   "File Properties"
-      TabPicture(0)   =   "About.frx":0955
-      Tab(0).ControlEnabled=   -1  'True
-      Tab(0).Control(0)=   "fraProperties1"
-      Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).Control(1)=   "fraProperties2"
-      Tab(0).Control(1).Enabled=   0   'False
-      Tab(0).ControlCount=   2
-      Begin VB.Frame fraProperties2 
-         Caption         =   "2"
-         Height          =   1215
-         Left            =   240
-         TabIndex        =   29
-         Top             =   4320
-         Width           =   4575
-      End
-      Begin VB.Frame fraProperties1 
-         Caption         =   "1"
-         Height          =   3735
-         Left            =   240
-         TabIndex        =   15
-         Top             =   480
-         Width           =   4575
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Label1"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   8
-            Left            =   480
-            TabIndex        =   28
-            Top             =   2520
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Accessed:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   7
-            Left            =   480
-            TabIndex        =   27
-            Top             =   2160
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Modified:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   6
-            Left            =   480
-            TabIndex        =   26
-            Top             =   1800
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Created:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   5
-            Left            =   480
-            TabIndex        =   25
-            Top             =   1440
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Size:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   4
-            Left            =   480
-            TabIndex        =   24
-            Top             =   1080
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "File Type:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   3
-            Left            =   480
-            TabIndex        =   23
-            Top             =   720
-            Width           =   1215
-         End
-         Begin VB.Label lblPropTitle 
-            Alignment       =   1  'Right Justify
-            Caption         =   "File Name:"
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   0
-            Left            =   480
-            TabIndex        =   22
-            Top             =   360
-            Width           =   1215
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   0
-            Left            =   2040
-            TabIndex        =   21
-            Top             =   360
-            Width           =   1935
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   1
-            Left            =   2040
-            TabIndex        =   20
-            Top             =   720
-            Width           =   1935
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   2
-            Left            =   2040
-            TabIndex        =   19
-            Top             =   1080
-            Width           =   1935
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   3
-            Left            =   2040
-            TabIndex        =   18
-            Top             =   1440
-            Width           =   1935
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   4
-            Left            =   2040
-            TabIndex        =   17
-            Top             =   1800
-            Width           =   1935
-         End
-         Begin VB.Label lblPropValue 
-            BorderStyle     =   1  'Fixed Single
-            BeginProperty Font 
-               Name            =   "Palatino Linotype"
-               Size            =   9
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   375
-            Index           =   5
-            Left            =   2040
-            TabIndex        =   16
-            Top             =   2160
-            Width           =   1935
-         End
-      End
+      Top             =   120
+      Width           =   3300
    End
    Begin VB.Label lblYouJustPressed 
       Caption         =   "You've just pressed this keycode:"
@@ -496,15 +225,6 @@ Begin VB.Form frmAbout
       Top             =   2040
       Width           =   3855
    End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00808080&
-      BorderStyle     =   6  'Inside Solid
-      Index           =   1
-      X1              =   84.515
-      X2              =   5309.398
-      Y1              =   1687.583
-      Y2              =   1687.583
-   End
    Begin VB.Label lblTitle 
       Caption         =   "Application Title"
       ForeColor       =   &H00000000&
@@ -513,15 +233,6 @@ Begin VB.Form frmAbout
       TabIndex        =   3
       Top             =   240
       Width           =   3885
-   End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00FFFFFF&
-      BorderWidth     =   2
-      Index           =   0
-      X1              =   98.6
-      X2              =   5309.398
-      Y1              =   1697.936
-      Y2              =   1697.936
    End
    Begin VB.Label lblVersion 
       Caption         =   "Version"
@@ -560,9 +271,9 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
-      Me.Caption = "About " & App.Title
+      Me.Caption = "About " & App.title
       lblVersion.Caption = "Version " & App.Major & "." & App.Minor & "." & App.Revision
-      lblTitle.Caption = App.Title
+      lblTitle.Caption = App.title
       
       msRedReg(0) = "You have thirty days to enjoy this software free of charge."
       msRedReg(1) = "At the end of the thirty days, please kill yourself."
@@ -580,8 +291,9 @@ Private Sub Form_Load()
       msRedReg(13) = "These messages get nicer when you're registered."
       msRedReg(14) = "...or do they?"
      ' msRedReg() = ""
+     
+     ImgEdit.Display
 End Sub
-
 
 
 Private Sub optRegistered_Click()
@@ -594,29 +306,6 @@ Private Sub optUnregistered_Click()
       lblGreen.Visible = False
 End Sub
 
-Private Sub RichEdit1_MouseMove(Button As Integer, Shift As Integer, x As Long, y As Long, LinkRange As RECtl.Range)
-      Debug.Print "OCX: " & RichEdit1.RangeFromPoint(x, y).EndPos
-      
-      Dim poiTemp As POINTAPI, lRetVal As Long
-      poiTemp.x = x / Screen.TwipsPerPixelX
-      poiTemp.y = y / Screen.TwipsPerPixelY
-      lRetVal = SendMessage(RichEdit1.hwnd, EM_CHARFROMPOS, ByVal 0, poiTemp)
-      Debug.Print "API: " & lRetVal & " " & Timer
-End Sub
-
-Private Sub RichTextBox1_Change()
-
-End Sub
-
-Private Sub RichTextBox1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-      Debug.Print "OCX: " & RichEdit1.RangeFromPoint(x, y).EndPos
-      'richtextbox1.
-      Dim poiTemp As POINTAPI, lRetVal As Long
-      poiTemp.x = x / Screen.TwipsPerPixelX
-      poiTemp.y = y / Screen.TwipsPerPixelY
-      lRetVal = SendMessage(RichEdit1.hwnd, EM_CHARFROMPOS, ByVal 0, poiTemp)
-      Debug.Print "API: " & lRetVal & " " & Timer
-End Sub
 
 Private Sub timReg_Timer()
       miRedMessage = miRedMessage + 1

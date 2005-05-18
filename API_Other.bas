@@ -320,6 +320,17 @@ Public Const LVM_SUBITEMHITTEST As Long = (LVM_FIRST + 57)
       ' p1 = byval 0
       ' p2 = LVHITTESTINFO
       ' returns LVHITTESTINFO.iItem, I believe.  Or -1, if not over an item.
+      
+      
+Public Type MP3TagInfo
+      tag As String * 3
+      title As String * 30
+      artist As String * 30
+      album As String * 30
+      year As String * 4
+      comment As String * 30
+      genre As String * 1
+End Type
 
 
 
