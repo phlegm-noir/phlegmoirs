@@ -1,6 +1,5 @@
 VERSION 5.00
 Object = "{6D940288-9F11-11CE-83FD-02608C3EC08A}#2.2#0"; "ImgEdit.ocx"
-Object = "{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}#1.1#0"; "shdocvw.dll"
 Begin VB.Form frmAbout 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "phlegmoirs - UNREGISTERED"
@@ -17,31 +16,6 @@ Begin VB.Form frmAbout
    ScaleMode       =   0  'User
    ScaleWidth      =   9648.756
    ShowInTaskbar   =   0   'False
-   Begin SHDocVwCtl.WebBrowser WebBrowser1 
-      Height          =   6375
-      Left            =   240
-      TabIndex        =   13
-      Top             =   3000
-      Width           =   3855
-      ExtentX         =   6800
-      ExtentY         =   11245
-      ViewMode        =   0
-      Offline         =   0
-      Silent          =   0
-      RegisterAsBrowser=   0
-      RegisterAsDropTarget=   1
-      AutoArrange     =   0   'False
-      NoClientEdge    =   0   'False
-      AlignLeft       =   0   'False
-      NoWebView       =   0   'False
-      HideFileNames   =   0   'False
-      SingleClick     =   0   'False
-      SingleSelection =   0   'False
-      NoFolders       =   0   'False
-      Transparent     =   0   'False
-      ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
-      Location        =   ""
-   End
    Begin ImgeditLibCtl.ImgEdit imgEdit 
       Height          =   6495
       Left            =   4320
@@ -55,7 +29,7 @@ Begin VB.Form frmAbout
       BorderStyle     =   1
       Image           =   "F:\Dox\My Pictures\oizo.gif"
       ImageControl    =   "ImgEdit1"
-      UndoBufferSize  =   58651392
+      UndoBufferSize  =   56558592
       OcrZoneVisibility=   -3516
       AnnotationOcrType=   25801
       ForceFileLinking1x=   -1  'True
@@ -292,7 +266,7 @@ Private Sub Form_Load()
       msRedReg(14) = "...or do they?"
      ' msRedReg() = ""
      
-     ImgEdit.Display
+     imgEdit.Display
 End Sub
 
 

@@ -1,8 +1,8 @@
-frmMain = 33, 58, 674, 585, Z, 27, 27, 601, 572, C
-modPhlegmoirs = 513, 16, 1142, 561, 
+frmMain = 55, 55, 567, 355, C, 27, 27, 676, 572, C
+modPhlegmoirs = 135, 135, 764, 680, C
 APICaret = 78, 78, 413, 443, C
 APIKeyb = 182, 182, 679, 663, C
-APIMenus = 156, 156, 589, 631, C
+APIMenus = 0, 0, 0, 0, C
 APIMsg = 230, 230, 834, 790, C
 APIOther = 161, 161, 834, 569, C
 APIRegistry = 208, 208, 705, 689, C
