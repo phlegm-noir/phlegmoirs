@@ -1,0 +1,283 @@
+This is going to be a simple (I hope) log of what I HAVE DONE, also, what I've LOOKED INTO.
+
+--
+
+week ending in 10/01
+
+Added Windows API registry functions, finally got them working.
+
+All FileBrowser components now inside conveniently manageable picFileBrowser.
+
+Menu enhancements.
+
+Made v0.7.0
+
+
+--
+
+10/02
+
+Hmm.  Not much!  Yet.
+
+Hey... compiled versions give a "object variable or with block not set" error.  Damn.
+
+OK.  Here.  This is for RegSetValueEx:
+
+"Byval Settings" for lpData = strings are "l i k e   t h i s "
+"Settings" for lpData = strings are "like this"
+
+The former crashes the compiled program.
+The latter gets read wrong when RegQueryValueEx does use "ByVal Settings", and string values within the type get ignored while numbers are preserved.
+
+Passing Settings Byref to RegQueryValueEx crashes both compiled and interpreted versions.
+
+
+--
+
+10/11
+
+...
+
+
+--
+
+11/20
+
+hahahaahahah.  oh my.  this file.  my god.
+
+OK, for the latest build, 8.7, I've added some pretty long-awaited and developmentally tumor-inducing breakthroughs.
+
+File extensions.  We got 'em.  In fact, we got general ? and * filtering, in or out of the extension.  They seem to work.  Much was rewritten to accomodate this.
+
+New structure of type TBrowserData, because that Tag property was fucking pathetic.  Seriously.  The structure is being used, so far, only for the things for which I could not avoid creating the structure.  But it could, and should, serve as a lvwBrowser.Tag replacement, and other things could probably be optimized for it.  This is low priority maintenance, and will have to wait until something else demands it be done.
+
+We have file properties from a call to the windows shell!  They seem to work!
+
+
+--
+
+
+11/26
+
+Rewrote the whole cboPath_Change, BrowserGetFilesAndFolders, and many more to utilize the TBrowserData structure.  ParseData is now called first, to do the parsing, and everything following it is rather a cinch.  That "low priority maintenance" was demanded because we didn't want to reload a dir every time PartialFileName changed.
+
+Finished BrowserExecuteNext and -Prev without using SendKeys, so as soon as I feel like making buttons on the toolbar, all will be ready for that.
+
+Scroll Up button made.
+
+Open and Cancel buttons added to mnuList.
+
+
+...
+
+
+Lots more added!  Improved mouseover functionality.  Improved mouse selection functionality.  Made a beginning of progress on the status bar.  Lists number of files and bytes in lvwBrowser.  Displayes filename on mouseover.  Trying text-only mode for agEditor, since I am so far not using any hyper or rich text.  This gets rid of all the unwanted markup hotkeys, and effortlessly fixes pasting.
+
+Selecting a bookmark from the bookmarks menu will load the file AND locate it in the file browser.
+
+Wordwrap button working.
+
+...
+
+Nearly 4am, and I've made my progress into build v8.8.  Even newer features include:
+
+Save, next, and previous buttons on toolbar.
+
+Crude "File History" list at bottom of File menu.  Is up to speed with registry.
+
+
+--
+
+11/27
+
+Worked on 8.8 and rebuilt a few more times.  Should have left it and gone on to 8.9, since now 8.7-8.8 is the largest single jump since... well, fuck it.  There have been a lot of big jumps.  This one mostly looks big because of the new features added this morning: 
+
+It has its own icon (sized appropriately for all known uses).
+
+The seemingly insurmountable problem with command line arguments turned out to come from unnoticed double quote characters, and has been fixed.
+
+Phlegmoirs is now the system's default text editor.
+
+
+--
+
+12/05
+
+Took a break from this.  Looked into .NET (motherfucking slow crock of shit with irresistable fucking slow features), watched some movies, now I'm back.
+
+picQuery its own entity, fits inside picToolbar but can be moved by setting .Container = something else.
+
+Pictureboxes can be aligned.  It's a far cry from the docking of .NET, and it sucks that no other controls can be docked, but it's still something to remember.
+
+Anyway.  Progress:
+
+Spent much love on the interface.  Almost nothing implemented that was laid out today.  Interface first, always a good thing.  picQuery far from finished buy looking sharp.  Four option buttons for queries, and then another seven menu items under the "..." button.
+
+Forward and back buttons.
+
+Help menu.
+
+Now, off and away!
+
+--
+
+12/08
+
+"Save as" and EditorLoadFile are now passably implemented.
+
+
+--
+
+1/31
+
+Much stuff missed.  Also, took much break to fuck with hardware and learn linux.  I'm somewhat back.
+
+Delving more completely now, into the image browser feature.  Just too useful not to include even at a performance loss.  Not a significant one, though.
+
+When this is accomplished, saving as 0.9.0 regardless of the state of the rest of the app.
+
+Made some other fixes, too.  Floppies, CDRoms, and Network drives have icons.  (So do the image files.)
+
+Made a workable scrolling, resizing image viewer in test app, about to fit that code into phlegmoirs.
+
+
+--
+
+2/17
+
+Was working on options screen for 0.9.2.  Instead of finishing that, made many other badly needed small adjustments.
+
+* Images are navigable and resizeable via a slider and buttons (which disappear) on the toolbar, or by keyboard.  Small and large increments both available for zoom in/out.
+* Many new ways of doing next/previous, including a program-wide Ctrl+bracket.
+* (a while back, unreported) agEditor and lvwBrowser focus on mouseover.
+* Seemingly trouble-free "read only" mode, complete with shading of the editor and save blocking.
+* (also unreported, for v0.9.0) moved code around and rewrote code to make it very easy in the future to perform different actions on different file types.  Image, text, and partial richtext are the only file modes now, but I'm anticipating one for icons embedded in a .dll or .exe, one for mp3 tags, one for file properties in general, and many etcs.
+
+Still need to work some mousewheel in there, but it's understandable that I would not have accomplished that from the laptop in the living room.
+
+
+--
+
+3/14
+
+Working on a muchly improved 0.9.2.  Trimmed the fat which was the whole query system.  Left only the find (haven't even implemented that much though).  Might reinstate dictionary and thesaurus later, as I recall they are rather handy.  But in general, I do not wish to cover for my browser's quicksearch weaknesses through my text editor.  The browsers are getting better everyday, and I should think the can be made to hold their own.
+
+Fixed all known issues involving autofocus of the editor and file browser... except that I'd like to make an exception for the path combo, not leaving it without a click, and going there at any time via F4.
+
+Changed the buttons around.  Zoom slider is now horizontal, spanning the three buttons Word Wrap, Read Only, and Font.  Added a center zoom button and a hide toolbar button.
+
+Mouse wheel now supported for images, which are fully navigable with no keyboard and no toolbar.  Wheel for moving up/down, left click next file, right click previous file, right button + wheel for zoom.
+
+Need support for home/end/pgup/pgdn in picture mode.
+
+Working on a fullscreen image viewer.  No serious hurdles yet.
+
+--
+
+Fixed BrowserExecuteNext/Prev, finally discovered how to fix the problem with the stacking.  Put a DoEvents at the *beginning* of each routine.  So then it waits until the previous picture is loaded before it even begins to do anything.  I must have been swinging blindly in the dark to have put a DoEvents in at all without thinking for a moment about where and why.  Now it loads exactly the picture it claims to be loading.
+
+Fullscreen works now.  All images are loaded to a global gImageData.OutPic pointer, which can be on either the fullscreen form or the main form, so that it never messes with loading both.  Works seamlessly.  I'm amazed.  Perhaps something similar with agEditor wouldn't be that difficult.
+
+--
+
+Last save is now displayed for every text loaded.  Zoom is displayed for every picture.
+
+
+--
+
+3/16/2005
+
+Fixed find next and find previous, apparently to a flawless "T", in terms of getting results in a smooth loop, and numbering the results intelligently (in my opinion).
+
+The layout of the find buttons is far from determined.  But they do function.
+
+Made the status bar's "Ln" and "Col" update on Word Wrap.  Don't know why I never figured out the need for that before.
+
+Next up (after food) is probably gonna be a replace feature.
+
+--
+
+Replace works now, with some default property work on the buttons, so the user will know which will be activated on an Enter.
+
+I've got it not autofocusing on agEditor, for the find and replace text boxes.  That was just annoying.  I should have it also not autofocus on lvwBrowser, for cboPath.
+
+The user definitely needs some kind of indication that things are being replaced, and the replace box covers the find counter, which wouldn't be much good anyway, since it would reset for every replace.
+
+--
+
+I cannot FUCKING believe that I just solved the ".." problem.  I changed on little fucking word.  After doing the hittest for lvwbrowser in mouseup, I was using the selecteditem.  For what exactly?  For keyboard compatibility on a mouseup?  I don't know.  I changed it to the readily available hittest result, and now it works.  Love.
+
+Buttons in place for +/- font size, and menus, and it works because I took off ageditor.textonly.  I think I'll keep it like that a while.  The known drawback is how it affects pasting.  Oh, and all the shortcut keys that suddenly work, but I don't want them to.  So one solution is to live with the rich text features and possibly learn to like them, and the other is to make my own font +/- functions which work with textonly.  It wouldn't be hard.
+
+I wrote an API GetRealFontSize function because it's another area where the .ocx is bug ridden.  CHARFORMAT2 is a monster of a type, but I've tamed him.  So now it saves the proper font size to registry, and you should start the program with the exact same size you left it on.
+
+
+--
+
+3/17/2005
+
+I did it.  I might have spent all day on it and most of yesterday, but I figured out, and fixed, the editor's incapacity to display symbol fonts.  And other such font related problems are fixed along the way.  I'll just paste my inline comments here:
+
+            ' IMPORTANT TO REMEMBER:
+            ' when you set a StdFont's NAME property, you've ALSO set its CHARSET property.
+            ' AUTOMATICALLY.  (possibly same for weight?)
+            ' The problem (one of many) with this agRichEdit control is that even though my
+            ' commondialog set the font name, and therefore the charset, of the StdFont object,
+            ' the editor's stupid SetFont method DOES NOT PASS THE CHARSET on to the
+            ' rich edit control.  It probably uses a CHARFORMAT2, and it must have slipped their
+            ' minds to give its dwMask property the CFM_CHARSET flag!  So that even if they
+            ' DID set the bCharset property to the stdfont.charset value, it would not have
+            ' even SEEN it!
+            
+            ' And it assumes charset = 0, which it is for most fonts.
+            ' And that's why the agEditor won't work with symbol fonts, which have charset = 2.
+            ' UNTIL NOW.  BECAUSE I WENT AROUND THE STUPID SETFONT METHOD!
+
+--
+
+
+For Beulah's sake, I put together some things at the last minute (read: took some live coals off the fire, pasted them into the about form, then removed the about and options forms from the project) and compiled a v0.9.2.  I've made so many advances since v0.9.13 that it's gotten silly.  Not compiling is only the same nearsightedness as not eating or going to the bathroom because I don't want to break my concentration streak.  Beulah doesn't care, because the floppies with the phlegmoirs wouldn't read to her computer.  So she got the typing program, and that's what's important, and the phlegmoirs is all made up with nowhere to go.
+
+I will TRY to list all new stuff that made it into v0.9.2 since v0.9.13, leaving out what was commented or removed at the last minute for completeness.
+
+New features:
+
+File browser columns.  Type, Size, Modified.
+Find/replace.
+Full-screen mode (for pictures only!)
+Mouse-wheel support added for picture mode, and modified 
+Font color.
+Increase/decrease font buttons and menus and hotkeys.
+Many, many new keyboard and mouse shortcuts, most paramountly in picture mode and with the wheel.
+
+Bug fixes:
+
+fixed problem with clicking rapidly on the ".." directory and ending up somewhere else.
+fixed problem with nonconformist font charsets being ignored.
+
+
+
+--
+
+3/25/2005
+
+
+Now, I don't know if I ever got that ^ finished.  But I've done a small amount of work, mostly cleanup, on the next.  Which I presume to be v0.9.3, unless school interrupts and I compile before I have chance to do what I feel can be considered a full tenth step.
+
+Added home, end, pgup, pgdn for picture mode, both windowed and fullscreen.  Mousewheel is fixed (for vertical) to stop wheeling where appropriate.  Arrow key movement continues to slide you off screen, which I feel is an important option to retain, but mostly I use the mousewheel with pictures and mostly I don't go offscreen with it, and that's how it should be.  Er, I mean, directional arrow keys go off screen.  Home/end/pgup/pgdn do not.
+
+Directional keys had been coded (pasted, really) into fullscreen mode.  Trouble is that forms don't capture these four keys.  I had to make a picturebox.  Oh well, y'know.
+
+Properties is up and basically working.  Even includes ID3v1 tags for mp3.  It's such an obviously handy addition that I need to make a way to use it for other than files flagged as "big".  
+
+But that statusbar.  Heh.  I just keep ignoring it down there.  It should've had a whole mess of special clauses for the picture mode, and here I am halfway done with the properties mode having not even given it the time of day.
+
+Fixed yet another bug with displaying the find box at inappropriate times.  
+
+A caption for fullscreen, I done.
+
+And I'm not sure what else I did today.  Huh.
+
+Oh, I did of course put the "about" form back into the code stream... which is a mess, but it sure beats a message box.  But it's a mess for having too many experimental or pointless features, not too few.  The about box has a silly bit of registration humor which needs to either die or be vastly improved, which I won't care to get to until "all" the useful stuff is taken care of.
+
+And I really (kind of) yesterday at least I wanted to do an "office assistant".  Office assisted suicide is legal in oregon, right?

@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
 Begin VB.Form frmMain 
@@ -2272,7 +2272,8 @@ Private Sub EditorSetMode(iMode As eMode)
       
                   giEditorMode = iMode
                   agEditor.Visible = True
-'                  Image1.Picture = LoadPicture
+                  Image1.Visible = False
+                  Image1.Picture = LoadPicture
                   sstProperties.Visible = False
 '                  btnZoomIn.Visible = False
 '                  btnZoomOut.Visible = False
@@ -4142,7 +4143,17 @@ Private Sub mnuFileSaveAs_Click()
       End If
       
       sFileName = InputBox("File name:", "Save", sDefaultPath)
-      fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
+      
+      If Len(agEditor.tag) > 100 Then
+            Dim f, ts 'TODO: FIX FOR WHEN FILE DOESN'T EXIST YET
+            Set ts = gFSO.opentextfile(sFileName, 8) ' 8 = ForAppending
+            ts.write (agEditor.Text)
+            ts.Close
+            fSuccess = True
+      Else
+            fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
+      End If
+      
       dteSaveTime = Now
       
       If Not fSuccess Then  ' That SaveToFile gives an error after successfully saving a blank.  Make special case for it.
@@ -5012,7 +5023,16 @@ Private Sub mnuFileSave_Click()
             Exit Sub
       End If
       
-      fSuccess = agEditor.SaveToFile(agEditor.tag, SF_TEXT)
+      ' TODO: file name too long can't save.  need fix here and in mnuFileSaveAs
+      If Len(agEditor.tag) > 100 Then
+            Dim f, ts
+            Set ts = gFSO.opentextfile(agEditor.tag, 8) ' 8 = ForAppending
+            ts.write (agEditor.Text)
+            ts.Close
+            fSuccess = True
+      Else
+            fSuccess = agEditor.SaveToFile(agEditor.tag, SF_TEXT)
+      End If
       dteSaveTime = Now
 
       If fSuccess Then
@@ -5317,13 +5337,24 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
             
             Select Case iMode
                   
-                  ' TODO: MUCH BIGGER PROBLEM WITH LOADFROMFILE:
+                  ' BIG PROBLEM WITH LOADFROMFILE:  (seems fixed in 2010)
                   ' can't handle too long a filename.  127 characters was too long.  I dunno the limit just yet.
+                  ' TODO can't save either FUCKERS
                   
                   Case eMode.Text, eMode.other, eMode.rtf
                         ' pass along the boolean return value, if anyone wants it.
                         If Not gfFullScreenMode Then
-                              fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
+                              ' here I will cheat and open the file a different way for a long pathname
+                              If Len(sFileName) > 100 Then
+                                    Dim f, ts
+                                    Set f = gFSO.getfile(sFileName)
+                                    Set ts = f.openastextstream(1) ' 1= ForReading
+                                    agEditor.Text = ts.readall()
+                                    ts.Close
+                                    fLoadSuccess = True
+                              Else
+                                    fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
+                              End If
                         Else
                               fLoadSuccess = True
                         End If

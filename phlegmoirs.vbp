@@ -1,6 +1,6 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\WINNT\System32\stdole2.tlb#OLE Automation
-Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0; MSCOMCTL.OCX
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0; mscomctl.ocx
 Object={F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0; comdlg32.ocx
 Object={DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0; agRichEdit.ocx
 Form=Main.frm
@@ -15,8 +15,6 @@ Module=APISubclass; API_Subclassing.bas
 Form=FullScreen.frm
 Object={BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0; TABCTL32.OCX
 Form=About.frm
-Object={6D940288-9F11-11CE-83FD-02608C3EC08A}#2.2#0; ImgEdit.ocx
-Object={EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}#1.1#0; shdocvw.dll
 IconForm="frmMain"
 Startup="frmMain"
 HelpFile=""
