@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
@@ -9,12 +9,12 @@ Begin VB.Form frmMain
    ClientHeight    =   8250
    ClientLeft      =   135
    ClientTop       =   675
-   ClientWidth     =   11175
+   ClientWidth     =   10200
    Icon            =   "Main.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   8250
-   ScaleWidth      =   11175
+   ScaleWidth      =   10200
    Begin VB.PictureBox picEditor 
       BorderStyle     =   0  'None
       Height          =   6960
@@ -784,18 +784,18 @@ Begin VB.Form frmMain
       Height          =   600
       Left            =   0
       ScaleHeight     =   540
-      ScaleWidth      =   11115
+      ScaleWidth      =   10140
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   0
-      Width           =   11175
+      Width           =   10200
       Begin VB.PictureBox picQuery 
          ClipControls    =   0   'False
          Height          =   600
-         Left            =   6000
+         Left            =   4800
          ScaleHeight     =   540
          ScaleWidth      =   4035
-         TabIndex        =   62
+         TabIndex        =   58
          TabStop         =   0   'False
          Top             =   -25
          Visible         =   0   'False
@@ -805,7 +805,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   69
+            TabIndex        =   65
             ToolTipText     =   "Replace"
             Top             =   290
             Visible         =   0   'False
@@ -816,7 +816,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   68
+            TabIndex        =   64
             ToolTipText     =   "Search within file (Ctrl+F)"
             Top             =   0
             Width           =   2175
@@ -835,7 +835,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   175
             Left            =   3840
-            TabIndex        =   67
+            TabIndex        =   63
             TabStop         =   0   'False
             ToolTipText     =   "Hide Toolbar (F7)"
             Top             =   0
@@ -857,7 +857,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":5502
             Style           =   1  'Graphical
-            TabIndex        =   66
+            TabIndex        =   62
             TabStop         =   0   'False
             ToolTipText     =   "Find Next (F3)"
             Top             =   270
@@ -879,7 +879,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":564C
             Style           =   1  'Graphical
-            TabIndex        =   65
+            TabIndex        =   61
             TabStop         =   0   'False
             ToolTipText     =   "Find Previous (Shift+F3)"
             Top             =   270
@@ -900,7 +900,7 @@ Begin VB.Form frmMain
             Height          =   285
             Left            =   2640
             Style           =   1  'Graphical
-            TabIndex        =   64
+            TabIndex        =   60
             TabStop         =   0   'False
             ToolTipText     =   "More search options (Alt+period)"
             Top             =   0
@@ -922,7 +922,7 @@ Begin VB.Form frmMain
             Left            =   2640
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":5796
-            TabIndex        =   63
+            TabIndex        =   59
             TabStop         =   0   'False
             ToolTipText     =   "Replace (Ctrl+R)"
             Top             =   270
@@ -941,7 +941,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   375
             Left            =   3480
-            TabIndex        =   71
+            TabIndex        =   67
             Top             =   120
             Width           =   570
          End
@@ -959,99 +959,10 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   180
             Left            =   30
-            TabIndex        =   70
+            TabIndex        =   66
             Top             =   60
             Width           =   465
          End
-      End
-      Begin VB.CommandButton btnHTML 
-         Appearance      =   0  'Flat
-         Caption         =   "I"
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   300
-         Index           =   4
-         Left            =   5400
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":58E0
-         TabIndex        =   59
-         TabStop         =   0   'False
-         Top             =   270
-         Width           =   615
-      End
-      Begin VB.CommandButton btnHTML 
-         Appearance      =   0  'Flat
-         Caption         =   "B"
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   300
-         Index           =   3
-         Left            =   4800
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":5A2A
-         TabIndex        =   58
-         TabStop         =   0   'False
-         Top             =   270
-         Width           =   615
-      End
-      Begin VB.CommandButton btnHTML 
-         Appearance      =   0  'Flat
-         Caption         =   "lj-pq"
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Index           =   2
-         Left            =   5400
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":5B74
-         TabIndex        =   61
-         TabStop         =   0   'False
-         Tag             =   "type='radio'"
-         Top             =   0
-         Width           =   615
-      End
-      Begin VB.CommandButton btnHTML 
-         Appearance      =   0  'Flat
-         Caption         =   "lj-pi"
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Index           =   1
-         Left            =   4800
-         MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":5CBE
-         TabIndex        =   60
-         TabStop         =   0   'False
-         Top             =   0
-         Width           =   615
       End
       Begin VB.CommandButton btnToolbarClose 
          Caption         =   "X"
@@ -1085,7 +996,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   6240
-         Picture         =   "Main.frx":5E08
+         Picture         =   "Main.frx":58E0
          Style           =   1  'Graphical
          TabIndex        =   21
          TabStop         =   0   'False
@@ -1127,7 +1038,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   4200
-         Picture         =   "Main.frx":624A
+         Picture         =   "Main.frx":5D22
          Style           =   1  'Graphical
          TabIndex        =   14
          TabStop         =   0   'False
@@ -1147,7 +1058,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   3600
-         Picture         =   "Main.frx":668C
+         Picture         =   "Main.frx":6164
          Style           =   1  'Graphical
          TabIndex        =   15
          TabStop         =   0   'False
@@ -1314,7 +1225,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   6240
-         Picture         =   "Main.frx":6ACE
+         Picture         =   "Main.frx":65A6
          Style           =   1  'Graphical
          TabIndex        =   20
          TabStop         =   0   'False
@@ -1375,7 +1286,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   1200
-         Picture         =   "Main.frx":6F10
+         Picture         =   "Main.frx":69E8
          Style           =   1  'Graphical
          TabIndex        =   16
          TabStop         =   0   'False
@@ -1396,7 +1307,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   600
-         Picture         =   "Main.frx":7352
+         Picture         =   "Main.frx":6E2A
          Style           =   1  'Graphical
          TabIndex        =   22
          TabStop         =   0   'False
@@ -1408,7 +1319,7 @@ Begin VB.Form frmMain
          CausesValidation=   0   'False
          Height          =   570
          Left            =   0
-         Picture         =   "Main.frx":755C
+         Picture         =   "Main.frx":7034
          Style           =   1  'Graphical
          TabIndex        =   19
          TabStop         =   0   'False
@@ -1442,8 +1353,8 @@ Begin VB.Form frmMain
       Left            =   0
       TabIndex        =   0
       Top             =   7950
-      Width           =   11175
-      _ExtentX        =   19711
+      Width           =   10200
+      _ExtentX        =   17992
       _ExtentY        =   529
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
@@ -2882,11 +2793,6 @@ Private Sub btnFullScreen_Click()
       frmFullScreen.Show
 End Sub
 
-Private Sub btnHTML_Click(Index As Integer)
-      agEditor.InsertContents SF_TEXT, "<" & btnHTML(Index).Caption & " " & btnHTML(Index).tag & ">" & _
-            agEditor.SelectedText & "</" & btnHTML(Index).Caption & ">"
-End Sub
-
 Private Sub btnNewFile_Click()
       mnuFileNew_Click
 End Sub
@@ -4179,7 +4085,7 @@ Private Sub mnuHelpAbout_Click()
 End Sub
 
 Private Sub mnuHelpReadme_Click()
-      EditorLoadFile CurDir & "\progress.txt"
+      EditorLoadFile CurDir & "\README.md"
 End Sub
 
 Private Sub mnuList_Click()
@@ -4540,9 +4446,6 @@ Private Sub sliZoom_Scroll()
       ImageSetZoom (sliZoom.Value)
 End Sub
 
-
-
-
 Private Sub txtFind_Change()
       If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
             btnReplace.Enabled = True
@@ -4614,10 +4517,6 @@ Private Sub agEditor_KeyDown(KeyCode As Integer, Shift As Integer)
             Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
                   If Shift = 0 And chkReadOnly.Value = vbChecked Then BrowserExecutePrev
             
-            Case vbKey0, vbKey1, vbKey2, vbKey3, vbKey4
-                  If Shift = vbCtrlMask Then
-                        btnHTML_Click (KeyCode - vbKey0)
-                  End If
 '            Case vbKeyAdd
 '                  If Shift = vbAltMask Then
 '                        SendMessage agEditor.RichEdithWnd, EM_SETFONTSIZE, ByVal 1, 0
@@ -5157,6 +5056,11 @@ Private Sub RearrangeControls()
       
       picBrowser.Move 0, iEdTop - topmargin, picBrowser.Width, iEdHeight + topmargin
       picEditor.Move iEdLeft, iEdTop, iEdWidth, iEdHeight
+      If lvwBrowser.Width > 4905 Then
+        picEditor.Top = 840
+      Else
+        picEditor.Top = 0
+      End If
       agEditor.Move 0, 0, iEdWidth, iEdHeight
       
       lvwBrowser.Height = iEdHeight - lvwBrowser.Top + topmargin
@@ -5181,6 +5085,7 @@ Private Sub RearrangeControls()
                       .ymax = agEditor.LineCount
                   End With
                   FillStats
+                  staTusBar1.Panels(eStat.Tips).Width = frmMain.Width
             End If
       End If
       
