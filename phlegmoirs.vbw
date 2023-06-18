@@ -1,11 +1,11 @@
-frmMain = 624, 0, 1248, 722, , 0, 0, 624, 722, C
-modPhlegmoirs = 0, 0, 0, 0, C
+frmMain = 461, 1, 1527, 896, , 592, 63, 1216, 785, C
+modPhlegmoirs = 799, 0, 1598, 699, I
 APICaret = 0, 0, 0, 0, C
 APIKeyb = 0, 0, 0, 0, C
 APIMenus = 0, 0, 0, 0, C
 APIMsg = 0, 0, 0, 0, C
 APIOther = 0, 0, 0, 0, C
 APIRegistry = 0, 0, 0, 0, C
-APISubclass = 0, 0, 0, 0, C
-frmFullScreen = 0, 0, 0, 0, C, 0, 0, 0, 0, C
-frmAbout = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+APISubclass = 26, 26, 1245, 668, C
+frmFullScreen = 0, 0, 0, 0, C, 156, 156, 927, 772, C
+frmAbout = 78, 78, 849, 694, Z, 286, 286, 1505, 928, C

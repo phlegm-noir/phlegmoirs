@@ -1,20 +1,20 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.Form frmMain 
    AutoRedraw      =   -1  'True
    Caption         =   "(New File)"
    ClientHeight    =   8250
    ClientLeft      =   135
    ClientTop       =   675
-   ClientWidth     =   10200
+   ClientWidth     =   11760
    Icon            =   "Main.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   8250
-   ScaleWidth      =   10200
+   ScaleWidth      =   11760
    Begin VB.PictureBox picEditor 
       BorderStyle     =   0  'None
       Height          =   6960
@@ -784,11 +784,11 @@ Begin VB.Form frmMain
       Height          =   600
       Left            =   0
       ScaleHeight     =   540
-      ScaleWidth      =   10140
+      ScaleWidth      =   11700
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   0
-      Width           =   10200
+      Width           =   11760
       Begin VB.PictureBox picQuery 
          ClipControls    =   0   'False
          Height          =   600
@@ -1353,8 +1353,8 @@ Begin VB.Form frmMain
       Left            =   0
       TabIndex        =   0
       Top             =   7950
-      Width           =   10200
-      _ExtentX        =   17992
+      Width           =   11760
+      _ExtentX        =   20743
       _ExtentY        =   529
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
@@ -1601,7 +1601,7 @@ Begin VB.Form frmMain
    Begin VB.Menu mnuHelp 
       Caption         =   "&Help"
       Begin VB.Menu mnuHelpReadme 
-         Caption         =   "&Readme.txt"
+         Caption         =   "&README.md"
       End
       Begin VB.Menu mnuHelpDiv1 
          Caption         =   "-"
@@ -1740,7 +1740,7 @@ Dim msTestArray() As String
 ' App related variables
 ' *************************************************************
 Const Debugging = False
-Const msSettingsVersion = "0.9.2" ' Not the current build number, but the last time I changed the registry structure.
+Const msSettingsVersion = "0.10.0" ' Not the current build number, but the last time I changed the registry structure.
 
 ' *************************************************************
 ' General/Settings variables
@@ -2148,7 +2148,7 @@ Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Int
       Else
             iRealWidth = iSupposedWidth
       End If
-      
+       
       iOffset = iRealWidth - picBrowser.Width
       
       picBrowser.Width = iRealWidth
@@ -2248,7 +2248,7 @@ Private Sub EditorSetMode(iMode As eMode)
                   chkWordWrap.Visible = True
                   btnFullScreen.Visible = False
 '                  chkReadOnly.Visible = True
-                  If Not mfHideFind And mnuViewToolbar.Checked Then picQuery.Visible = True
+                  If Not mfHideFind Then picQuery.Visible = False
                   
                   sliZoom.Visible = False
                   btnZoomIn.Move 3240, 320, 375, 252
@@ -2261,6 +2261,7 @@ Private Sub EditorSetMode(iMode As eMode)
                   staTusBar1.Panels(eStat.Stats).Visible = False
                   staTusBar1.Panels(eStat.SelText).Visible = False
       End Select
+      RearrangeControls
 
 End Sub
 
@@ -2271,7 +2272,7 @@ Private Function FileTypeFromExtension(sEx As String) As String
       ' Current possible modes:   EMode.text, EMode.rtf, EMode.picture
       
       Select Case sEx
-            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur"
+            Case "bmp", "gif", "jpg", "jpeg", "png", "ico", "cur"
                   FileTypeFromExtension = eMode.Picture
             Case "rtf"
                   FileTypeFromExtension = eMode.rtf
@@ -4021,18 +4022,16 @@ Private Sub mnuFileRename_Click()
 End Sub
 Private Sub mnuFileSaveAs_Click()
       Dim sDefaultPath As String, sFileName As String
-      Dim fSuccess As Boolean
-      Dim dteSaveTime As Date
       Dim vDate As Variant
-
+      
       If Not agEditor.Visible Then
-            Caption = "ERROR: can't save in image mode."
+            Caption = "ERROR: can only save in editor mode."
             Exit Sub
       ElseIf chkReadOnly.Value = vbChecked Then
             Caption = "ERROR: can't save in Read Only mode."
             Exit Sub
       End If
-      
+
       vDate = Date
       msPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & _
             "-" & Format(Day(vDate), "0#")
@@ -4049,34 +4048,7 @@ Private Sub mnuFileSaveAs_Click()
       End If
       
       sFileName = InputBox("File name:", "Save", sDefaultPath)
-      
-      If Len(agEditor.tag) > 100 Then
-            Dim f, ts 'TODO: FIX FOR WHEN FILE DOESN'T EXIST YET
-            Set ts = gFSO.opentextfile(sFileName, 8) ' 8 = ForAppending
-            ts.write (agEditor.Text)
-            ts.Close
-            fSuccess = True
-      Else
-            fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
-      End If
-      
-      dteSaveTime = Now
-      
-      If Not fSuccess Then  ' That SaveToFile gives an error after successfully saving a blank.  Make special case for it.
-            If FileExists(sDefaultPath) And agEditor.Text = "" Then fSuccess = True
-      End If  ' TODO: should have checked for zero file length to match agEditor emptiness.
-
-      If fSuccess Then
-            staTusBar1.Panels(eStat.Modified) = ""
-            agEditor.tag = sFileName
-            Caption = sFileName & "  (" & Format(agEditor.CharacterCount, "#,#0") & " bytes saved on " _
-                  & dteSaveTime & ")"
-            btnRefresh_Click
-            btnCurrentDirectory_Click
-      
-      ElseIf sFileName <> "" Then  ' Empty string would have meant the user hit "Cancel".
-            frmMain.Caption = "ERROR: cannot save to " & sFileName
-      End If
+      If sFileName <> "" Then SaveFile sFileName
 End Sub
 
 Private Sub mnuHelpAbout_Click()
@@ -4144,13 +4116,16 @@ Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, X As Singl
       Dim iOffset As Integer
 
       If lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "Resizing" Then
+            Dim prevLeft As Long
+            prevLeft = lblDivider.Left
             With picEditor
-'                  .Visible = False
                   iOffset = BrowserResizeHorizontal(X + lblDivider.Left)
                   .Move .Left + iOffset, .Top, .Width - iOffset, .Height
                   agEditor.Move 0, 0, picEditor.Width, picEditor.Height
-'                  .Visible = True
             End With
+            If X <> 0 Then
+                RearrangeControls
+            End If
       Else
             lblDivider.MousePointer = vbSizeWE
       End If
@@ -4241,8 +4216,11 @@ Private Sub mnuQuery_Click()
 End Sub
 
 Private Sub mnuQueryClose_Click()
-      mfHideFind = True
-      picQuery.Visible = False
+      If Not mfHideFind Then
+            mfHideFind = True
+            picQuery.Visible = False
+            RearrangeControls
+      End If
 End Sub
 
 
@@ -4297,9 +4275,12 @@ Private Sub mnueditfind_Click()
       
       If giEditorMode = eMode.Picture Or giEditorMode = Properties Then Exit Sub  ' no search/replace within pictures.
       
-      If mnuViewToolbar.Checked = False Then mnuViewToolbar_Click
-      mfHideFind = False
-      picQuery.Visible = True
+      If Not mnuViewToolbar.Checked Then mnuViewToolbar_Click
+      If mfHideFind Or Not picQuery.Visible Then
+            mfHideFind = False
+            picQuery.Visible = True
+            RearrangeControls
+      End If
       On Error Resume Next
       If ActiveControl.Name = "agEditor" And agEditor.SelectedText <> "" Then _
             txtFind = Trim(agEditor.SelectedText)
@@ -4907,43 +4888,71 @@ End Sub
 Private Sub mnuFileSave_Click()
       Dim fSuccess As Boolean
       Dim dteSaveTime As Date
-      
-      If agEditor.tag = "" Then  ' Saving a nameless New File
-            mnuFileSaveAs_Click
+
+      If Not agEditor.Visible Then
+            Caption = "ERROR: can only save in editor mode."
             Exit Sub
-      
-      ElseIf Not agEditor.Visible Then
-            Caption = "ERROR: can't save in image mode."
-            Exit Sub
-      End If
-      
-      If chkReadOnly.Value = vbChecked Then
+      ElseIf chkReadOnly.Value = vbChecked Then
             Caption = "ERROR: can't save in Read Only mode."
             Exit Sub
       End If
       
-      ' TODO: file name too long can't save.  need fix here and in mnuFileSaveAs
-      If Len(agEditor.tag) > 100 Then
-            Dim f, ts
-            Set ts = gFSO.opentextfile(agEditor.tag, 8) ' 8 = ForAppending
-            ts.write (agEditor.Text)
-            ts.Close
-            fSuccess = True
+      If agEditor.tag = "" Then  ' If they try to save a nameless New File
+            mnuFileSaveAs_Click
       Else
-            fSuccess = agEditor.SaveToFile(agEditor.tag, SF_TEXT)
-      End If
-      dteSaveTime = Now
-
-      If fSuccess Then
-            staTusBar1.Panels(eStat.Modified) = ""
-            Caption = agEditor.tag & "  (" & Format(agEditor.CharacterCount, "#,#0") & _
-                  " bytes saved on " & dteSaveTime & ")"
-      Else
-            frmMain.Caption = "ERROR: cannot save to " & agEditor.tag
+            SaveFile agEditor.tag
       End If
 End Sub
 
 
+Public Function SaveFile(ByVal sFileName As String)
+      Dim fSuccess, fNewFile As Boolean
+      Dim dteSaveTime As Date
+
+      If Len(sFileName) > 100 Or agEditor.Text = "" Then
+            Dim ts
+            On Error GoTo File_Error
+            If Not FileExists(sFileName) Then
+                  fNewFile = True
+                  Set ts = gFSO.CreateTextFile(sFileName, True) ' True = overwrite
+            Else
+                  Set ts = gFSO.OpenTextFile(sFileName, 2) ' 2 = For writing
+            End If
+            If agEditor.Text = "" And Not fNewFile Then
+                  ts.Write ("temporary text to make sure the file counts as modified")
+                  ts.Close
+                  Set ts = gFSO.OpenTextFile(sFileName, 2)
+                  ' TODO: titlebar will show a false positive that it wrote to file in this ONE scenario
+                  '     * already existing file
+                  '     * we do not have permission to write to it
+                  '     * we are trying to save a blank file of exactly 0 bytes
+                  '     ...this is just too niche to care about anymore
+            End If
+            ts.Write (agEditor.Text)
+            ts.Close
+            On Error GoTo 0
+            fSuccess = True
+      Else
+            fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
+      End If
+
+      dteSaveTime = Now
+
+      If fSuccess Then
+            staTusBar1.Panels(eStat.Modified) = ""
+            agEditor.tag = sFileName
+            Caption = sFileName & "  (" & Format(agEditor.CharacterCount, "#,#0") & " bytes saved on " _
+                  & dteSaveTime & ")"
+            btnRefresh_Click
+            btnCurrentDirectory_Click
+      Else
+            frmMain.Caption = "ERROR: cannot save to " & sFileName
+      End If
+      Exit Function
+      
+File_Error:
+      frmMain.Caption = "ERROR: cannot save to " & sFileName
+End Function
 Private Sub mnuViewFilebrowser_Click()
     chkFileBrowser = Abs(chkFileBrowser.Value - 1)
 End Sub
@@ -4990,6 +4999,8 @@ Private Sub RearrangeControls()
       ' Made to go on a window resize or when showing or hiding a control
       
       Dim iEdHeight As Integer, iEdWidth As Integer, iEdTop As Integer, iEdLeft As Integer
+      Dim iToolbarFullWidth As Integer
+      Dim iBrowserTop, iBrowserHeight As Integer
       Dim lineindex As Long, charindex As Long, lMin As Long, lMax As Long
       Dim fValidWindowSize As Boolean, iRedoResizeX As Integer, iRedoResizeY As Integer
       Dim iPicBoxMarginsY As Integer, iFormMarginsX As Integer, iFormMarginsY As Integer
@@ -5000,6 +5011,7 @@ Private Sub RearrangeControls()
       Const rightmargin = 150
       Const midspace = 100
       Const bottommargin = 30
+      Const toolbarWidth = 4905
       
       If Me.WindowState = vbMinimized Then Exit Sub
       
@@ -5014,17 +5026,34 @@ Private Sub RearrangeControls()
       
       ' Calculate control positions...
       
-      iEdTop = 0
-      If mnuViewToolbar.Checked Then iEdTop = topmargin + iEdTop + picToolBar.Height
-      
-      iEdHeight = frmMain.ScaleHeight - iEdTop - bottommargin
-      If mnuViewStatusBar.Checked Then iEdHeight = iEdHeight - staTusBar1.Height
-      
       iEdLeft = leftmargin
       If mnuViewFilebrowser.Checked Then iEdLeft = iEdLeft + picBrowser.Width
       
       iEdWidth = frmMain.ScaleWidth - iEdLeft
       
+      If mnuViewToolbar.Checked Then
+            iBrowserTop = picToolBar.Height
+            If Not mfHideFind And picQuery.Visible Then
+                  iToolbarFullWidth = toolbarWidth + picQuery.Width
+            Else
+                  iToolbarFullWidth = toolbarWidth
+            End If
+      Else
+            iToolbarFullWidth = 0
+            iBrowserTop = 0
+      End If
+      
+      iEdTop = 0
+      If mnuViewToolbar.Checked And (Not mnuViewFilebrowser.Checked Or picBrowser.Width < iToolbarFullWidth) Then
+            iEdTop = topmargin + picToolBar.Height
+      End If
+      
+      iEdHeight = frmMain.ScaleHeight - iEdTop - bottommargin
+      iBrowserHeight = frmMain.ScaleHeight - iBrowserTop - bottommargin
+      If mnuViewStatusBar.Checked Then
+            iEdHeight = iEdHeight - staTusBar1.Height
+            iBrowserHeight = iBrowserHeight - staTusBar1.Height
+      End If
       
       ' Check to see if we've gone out of bounds...
       
@@ -5054,16 +5083,12 @@ Private Sub RearrangeControls()
       
       ' It's all good.  Move the controls now!
       
-      picBrowser.Move 0, iEdTop - topmargin, picBrowser.Width, iEdHeight + topmargin
+      picBrowser.Move 0, iBrowserTop, picBrowser.Width, iBrowserHeight
       picEditor.Move iEdLeft, iEdTop, iEdWidth, iEdHeight
-      If lvwBrowser.Width > 4905 Then
-        picEditor.Top = 840
-      Else
-        picEditor.Top = 0
-      End If
       agEditor.Move 0, 0, iEdWidth, iEdHeight
-      
-      lvwBrowser.Height = iEdHeight - lvwBrowser.Top + topmargin
+      lvwBrowser.Height = iBrowserHeight - lvwBrowser.Top + topmargin
+
+
 '      If mnuViewToolbar.Checked Then btnToolbarClose.Left = frmMain.ScaleWidth - btnToolbarClose.Width - 50
             
       If giEditorMode = eMode.Text Then
@@ -5085,9 +5110,9 @@ Private Sub RearrangeControls()
                       .ymax = agEditor.LineCount
                   End With
                   FillStats
-                  staTusBar1.Panels(eStat.Tips).Width = frmMain.Width
             End If
       End If
+      staTusBar1.Panels(eStat.Tips).Width = frmMain.Width
       
       picEditor.Visible = True
       'If sHadFocus = "agEditor" Then agEditor.SetFocus
@@ -5254,7 +5279,11 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                                     Dim f, ts
                                     Set f = gFSO.getfile(sFileName)
                                     Set ts = f.openastextstream(1) ' 1= ForReading
-                                    agEditor.Text = ts.readall()
+                                    If ts.atendofstream() Then
+                                          agEditor.Text = ""
+                                    Else
+                                          agEditor.Text = ts.readall()
+                                    End If
                                     ts.Close
                                     fLoadSuccess = True
                               Else
@@ -5270,20 +5299,29 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
 '                        fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_RTF)
                         
                   Case eMode.Picture
-                  
+                        Dim DefaultWidth, DefaultHeight
                         fLoadSuccess = True
                         On Error Resume Next
                         gImageData.OutPic.Picture = LoadPicture(sFileName)
+                        Const twipConversion = 0.567
+                        DefaultWidth = gImageData.OutPic.Picture.Width * twipConversion
+                        DefaultHeight = gImageData.OutPic.Picture.Height * twipConversion
+                        If Width >= 65536 Then
+                            DefaultWidth = 65535
+                        End If
+                        If DefaultHeight >= 65536 Then
+                            DefaultHeight = 65535
+                        End If
+                        gImageData.DefaultWidth = DefaultWidth
+                        gImageData.DefaultHeight = DefaultHeight
+                        ImageSetZoom (sliZoom.Value)
+                        sCaption = sFileName & "  (" & sliZoom.Value & "%)"
+                        
                         If Err > 0 Then
                               Caption = "ERROR: " & sFileName & ", picture couldn't load"
                               fLoadSuccess = False
                         End If
                         On Error GoTo 0
-                        
-                        gImageData.DefaultWidth = gImageData.OutPic.Picture.Width * 0.567  ' HiMetric to Twip conversion
-                        gImageData.DefaultHeight = gImageData.OutPic.Picture.Height * 0.567
-                        ImageSetZoom (sliZoom.Value)
-                        sCaption = sFileName & "  (" & sliZoom.Value & "%)"
                   
                   Case eMode.Properties
                         fLoadSuccess = True

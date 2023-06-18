@@ -116,8 +116,3 @@ Private Sub Form_Load()
     lblTitle.Caption = App.title
 End Sub
 
-Private Sub timReg_Timer()
-      miRedMessage = miRedMessage + 1
-      If miRedMessage = UBound(msRedReg) Then miRedMessage = 0
-      lblRed = msRedReg(miRedMessage)
-End Sub

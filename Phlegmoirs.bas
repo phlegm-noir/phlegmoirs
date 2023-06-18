@@ -175,7 +175,7 @@ Public QUOT As String ' = Chr(34) can't do this in the declaration, I see!
 'End Function
 
 Function FormatBytes(ByVal curBytes As Currency, iPrecision As Integer) As String
-      ' This function takes a quantity of bytes  as a currency value ('cause it's 64-bit),
+      ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
       ' formats it to read likeathis:
       
       ' 45.2 MB
@@ -194,6 +194,8 @@ Function FormatBytes(ByVal curBytes As Currency, iPrecision As Integer) As Strin
             FormatBytes = CStr(Round(curBytes / 1048576@, iPrecision)) & " MB"
       ElseIf curBytes < 1099511627776@ Then
             FormatBytes = CStr(Round(curBytes / 1073741824@, iPrecision)) & " GB"
+      Else
+            FormatBytes = "Size Unknown"
       End If
 End Function
 
