@@ -474,6 +474,7 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   -2147483630
          ViewMode        =   0
+         TextLimit       =   9999999
          TrapTab         =   0   'False
          AutoURLDetect   =   0   'False
          TextOnly        =   -1  'True
@@ -1358,7 +1359,7 @@ Begin VB.Form frmMain
       _ExtentY        =   529
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
-         NumPanels       =   5
+         NumPanels       =   6
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
             AutoSize        =   2
@@ -1379,17 +1380,20 @@ Begin VB.Form frmMain
             Alignment       =   1
             Object.Width           =   1764
             MinWidth        =   1764
-            Text            =   "Modified"
-            TextSave        =   "Modified"
-            Key             =   "statModified"
          EndProperty
          BeginProperty Panel4 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Alignment       =   1
+            Object.Width           =   1764
+            MinWidth        =   1764
+            Key             =   "statModified"
+         EndProperty
+         BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Alignment       =   1
             Object.Width           =   1235
             MinWidth        =   1235
             Key             =   "seltext"
          EndProperty
-         BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+         BeginProperty Panel6 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Object.Width           =   17639
             MinWidth        =   17639
             Key             =   "statTips"
@@ -1909,10 +1913,7 @@ Private Sub BookmarkSaveChanges()
       Next iIndex
 End Sub
 
-'   BrowserAutoSelectListItem:
-'
-'
-'
+
 Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
       Dim litCurrentItem As ListItem
       
@@ -1949,7 +1950,9 @@ Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
       End If
                   
       DoEvents ' Just doesn't seem to work without DoEvents first.
-      If Not gfFullScreenMode Then lvwBrowser.SelectedItem.EnsureVisible
+      If Not gfFullScreenMode And lvwBrowser.SelectedItem <> Null Then
+            lvwBrowser.SelectedItem.EnsureVisible
+      End If
 End Function
 
 '   BrowserExecuteNext
@@ -2060,7 +2063,7 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
             End If
 
             If Err > 0 Then
-                  iIcon = eMode.Error
+                  iIcon = eMode.ERROR
                   Debug.Print Err & ": " & Err.Description
             End If
             On Error GoTo 0
@@ -2201,6 +2204,7 @@ Private Sub EditorSetMode(iMode As eMode)
                   btnZoomOut.Caption = "-"
                   btnZoomDefault.Visible = False
                   
+                  staTusBar1.Panels(eStat.encoding).Visible = True
                   staTusBar1.Panels(eStat.Modified).Visible = True
                   staTusBar1.Panels(eStat.Stats).Visible = True
                   staTusBar1.Panels(eStat.SelText).Visible = True
@@ -2232,6 +2236,7 @@ Private Sub EditorSetMode(iMode As eMode)
                               AddressOf TrackMouseWheel)
                   End If
                   
+                  staTusBar1.Panels(eStat.encoding).Visible = False
                   staTusBar1.Panels(eStat.Modified).Visible = False
                   staTusBar1.Panels(eStat.Stats).Visible = False
                   staTusBar1.Panels(eStat.SelText).Visible = False
@@ -2257,6 +2262,7 @@ Private Sub EditorSetMode(iMode As eMode)
                   btnZoomOut.Caption = "-"
                   btnZoomDefault.Visible = False
                   
+                  staTusBar1.Panels(eStat.encoding).Visible = False
                   staTusBar1.Panels(eStat.Modified).Visible = False
                   staTusBar1.Panels(eStat.Stats).Visible = False
                   staTusBar1.Panels(eStat.SelText).Visible = False
@@ -3641,37 +3647,10 @@ Private Sub lvwBrowser_DblClick()
 End Sub
 
 Private Sub lvwBrowser_ItemClick(ByVal Item As MSComctlLib.ListItem)
-      ' ItemClick fires every time the selection changes, or a selection is clicked.
-      
-      ' These two properties should be identical.  And last I checked, they always are:
-      'Debug.Print "itemclick " & Item.Index & "  " & lvwBrowser.SelectedItem.Index
-                  
       mfBrowserItemClicked = True
       ListMenuEnable lvwBrowser.SelectedItem
-      
-'      mnuListOpenDefault.Enabled = True
-'      mnuListOpenDefault.Caption = "Open With Default Program..." & vbTab & "Shift+Ctrl+Enter"
-'      mnuListDelete.Enabled = True
-'      mnuListRename.Enabled = True
-'      mnuListCopyPath.Enabled = True
-'      mnuListShowOnly.Enabled = True
-'      mnuListProperties.Enabled = True
-'
-'      If Item.Icon = EMode.Directory Or Item.Icon = EMode.Drive Then
-'            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
-'            mnuListDelete = False
-'            If Item.Text = ".." Or Item.Icon = EMode.Drive Then mnuListRename = False
-'      End If
 End Sub
 
-Private Sub lvwBrowser_KeyPress(KeyAscii As Integer)
-      'debug.print "lvwBrowser_KEYPRESS " & KeyAscii
-'      Select Case KeyAscii
-'
-'            Case vbKeyReturn
-'                  BrowserExecuteItem lvwBrowser.SelectedItem
-'      End Select
-End Sub
 
 Private Sub lvwBrowser_KeyUp(KeyCode As Integer, Shift As Integer)
       'debug.print "lvwBrowser_KEYUP"
@@ -3944,7 +3923,7 @@ Private Sub mnuFileParentDirectory_Click()
       
       sParentDir = ParentDirectoryOf(gBrowserData.Dir)
       
-      If gBrowserData.Error Or sParentDir = "" Then
+      If gBrowserData.ERROR Or sParentDir = "" Then
             cboPath = sParentDir
       Else
             cboPath = sParentDir & gBrowserData.Filter
@@ -4531,7 +4510,6 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
       
       If staTusBar1.Visible Then
             With mStats
-                  
                 .Y = lLineIndex + 1
                 
                 ' We want mStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
@@ -4542,19 +4520,7 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
             End With
         
             FillStats
-            'staTusBar1.Panels(EStat.SelText) = Len(agEditor.SelectedContents(SF_TEXT))
             staTusBar1.Panels(eStat.SelText) = lMax - lMin
-            
-'            ' Here, I'm throwing in a feature where a tooltip comes up with your character code...
-'            '   * If there's ONLY ONE character highlighted, and
-'            '   * If the mouse is hovering over that one character.
-'
-'            If agEditor.CharFromPos(X / Screen.TwipsPerPixelX, Y / Screen.TwipsPerPixelY) = lMin _
-'                  And lMax - lMin = 1 Then
-'                  agEditor.ToolTipText = "Char: " & Asc(agEditor.SelectedText)
-'            Else
-'                  agEditor.ToolTipText = ""
-'            End If
       End If
       
       If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
@@ -4909,19 +4875,19 @@ Public Function SaveFile(ByVal sFileName As String)
       Dim fSuccess, fNewFile As Boolean
       Dim dteSaveTime As Date
 
-      If Len(sFileName) > 100 Or agEditor.Text = "" Then
+      If Len(sFileName) > 100 Or agEditor.Text = "" Or gTextEncoding = eTextEncoding.UNICODE Then
             Dim ts
             On Error GoTo File_Error
             If Not FileExists(sFileName) Then
                   fNewFile = True
-                  Set ts = gFSO.CreateTextFile(sFileName, True) ' True = overwrite
+                  Set ts = gFSO.CreateTextFile(sFileName, eOverwrite.Yes, gTextEncoding)
             Else
-                  Set ts = gFSO.OpenTextFile(sFileName, 2) ' 2 = For writing
+                  Set ts = gFSO.OpenTextFile(sFileName, eIoMode.ForWriting, eCreate.No, gTextEncoding)
             End If
             If agEditor.Text = "" And Not fNewFile Then
                   ts.Write ("temporary text to make sure the file counts as modified")
                   ts.Close
-                  Set ts = gFSO.OpenTextFile(sFileName, 2)
+                  Set ts = gFSO.OpenTextFile(sFileName, eIoMode.ForWriting)
                   ' TODO: titlebar will show a false positive that it wrote to file in this ONE scenario
                   '     * already existing file
                   '     * we do not have permission to write to it
@@ -4936,13 +4902,18 @@ Public Function SaveFile(ByVal sFileName As String)
             fSuccess = agEditor.SaveToFile(sFileName, SF_TEXT)
       End If
 
-      dteSaveTime = Now
-
       If fSuccess Then
+            Dim bytes As Long
+            bytes = agEditor.CharacterCount
+            staTusBar1.Panels(eStat.encoding) = "ASCII"
+            If gTextEncoding = eTextEncoding.UNICODE Then
+                  bytes = bytes * 2 + 2
+                  staTusBar1.Panels(eStat.encoding) = "UNICODE"
+            End If
             staTusBar1.Panels(eStat.Modified) = ""
             agEditor.tag = sFileName
-            Caption = sFileName & "  (" & Format(agEditor.CharacterCount, "#,#0") & " bytes saved on " _
-                  & dteSaveTime & ")"
+            Caption = sFileName & "  (" & Format(bytes, "#,#0") & " bytes saved on " _
+                  & FileModifiedTime(sFileName) & ")"
             btnRefresh_Click
             btnCurrentDirectory_Click
       Else
@@ -4959,7 +4930,7 @@ End Sub
 
 Private Sub agEditor_Change()
 
-      staTusBar1.Panels(eStat.Modified) = "Modified"
+      If Not mfEditorLoading Then staTusBar1.Panels(eStat.Modified) = "Modified"
       
       If staTusBar1.Visible Then
             With mStats
@@ -5243,14 +5214,8 @@ End Sub
 
 Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eMode = Text) As Boolean
       
-      ' TODO: (un)IMPORTANT:
-      ' To manage file loading properly, I cannot use LoadFromFile.
-      ' For one thing, it returns false for an empty file.  I'd rather it make a distinction between an error
-      ' and an empty (FIXED).  And there's the issue of interrupting the display.  It's great that I can
-      ' interrupt the loading of the file to a buffer of some sort, but displaying that buffer is slower.
-      
       Dim fLoadSuccess As Boolean, sCaption As String
-      
+
       If mfEditorLoading Then agEditor.Text = ""
       mfEditorLoading = True
       
@@ -5267,18 +5232,21 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
             
             Select Case iMode
                   
-                  ' BIG PROBLEM WITH LOADFROMFILE:  (seems fixed in 2010)
-                  ' can't handle too long a filename.  127 characters was too long.  I dunno the limit just yet.
-                  ' TODO can't save either FUCKERS
-                  
                   Case eMode.Text, eMode.other, eMode.rtf
                         ' pass along the boolean return value, if anyone wants it.
-                        If Not gfFullScreenMode Then
-                              ' here I will cheat and open the file a different way for a long pathname
-                              If Len(sFileName) > 100 Then
+                        If Not gfFullScreenMode And FileSize(sFileName) > 0 Then
+                              Dim encoding As Integer
+                              encoding = IsUnicodeFile(sFileName)
+                              
+                              If encoding = eTextEncoding.ERROR Then
+                                    frmMain.Caption = "Could not load file: " + sFileName
+                                    mfEditorLoading = False
+                                    EditorLoadFile = False
+                                    Exit Function
+                              ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
                                     Dim f, ts
                                     Set f = gFSO.getfile(sFileName)
-                                    Set ts = f.openastextstream(1) ' 1= ForReading
+                                    Set ts = f.OpenAsTextStream(eIoMode.ForReading, encoding)
                                     If ts.atendofstream() Then
                                           agEditor.Text = ""
                                     Else
@@ -5289,7 +5257,16 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                               Else
                                     fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
                               End If
+                              gTextEncoding = encoding
+                              If encoding = eTextEncoding.UNICODE Then
+                                    staTusBar1.Panels(eStat.encoding) = "UNICODE"
+                              Else
+                                    staTusBar1.Panels(eStat.encoding) = "ASCII"
+                              End If
                         Else
+                              agEditor.Text = ""
+                              gTextEncoding = eTextEncoding.ASCII
+                              staTusBar1.Panels(eStat.encoding) = "ASCII"
                               fLoadSuccess = True
                         End If
                   
@@ -5324,13 +5301,12 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                         On Error GoTo 0
                   
                   Case eMode.Properties
-                        fLoadSuccess = True
                         GetFileProperties sFileName
                         sCaption = sFileName
+                        fLoadSuccess = True
             End Select
                   
-            If (fLoadSuccess = True) Or (FileSize(sFileName) = 0) Then  ' Success!
-                  
+            If fLoadSuccess Or FileSize(sFileName) = 0 Then  ' Success!
                   agEditor.tag = sFileName
                   frmMain.Caption = sCaption
                   If gfFullScreenMode Then
@@ -5341,8 +5317,8 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                   AddToHistory sFileName
             
             Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
-                  frmMain.Caption = "WEIRD ERROR.  command() = " & Chr(34) & Command() & Chr(34) _
-                        & "; Tag = " & Chr(34) & sFileName & Chr(34)
+                  frmMain.Caption = "Could not load file.  command() = " & Chr(34) & Command() & Chr(34) _
+                        & "; File = " & Chr(34) & sFileName & Chr(34)
                   agEditor.tag = ""
             End If
       End If

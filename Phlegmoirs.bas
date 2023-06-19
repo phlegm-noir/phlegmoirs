@@ -19,7 +19,7 @@ End Type
 
 Public Type TEditorPrefs
       WordWrap As Integer
-      ReadOnly As Integer ' new
+      ReadOnly As Integer
       SelStart As Long
       SelEnd As Long
       FirstVisibleLine As Long
@@ -29,11 +29,11 @@ Public Type TEditorPrefs
       FontItalic As Boolean
       FontUnderline As Boolean
       FontStrikethrough As Boolean
-      TextColor As Long 'new
+      TextColor As Long
       ScrollPos As POINTAPI
       
       ' Reserved, not used:
-      BackColor As Long 'new
+      BackColor As Long
 End Type
 
 Public Type TWindowPrefs
@@ -49,14 +49,14 @@ Public Type TWindowPrefs
       ShowFileBrowser As Boolean
       ShowStatusBar As Boolean
       ShowToolBar As Boolean
-      ShowFind As Boolean 'new
+      ShowFind As Boolean
       BookmarkCount As Integer
       HistoryCount As Integer
       AutoLoadFile As String * 255
       cboPath As String * 255
       
       ' Reserved, not used:
-      FullScreen As Boolean 'new
+      FullScreen As Boolean
 End Type
 
 Public Type TBrowserData
@@ -74,7 +74,7 @@ Public Type TBrowserData
       DrivesMode As Boolean
       HistoryMode As Boolean
       ValidPath As Boolean
-      Error As Boolean
+      ERROR As Boolean
       ListEmpty As Boolean
       
       ItemClicked As Boolean
@@ -108,7 +108,7 @@ Enum eMode
       Text = 4
       other = 5
       Picture = 6
-      Error = 7
+      ERROR = 7
       Bookmark = 8
       Floppy = 9
       Network = 10
@@ -119,9 +119,10 @@ End Enum
 Enum eStat
       BrowserStats = 1
       Stats = 2
-      Modified = 3
-      SelText = 4
-      Tips = 5
+      encoding = 3
+      Modified = 4
+      SelText = 5
+      Tips = 6
 End Enum
 
 Enum eDirection
@@ -133,6 +134,28 @@ Enum eQuery
       Find = 0
 End Enum
 
+Enum eTextEncoding
+      ASCII = 0
+      UNICODE = -1
+      ERROR = -2
+End Enum
+
+Enum eIoMode
+      ForReading = 1
+      ForWriting = 2
+      ForAppending = 8
+End Enum
+
+Enum eCreate
+      Yes = True
+      No = False
+End Enum
+
+Enum eOverwrite
+      Yes = True
+      No = False
+End Enum
+
       
 ' *************************************************************
 ' Global Variables
@@ -141,10 +164,11 @@ End Enum
 Public gpOldLvwProc As Long, gpOldpicBrowserProc As Long, gpOldpicEditorProc As Long
 Public gpOldfrmFullScreenProc As Long
 Public objtest As Object
-Public gFSO As Object  ' nothing I hate more than declaring one of these in each function, for one tiny little purpose.
+Public gFSO As Object
 Public gBrowserData As TBrowserData
 Public gImageData As TImageData
-Public giEditorMode As eMode  ' use eMode
+Public giEditorMode As eMode
+Public gTextEncoding As Integer
 Public gfFullScreenMode As Integer
 
 Public Const MoveIncrement = -512
@@ -152,27 +176,6 @@ Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 Public QUOT As String ' = Chr(34) can't do this in the declaration, I see!
 
 
-' *************************************************************
-' Window Procedures
-' *************************************************************
-    
-'Public Function WindowProc(ByVal hwnd As Long, ByVal uMsg As Long, _
-'            ByVal wParam As Long, ByVal lParam As Long) As Long
-'
-'      If uMsg <> 15 And uMsg <> 32 And uMsg <> 132 And uMsg <> 512 And _
-'            uMsg <> 275 Then
-'            ' WM_PAINT, WM_SETCURSOR, WM_SETICON, WM_MOUSEMOVE
-'            ' WM_TIMER
-'            Debug.Print Hex(uMsg) & vbTab & "(" & uMsg & ")" & _
-'                        vbTab & wParam & vbTab & lParam
-'      End If
-'
-'      Select Case uMsg
-'            Case 3
-'
-'      End Select
-'      WindowProc = CallWindowProc(gpOldProc, hwnd, uMsg, wParam, lParam)
-'End Function
 
 Function FormatBytes(ByVal curBytes As Currency, iPrecision As Integer) As String
       ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
@@ -473,6 +476,35 @@ Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
       'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
 End Function
 
+Public Function IsUnicodeFile(FilePath)
+      Dim objStream
+      Dim intAsc1Chr, intAsc2Chr
+      
+      If (gFSO.FileExists(FilePath) = False) Then
+          IsUnicodeFile = False
+          Exit Function
+      End If
+      
+      On Error Resume Next
+      ' 1=Read-only, False==do not create if not exist
+      Set objStream = gFSO.OpenTextFile(FilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
+      intAsc1Chr = AscW(objStream.Read(1))
+      intAsc2Chr = AscW(objStream.Read(1))
+      objStream.Close
+      If Err > 0 Then
+            IsUnicodeFile = eTextEncoding.ERROR
+            Exit Function
+      End If
+      On Error GoTo 0
+      
+      If (intAsc1Chr = 255) And (intAsc2Chr = 254) Then
+          IsUnicodeFile = eTextEncoding.UNICODE
+      Else
+          IsUnicodeFile = eTextEncoding.ASCII
+      End If
+      
+      Set objStream = Nothing
+End Function
 Public Function TrimTrailingSlash(ByVal sPath As String) As String
       If Right(sPath, 1) = "\" Then
             TrimTrailingSlash = Left(sPath, Len(sPath) - 1)
