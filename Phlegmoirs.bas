@@ -115,6 +115,8 @@ Enum eMode
       Network = 10
       Cdrom = 11
       rtf = 12
+      mp3 = 13
+      video = 14
 End Enum
 
 Enum eStat
@@ -481,12 +483,14 @@ Public Function IsUnicodeFile(FilePath)
       Dim intAsc1Chr, intAsc2Chr
       
       If (gFSO.FileExists(FilePath) = False) Then
-          IsUnicodeFile = False
-          Exit Function
+            IsUnicodeFile = eTextEncoding.ERROR
+            Exit Function
+      ElseIf FileSize(FilePath) = 1 Then
+            IsUnicodeFile = eTextEncoding.ASCII
+            Exit Function
       End If
       
       On Error Resume Next
-      ' 1=Read-only, False==do not create if not exist
       Set objStream = gFSO.OpenTextFile(FilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
       intAsc1Chr = AscW(objStream.Read(1))
       intAsc2Chr = AscW(objStream.Read(1))
@@ -536,12 +540,6 @@ Public Function GetFullPathName(ByVal sInput As String) As String
       
 End Function
 
-'Public Function FileExistsVBS(ByVal sPath As String) As Boolean
-'      Dim objFS As Object
-'
-'      Set objFS = CreateObject("Scripting.FileSystemObject")
-'      FileExists = objFS.FileExists(sPath)
-'End Function
 
 
 Public Function IsKeyDown(ByVal lVirtKey As Long) As Boolean
@@ -864,4 +862,53 @@ Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As 
 '      GetMP3Info = infoRet
 End Function
 
+Public Function getAllProperties(sFileName As String)
+      Dim sBaseName, sPathName
+      sPathName = gFSO.getParentFolderName(sFileName)
+      sBaseName = gFSO.GetFileName(sFileName)
+      
+      Dim objShell, objFolder
+      Set objShell = CreateObject("shell.application")
+      Set objFolder = objShell.NameSpace(sPathName)
+      
+      If (Not objFolder Is Nothing) Then
+            Dim objFolderItem
+            Set objFolderItem = objFolder.ParseName(sBaseName)
+            
+            If (Not objFolderItem Is Nothing) Then
+                  Dim uninteresting
+                  uninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
+                  "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
+                  "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
+                  "Protected")
+                  
+                  Dim i
+                  For i = 0 To 320
+                        Dim columnName, value
+                        columnName = objFolder.GetDetailsOf(objFolder.Items, i)
+                        value = objFolder.GetDetailsOf(objFolderItem, i)
+                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(i)) + ")"
+                        
+                        If value <> "" And Not ArrContains(uninteresting, columnName) Then
+                              Debug.Print Str(i) + ". " + columnName + ": " + vbTab + value
+                        End If
+                  Next i
+            End If
+            
+            Set objFolderItem = Nothing
+      End If
+      
+      Set objFolder = Nothing
+      Set objShell = Nothing
+End Function
 
+Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
+   Dim Index As Integer
+    For Index = LBound(arrString) To UBound(arrString)
+      If arrString(Index) = PassedValue Then
+        ArrContains = True
+        Exit Function
+      End If
+    Next
+    ArrContains = False
+End Function
