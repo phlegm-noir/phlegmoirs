@@ -54,6 +54,7 @@ Public Type TWindowPrefs
       HistoryCount As Integer
       AutoLoadFile As String * 255
       cboPath As String * 255
+      FocusFollowsMouse As Boolean
       
       ' Reserved, not used:
       FullScreen As Boolean
@@ -86,8 +87,8 @@ End Type
 
 Public Type TImageData
       OutPic As Object
-      DefaultHeight As Integer
-      DefaultWidth As Integer
+      DefaultHeight As Long
+      DefaultWidth As Long
       PrevX As Single
       PrevY As Single
       
@@ -100,7 +101,7 @@ End Type
 ' Global enumerations
 ' *************************************************************
 
-' eMode is meant to encompass browser modes, editor modes, and file types.
+' eMode is meant to encompass browser modes, editor modes, and file types. TODO: WHY?
 Enum eMode
       Directory = 1
       Properties = 2
@@ -173,7 +174,6 @@ Public gfFullScreenMode As Integer
 
 Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
-Public QUOT As String ' = Chr(34) can't do this in the declaration, I see!
 
 
 
