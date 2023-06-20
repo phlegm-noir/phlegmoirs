@@ -122,7 +122,7 @@ Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Sing
       ElseIf Not gImageData.Zoomed And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
-            frmMain.BrowserExecutePrev
+            frmMain.BrowserExecuteNext True
       ElseIf Not gImageData.Moved And Button = vbMiddleButton Then
             Unload frmFullScreen
       End If
@@ -168,7 +168,7 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
       ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
-            frmMain.BrowserExecutePrev
+            frmMain.BrowserExecuteNext True
       End If
       
       gImageData.Moved = False
@@ -210,14 +210,14 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
                               RedoCaption
                         End If
                   Case vbKey0, 106 ' 0 and Keypad "*" -- reset position and size.
-                        .Value = 100
+                        .value = 100
                         RedoCaption
                         Image1.Move 0, 0, gImageData.DefaultWidth, gImageData.DefaultHeight
                   Case 103, 55   ' 7 and Keypad 7
-                        .Value = .Value / 2
+                        .value = .value / 2
                         RedoCaption
                   Case 104, 56   ' 8 and Keypad 8
-                        .Value = .Value * 2
+                        .value = .value * 2
                         RedoCaption
                   Case vbKeyDown
                         Image1.Top = Image1.Top + MoveIncrement
@@ -250,7 +250,7 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
                   Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
                         If Shift = 0 Then frmMain.BrowserExecuteNext
                   Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
-                        If Shift = 0 Then frmMain.BrowserExecutePrev
+                        If Shift = 0 Then frmMain.BrowserExecuteNext True
                         
                   Case vbKeyF11, vbKeyEscape
                         If Shift = 0 Then Unload frmFullScreen
@@ -260,5 +260,5 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub RedoCaption()
-      lblFileNameZoom = frmMain.agEditor.Tag & " (" & frmMain.sliZoom.Value & ")  "
+      lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.value & ")  "
 End Sub

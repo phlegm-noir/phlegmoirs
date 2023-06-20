@@ -1779,10 +1779,6 @@ Dim mfQueryMenuOpen As Boolean
 Dim mfFinding As Boolean
 Dim miTotalResults As Integer
 
-
-
-
-
 Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       Dim iIndex As Integer
 
@@ -1858,36 +1854,6 @@ Private Sub AddToHistory(ByVal sNewHistory As String)
       If gBrowserData.HistoryMode Then btnRefresh_Click
 End Sub
 
-'Private Sub AdjustFindArea()
-'      ' TODO: this is not even started yet.  Try not to, ah, use it.
-'      ' AdjustFindArea is an attempt to do everything that needs to be done,
-'      ' to sort out this area.  This includes:
-'      '     setting the proper button to default
-'      '     enabling or disabling the Replace button
-'      '
-'
-'      If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
-'            btnReplace.Enabled = True
-'            If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
-'      End If
-'
-'      ' This'll sort out the enabling of btnReplace from anywhere, at any time.
-'      ' Shouldn't depend on the picFind being visible.
-'      If mnuViewReadOnly.Checked And mfReplaceMode Then
-'            mnuQueryReplace_Click ' this turns it off
-'
-'      ElseIf mnuViewReadOnly.Checked And Not mfReplaceMode Then
-'            btnReplace.Enabled = False ' it was already off, now it can't be turned on.
-'
-'      ElseIf Not mnuViewReadOnly.Checked And Not mfReplaceMode Then
-'            btnReplace.Enabled = (txtFind <> "") ' gotta have something to search for, at the very least.
-'
-'      ElseIf Not mnuViewReadOnly.Checked And mfReplaceMode Then
-'            ' Here, we enable him if there's text ready to be replaced.
-'            btnReplace.Enabled = (txtFind = agEditor.SelectedText)
-'      End If
-'End Sub
-
 Private Sub BookmarkSaveChanges()
       Dim iIndex As Integer
       
@@ -1946,130 +1912,122 @@ End Function
 '   BrowserExecuteNext
 '   Select the next item after the selection, and open it.
 '
-Public Sub BrowserExecuteNext()
+Public Sub BrowserExecuteNext(Optional ByVal Reverse As Boolean = False)
       DoEvents
-      Dim iIndex As Integer, objNextItem As Object
+      Dim iIndex As Integer, liNext As ListItem
+      Dim iInc, iLimit As Integer
+      Dim viewMode As eViewMode
 
-       ' Selecting the item next to the open file, not next to whatever random thing is currently selected.
+       ' Open the item next to the open file, not next to whatever thing is selected.
+       ' It is possible to select something else via arrow keys or right-click + cancel.
+       ' So we start with a sync.
       If (agEditor.tag <> "") And (Not gBrowserData.BookmarkMode) And (Not gBrowserData.HistoryMode) Then
             btnSyncContents_Click
       End If
-        ' TODO: that should still do the sync if in bookmark mode and *the open file is not a bookmark*.
       
       If lvwBrowser.ListItems.Count = 0 Then Exit Sub
       
+      If Reverse Then
+            iInc = -1
+            iLimit = 1
+      Else
+            iInc = 1
+            iLimit = lvwBrowser.ListItems.Count
+      End If
       iIndex = lvwBrowser.SelectedItem.Index
       
-      If iIndex < lvwBrowser.ListItems.Count Then
-            Set objNextItem = lvwBrowser.ListItems(iIndex + 1)
-            If objNextItem.Icon <> eMode.Directory Then
-                  If Not gfFullScreenMode Then objNextItem.EnsureVisible
-                  objNextItem.Selected = True
-                  BrowserExecuteItem objNextItem
-            End If
-      End If
-      Set objNextItem = Nothing
-End Sub
-
-'   BrowserExecutePrev
-'   Select the item previous to the one selected, and open it.
-'
-Public Sub BrowserExecutePrev()
-      DoEvents
-      Dim iIndex As Integer
-            
-       ' Selecting the item next to the open file, not next to whatever random thing is currently selected.
-      If (agEditor.tag <> "") And (Not gBrowserData.BookmarkMode) And (Not gBrowserData.HistoryMode) Then
-            btnSyncContents_Click
-      End If
-        ' TODO: that should still do the sync if in bookmark mode and *the open file is not a bookmark*.
-        
-      If lvwBrowser.ListItems.Count = 0 Then Exit Sub
-      
-      iIndex = lvwBrowser.SelectedItem.Index
-      If iIndex > 1 Then
-            If lvwBrowser.ListItems(iIndex - 1).Icon <> eMode.Directory Then
-                  If Not gfFullScreenMode Then lvwBrowser.ListItems(iIndex - 1).EnsureVisible
-                  lvwBrowser.ListItems(iIndex - 1).Selected = True
-                  BrowserExecuteItem lvwBrowser.ListItems(iIndex - 1)
+      ' Fullscreen mode is for image view only.
+      ' So want the next item to be the next image, skipping over the rest.
+      If gfFullScreenMode Then
+            Do While iIndex <> iLimit
+                  iIndex = iIndex + iInc
+                  Set liNext = lvwBrowser.ListItems(iIndex)
+                  viewMode = GetViewMode(cboPath.Text & liNext.Text, liNext.Icon)
+                  If viewMode = eViewMode.PictureView Then
+                        liNext.Selected = True
+                        BrowserExecuteItem liNext
+                        Exit Do
+                  End If
+            Loop
+      Else
+            If iIndex <> iLimit Then
+                  Set liNext = lvwBrowser.ListItems(iIndex + iInc)
+                  If liNext.Icon <> eIconType.Directory Then
+                        liNext.EnsureVisible
+                        liNext.Selected = True
+                        BrowserExecuteItem liNext
+                  End If
             End If
       End If
 End Sub
 
 
-' *********************************************
-' *
-' *  BrowserGetFilesAndFolders
-' *
-' *  Takes the parsed data (BD) and fills lvwBrowser with the appropriate files.
-' *
-' *
-' *********************************************
-'
-Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
+
+ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
             
-      Dim iIcon As Integer, iTempKey As Integer
-      Dim curTotalBytes As Currency
+      Dim iIcon As eIconType, iTempKey As Integer
+      Dim curTotalBytes
       Dim litCurrentItem As ListItem
       Dim hNextFile As Long, sFileName As String, sEx As String
       Dim WFD As WIN32_FIND_DATA
-      Dim fHadFocus As Boolean ', fDirUnchanged As Boolean
-      'Dim sOldSelectedItem As String
-      'Dim sngStartTime As Single
+      Dim fHadFocus As Boolean
       
-      On Error Resume Next    ' there won't be an active control during form_load, so skip this part.
+      On Error Resume Next
       fHadFocus = (ActiveControl.Name = "lvwBrowser")
       On Error GoTo 0
       
       
       lvwBrowser.tag = BD.Dir
       
-      lvwBrowser.Visible = False  ' a nice idea, but we don't want to lose focus while under.  OR DO WE ?
+      lvwBrowser.Visible = False
       lvwBrowser.ListItems.Clear
       iTempKey = lvwBrowser.SortKey
       lvwBrowser.SortKey = 0
       lvwBrowser.Sorted = False ' Sorting each element would have to slow things down, wouldn't it?
       
       
-      'sngStartTime = Timer
       If BD.Filter = "" Then BD.Filter = "*"
       hNextFile = FindFirstFile(BD.Dir & BD.Filter, WFD)
+      curTotalBytes = 0
       
       Do
             On Error Resume Next
             
-            ' Divide the file types up slightly for icon selection
+            ' Divide the file types for icon selection
             
             sFileName = CstringToVBstring(WFD.cFileName) ' Lots of junk past the null character.
             sEx = gFSO.getextensionname(sFileName)
             
             If (WFD.dwFileAttributes And FILE_ATTRIBUTE_DIRECTORY) Then
-                  iIcon = eMode.Directory
+                  iIcon = eIconType.Directory
             Else
-                  iIcon = FileTypeFromExtension(sEx)
+                  iIcon = GetIconType(sEx)
             End If
 
             If Err > 0 Then
-                  iIcon = eMode.ERROR
+                  iIcon = eIconType.IconError
                   Debug.Print Err & ": " & Err.Description
             End If
-            On Error GoTo 0
             
+            Dim sizeBig ' this can be bigger than a long integer
+            sizeBig = 0
+            sizeBig = gFSO.GetFile(BD.Dir + sFileName).Size
+            On Error GoTo 0
             
             ' Add that file!
             
-            If sFileName <> "." And sFileName <> "" Then ' just what is the point in providing them with a "." folder?
+            If sFileName <> "." And sFileName <> "" Then ' what would be the point in providing a "." folder?
                   Set litCurrentItem = lvwBrowser.ListItems.Add(, , sFileName, iIcon, iIcon)
                   
                   ' here, let's keep an invisible second column for sorting by directory later
-                  If iIcon = eMode.Directory Then
+                  If iIcon = eIconType.Directory Then
                         'litCurrentItem.ListSubItems.Add iFileTypeHeader, "Type", ""
                   Else
-                        litCurrentItem.ListSubItems.Add , "Type", sEx  ' Oh deary, column keys are case sensitive!
-                        litCurrentItem.ListSubItems.Add , "Size", Format(WFD.nFileSizeLow, "#,#0")
+                        litCurrentItem.ListSubItems.Add , "Type", sEx
+                        litCurrentItem.ListSubItems.Add , "Size", Format(sizeBig, "#,#0")
                         litCurrentItem.ListSubItems.Add , "Modified", FormatNonLocalFileTime(WFD.ftLastWriteTime)
-                        litCurrentItem.ListSubItems.Add , "SortSize", Format(WFD.nFileSizeLow, "000000000000000")
-                        curTotalBytes = curTotalBytes + WFD.nFileSizeLow
+                        litCurrentItem.ListSubItems.Add , "SortSize", Format(sizeBig, "00000000000000000")
+                        curTotalBytes = curTotalBytes + sizeBig
                   End If
             End If
       
@@ -2090,9 +2048,7 @@ Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
       If fHadFocus Then lvwBrowser.SetFocus
       
       staTusBar1.Panels(eStat.BrowserStats).Text = FormatBytes(curTotalBytes, 1) & " in " & _
-            lvwBrowser.ListItems.Count & " objects"
-      
-      'Debug.Print Timer - sngStartTime
+            (lvwBrowser.ListItems.Count - 1) & " objects"  ' -1 for the ".." folder
 End Sub
 
 
@@ -2107,7 +2063,7 @@ Private Sub BrowserGetHistory()
       For iIndex = 1 To mnuFileHistory.UBound
             ' TODO: get icon from file extension
             Set litCurrentItem = lvwBrowser.ListItems.Add(, "b" & CInt(iIndex), mnuFileHistory(iIndex).tag, _
-                  eMode.Bookmark, eMode.Bookmark)
+                  eIconType.Bookmark, eIconType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuFileHistory(iIndex).tag)
             ' TODO: add file info to subitems
       Next iIndex
@@ -2156,31 +2112,24 @@ Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Int
       BrowserResizeHorizontal = iOffset
 End Function
 
-Private Sub EditorSetMode(iMode As eMode)
+Private Sub EditorSetMode(iMode As eViewMode)
 
       ' When we change the sort of data to display (text, picture, more to be determined),
       ' there are some things that have to be set, hidden, etc.
       
-      ' Use EMode types for iMode
-      
-      ' Other routines that may be curious about the mode may use gieditormode.
-      
       If iMode = giEditorMode Then Exit Sub
       
       Select Case iMode
-            Case eMode.Text, eMode.rtf, eMode.other
+            Case eViewMode.TextView
       
                   giEditorMode = iMode
                   agEditor.Visible = True
                   Image1.Visible = False
                   Image1.Picture = LoadPicture
                   sstProperties.Visible = False
-'                  btnZoomIn.Visible = False
-'                  btnZoomOut.Visible = False
                   btnFont.Visible = True
                   chkWordWrap.Visible = True
                   btnFullScreen.Visible = False
-'                  chkReadOnly.Visible = True
                   If Not mfHideFind And mnuViewToolbar.Checked Then picQuery.Visible = True
                   
                   sliZoom.Visible = False
@@ -2195,19 +2144,16 @@ Private Sub EditorSetMode(iMode As eMode)
                   staTusBar1.Panels(eStat.Stats).Visible = True
                   staTusBar1.Panels(eStat.SelText).Visible = True
       
-            Case eMode.Picture
+            Case eViewMode.PictureView
                   
-                  giEditorMode = eMode.Picture
+                  giEditorMode = eViewMode.PictureView
                   agEditor.Visible = False
                   agEditor.Text = ""
                   Image1.Visible = True
                   sstProperties.Visible = False
-'                  btnZoomIn.Visible = True
-'                  btnZoomOut.Visible = True
                   btnFont.Visible = False
                   chkWordWrap.Visible = False
                   btnFullScreen.Visible = True
- '                 chkReadOnly.Visible = False
                   If Not mfHideFind Then picQuery.Visible = False
                   
                   sliZoom.Visible = True
@@ -2227,8 +2173,9 @@ Private Sub EditorSetMode(iMode As eMode)
                   staTusBar1.Panels(eStat.Stats).Visible = False
                   staTusBar1.Panels(eStat.SelText).Visible = False
                   
-            Case eMode.Properties
-                  giEditorMode = eMode.Properties
+            Case eViewMode.PropertiesView
+            
+                  giEditorMode = eViewMode.PropertiesView
                   agEditor.Visible = False
                   agEditor.Text = ""
                   Image1.Visible = False
@@ -2238,7 +2185,6 @@ Private Sub EditorSetMode(iMode As eMode)
                   btnFont.Visible = True
                   chkWordWrap.Visible = True
                   btnFullScreen.Visible = False
-'                  chkReadOnly.Visible = True
                   If Not mfHideFind Then picQuery.Visible = False
                   
                   sliZoom.Visible = False
@@ -2252,43 +2198,22 @@ Private Sub EditorSetMode(iMode As eMode)
                   staTusBar1.Panels(eStat.Modified).Visible = False
                   staTusBar1.Panels(eStat.Stats).Visible = False
                   staTusBar1.Panels(eStat.SelText).Visible = False
+            
+            Case Else
+                  Debug.Print "How did we get to the ERROR ViewMode? agEditor.tag: """ + agEditor.tag + """"
       End Select
+      
       RearrangeControls
-
 End Sub
 
-Private Function FileTypeFromExtension(sEx As String) As String
-      ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
-      ' which can be fed into EditorSetMode.
-      
-      ' Current possible modes:   EMode.text, EMode.rtf, EMode.picture
-      
-      Select Case sEx
-            Case "bmp", "gif", "jpg", "jpeg", "png", "ico", "cur"
-                  FileTypeFromExtension = eMode.Picture
-            Case "dll", "ocx", "exe", "zip", "msi", "sys", "cab", "7z"
-                  FileTypeFromExtension = eMode.Properties
-            Case "mp3"
-                  FileTypeFromExtension = eMode.mp3
-            Case "avi", "mpeg", "mp4", "webm", "flv"
-                  FileTypeFromExtension = eMode.video
-            Case "rtf"
-                  FileTypeFromExtension = eMode.rtf
-            Case "txt"
-                  FileTypeFromExtension = eMode.Text
-            Case Else
-                  FileTypeFromExtension = eMode.other
-      End Select
-End Function
-
-Private Sub GetFileProperties(ByVal sFileName As String)
+Private Sub LoadPropertiesView(ByVal sFileName As String)
       Dim WFD As WIN32_FIND_DATA
       Dim hFile As Long
       Dim sEx As String
       
       hFile = FindFirstFile(sFileName, WFD)
       fraProperties.Caption = WFD.cFileName
-      lblPropValue(2) = Format(WFD.nFileSizeLow, "#,#0")
+      lblPropValue(2) = Format(gFSO.GetFile(sFileName).Size, "#,#0")
       lblPropValue(4) = FormatNonLocalFileTime(WFD.ftLastWriteTime)
       lblPropValue(3) = FormatNonLocalFileTime(WFD.ftCreationTime)
       lblPropValue(5) = FormatNonLocalFileTime(WFD.ftLastAccessTime)
@@ -2374,10 +2299,10 @@ Private Sub ListMenuEnable(litHoverItem As ListItem)
             mnuListDelete.Caption = "&Delete File..." & vbTab & "Del"
       End If
       
-      If litHoverItem.Icon = eMode.Directory Or litHoverItem.Icon = eMode.Drive Then
+      If litHoverItem.Icon = eIconType.Directory Or litHoverItem.Icon = eIconType.Drive Then
             mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
             mnuListDelete = False
-            If litHoverItem.Text = ".." Or litHoverItem.Icon = eMode.Drive Then mnuListRename = False
+            If litHoverItem.Text = ".." Or litHoverItem.Icon = eIconType.Drive Then mnuListRename = False
       End If
 
 End Sub
@@ -2522,7 +2447,7 @@ Private Sub BrowserGetBookmarks()
       ' be accomplished one day.
       For iIndex = 1 To mnuBookmark.UBound
             Set litCurrentItem = lvwBrowser.ListItems.Add(, "b" & CInt(iIndex), mnuBookmark(iIndex).tag, _
-                  eMode.Bookmark, eMode.Bookmark)
+                  eIconType.Bookmark, eIconType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuBookmark(iIndex).tag)
             ' I'm thinking bookmarks don't need subitems?
             ' TODO: Sure they do... just list them like they were files!  Later, perhaps.
@@ -2564,6 +2489,8 @@ Private Sub PathForward()
             If .ListIndex > 0 Then .ListIndex = .ListIndex - 1
       End With
 End Sub
+
+
 
 Private Sub ShowFileProperties(ByVal sPath As String)
       ' SImply calls the Explorer file properties dialog.  Hope this works.
@@ -2668,7 +2595,7 @@ Private Sub btnFindPrev_Click()
       ' So instead, it's #-1.
       
       ' No searching text within a picture or a properties tab.
-      If giEditorMode = eMode.Picture Or giEditorMode = Properties Then Exit Sub
+      If giEditorMode = eViewMode.PictureView Or giEditorMode = PropertiesView Then Exit Sub
       
       If txtFind = "" Then txtFind = agEditor.SelectedText
       
@@ -2819,7 +2746,7 @@ End Sub
 
 
 Private Sub btnPrevFile_Click()
-      BrowserExecutePrev
+      BrowserExecuteNext True
 End Sub
 
 Private Sub btnReplace_Click()
@@ -2847,7 +2774,7 @@ End Sub
 Private Sub btnZoomIn_Click()
       Select Case giEditorMode
       
-            Case eMode.Picture
+            Case eViewMode.PictureView
                   ' Go to the next zoom divisible by the zoom increment
                   If sliZoom.value < 100 Then
                         ImageZoomIn 25
@@ -2882,7 +2809,7 @@ End Sub
 Private Sub btnZoomOut_Click()
       Select Case giEditorMode
             
-            Case eMode.Picture
+            Case eViewMode.PictureView
                   ' Go to the next lowest zoom % divisible by the zoom increment
                   If sliZoom.value <= 100 Then
                         ImageZoomOut 25
@@ -3251,7 +3178,7 @@ Private Sub chkWordWrap_Click()
       Dim lineindex As Long, charindex As Long, lMin As Long, lMax As Long
       
       mnuViewWordWrap.Checked = chkWordWrap.value
-      agEditor.ViewMode = chkWordWrap.value
+      agEditor.viewMode = chkWordWrap.value
       
       ' a few things in the statusbar could change in a word wrap:
       '   x, xmax, y, ymax
@@ -3276,7 +3203,7 @@ Private Sub chkWordWrap_Click()
 End Sub
 
 Private Sub btnFindNext_Click()
-      If giEditorMode = eMode.Picture Or giEditorMode = eMode.Properties Then Exit Sub
+      If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub
       
       If txtFind = "" Then txtFind = agEditor.SelectedText
       
@@ -3556,35 +3483,24 @@ End Sub
 Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
       If (lvwBrowser.ListItems.Count = 0) Then Exit Sub
       
+      Dim sItemName As String
+      sItemName = gBrowserData.Dir & Item.Text
+      
       Select Case Item.Icon
       
-            Case eMode.Directory, eMode.Drive, eMode.Floppy, eMode.Cdrom, eMode.Network
+            Case eIconType.Directory, eIconType.Drive, eIconType.Floppy, eIconType.Cdrom, eIconType.Network
                   ' Open the folder, or go up a folder.
                   If Item.Text = ".." Then
                         mnuFileParentDirectory_Click
                   Else
-                        cboPath = gBrowserData.Dir & Item.Text & "\"
+                        cboPath = sItemName & "\"
                   End If
             
-            Case eMode.Bookmark
-                  ' Open the bookmarked file.  TODO: make it work for folders
-                  If FileSize(Item.Text) > BIGFILESIZE Then
-                        EditorLoadFile Item.Text, eMode.Properties
-                  Else
-                        EditorLoadFile Item.Text, FileTypeFromExtension(gFSO.getextensionname(Item.Text))
-                  End If
+            Case eIconType.Bookmark
+                  EditorLoadFile Item.Text, GetViewMode(Item.Text, Item.Icon)
                   
             Case Else
-                  ' Unless it's too big, open the file.  EditorLoadFile knows what to do.
-                  
-                  Dim lSize As Long
-                  lSize = CLng(Item.ListSubItems("Size"))
-                  
-                  If lSize < BIGFILESIZE Then
-                        EditorLoadFile gBrowserData.Dir & Item.Text, Item.Icon
-                  Else
-                        EditorLoadFile gBrowserData.Dir & Item.Text, eMode.Properties
-                  End If
+                  EditorLoadFile sItemName, GetViewMode(sItemName, Item.Icon)
       End Select
 End Sub
 
@@ -3685,14 +3601,7 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Singl
 End Sub
 
 Private Sub mnuBookmark_Click(Index As Integer)
-      Dim sEx As String
-      
-      If FileSize(mnuBookmark(Index).tag) > BIGFILESIZE Then
-            EditorLoadFile mnuBookmark(Index).tag, eMode.Properties
-      Else
-             sEx = gFSO.getextensionname(mnuBookmark(Index).tag)
-            EditorLoadFile mnuBookmark(Index).tag, FileTypeFromExtension(sEx)
-      End If
+      EditorLoadFile mnuBookmark(Index).tag, GetViewMode(mnuBookmark(Index).tag, eIconType.Bookmark)
       
       mnuFileSyncContents_Click
 End Sub
@@ -3705,8 +3614,7 @@ Private Sub mnuBookmarksAdd_Click()
       
       For iBookm = 1 To mnuBookmark.UBound
             If mnuBookmark(iBookm).tag = agEditor.tag Then
-                              ' Oops, got that bookmark already.
-                  Exit Sub  ' Nothing left to do here!
+                  Exit Sub
             End If
       Next iBookm
       
@@ -3715,29 +3623,9 @@ Private Sub mnuBookmarksAdd_Click()
       If gBrowserData.BookmarkMode Then btnRefresh_Click
 End Sub
 
-Private Sub mnuBookmarksAddPath_Click()
-      ' DOES NOTHING YET.  DON'T USE.
-      ' TODO: this.
-      
-      Dim iBookm As Integer
-      
-      For iBookm = 1 To mnuBookmark.UBound
-            If mnuBookmark(iBookm).tag = cboPath Then
-                              ' Oops, got that bookmark already.
-                  Exit Sub  ' Nothing left to do here!
-            End If
-      Next iBookm
-      
-      AddToBookmarks cboPath
-End Sub
-
-
 Private Sub mnuBookmarksManage_Click()
-      ' Basically, the brains for the entire program rest within cboPath_Change.
-      
       If mnuViewFilebrowser.Checked = False Then mnuViewFilebrowser_Click
       cboPath = "(Bookmarks)"
-      
 End Sub
 
 Private Sub BrowserDeleteSelected()
@@ -3863,18 +3751,10 @@ Private Sub mnuFileExit_Click()
 End Sub
 
 Private Sub mnuFileHistory_Click(Index As Integer)
-      Dim sEx As String
-      
-      If FileSize(mnuFileHistory(Index).tag) > BIGFILESIZE Then
-            EditorLoadFile mnuFileHistory(Index).tag, eMode.Properties
-      Else
-             sEx = gFSO.getextensionname(mnuFileHistory(Index).tag)
-            EditorLoadFile mnuFileHistory(Index).tag, FileTypeFromExtension(sEx)
-      End If
+      EditorLoadFile mnuFileHistory(Index).tag, GetViewMode(mnuFileHistory(Index).tag, eIconType.Bookmark)
       
       mnuFileSyncContents_Click
 End Sub
-
 
 Private Sub mnuFileNext_Click()
       btnNextFile_Click
@@ -3888,12 +3768,7 @@ Private Sub mnuFileOpen_Click()
       lvwBrowser.SetFocus
 End Sub
 
-' ******************************************************
-'   mnuFileParentDirectory
-'
-'   Take the browser up a folder.
-'   Preserve filter except in a drives list.
-' ******************************************************
+' When we go up a dir, preserve the existing filter except in a drives list.
 Private Sub mnuFileParentDirectory_Click()
       Dim sParentDir As String
       
@@ -3915,12 +3790,8 @@ End Sub
 Private Sub mnuFileRename_Click()
 
       ' Rename an open file without saving as a new file or deleting anything.
-      ' About thirty percent of my nervous ticks come from not having this simple
-      ' feature at my disposal in other applications.
       
-      ' PLEASE NOTE: this is not a "save as" with extras.  What has already been saved as
-      ' sOldPath will be renamed sNewPath.  Your unsaved progress will not be tampered with,
-      ' but NOR WILL IT BE SAVED, until you save it.
+      ' Unsaved progress will not be tampered with, but NOR WILL IT BE SAVED, until you save it.
       
       ' TODO: Auto-select new file after the rename.
       ' Currently fucked because it's looking for the old name in btnRefresh_Click.
@@ -3944,7 +3815,7 @@ Private Sub mnuFileRename_Click()
                   
                   ' No change whatsoever.
             
-            Else ' Change in caps only.  We'll rename it anyway, just to be a sport.
+            Else  ' Change in caps only.  We'll rename it anyway, just to be a sport.
                   
                   On Error Resume Next
                   Name sOldPath As sNewPath
@@ -4028,7 +3899,7 @@ Private Sub mnuHelpAbout_Click()
 End Sub
 
 Private Sub mnuHelpReadme_Click()
-      EditorLoadFile CurDir & "\README.md"
+      ShellExecute 0, "open", "https://github.com/phlegm-noir/phlegmoirs/blob/main/README.md", 0, 0, 1
 End Sub
 
 Private Sub mnuList_Click()
@@ -4239,7 +4110,7 @@ End Sub
 Private Sub mnueditfind_Click()
       ' Ctrl+F puts the selected text into the query box, but does not proceed with a find until you hit the button.
       
-      If giEditorMode = eMode.Picture Or giEditorMode = eMode.Properties Then Exit Sub  ' no search/replace within pictures.
+      If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub  ' no search/replace within pictures.
       
       If Not mnuViewToolbar.Checked Then mnuViewToolbar_Click
       If mfHideFind Or Not picQuery.Visible Then
@@ -4272,7 +4143,7 @@ End Sub
 
 
 Private Sub mnuEditReplace_Click()
-      If giEditorMode = eMode.Picture Or giEditorMode = eMode.Properties Then Exit Sub
+      If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub
       
       mfHideFind = False
       If mnuViewToolbar.Checked = False Then mnuViewToolbar_Click
@@ -4351,7 +4222,7 @@ Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
             Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
                   If Shift = 0 Then BrowserExecuteNext
             Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
-                  If Shift = 0 Then BrowserExecutePrev
+                  If Shift = 0 Then BrowserExecuteNext True
       End Select
 End Sub
 
@@ -4372,7 +4243,7 @@ Private Sub picEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, 
       ElseIf Not gImageData.Zoomed And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
-            BrowserExecutePrev
+            BrowserExecuteNext True
       End If
       
       gImageData.Zoomed = False
@@ -4465,7 +4336,7 @@ Private Sub agEditor_KeyDown(KeyCode As Integer, Shift As Integer)
             Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
                   If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecuteNext
             Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
-                  If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecutePrev
+                  If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecuteNext True
       End Select
 End Sub
 
@@ -4538,7 +4409,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                   If Shift = vbCtrlMask Then BrowserExecuteNext
             
             Case 219 ' Left Bracket "["
-                  If Shift = vbCtrlMask Then BrowserExecutePrev
+                  If Shift = vbCtrlMask Then BrowserExecuteNext True
                   
             Case 188 ' Comma (",")  ...also "<"
                   If Shift = vbCtrlMask + vbShiftMask Then
@@ -4596,8 +4467,7 @@ Private Sub Form_Load()
       msPhlegmKey = "Software\" & App.title & "\" & msSettingsVersion
       
       vDate = Date
-      msPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & _
-            "-" & Format(Day(vDate), "0#")
+      msPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & "-" & Format(Day(vDate), "0#")
       
       GetWindowSettings
       mStats.imax = CharacterCount(agEditor)
@@ -4605,8 +4475,7 @@ Private Sub Form_Load()
       staTusBar1.Panels(eStat.Modified) = ""
 
       If Not Debugging Then
-            gpOldLvwProc = SetWindowLong(lvwBrowser.hwnd, GWL_WNDPROC, _
-                  AddressOf ListViewProc)
+            gpOldLvwProc = SetWindowLong(lvwBrowser.hwnd, GWL_WNDPROC, AddressOf ListViewProc)
       End If
       
       If agEditor.Visible Then
@@ -4695,8 +4564,8 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                               
                   ElseIf lvwBrowser.ListItems.Count > 0 Then
                         With lvwBrowser.SelectedItem
-                              If .Icon = eMode.Directory Or .Icon = eMode.Drive Or .Icon = eMode.Cdrom Or _
-                                                .Icon = eMode.Floppy Or .Icon = eMode.Network And Shift = 0 Then
+                              If .Icon = eIconType.Directory Or .Icon = eIconType.Drive Or .Icon = eIconType.Cdrom Or _
+                                                .Icon = eIconType.Floppy Or .Icon = eIconType.Network And Shift = 0 Then
                                     BrowserExecuteItem lvwBrowser.SelectedItem
                               End If
                         End With
@@ -4731,7 +4600,7 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   If Shift = 0 Then BrowserDeleteSelected
                   
             Case 219 ' Left Bracket [
-                  If Shift = 0 Then BrowserExecutePrev
+                  If Shift = 0 Then BrowserExecuteNext True
             
             Case 221 ' Right Bracket ]
                   If Shift = 0 Then BrowserExecuteNext
@@ -4794,7 +4663,7 @@ Private Sub mnuFileNew_Click()
       agEditor.Text = ""
       agEditor.tag = ""
       gTextEncoding = eTextEncoding.ASCII
-      EditorSetMode Text
+      EditorSetMode eViewMode.TextView
       frmMain.Caption = "(New File)"
       staTusBar1.Panels(eStat.encoding) = "ASCII"
       chkReadOnly.value = vbUnchecked
@@ -5014,7 +4883,7 @@ Private Sub RearrangeControls()
 
 '      If mnuViewToolbar.Checked Then btnToolbarClose.Left = frmMain.ScaleWidth - btnToolbarClose.Width - 50
             
-      If giEditorMode = eMode.Text Then
+      If giEditorMode = eViewMode.TextView Then
             ' a few things in the statusbar could change in a window resize:
             '   x, xmax, y, ymax
             ' and some shouldn't change:
@@ -5075,7 +4944,7 @@ Private Function BrowserGetDrives() As Integer
       Dim sDrivesFixed As String * 255
       Dim sDriveString As String
       Dim sDriveArray() As String
-      Dim sNextDrive As String, iDriveIcon As eMode
+      Dim sNextDrive As String, iDriveIcon As eIconType
       Dim lLength As Long
       Dim iIndex As Integer, iTempKey As Integer
       Dim litCurrentItem As ListItem
@@ -5156,120 +5025,124 @@ Private Sub mnuWritePaste_Click()
       agEditor.Paste
 End Sub
 
-Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eMode = Text) As Boolean
+Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode)
       
       Dim fLoadSuccess As Boolean, sCaption As String
 
       If mfEditorLoading Then agEditor.Text = ""
-      mfEditorLoading = True
       
-      If Trim(sFileName) = "" Then  ' Blank means start a new file.  For when the registry settings come up empty.
+      If Trim(sFileName) = "" Then ' Blank means start a new file.
             mnuFileNew_Click
-      
+            Exit Sub
       ElseIf Not FileExists(sFileName) Then
             frmMain.Caption = "ERROR: file does not exist."
             agEditor.tag = ""
+            Exit Sub
+      End If
             
-      Else ' Normal file load.
+      EditorSetMode iMode
+      
+      Select Case iMode
             
-            EditorSetMode iMode
-            
-            Select Case iMode
+            Case eViewMode.TextView
+                  mfEditorLoading = True
                   
-                  Case eMode.Text, eMode.other, eMode.rtf
-                        ' pass along the boolean return value, if anyone wants it.
-                        If Not gfFullScreenMode And FileSize(sFileName) > 0 Then
-                              Dim encoding As Integer
-                              encoding = IsUnicodeFile(sFileName)
-                              
-                              If encoding = eTextEncoding.ERROR Then
-                                    frmMain.Caption = "Could not load file: " + sFileName
-                                    mfEditorLoading = False
-                                    EditorLoadFile = False
-                                    Exit Function
-                              ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
-                                    Dim f, ts
-                                    Set f = gFSO.getfile(sFileName)
-                                    Set ts = f.OpenAsTextStream(eIoMode.ForReading, encoding)
-                                    If ts.atendofstream() Then
-                                          agEditor.Text = ""
-                                    Else
-                                          agEditor.Text = ts.readall()
-                                    End If
-                                    ts.Close
-                                    fLoadSuccess = True
-                              Else
-                                    fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
-                              End If
-                              gTextEncoding = encoding
-                              If encoding = eTextEncoding.UNICODE Then
-                                    staTusBar1.Panels(eStat.encoding) = "UNICODE"
-                              Else
-                                    staTusBar1.Panels(eStat.encoding) = "ASCII"
-                              End If
-                        Else
-                              agEditor.Text = ""
+                  If Not gfFullScreenMode And GetFileSize(sFileName) > 0 Then
+                        Dim encoding As Integer
+                        encoding = IsUnicodeFile(sFileName)
+                        
+                        If encoding = eTextEncoding.ERROR Then
+                              frmMain.Caption = "Could not load file: " + sFileName
+                              agEditor.tag = ""
                               gTextEncoding = eTextEncoding.ASCII
                               staTusBar1.Panels(eStat.encoding) = "ASCII"
+                              mfEditorLoading = False
+                              Exit Sub
+                        ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
+                              Dim f, ts
+                              Set f = gFSO.GetFile(sFileName)
+                              Set ts = f.OpenAsTextStream(eIoMode.ForReading, encoding)
+                              If ts.atendofstream() Then
+                                    agEditor.Text = ""
+                              Else
+                                    agEditor.Text = ts.readall()
+                              End If
+                              ts.Close
                               fLoadSuccess = True
+                        Else
+                              fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
                         End If
-                  
-                        sCaption = sFileName & "  (" & Format(FileSize(sFileName), "#,#0") & " bytes saved on " _
-                              & FileModifiedTime(sFileName) & ")"
-'                  Case rtf
-'                        fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_RTF)
-                        
-                  Case eMode.Picture
-                        Dim DefaultWidth, DefaultHeight
+                        gTextEncoding = encoding
+                        If encoding = eTextEncoding.UNICODE Then
+                              staTusBar1.Panels(eStat.encoding) = "UNICODE"
+                        Else
+                              staTusBar1.Panels(eStat.encoding) = "ASCII"
+                        End If
+                  Else
+                        agEditor.Text = ""
+                        gTextEncoding = eTextEncoding.ASCII
+                        staTusBar1.Panels(eStat.encoding) = "ASCII"
                         fLoadSuccess = True
-                        On Error Resume Next
-                        gImageData.OutPic.Picture = LoadPicture(sFileName)
-                        Const twipConversion = 0.567
-                        DefaultWidth = gImageData.OutPic.Picture.Width * twipConversion
-                        DefaultHeight = gImageData.OutPic.Picture.Height * twipConversion
-                        If Width >= 65536 Then
-                            DefaultWidth = 65535
-                        End If
-                        If DefaultHeight >= 65536 Then
-                            DefaultHeight = 65535
-                        End If
-                        gImageData.DefaultWidth = DefaultWidth
-                        gImageData.DefaultHeight = DefaultHeight
-                        ImageSetZoom (sliZoom.value)
-                        sCaption = sFileName & "  (" & sliZoom.value & "%)"
-                        
-                        If Err > 0 Then
-                              Caption = "ERROR: " & sFileName & ", picture couldn't load"
-                              fLoadSuccess = False
-                        End If
-                        On Error GoTo 0
-                  
-                  Case eMode.Properties, eMode.mp3, eMode.video
-                        GetFileProperties sFileName
-                        sCaption = sFileName
-                        fLoadSuccess = True
-            End Select
-                  
-            If fLoadSuccess Or FileSize(sFileName) = 0 Then  ' Success!
-                  agEditor.tag = sFileName
-                  frmMain.Caption = sCaption
-                  If gfFullScreenMode Then
-                        frmFullScreen.lblFileNameZoom = sCaption & "  "
                   End If
-                  staTusBar1.Panels(eStat.Modified) = ""
-                  agEditor.SetSelection 0, 0
-                  AddToHistory sFileName
             
-            Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
-                  frmMain.Caption = "Could not load file.  command() = " & Chr(34) & Command() & Chr(34) _
-                        & "; File = " & Chr(34) & sFileName & Chr(34)
-                  agEditor.tag = ""
+                  sCaption = sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
+                        & FileModifiedTime(sFileName) & ")"
+                  
+            Case eViewMode.PictureView
+                  mfEditorLoading = True
+                  
+                  Dim DefaultWidth, DefaultHeight
+                  fLoadSuccess = True
+                  On Error Resume Next
+                  gImageData.OutPic.Picture = LoadPicture(sFileName)
+                  Const twipConversion = 0.567
+                  DefaultWidth = gImageData.OutPic.Picture.Width * twipConversion
+                  DefaultHeight = gImageData.OutPic.Picture.Height * twipConversion
+                  If Width > 65535 Then
+                      DefaultWidth = 65535
+                  End If
+                  If DefaultHeight >= 65535 Then
+                      DefaultHeight = 65535
+                  End If
+                  gImageData.DefaultWidth = DefaultWidth
+                  gImageData.DefaultHeight = DefaultHeight
+                  ImageSetZoom (sliZoom.value)
+                  sCaption = sFileName & "  (" & sliZoom.value & "%)"
+                  
+                  If Err > 0 Then
+                        Caption = "ERROR: " & sFileName & ", picture couldn't load"
+                        fLoadSuccess = False
+                  End If
+                  On Error GoTo 0
+            
+            Case eViewMode.PropertiesView
+                  mfEditorLoading = True
+                  LoadPropertiesView sFileName
+                  sCaption = sFileName
+                  fLoadSuccess = True
+      End Select
+            
+      If fLoadSuccess Or GetFileSize(sFileName) = 0 Then  ' Success!
+            agEditor.tag = sFileName
+            frmMain.Caption = sCaption
+            If gfFullScreenMode Then
+                  frmFullScreen.lblFileNameZoom = sCaption & "  "
             End If
+            staTusBar1.Panels(eStat.Modified) = ""
+            agEditor.SetSelection 0, 0
+            AddToHistory sFileName
+      
+      Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
+            frmMain.Caption = "Could not load file.  command() = " & Chr(34) & Command() & Chr(34) _
+                  & "; File = " & Chr(34) & sFileName & Chr(34)
+            If gfFullScreenMode Then frmFullScreen.lblFileNameZoom = frmMain.Caption
+            agEditor.tag = ""
+            gTextEncoding = eTextEncoding.ASCII
+            staTusBar1.Panels(eStat.encoding) = "ASCII"
       End If
       
-      EditorLoadFile = fLoadSuccess
       mfEditorLoading = False
-End Function
+End Sub
 
 Public Sub ImageSetZoom(iZoom As Integer)
       gImageData.OutPic.Stretch = True
@@ -5501,12 +5374,7 @@ Private Sub GetWindowSettings()
       ' Otherwise agEditor's display routines are called again and again for an entire file,
       ' rather than for a blank editor.
       
-      If FileSize(agEditor.tag) > BIGFILESIZE Then
-            EditorLoadFile agEditor.tag, eMode.Properties
-      Else
-            sEx = gFSO.getextensionname(agEditor.tag)
-            EditorLoadFile agEditor.tag, FileTypeFromExtension(sEx)
-      End If
+      EditorLoadFile agEditor.tag, GetViewMode(agEditor.tag, GetIconType(gFSO.getextensionname(agEditor.tag)))
                   
       If lRetVal = 0 Then
             With mEditorPrefs

@@ -101,15 +101,14 @@ End Type
 ' Global enumerations
 ' *************************************************************
 
-' eMode is meant to encompass browser modes, editor modes, and file types. TODO: WHY?
-Enum eMode
+Enum eIconType
       Directory = 1
       Properties = 2
       Drive = 3
       Text = 4
       other = 5
       Picture = 6
-      ERROR = 7
+      IconError = 7
       Bookmark = 8
       Floppy = 9
       Network = 10
@@ -117,6 +116,13 @@ Enum eMode
       rtf = 12
       mp3 = 13
       video = 14
+End Enum
+
+Enum eViewMode
+      ERROR = -2
+      TextView = 1
+      PictureView = 2
+      PropertiesView = 3
 End Enum
 
 Enum eStat
@@ -170,16 +176,14 @@ Public objtest As Object
 Public gFSO As Object
 Public gBrowserData As TBrowserData
 Public gImageData As TImageData
-Public giEditorMode As eMode
+Public giEditorMode As eViewMode
 Public gTextEncoding As Integer
 Public gfFullScreenMode As Integer
 
 Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 
-
-
-Function FormatBytes(ByVal curBytes As Currency, iPrecision As Integer) As String
+Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
       ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
       ' formats it to read likeathis:
       
@@ -192,7 +196,7 @@ Function FormatBytes(ByVal curBytes As Currency, iPrecision As Integer) As Strin
       ' ...with iPrecision digits after the demical.
       
       If curBytes < 1024@ Then
-            FormatBytes = CStr(curBytes) & " b"
+            FormatBytes = CStr(curBytes) & " bytes"
       ElseIf curBytes < 1048576@ Then
             FormatBytes = CStr(Round(curBytes / 1024@, iPrecision)) & " KB"
       ElseIf curBytes < 1073741824@ Then
@@ -219,7 +223,7 @@ Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
       End With
 End Function
 
- Function GetRealStdFont(ByRef editor As agRichEdit, Optional ByRef lTextColor As Long) As StdFont
+Function GetRealStdFont(ByRef editor As agRichEdit, Optional ByRef lTextColor As Long) As StdFont
       ' OK, I put in a byref value to pass on the text color, which is not included in the StdFont type.
       ' The function returns a StdFont containing the rest of the font data.
       
@@ -239,8 +243,8 @@ End Function
       Const CFM_STRIKEOUT As Long = &H8
       Const CFM_UNDERLINE As Long = &H4
       Const CFM_WEIGHT As Long = &H400000
-
-
+      
+      
       Dim char2 As CHARFORMAT2
       Dim lRetVal As Long
       Dim fntNew As New StdFont
@@ -268,32 +272,23 @@ End Function
       End If
 End Function
 
-      ' The problem: right arrow key wants to scroll forward.  I want it to do things
-      ' like BrowserExecuteItem (open folder/drive, etc.) and it's REALLY ANNOYING
-      ' when the listview does both at once.
-      
-      ' The solution: The nonexistant F13 key will be
-      ' given the same right arrow implementation, and this window procedure will
-      ' merely wait for a right arrow (without ctrl), and when it finds one, it will
-      ' continue the window procedure as though F13 had been pressed.
-      
-      ' If somebody wants to scroll right with arrow keys, he may use ctrl+right,
-      ' and nothing bad will happen.
-      
-      ' The one regret: I hope the system dependent "scan codes" in the low-order
-      ' word of a WM_KEYDOWN F13 message aren't used for anything.  Because
-      ' it's getting scan codes meant for a right arrow.
-'
 Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
 
       Select Case uMsg
             Case WM_KEYDOWN
+                  ' The problem: right arrow key wants to scroll right.  I want it to do things
+                  ' like enter the given folder, which would cause the listview to do both at once.
                   
-                  'Debug.Print "LVW_BROWSER: WM_KEYDOWN: " & wParam & " " & lParam
+                  ' Solution: this modified windows procedure will translate a right arrow (without ctrl)
+                  ' into an F13 keyDown and then continue the window procedure.
+                  
+                  ' Elsewhere, F13 will be bound to do the desired right arrow key things.
+                  
+                  ' If somebody wants to scroll right with arrow keys, they can use ctrl+right.
                   
                   If wParam = vbKeyRight And Not IsKeyDown(VK_CONTROL) Then
-                                    
+                        
                         ListViewProc = CallWindowProc(gpOldLvwProc, hwnd, _
                               WM_KEYDOWN, vbKeyF13, lParam)
                         Exit Function
@@ -301,7 +296,7 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
             
             Case WM_MOUSEWHEEL
                   ' This procedure is going to scroll horizontally when you mousewheel
-                  ' over the hscrollbar.  JUST LIKE OPERA!!! <3
+                  ' over the hscrollbar. Inspired by Opera browser at the time.
 
                   Const LVHT_ABOVE As Long = &H8
                   Const LVHT_BELOW As Long = &H10
@@ -321,10 +316,10 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                   Const SB_RIGHT As Long = 7
 
                   Dim lRetVal As Long
-                  Dim lWheelTurns As Long  ' Can be positive or negative (not zero, of course!)
-                                                                        ' If you spin the wheel REALLY fast, it sends a single
-                                                                        ' WM_MOUSEWHEEL message grouping multiple turns together.
-                                                                        ' But it's normally either 1 or -1, sending a message for each turn.
+                  Dim lWheelTurns As Long  ' Can be positive or negative (not zero)
+                                          ' If you spin the wheel REALLY fast, it sends a single
+                                          ' WM_MOUSEWHEEL message grouping multiple turns together.
+                                          ' But it's normally either 1 or -1, sending a message for each turn.
                   Dim HitTestInfo As LVHITTESTINFO
                   Dim recClient As RECT
 
@@ -342,14 +337,6 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                         "   " & HitTestInfo.flags & "    wheel turns: " & lWheelTurns
 
                   If (HitTestInfo.flags And LVHT_BELOW) Or (HitTestInfo.flags And LVHT_ABOVE) Then
-'                  If Not CBool(HitTestInfo.flags And LVHT_TORIGHT) Then
-                        
-                  ' For the moment, as you can see above, I'm commenting out the above/below condition.
-                  ' I'm thinking it's better to always mousewheel left/right, and scroll manually for updown.
-                  ' Since the listview is pretty thin, and the scrollbar is just right there begging to be touched.
-                  ' Also, we DO NOT want them attempting left/right buttons to move the scrollbar!
-                  ' That'll find them in some hot water, but at least it doesn't open files (just folders/drives).
-                                    
                         Dim iTurn As Integer
                         If lWheelTurns > 0 Then
                               For iTurn = 1 To lWheelTurns * 3
@@ -366,7 +353,8 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                         End If
                   End If
       End Select
-                  
+      
+      ' Do all the default things too, as defined by the old procedure
       ListViewProc = CallWindowProc(gpOldLvwProc, hwnd, uMsg, wParam, lParam)
 End Function
 
@@ -419,27 +407,6 @@ Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
       TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hwnd, uMsg, wParam, lParam)
 End Function
 
-'Public Function CompareLong(ByVal lParam1 As Long, ByVal lParam2 As Long, _
-'      ByVal lParamSort As Long) As Integer
-'      ' This is a callback function to be sent with an LVM_SORTITEMSEX message.
-'      ' Listviews like to do text sorting.  That's all they do in visual basic, without help.
-'      ' I remember seeing applications in which the programmer obviously wasn't prepared
-'      ' for this annoying lack of functionality.  (Napster, anyone?)
-'
-'      ' lParam is going to mirror lvwBrowser.SortOrder, which is
-'      ' 0 for lvwAscending
-'      ' 1 for lvwDescending
-'
-'      If lParam1 < lParam2 Then
-'            CompareLong = -1
-'      ElseIf lParam1 = lParam2 Then
-'            CompareLong = 0
-'      Else
-'            CompareLong = 1
-'      End If
-'
-'      If lParamSort = lvwDescending Then CompareLong = -CompareLong
-'End Function
 
 
 
@@ -478,14 +445,84 @@ Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
       'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
 End Function
 
+Public Function GetIconType(sEx As String) As eIconType
+      ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
+      
+      Select Case sEx
+            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur", "png", "webp"
+                  GetIconType = eIconType.Picture
+            
+            Case "dll", "ocx", "exe", "zip", "msi", "sys", "cab", "7z"
+                  GetIconType = eIconType.Properties
+            
+            Case "mp3", "ogg", "wav", "flac"
+                  GetIconType = eIconType.mp3
+            
+            Case "avi", "mpeg", "mp4", "webm", "flv"
+                  GetIconType = eIconType.video
+            
+            Case "rtf"
+                  GetIconType = eIconType.rtf
+            
+            Case "txt", "log"
+                  GetIconType = eIconType.Text
+            
+            Case Else
+                  GetIconType = eIconType.other
+      End Select
+End Function
+
+Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType) As eViewMode
+      Const PicFileTooBig = 10000000
+      Const NonPicFileTooBig = 2097152
+      Dim sEx As String
+      Dim fileSize
+      
+      If Not gFSO.FileExists(sFileName) Then
+            GetViewMode = eViewMode.ERROR
+            Exit Function
+      End If
+      
+      sEx = gFSO.getextensionname(sFileName)
+      
+      If iMode = eIconType.Bookmark Then
+            iMode = GetIconType(sEx)
+      End If
+      
+      Select Case iMode
+            Case eIconType.Picture
+                  fileSize = GetFileSize(sFileName)
+                  
+                  If sEx = "png" Or sEx = "webp" Or fileSize > PicFileTooBig Then
+                        GetViewMode = eViewMode.PropertiesView
+                  Else
+                        GetViewMode = eViewMode.PictureView
+                  End If
+            
+            Case eIconType.Text, eIconType.rtf, eIconType.other
+                  fileSize = GetFileSize(sFileName)
+                  
+                  If fileSize > NonPicFileTooBig Then
+                        GetViewMode = eViewMode.PropertiesView
+                  Else
+                        GetViewMode = eViewMode.TextView
+                  End If
+            
+            Case eIconType.Cdrom, eIconType.Directory, eIconType.Drive, eIconType.IconError, eIconType.Floppy, eIconType.Network
+                  GetViewMode = eViewMode.ERROR
+            
+            Case Else
+                  GetViewMode = eViewMode.PropertiesView
+      End Select
+End Function
 Public Function IsUnicodeFile(FilePath)
       Dim objStream
       Dim intAsc1Chr, intAsc2Chr
       
-      If (gFSO.FileExists(FilePath) = False) Then
+      If Not gFSO.FileExists(FilePath) Then
             IsUnicodeFile = eTextEncoding.ERROR
             Exit Function
-      ElseIf FileSize(FilePath) = 1 Then
+      ElseIf GetFileSize(FilePath) = 1 Then
             IsUnicodeFile = eTextEncoding.ASCII
             Exit Function
       End If
@@ -537,7 +574,6 @@ Public Function GetFullPathName(ByVal sInput As String) As String
       Else
             GetFullPathName = sInput
       End If
-      
 End Function
 
 
@@ -558,23 +594,12 @@ Public Function FileExists(ByVal sSource As String) As Boolean
    
 End Function
 
-Public Function FileSize(ByVal sSource As String) As Currency
-      
-      Dim WFD As WIN32_FIND_DATA
-      Dim hFile As Long
-      
-      hFile = FindFirstFile(sSource, WFD)
-      
-      If hFile > 0 And WFD.nFileSizeHigh = 0 Then
-            FileSize = WFD.nFileSizeLow
-      ElseIf hFile > 0 And WFD.nFileSizeHigh > 0 Then
-            FileSize = -1 ' TODO: account for the high order word which should be multiplied by the maximum long integer
+Public Function GetFileSize(ByVal sSource As String) As Currency
+      If sSource = "" Then
+            GetFileSize = 0
       Else
-            FileSize = -1 ' invalid handle value
+            GetFileSize = gFSO.GetFile(sSource).Size
       End If
-      
-      FindClose (hFile)
-      
 End Function
 
 Public Function FileModifiedTime(ByVal sSource As String) As String
@@ -638,8 +663,7 @@ Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
       AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
 End Function
 
-' I can't believe it's this difficult to extract the character count, when counting only one character per
-' carriage return.  Cannot fucking believe it.
+' Extract the character count, when counting only one character per carriage return.
 
 Public Function CharacterCount(ByRef editor As agRichEdit) As Long
       
@@ -745,90 +769,7 @@ Public Function SetRealStdFont(ByRef editor As agRichEdit, ByRef fnt As StdFont,
 End Function
 
 
-' DON'T NEED, COMMENTING OUT.  WORKS BUT NOT FOR POPUP MENUS.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'' Copyright ©1996-2004 VBnet, Randy Birch, All Rights Reserved.
-'' Some pages may also contain other copyrights by the author.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'' Distribution: You can freely use this code in your own
-''               applications, but you may not reproduce
-''               or publish this code on any web site,
-''               online service, or distribute as source
-''               on any media without express permission.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'
-'Public Sub SetRadioMenuChecksB(ByRef frm As Form, ByVal mnuBarIndex As Long, ByVal mnuItem As Long)
-'
-'      Dim hMenu As Long
-'      Dim hSubMenu As Long
-'      Dim mInfo As MENUITEMINFO
-'
-'      'get the menu handle
-'      hMenu = GetMenu(frm.hWnd)
-'
-'      'get the submenu handle
-'      hSubMenu = GetSubMenu(hMenu, mnuBarIndex)
-'
-'      'fill a structure to retrieve the current
-'      'item menu string by first calling
-'      'GetMenuItemInfo passing a null string.
-'      'The required size is returned in
-'      'mInfo.cch. Add 1 to accommodate the
-'      'null that will be added when called.
-'      With mInfo
-'            .cbSize = Len(mInfo)
-'            .fMask = MIIM_TYPE
-'            .fType = MFT_STRING
-'            .dwTypeData = vbNullString
-'            .cch = Len(mInfo.dwTypeData)
-'
-'            'get the needed buffer size
-'            Call GetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo)
-'
-'            'set the buffer
-'            .dwTypeData = Space$(mInfo.cch + 1)
-'            .cch = Len(mInfo.dwTypeData)
-'
-'      End With
-'
-'      'and get the data
-'      If GetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo) <> 0 Then
-'
-'            'copy its attributes, changing
-'            'the checkmark to a radio button
-'            With mInfo
-'                  .cbSize = Len(mInfo)
-'                  .fType = MFT_RADIOCHECK
-'                  .fMask = MIIM_TYPE
-'            End With
-'
-'            'modify the menu item
-'            Call SetMenuItemInfo(hSubMenu, mnuItem, MENU_IDENTIFIER, mInfo)
-'
-'      End If
-'
-'End Sub
-
-
-
-
-
 Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
-      ' Retrieve the informations contained into the standard ID3 tag
-      ' of the specified MP3 file
-      ' Return an array of 6 elements with the following meaning:
-      '   - index 0: song title
-      '   - index 1: artist
-      '   - index 2: album
-      '   - index 3: year
-      '   - index 4: comment
-      '   - index 5: genre: this is an integer value --> use any MP3 player,
-      '  such as Winamp,
-      '       to look for the descriptions
-
-'      Dim infoRet(5) As String
-'      Dim mp3info As MP3TagInfo
-      
       On Error Resume Next
       ' open the specified file
       Open sFileName For Binary As #1
@@ -848,18 +789,6 @@ Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As 
             Get #1, , .genre
             Close #1
       End With
-      
-      ' I'm altering what I copied.  This will pass on the structre instead of returning a string array.
-
-'      ' from struct to array
-'      infoRet(0) = Trim$(mp3info.title)
-'      infoRet(1) = Trim$(mp3info.artist)
-'      infoRet(2) = Trim$(mp3info.album)
-'      infoRet(3) = Trim$(mp3info.year)
-'      infoRet(4) = Trim$(mp3info.comment)
-'      infoRet(5) = CInt(Asc(Trim$(mp3info.genre))) - 1
-'      'return the array
-'      GetMP3Info = infoRet
 End Function
 
 Public Function getAllProperties(sFileName As String)

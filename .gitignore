@@ -3,3 +3,5 @@
 *.PDM
 *.vbw
 *.txt
+*.diff
+*.swp
