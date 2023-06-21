@@ -5,7 +5,7 @@ Attribute VB_Name = "modPhlegmoirs"
 ' My custom types
 ' *************************************************************
 
-Option Compare Text
+Option Compare Binary
 Option Explicit
 
 Public Type TStatType

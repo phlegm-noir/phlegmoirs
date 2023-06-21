@@ -844,7 +844,7 @@ Begin VB.Form frmMain
             Left            =   3840
             TabIndex        =   63
             TabStop         =   0   'False
-            ToolTipText     =   "Hide Toolbar (F7)"
+            ToolTipText     =   "Close Font Dialog"
             Top             =   0
             Width           =   175
          End
@@ -1725,7 +1725,7 @@ Attribute VB_Exposed = False
 ' agEditor.tag -- full file & pathname of successfully loaded file
 ' mnuBookmark(x).tag -- exact filename of bookmark.
 
-Option Compare Text
+Option Compare Binary
 Option Explicit
 
 ' *************************************************************
@@ -1793,7 +1793,6 @@ Private Sub AddToBookmarks(ByVal sNewBookmark As String)
             If iIndex <= 10 Then .Caption = "&" & .Caption
             .Visible = True
       End With
-
 End Sub
 
 Private Sub AddToHistory(ByVal sNewHistory As String)
@@ -1865,6 +1864,7 @@ Private Sub BookmarkSaveChanges()
       For iIndex = iIndex To mnuBookmark.UBound
             Unload mnuBookmark(iIndex)
       Next iIndex
+      SaveWindowSettings
 End Sub
 
 
@@ -2716,6 +2716,7 @@ Private Sub btnFont_Click()
             btnFont.Caption = Left(Trim(btnFont.Caption), 10) & "..."
       End If
       lblFontSize = Round(GetRealStdFont(agEditor).Size, 1)
+      SaveWindowSettings
 End Sub
 
 
@@ -3115,7 +3116,6 @@ Private Sub cboPath_Scroll()
 End Sub
 
 Private Sub chkFileBrowser_Click()
-      
       picBrowser.Visible = chkFileBrowser.value
       mnuViewFilebrowser.Checked = chkFileBrowser.value
       staTusBar1.Panels(eStat.BrowserStats).Visible = chkFileBrowser.value
@@ -3297,6 +3297,7 @@ Private Function EditorFindText( _
 End Function
 
 Private Sub Form_Unload(Cancel As Integer)
+      SaveWindowSettings
       If Not Debugging Then
             SetWindowLong lvwBrowser.hwnd, GWL_WNDPROC, gpOldLvwProc
             gpOldLvwProc = 0
@@ -3307,7 +3308,6 @@ Private Sub Form_Unload(Cancel As Integer)
             gpOldpicEditorProc = 0
       End If
       Set gFSO = Nothing
-      SaveWindowSettings
 End Sub
 
 
@@ -3619,6 +3619,7 @@ Private Sub mnuBookmarksAdd_Click()
       Next iBookm
       
       AddToBookmarks agEditor.tag
+      SaveWindowSettings
       
       If gBrowserData.BookmarkMode Then btnRefresh_Click
 End Sub
@@ -3977,10 +3978,8 @@ Private Sub lblDivider_MouseUp(Button As Integer, Shift As Integer, X As Single,
       If lblDivider.MousePointer = vbSizeWE Then
             lblDivider.MousePointer = 0
             lblDivider.tag = ""
-'            agEditor.Width = picBrowser.Width + 160
-'            agEditor.Left = frmMain.Width - agEditor.Width - 150
+            SaveWindowSettings
       End If
-
 End Sub
 
 
@@ -4237,10 +4236,10 @@ Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single
 End Sub
 
 Private Sub picEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If Not gImageData.Zoomed And Button = vbLeftButton Then
+      If giEditorMode = eViewMode.PictureView And Not gImageData.Zoomed And Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             BrowserExecuteNext
-      ElseIf Not gImageData.Zoomed And Button = vbRightButton Then
+      ElseIf giEditorMode = eViewMode.PictureView And Not gImageData.Zoomed And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             BrowserExecuteNext True
@@ -4738,6 +4737,7 @@ Public Function SaveFile(ByVal sFileName As String)
       Else
             frmMain.Caption = "ERROR: cannot save to " & sFileName
       End If
+      SaveWindowSettings
       Exit Function
       
 File_Error:
@@ -4749,7 +4749,7 @@ End Sub
 
 Private Sub agEditor_Change()
 
-      If Not mfEditorLoading And Not (agEditor.tag = "" And agEditor.Text = "") Then
+      If Not mfEditorLoading And giEditorMode = eViewMode.TextView And Not (agEditor.tag = "" And agEditor.Text = "") Then
             staTusBar1.Panels(eStat.Modified) = "Modified"
       End If
       
@@ -5271,6 +5271,7 @@ Private Sub SaveWindowSettings()
       ' deleted in the program!
 
       lRetVal = RegCloseKey(lKey)
+      Debug.Print "Settings saved at: " & Now
 End Sub
 
 Private Sub GetWindowSettings()
