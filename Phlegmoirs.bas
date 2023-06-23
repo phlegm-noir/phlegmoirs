@@ -1,20 +1,29 @@
 Attribute VB_Name = "modPhlegmoirs"
+Option Compare Binary
+Option Explicit
+      
+' *************************************************************
+' Global Settings
+' *************************************************************
 
+Public Const REGISTRY_VERSION = "0.16.3" ' Not the current build number, but the last time I changed the registry structure.
+Public Const LOG_TO_FILE As Boolean = False
+Public Const MINIMUM_LOG_LEVEL As Integer = 1
+Public Const DEBUGGING As Boolean = False
+Public Const MAX_HISTORY = 10
+Public Const MAX_BOOKMARKS = 30
 
 ' *************************************************************
 ' My custom types
 ' *************************************************************
 
-Option Compare Binary
-Option Explicit
-
 Public Type TStatType
-    i As Long
-    imax As Long
-    Y As Long
-    ymax As Long
-    X As Long
-    xmax As Long
+      i As Long
+      imax As Long
+      Y As Long
+      ymax As Long
+      X As Long
+      xmax As Long
 End Type
 
 Public Type TEditorPrefs
@@ -50,14 +59,21 @@ Public Type TWindowPrefs
       ShowStatusBar As Boolean
       ShowToolBar As Boolean
       ShowFind As Boolean
-      BookmarkCount As Integer
-      HistoryCount As Integer
       AutoLoadFile As String * 255
       cboPath As String * 255
       FocusFollowsMouse As Boolean
       
       ' Reserved, not used:
       FullScreen As Boolean
+End Type
+
+Public Type TAllPrefs
+      WindowPrefs As TWindowPrefs
+      EditorPrefs As TEditorPrefs
+      HistoryCount As Integer
+      History(MAX_HISTORY) As String * 255
+      BookmarkCount As Integer
+      Bookmarks(MAX_BOOKMARKS) As String * 255
 End Type
 
 Public Type TBrowserData
@@ -170,6 +186,11 @@ End Enum
 ' Global Variables
 ' *************************************************************
 
+Public gStats As TStatType
+Public gAllPrefs As TAllPrefs
+Public gsPhlegmKey As String
+Public gsPhlegmDate As String
+
 Public gpOldLvwProc As Long, gpOldpicBrowserProc As Long, gpOldpicEditorProc As Long
 Public gpOldfrmFullScreenProc As Long
 Public objtest As Object
@@ -179,9 +200,12 @@ Public gImageData As TImageData
 Public giEditorMode As eViewMode
 Public gTextEncoding As Integer
 Public gfFullScreenMode As Integer
+Public gCommandFile As String
 
 Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
+
+
 
 Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
       ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
@@ -350,6 +374,7 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                               Exit Function
                         ElseIf lWheelTurns = 0 Then
                               MsgBox "ERROR: wheel turn = 0.  How can you turn the wheel zero turns?"
+                              DebugLog "ERROR: wheel turn = 0.  How can you turn the wheel zero turns?"
                         End If
                   End If
       End Select
@@ -428,6 +453,7 @@ End Function
 
 Public Function CstringToVBstring(ByVal sCstring As String) As String
       ' Removes first null character and anything following it.
+      On Error GoTo CONVERSION_ERROR
       Dim lngNullPosition As Long
       
       lngNullPosition = InStr(1, sCstring, Chr(0))
@@ -436,6 +462,9 @@ Public Function CstringToVBstring(ByVal sCstring As String) As String
       Else
             CstringToVBstring = Left(sCstring, lngNullPosition - 1)
       End If
+      Exit Function
+CONVERSION_ERROR:
+      DebugLog "CONVERSION ERROR: " & sCstring, 2
 End Function
 
 Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
@@ -445,6 +474,18 @@ Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
       'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
 End Function
 
+Public Sub DebugLog(ByVal sMsg As String, Optional ByVal iLogLevel As Integer = 1)
+      Debug.Print sMsg
+      If LOG_TO_FILE And iLogLevel >= MINIMUM_LOG_LEVEL Then
+            Dim iFile As Integer
+            Dim sFile As String
+            sFile = "phlegmoirs_err.log"
+            iFile = FreeFile
+            Open sFile For Append As #iFile
+                  Print #iFile, Now & ": " & sMsg
+            Close #iFile
+      End If
+End Sub
 Public Function GetIconType(sEx As String) As eIconType
       ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
       
@@ -480,6 +521,7 @@ Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType)
       
       If Not gFSO.FileExists(sFileName) Then
             GetViewMode = eViewMode.ERROR
+            DebugLog "ViewMode: ERROR for file: " & sFileName & "..."
             Exit Function
       End If
       
@@ -510,6 +552,7 @@ Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType)
             
             Case eIconType.Cdrom, eIconType.Directory, eIconType.Drive, eIconType.IconError, eIconType.Floppy, eIconType.Network
                   GetViewMode = eViewMode.ERROR
+                  DebugLog "ViewMode: ERROR for file: " & sFileName
             
             Case Else
                   GetViewMode = eViewMode.PropertiesView
@@ -521,6 +564,7 @@ Public Function IsUnicodeFile(FilePath)
       
       If Not gFSO.FileExists(FilePath) Then
             IsUnicodeFile = eTextEncoding.ERROR
+            DebugLog "Text encoding=ERROR for file: " & FilePath
             Exit Function
       ElseIf GetFileSize(FilePath) = 1 Then
             IsUnicodeFile = eTextEncoding.ASCII
@@ -534,6 +578,7 @@ Public Function IsUnicodeFile(FilePath)
       objStream.Close
       If Err > 0 Then
             IsUnicodeFile = eTextEncoding.ERROR
+            DebugLog "Text encoding=ERROR for file: " & FilePath
             Exit Function
       End If
       On Error GoTo 0
@@ -643,6 +688,7 @@ Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
       On Error Resume Next
       AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
       If Err > 0 Then AbsoluteLeft = ctrl.Left
+      DebugLog "AbsoluteLeft throws an error, whatever that means..."
       On Error GoTo 0
 End Function
 
@@ -652,6 +698,7 @@ Public Function AbsoluteTop(ByRef ctrl As Control) As Long
       On Error Resume Next
       AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
       If Err > 0 Then AbsoluteTop = ctrl.Top
+      DebugLog "AbsoluteTop throws an error, whatever that means..."
       On Error GoTo 0
 End Function
 
@@ -840,4 +887,15 @@ Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
       End If
     Next
     ArrContains = False
+End Function
+
+' Figure out the numbering of a menu caption, and which digit to underline.
+Public Function GetNumberedCaption(ByVal sFileName As String, ByVal iIndex As Integer) As String
+      If iIndex < 10 Then
+            GetNumberedCaption = "&" & iIndex & "   " & sFileName
+      ElseIf iIndex = 10 Then
+            GetNumberedCaption = "1&0   " & sFileName
+      Else
+            GetNumberedCaption = iIndex & "   " & sFileName
+      End If
 End Function

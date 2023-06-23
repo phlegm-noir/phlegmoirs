@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MsComCtl.ocx"
+Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Begin VB.Form frmMain 
    AutoRedraw      =   -1  'True
    Caption         =   "(New File)"
@@ -1729,25 +1729,10 @@ Option Compare Binary
 Option Explicit
 
 ' *************************************************************
-' App related variables
-' *************************************************************
-Const Debugging = False
-Const msSettingsVersion = "0.10.0" ' Not the current build number, but the last time I changed the registry structure.
-
-' *************************************************************
 ' General/Settings variables
 ' *************************************************************
-Dim mStats As TStatType
-Dim mWindowPrefs As TWindowPrefs
-Dim mEditorPrefs As TEditorPrefs
-
-Dim msPhlegmKey As String
-Dim msPhlegmDate As String
 Dim mfSkipFormResize As Boolean
 Dim mfEditorLoading As Boolean
-Const MAX_HISTORY = 10
-Const BIGFILESIZE As Long = 2097152   ' Files larger than this won't be opened as text. TODO MAKE THIS DO.
-'Const ZoomIncrement = 5
 
 ' *************************************************************
 ' File Browser related variables
@@ -1781,7 +1766,13 @@ Dim miTotalResults As Integer
 
 Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       Dim iIndex As Integer
-
+      
+      If mnuBookmark.UBound >= MAX_BOOKMARKS Then
+            MsgBox "You've reached the " & MAX_BOOKMARKS & " bookmark limit. " & _
+            "Manage your bookmarks to make room.", , "Bookmark Limit"
+            Exit Sub
+      End If
+      
       sNewBookmark = CstringToVBstring(sNewBookmark)
       If sNewBookmark = "" Then Exit Sub
      
@@ -1789,13 +1780,11 @@ Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       Load mnuBookmark(iIndex)
       With mnuBookmark(iIndex)
             .tag = sNewBookmark  ' exact path here, for safe keeping
-            .Caption = iIndex & "   " & sNewBookmark ' here, to make it look all nice
-            If iIndex <= 10 Then .Caption = "&" & .Caption
+            .Caption = GetNumberedCaption(sNewBookmark, iIndex)
             .Visible = True
       End With
 End Sub
-
-Private Sub AddToHistory(ByVal sNewHistory As String)
+Private Sub AddToHistorySmartly(ByVal sNewHistory As String)
       Dim iIndex As Integer
       Dim sPrevTag As String, sTempTag As String
       Dim fFoundSame As Boolean, fHistoryGrew As Boolean
@@ -1824,29 +1813,22 @@ Private Sub AddToHistory(ByVal sNewHistory As String)
       '   Stop shifting.  Don't shift anything below that one.
       sPrevTag = mnuFileHistory(1).tag
       mnuFileHistory(1).tag = sNewHistory
-      mnuFileHistory(1).Caption = "&1 " & mnuFileHistory(1).tag
+      mnuFileHistory(1).Caption = "&1   " & mnuFileHistory(1).tag
       
       For iIndex = 2 To mnuFileHistory.UBound
-            If mnuFileHistory(iIndex).tag = sNewHistory Then
-                  mnuFileHistory(iIndex).tag = sPrevTag
-                  fFoundSame = True
-            Else
-                  sTempTag = mnuFileHistory(iIndex).tag
-                  mnuFileHistory(iIndex).tag = sPrevTag
-                  sPrevTag = sTempTag
-            End If
-            
-            ' Now, we figure out the numbering of the caption, and
-            ' which digit to underline.
-            If iIndex < 10 Then
-                  mnuFileHistory(iIndex).Caption = "&" & iIndex & " " & mnuFileHistory(iIndex).tag
-            ElseIf iIndex = 10 Then
-                  mnuFileHistory(iIndex).Caption = "1&0 " & mnuFileHistory(iIndex).tag
-            Else
-                  mnuFileHistory(iIndex).Caption = iIndex & " " & mnuFileHistory(iIndex).tag
-            End If
-            
-            If fFoundSame Then Exit For
+            With mnuFileHistory(iIndex)
+                  If .tag = sNewHistory Then
+                        .tag = sPrevTag
+                        fFoundSame = True
+                  Else
+                        sTempTag = .tag
+                        .tag = sPrevTag
+                        sPrevTag = sTempTag
+                  End If
+                  .Caption = GetNumberedCaption(.tag, iIndex)
+                  
+                  If fFoundSame Then Exit For
+            End With
       Next iIndex
       
       If fFoundSame And fHistoryGrew Then Unload mnuFileHistory(mnuFileHistory.UBound)
@@ -1857,14 +1839,16 @@ Private Sub BookmarkSaveChanges()
       Dim iIndex As Integer
       
       For iIndex = 1 To lvwBrowser.ListItems.Count
-            mnuBookmark(iIndex).tag = lvwBrowser.ListItems(iIndex)
-            mnuBookmark(iIndex).Caption = iIndex & "   " & lvwBrowser.ListItems(iIndex)
+            With mnuBookmark(iIndex)
+                  .tag = lvwBrowser.ListItems(iIndex)
+                  .Caption = GetNumberedCaption(.tag, iIndex)
+            End With
       Next iIndex
       
       For iIndex = iIndex To mnuBookmark.UBound
             Unload mnuBookmark(iIndex)
       Next iIndex
-      SaveWindowSettings
+      SaveSettingsToRegistry
 End Sub
 
 
@@ -1904,7 +1888,7 @@ Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
       End If
                   
       DoEvents ' Just doesn't seem to work without DoEvents first.
-      If Not gfFullScreenMode And lvwBrowser.SelectedItem <> Null Then
+      If Not gfFullScreenMode And Not (lvwBrowser.SelectedItem Is Nothing) Then
             lvwBrowser.SelectedItem.EnsureVisible
       End If
 End Function
@@ -1964,18 +1948,18 @@ End Sub
 
 
  Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
-            
+      DebugLog "Gonna load some files and folders at: " & BD.Dir
       Dim iIcon As eIconType, iTempKey As Integer
       Dim curTotalBytes
       Dim litCurrentItem As ListItem
       Dim hNextFile As Long, sFileName As String, sEx As String
       Dim WFD As WIN32_FIND_DATA
       Dim fHadFocus As Boolean
+      Dim sErrorMsg As String
       
       On Error Resume Next
       fHadFocus = (ActiveControl.Name = "lvwBrowser")
-      On Error GoTo 0
-      
+      On Error GoTo BROWSER_LOAD_FILES_ERROR
       
       lvwBrowser.tag = BD.Dir
       
@@ -2006,16 +1990,16 @@ End Sub
 
             If Err > 0 Then
                   iIcon = eIconType.IconError
-                  Debug.Print Err & ": " & Err.Description
+                  DebugLog "Icon error for file: " & sFileName & ": " & Err & ": " & Err.Description, 2
             End If
             
             Dim sizeBig ' this can be bigger than a long integer
             sizeBig = 0
-            sizeBig = gFSO.GetFile(BD.Dir + sFileName).Size
-            On Error GoTo 0
+            sizeBig = gFSO.GetFile(BD.Dir + sFileName).Size ' size=0 if error
             
             ' Add that file!
             
+            On Error GoTo BROWSER_LOAD_FILES_ERROR
             If sFileName <> "." And sFileName <> "" Then ' what would be the point in providing a "." folder?
                   Set litCurrentItem = lvwBrowser.ListItems.Add(, , sFileName, iIcon, iIcon)
                   
@@ -2049,6 +2033,13 @@ End Sub
       
       staTusBar1.Panels(eStat.BrowserStats).Text = FormatBytes(curTotalBytes, 1) & " in " & _
             (lvwBrowser.ListItems.Count - 1) & " objects"  ' -1 for the ".." folder
+      Exit Sub
+
+BROWSER_LOAD_FILES_ERROR:
+      sErrorMsg = "BrowserGetFilesAndFolders error: " & Err.Description
+      DebugLog sErrorMsg, 2
+      MsgBox sErrorMsg
+      Exit Sub
 End Sub
 
 
@@ -2200,7 +2191,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   staTusBar1.Panels(eStat.SelText).Visible = False
             
             Case Else
-                  Debug.Print "How did we get to the ERROR ViewMode? agEditor.tag: """ + agEditor.tag + """"
+                  DebugLog "How did we get to the ERROR ViewMode? agEditor.tag: """ + agEditor.tag + """"
       End Select
       
       RearrangeControls
@@ -2327,12 +2318,12 @@ End Function
 '
 Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
       ' (Bookmarks)      (that means bookmark mode, of course!)
-      ' (History)           (History mode -- TODO, NOT IN HERE YET)
+      ' (History)           (History mode)
       '                            (a blank is intrepreted as "root" / drives list mode)
-      ' c:\temp\   (just a plain old directory)
+      ' c:\temp\  (just a plain old directory)
       ' c:\temp\.txt  (wildcard implied)
-      ' c:\temp\peni*   (contains wildcard(s) after the directory)
-      ' c:\temp\peni   (some trailing characters, but no wildcard)
+      ' c:\temp\READM*  (contains wildcard(s) after the directory, will filter the list)
+      ' c:\temp\READMYLIPS  (no wildcard, won't filter but will move selection to a matching filename)
       
       Dim sFileName As String
       
@@ -2441,16 +2432,13 @@ Private Sub BrowserGetBookmarks()
       
       lvwBrowser.ListItems.Clear
       lvwBrowser.tag = "(Bookmarks)"
-      ' I'm adding the index as a Key, to avoid using indeces.
-      ' (Dumb workaround so that I can use API functions that desynchronize listitem indexing.)
-      ' Edit: I'm not really doing that.  Still using bookmarks as a test case on whether that might
-      ' be accomplished one day.
+      ' I'm adding the index as a Key, to avoid using real indeces.
+      ' (So that I can use API functions that desynchronize listitem indexing.)
+      ' Edit: I'm not really doing that. Using bookmarks as a test case on whether that might be doable.
       For iIndex = 1 To mnuBookmark.UBound
             Set litCurrentItem = lvwBrowser.ListItems.Add(, "b" & CInt(iIndex), mnuBookmark(iIndex).tag, _
                   eIconType.Bookmark, eIconType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuBookmark(iIndex).tag)
-            ' I'm thinking bookmarks don't need subitems?
-            ' TODO: Sure they do... just list them like they were files!  Later, perhaps.
       Next iIndex
       gBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
 '      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 0, LVSCW_AUTOSIZE
@@ -2683,40 +2671,37 @@ Private Sub btnFont_Click()
       On Error Resume Next 'trap the error. if they hit cancel, do nothing and exit
       dlgFont.ShowFont
       If Err.Number = cdlCancel Then Exit Sub
-      On Error GoTo 0  'btw, I think this has the effect of err.Clear
+      On Error GoTo 0
       
       With fntTemp
             .Name = dlgFont.FontName
-            ' IMPORTANT TO REMEMBER:
-            ' when you set a StdFont's NAME property, you've ALSO set its CHARSET property.
-            ' AUTOMATICALLY.  Same for weight.
-            ' The problem (one of many) with this agRichEdit control is that even though my
-            ' commondialog set the font name, and therefore the charset, of the StdFont object,
-            ' the editor's stupid SetFont method DOES NOT PASS THE CHARSET on to the
-            ' rich edit control.  It probably uses a CHARFORMAT2, and it must have slipped their
-            ' minds to give its dwMask property the CFM_CHARSET flag!  So that even if they
-            ' DID set the bCharset property to the stdfont.charset value, it would not have
-            ' even SEEN it!
+            ' If you set a font name, you set a charset (automatically). Same for weight.
+            ' agRichEdit's SetFont method does not pass the charset on to the rich edit control.
+            
+            ' It probably uses a CHARFORMAT2, and neglects to give its dwMask property the CFM_CHARSET flag.
+            ' So that even if it did set the bCharset property to the stdfont.charset value,
+            ' it would not have been seen.
             
             ' And it assumes charset = 0, which it is for most fonts.
-            ' And that's why the agEditor won't work with symbol fonts, which have charset = 2.
-            ' UNTIL NOW.  BECAUSE I WENT AROUND THE STUPID SETFONT METHOD!
+            ' That's why it won't work with symbol fonts, which have charset = 2. Until now.
             
             .Bold = dlgFont.FontBold
             .Italic = dlgFont.FontItalic
             .Underline = dlgFont.FontUnderline
             .Strikethrough = dlgFont.FontStrikethru
             .Size = CCur(dlgFont.FontSize)
-            ' Weight is set automatically.  (It seems that) 400 = plain, 700 = bold.
+            ' Weight is set automatically. (It seems that) 400 = plain, 700 = bold.
       End With
       'agEditor.SetFont fntTemp, , , , ercSetFormatAll
       lRetVal = SetRealStdFont(agEditor, fntTemp, dlgFont.Color)
+      
       btnFont.Caption = GetRealStdFont(agEditor).Name
       If Len(btnFont.Caption) > 11 Then
             btnFont.Caption = Left(Trim(btnFont.Caption), 10) & "..."
       End If
       lblFontSize = Round(GetRealStdFont(agEditor).Size, 1)
-      SaveWindowSettings
+      
+      SaveSettingsToRegistry ' losing your font setting is so annoying; save them NOW!
 End Sub
 
 
@@ -3012,7 +2997,7 @@ Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single,
       'Debug.Print Screen.ActiveForm.name & " "; Screen.ActiveControl.name & " " & Timer
       'Debug.Print GetForegroundWindow & "   " & frmMain.hwnd & " " & agEditor.RichEdithWnd
       
-      If mWindowPrefs.FocusFollowsMouse Then
+      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "agEditor") And _
                   Not ActiveControl.Name = "txtFind" And Not ActiveControl.Name = "txtReplace" Then
@@ -3192,7 +3177,7 @@ Private Sub chkWordWrap_Click()
       charindex = SendMessage(agEditor.RichEdithWnd, EM_LINEINDEX, ByVal lineindex, 0)
       
       If staTusBar1.Visible Then
-            With mStats
+            With gStats
                 .X = lMin - charindex + 1
                 .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
                 .Y = lineindex + 1
@@ -3297,8 +3282,8 @@ Private Function EditorFindText( _
 End Function
 
 Private Sub Form_Unload(Cancel As Integer)
-      SaveWindowSettings
-      If Not Debugging Then
+      SaveSettingsToRegistry
+      If Not DEBUGGING Then
             SetWindowLong lvwBrowser.hwnd, GWL_WNDPROC, gpOldLvwProc
             gpOldLvwProc = 0
       End If
@@ -3307,6 +3292,8 @@ Private Sub Form_Unload(Cancel As Integer)
             SetWindowLong picEditor.hwnd, GWL_WNDPROC, gpOldpicEditorProc
             gpOldpicEditorProc = 0
       End If
+      DebugLog "", 2
+      DebugLog "UNLOADING PHLEGMOIRS", 2
       Set gFSO = Nothing
 End Sub
 
@@ -3335,7 +3322,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If mWindowPrefs.FocusFollowsMouse Then
+      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
@@ -3434,6 +3421,7 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
                   Name sOldPath As sFolder & NewString
                   If Err > 0 Then
                         Caption = Err.Number & ": " & Err.Description
+                        DebugLog Caption
                         Cancel = True
                   ElseIf sOldPath = agEditor.tag Then
                         Caption = "Adjusted the capitalization of open file to: " & sFolder & NewString
@@ -3455,6 +3443,7 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
             Name sOldPath As sFolder & NewString
             If Err > 0 Then
                   Caption = Err.Number & ": " & Err.Description
+                  DebugLog Caption
                   Cancel = True
             ElseIf sOldPath = agEditor.tag Then
                   Caption = "Renamed open file: " & sFolder & NewString
@@ -3571,7 +3560,7 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Singl
       ' Can't prevent people from making this helper column visible... but it'll be gone pretty quick
       If lvwBrowser.ColumnHeaders(5).Width > 0 Then lvwBrowser.ColumnHeaders(5).Width = 0
       
-      If mWindowPrefs.FocusFollowsMouse Then
+      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             ' Autofocus on the file browser.
             ' But we don't do that from within cboPath, because it would be very annoying to
             ' have your typing of a directory interrupted by stray movement of the mouse.
@@ -3619,10 +3608,32 @@ Private Sub mnuBookmarksAdd_Click()
       Next iBookm
       
       AddToBookmarks agEditor.tag
-      SaveWindowSettings
+      SaveSettingsToRegistry
       
       If gBrowserData.BookmarkMode Then btnRefresh_Click
 End Sub
+
+Private Function AddToHistorySimply(ByVal sNewHistory As String) As String
+      On Error GoTo SIMPLY_ERROR
+      Dim iIndex As Integer
+
+      sNewHistory = CstringToVBstring(sNewHistory)
+      AddToHistorySimply = sNewHistory
+      If sNewHistory = "" Then Exit Function
+     
+      iIndex = mnuFileHistory.UBound + 1
+      Load mnuFileHistory(iIndex)
+      With mnuFileHistory(iIndex)
+            .tag = sNewHistory  ' exact path here, for safe keeping
+            .Caption = GetNumberedCaption(sNewHistory, iIndex)
+            .Visible = True
+      End With
+      Exit Function
+SIMPLY_ERROR:
+      DebugLog "      SIMPLY AN ERROR. Error: " & Err.Description, 2
+      DebugLog "            New history: " & sNewHistory, 2
+End Function
+
 
 Private Sub mnuBookmarksManage_Click()
       If mnuViewFilebrowser.Checked = False Then mnuViewFilebrowser_Click
@@ -3662,9 +3673,11 @@ Private Sub BrowserDeleteSelected()
             iRetVal = RecycleFile(sTheDamned)
             If Err > 0 Then
                   Caption = Err.Number & ": " & Err.Description
+                  DebugLog Caption
                   
             ElseIf iRetVal <> 0 Then
                   Caption = "Error " & iRetVal
+                  DebugLog Caption
             Else
                   If sTheDamned = agEditor.tag Then
                         agEditor.tag = ""
@@ -3822,6 +3835,7 @@ Private Sub mnuFileRename_Click()
                   Name sOldPath As sNewPath
                   If Err > 0 Then
                         Caption = Err.Number & ": " & Err.Description
+                        DebugLog Caption
                   Else
                         Caption = "Renamed.  Even though all you changed was the capitalization.  Freak."
                         agEditor.tag = sNewPath
@@ -3839,6 +3853,7 @@ Private Sub mnuFileRename_Click()
             Name sOldPath As sNewPath
             If Err > 0 Then
                   Caption = Err.Number & ": " & Err.Description
+                  DebugLog Caption
             Else
                   Caption = "Rename successful: " & sNewPath
                   agEditor.tag = sNewPath
@@ -3854,15 +3869,17 @@ Private Sub mnuFileSaveAs_Click()
       Dim vDate As Variant
       
       If Not agEditor.Visible Then
-            Caption = "ERROR: can only save in editor mode."
+            Caption = "ERROR: can only save in editor mode: " & sFileName
+            DebugLog Caption
             Exit Sub
       ElseIf chkReadOnly.value = vbChecked Then
-            Caption = "ERROR: can't save in Read Only mode."
+            Caption = "ERROR: can't save in Read Only mode: " & sFileName
+            DebugLog Caption
             Exit Sub
       End If
 
       vDate = Date
-      msPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & _
+      gsPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & _
             "-" & Format(Day(vDate), "0#")
      
       ' here we decide on a default file name to suggest to the user,
@@ -3871,9 +3888,9 @@ Private Sub mnuFileSaveAs_Click()
             sDefaultPath = agEditor.tag  ' It means this is not a new file we're saving.  Default to old name.
             
       ElseIf gBrowserData.ValidPath Then
-            sDefaultPath = gBrowserData.Dir & msPhlegmDate & ".txt"  ' New file, good directory in browser.
+            sDefaultPath = gBrowserData.Dir & gsPhlegmDate & ".txt"  ' New file, good directory in browser.
       Else
-            sDefaultPath = CurDir & "\" & msPhlegmDate & ".txt"  ' New file, no good directory present.
+            sDefaultPath = CurDir & "\" & gsPhlegmDate & ".txt"  ' New file, no good directory present.
       End If
       
       While FileExists(sDefaultPath)
@@ -3978,7 +3995,7 @@ Private Sub lblDivider_MouseUp(Button As Integer, Shift As Integer, X As Single,
       If lblDivider.MousePointer = vbSizeWE Then
             lblDivider.MousePointer = 0
             lblDivider.tag = ""
-            SaveWindowSettings
+            SaveSettingsToRegistry
       End If
 End Sub
 
@@ -4226,7 +4243,7 @@ Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If mWindowPrefs.FocusFollowsMouse Then
+      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
@@ -4254,7 +4271,7 @@ Private Sub sliZoom_Change()
 End Sub
 
 Private Sub sliZoom_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If mWindowPrefs.FocusFollowsMouse Then
+      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "sliZoom") Then
                   sliZoom.SetFocus
@@ -4349,10 +4366,10 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
       lCharIndex = SendMessage(agEditor.RichEdithWnd, EM_LINEINDEX, ByVal lLineIndex, 0)
       
       If staTusBar1.Visible Then
-            With mStats
+            With gStats
                 .Y = lLineIndex + 1
                 
-                ' We want mStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
+                ' We want gStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
                 .i = lMin
                 SendMessage agEditor.RichEdithWnd, EM_EXGETSEL, 0, chrSelection
                 .X = lMin - lCharIndex + 1
@@ -4444,36 +4461,49 @@ End Sub
 
 Private Sub Form_Load()
       Dim vDate As Variant
-      Dim sCommandFile As String
+      Dim sLoadErrorMsg As String
+      
+      On Error GoTo LOAD_ERROR
+      DebugLog "----------------------------------------", 2
+      DebugLog "LOADING PHLEGMOIRS v" & App.Major & "." & App.Minor & "." & App.Revision, 2
+      If (Trim(Command()) <> "") Then
+            DebugLog "Command(): " & Command(), 2
+      End If
+      DebugLog "", 2
 
+      DebugLog "Initializing menus..."
       InitializeMenus
             
-      Set gFSO = CreateObject("Scripting.FileSystemObject") ' Just so I'll never have to do this again.
+      Set gFSO = CreateObject("Scripting.FileSystemObject") ' Just one of these will do.
       Set gImageData.OutPic = Image1
-      
       gBrowserData.ListEmpty = True
-      
       giEditorMode = Text
-
-'      miImageZoom = 100
       
-      'Debug.Print "command line sayeth: [" & Command() & "]"
-      sCommandFile = Trim(Command())
-      If Left(sCommandFile, 1) = Chr(34) Then sCommandFile = Mid(sCommandFile, 2, Len(sCommandFile) - 2)
-      If sCommandFile <> "" And Not (sCommandFile Like "*:\*") Then sCommandFile = CurDir & "\" & sCommandFile
-      agEditor.tag = sCommandFile
+      gCommandFile = Trim(Command())
       
-      msPhlegmKey = "Software\" & App.title & "\" & msSettingsVersion
+      If Left(gCommandFile, 1) = Chr(34) Then
+            gCommandFile = Mid(gCommandFile, 2, Len(gCommandFile) - 2)
+      End If
+      
+      If gCommandFile <> "" And Not (gCommandFile Like "*:\*") Then
+            gCommandFile = CurDir & "\" & gCommandFile
+      End If
+      
+      agEditor.tag = gCommandFile
+      
+      gsPhlegmKey = "Software\" & App.title & "\" & REGISTRY_VERSION
       
       vDate = Date
-      msPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & "-" & Format(Day(vDate), "0#")
+      gsPhlegmDate = year(vDate) & "-" & Format(Month(vDate), "0#") & "-" & Format(Day(vDate), "0#")
       
-      GetWindowSettings
-      mStats.imax = CharacterCount(agEditor)
+      DoEvents
+      LoadRegistrySettings
+      
+      gStats.imax = CharacterCount(agEditor)
       FillStats
       staTusBar1.Panels(eStat.Modified) = ""
 
-      If Not Debugging Then
+      If Not DEBUGGING Then
             gpOldLvwProc = SetWindowLong(lvwBrowser.hwnd, GWL_WNDPROC, AddressOf ListViewProc)
       End If
       
@@ -4486,6 +4516,13 @@ Private Sub Form_Load()
       If lvwBrowser.Visible Then
             btnSyncContents_Click
       End If
+      Exit Sub
+
+LOAD_ERROR:
+      sLoadErrorMsg = "Load error. Err: " & Err.Description
+      DebugLog sLoadErrorMsg, 2
+      MsgBox sLoadErrorMsg
+      Exit Sub
 End Sub
 
 
@@ -4733,11 +4770,11 @@ Public Function SaveFile(ByVal sFileName As String)
                   & FileModifiedTime(sFileName) & ")"
             btnRefresh_Click
             btnSyncContents_Click
-            AddToHistory sFileName
+            AddToHistorySmartly sFileName
       Else
             frmMain.Caption = "ERROR: cannot save to " & sFileName
       End If
-      SaveWindowSettings
+      SaveSettingsToRegistry
       Exit Function
       
 File_Error:
@@ -4754,7 +4791,7 @@ Private Sub agEditor_Change()
       End If
       
       If staTusBar1.Visible Then
-            With mStats
+            With gStats
                 .imax = CharacterCount(agEditor)
                 .ymax = agEditor.LineCount
             End With
@@ -4776,9 +4813,9 @@ End Sub
 
 Private Sub FillStats()
 
-      staTusBar1.Panels(eStat.Stats) = "Char: " & Format(mStats.i, "#,#0") & "/" & Format(mStats.imax, "#,#0") _
-            & "  Ln: " & Format(mStats.Y, "#,#0") & "/" & Format(mStats.ymax, "#,#0") & "  Col: " & mStats.X _
-            & "/" & mStats.xmax
+      staTusBar1.Panels(eStat.Stats) = "Char: " & Format(gStats.i, "#,#0") & "/" & Format(gStats.imax, "#,#0") _
+            & "  Ln: " & Format(gStats.Y, "#,#0") & "/" & Format(gStats.ymax, "#,#0") & "  Col: " & gStats.X _
+            & "/" & gStats.xmax
 End Sub
 
 
@@ -4895,7 +4932,7 @@ Private Sub RearrangeControls()
             charindex = SendMessage(agEditor.RichEdithWnd, EM_LINEINDEX, ByVal lineindex, 0)
             
             If staTusBar1.Visible Then
-                  With mStats
+                  With gStats
                       .X = lMin - charindex + 1
                       .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
                       .Y = lineindex + 1
@@ -5010,7 +5047,7 @@ Private Sub mnuViewWordWrap_Click()
 End Sub
 
 Private Sub mnuWindowSaveSettings_Click()
-      SaveWindowSettings
+      SaveSettingsToRegistry
 End Sub
 
 Private Sub mnuWriteCopy_Click()
@@ -5025,19 +5062,19 @@ Private Sub mnuWritePaste_Click()
       agEditor.Paste
 End Sub
 
-Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode)
+Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
       
-      Dim fLoadSuccess As Boolean, sCaption As String
+      Dim sCaption As String
 
       If mfEditorLoading Then agEditor.Text = ""
       
       If Trim(sFileName) = "" Then ' Blank means start a new file.
             mnuFileNew_Click
-            Exit Sub
+            Exit Function
       ElseIf Not FileExists(sFileName) Then
             frmMain.Caption = "ERROR: file does not exist."
             agEditor.tag = ""
-            Exit Sub
+            Exit Function
       End If
             
       EditorSetMode iMode
@@ -5057,7 +5094,7 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                               gTextEncoding = eTextEncoding.ASCII
                               staTusBar1.Panels(eStat.encoding) = "ASCII"
                               mfEditorLoading = False
-                              Exit Sub
+                              Exit Function
                         ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
                               Dim f, ts
                               Set f = gFSO.GetFile(sFileName)
@@ -5068,9 +5105,9 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                                     agEditor.Text = ts.readall()
                               End If
                               ts.Close
-                              fLoadSuccess = True
+                              EditorLoadFile = True
                         Else
-                              fLoadSuccess = agEditor.LoadFromFile(sFileName, SF_TEXT)
+                              EditorLoadFile = agEditor.LoadFromFile(sFileName, SF_TEXT)
                         End If
                         gTextEncoding = encoding
                         If encoding = eTextEncoding.UNICODE Then
@@ -5082,7 +5119,7 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                         agEditor.Text = ""
                         gTextEncoding = eTextEncoding.ASCII
                         staTusBar1.Panels(eStat.encoding) = "ASCII"
-                        fLoadSuccess = True
+                        EditorLoadFile = True
                   End If
             
                   sCaption = sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
@@ -5092,7 +5129,7 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                   mfEditorLoading = True
                   
                   Dim DefaultWidth, DefaultHeight
-                  fLoadSuccess = True
+                  EditorLoadFile = True
                   On Error Resume Next
                   gImageData.OutPic.Picture = LoadPicture(sFileName)
                   Const twipConversion = 0.567
@@ -5111,7 +5148,7 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                   
                   If Err > 0 Then
                         Caption = "ERROR: " & sFileName & ", picture couldn't load"
-                        fLoadSuccess = False
+                        EditorLoadFile = False
                   End If
                   On Error GoTo 0
             
@@ -5119,10 +5156,10 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
                   mfEditorLoading = True
                   LoadPropertiesView sFileName
                   sCaption = sFileName
-                  fLoadSuccess = True
+                  EditorLoadFile = True
       End Select
             
-      If fLoadSuccess Or GetFileSize(sFileName) = 0 Then  ' Success!
+      If EditorLoadFile Or GetFileSize(sFileName) = 0 Then  ' Success!
             agEditor.tag = sFileName
             frmMain.Caption = sCaption
             If gfFullScreenMode Then
@@ -5130,10 +5167,10 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
             End If
             staTusBar1.Panels(eStat.Modified) = ""
             agEditor.SetSelection 0, 0
-            AddToHistory sFileName
+            AddToHistorySmartly sFileName
       
       Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
-            frmMain.Caption = "Could not load file.  command() = " & Chr(34) & Command() & Chr(34) _
+            frmMain.Caption = "Could not load file. Command() = " & Chr(34) & Command() & Chr(34) _
                   & "; File = " & Chr(34) & sFileName & Chr(34)
             If gfFullScreenMode Then frmFullScreen.lblFileNameZoom = frmMain.Caption
             agEditor.tag = ""
@@ -5142,7 +5179,7 @@ Private Sub EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eV
       End If
       
       mfEditorLoading = False
-End Sub
+End Function
 
 Public Sub ImageSetZoom(iZoom As Integer)
       gImageData.OutPic.Stretch = True
@@ -5152,18 +5189,14 @@ Public Sub ImageSetZoom(iZoom As Integer)
       Caption = agEditor.tag & "  (" & iZoom & "%)"
 End Sub
 
-Private Sub SaveWindowSettings()
+Private Sub SaveSettingsToRegistry()
       Dim lMin As Long, lMax As Long, lKey As Long, lRetVal As Long
       Dim lNewOrUsed As Long, lValueSize As Long
       Dim iIndex As Integer
-      
-'      Dim wnpPlacement As WINDOWPLACEMENT'
-'      Dim rectRestored As RECT
+      Dim sErrorMsg As String
       Dim fntTemp As New StdFont
-'      Dim poiTemp As POINTAPI
       
-      
-      With mWindowPrefs
+      With gAllPrefs.WindowPrefs
             .WNP.Length = LenB(.WNP)
             GetWindowPlacement hwnd, .WNP
             If .WNP.showCmd = SW_MINIMIZE Then
@@ -5175,10 +5208,10 @@ Private Sub SaveWindowSettings()
             .BrowserWidth = picBrowser.Width
             .SortKey = lvwBrowser.SortKey
             On Error GoTo 0
-            .NameColumn = lvwBrowser.ColumnHeaders.Item("Name").Position
-            .TypeColumn = lvwBrowser.ColumnHeaders.Item("Type").Position
-            .SizeColumn = lvwBrowser.ColumnHeaders.Item("Size").Position
-            .ModifiedColumn = lvwBrowser.ColumnHeaders.Item("Modified").Position
+'            .NameColumn = lvwBrowser.ColumnHeaders.Item("Name").Position
+'            .TypeColumn = lvwBrowser.ColumnHeaders.Item("Type").Position
+'            .SizeColumn = lvwBrowser.ColumnHeaders.Item("Size").Position
+'            .ModifiedColumn = lvwBrowser.ColumnHeaders.Item("Modified").Position
             On Error Resume Next
             
             .ShowFileBrowser = picBrowser.Visible
@@ -5188,13 +5221,11 @@ Private Sub SaveWindowSettings()
             .SortMethod = lvwBrowser.SortOrder
             .AutoLoadFile = agEditor.tag
             .cboPath = cboPath
-            .BookmarkCount = mnuBookmark.UBound
-            .HistoryCount = mnuFileHistory.UBound
       End With
       
       agEditor.GetSelection lMin, lMax
       
-      With mEditorPrefs
+      With gAllPrefs.EditorPrefs
             .FirstVisibleLine = agEditor.FirstVisibleLine
             .SelEnd = lMax
             .SelStart = lMin
@@ -5220,113 +5251,87 @@ Private Sub SaveWindowSettings()
             SendMessage agEditor.RichEdithWnd, EM_GETSCROLLPOS, 0, .ScrollPos
       End With
       
+      With gAllPrefs
+            .BookmarkCount = mnuBookmark.UBound
+            For iIndex = 1 To mnuBookmark.UBound
+                  .Bookmarks(iIndex) = mnuBookmark(iIndex).tag
+            Next iIndex
+            
+            .HistoryCount = mnuFileHistory.UBound
+            For iIndex = 1 To mnuFileHistory.UBound
+                  .History(iIndex) = mnuFileHistory(iIndex).tag
+            Next iIndex
+      End With
             
       ' Create storage key.
       
-      lRetVal = RegCreateKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, "", 0, _
+      lRetVal = RegCreateKeyEx(HKEY_CURRENT_USER, gsPhlegmKey, 0, "", 0, _
                   KEY_ALL_ACCESS, ByVal 0, lKey, lNewOrUsed)
       If lRetVal <> 0 Then MsgBox "RegCreateKey Failed: " & lKey
       
-      ' Store the Window Settings.
+      ' Store the Settings.
       
-      lValueSize = LenB(mWindowPrefs)
-      lRetVal = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, _
-                  ByVal mWindowPrefs, lValueSize)
-      If lRetVal <> 0 Then MsgBox "RegSetValueEx Failed.  settings: " & _
-                  LenB(mWindowPrefs) & " " & lKey, , App.title
-      
-      ' Store the File Settings.
-      
-      lValueSize = LenB(mEditorPrefs)
-      lRetVal = RegSetValueExAny(lKey, "agEditor", 0, REG_NONE, _
-                  ByVal mEditorPrefs, lValueSize)
-      If lRetVal <> 0 Then MsgBox "RegSetValueEx Failed.  mEditorPrefs: " & _
-                  LenB(mEditorPrefs) & " " & lKey, , App.title
-      
-      ' Store Bookmarks.
-      
-      For iIndex = 1 To mnuBookmark.UBound
-            lValueSize = LenB(mnuBookmark(iIndex).tag)
-            lRetVal = RegSetValueExString(lKey, "Bookmark" & CStr(iIndex), 0, REG_SZ, _
-                        ByVal mnuBookmark(iIndex).tag, lValueSize)
-      Next iIndex
-      
-      For iIndex = mnuBookmark.UBound + 1 To mWindowPrefs.BookmarkCount
-            RegDeleteValue lKey, "Bookmark" & CStr(iIndex)
-      Next iIndex
-      
-      ' Store History.
-      
-      For iIndex = 1 To mnuFileHistory.UBound
-            lValueSize = LenB(mnuFileHistory(iIndex).tag)
-            lRetVal = RegSetValueExString(lKey, "History" & CStr(iIndex), 0, REG_SZ, _
-                  ByVal mnuFileHistory(iIndex).tag, lValueSize)
-      Next iIndex
-      
-      For iIndex = mnuFileHistory.UBound + 1 To mWindowPrefs.HistoryCount
-            RegDeleteValue lKey, "History" & CStr(iIndex)
-      Next iIndex
-      
-      ' TODO: Gotta remember to delete bookmarks in the regisy that were
-      ' deleted in the program!
+      lValueSize = LenB(gAllPrefs)
+      lRetVal = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, ByVal gAllPrefs, lValueSize)
+      If lRetVal <> 0 Then
+            sErrorMsg = "RegSetValueEx Failed. settings: " & LenB(gAllPrefs) & " " & lKey
+            DebugLog sErrorMsg, 2
+            MsgBox sErrorMsg, , App.title
+      End If
 
       lRetVal = RegCloseKey(lKey)
       Debug.Print "Settings saved at: " & Now
 End Sub
 
-Private Sub GetWindowSettings()
+Private Sub LoadRegistrySettings()
+      DebugLog "Retrieving registry settings, version " & REGISTRY_VERSION & "..."
+      On Error GoTo SETTINGS_ERROR
+      
       Dim lRetVal As Long, lKey As Long
+      Dim sCboPath As String
+      Dim fileLoaded As Boolean
       Dim lDataType As Long ' receiving only
       Dim lValueSize As Long ' in/out
       Dim sTemp As String * 255
       Dim fntTemp As New StdFont
       Dim iBookm As Integer, iHistIndex As Integer
       Dim sEx As String
-      
       Dim udtWindowPlacement As WINDOWPLACEMENT
       Dim rectRestored As RECT
       
-      lRetVal = RegOpenKeyEx(HKEY_CURRENT_USER, msPhlegmKey, 0, KEY_QUERY_VALUE, lKey)
+      lRetVal = RegOpenKeyEx(HKEY_CURRENT_USER, gsPhlegmKey, 0, KEY_QUERY_VALUE, lKey)
+      lValueSize = LenB(gAllPrefs)
+      lRetVal = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal gAllPrefs, lValueSize)
       
-      lValueSize = LenB(mWindowPrefs)
-      lRetVal = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal mWindowPrefs, lValueSize)
       If lRetVal = 0 Then
-            With mWindowPrefs
+            With gAllPrefs.WindowPrefs
                   mfSkipFormResize = True
                   BrowserResizeHorizontal .BrowserWidth
-                  
+
                   .WNP.Length = LenB(.WNP)
                   SetWindowPlacement hwnd, .WNP
-                  
+
                   lvwBrowser.SortOrder = .SortMethod
                   If agEditor.tag = "" Then agEditor.tag = Trim(CstringToVBstring(.AutoLoadFile))
-                  
-                  For iBookm = 1 To .BookmarkCount ' TODO: THIS BEFORE SETTINGS... SOMEHOW...
-                        lValueSize = 255 * 2
-                        lRetVal = RegQueryValueExString(lKey, "Bookmark" & CStr(iBookm), 0, lDataType, _
-                                    ByVal sTemp, lValueSize)
-                        AddToBookmarks Left(sTemp, lValueSize - 1) ' size included the null
-                  Next iBookm
-                  
-                  For iHistIndex = 1 To .HistoryCount
-                        lValueSize = 255 * 2
-                        lRetVal = RegQueryValueExString(lKey, "History" & CStr(iHistIndex), 0, lDataType, ByVal sTemp, lValueSize)
-                        AddToHistory Left(sTemp, lValueSize - 1)
-                  Next iHistIndex
-      
-                  lvwBrowser.ColumnHeaders.Item("Name").Position = .NameColumn
-                  lvwBrowser.ColumnHeaders.Item("Type").Position = .TypeColumn
-                  lvwBrowser.ColumnHeaders.Item("Size").Position = .SizeColumn
-                  lvwBrowser.ColumnHeaders.Item("Modified").Position = .ModifiedColumn
+
+'                  lvwBrowser.ColumnHeaders.Item("Name").Position = .NameColumn
+'                  lvwBrowser.ColumnHeaders.Item("Type").Position = .TypeColumn
+'                  lvwBrowser.ColumnHeaders.Item("Size").Position = .SizeColumn
+'                  lvwBrowser.ColumnHeaders.Item("Modified").Position = .ModifiedColumn
                   lvwBrowser.SortKey = .SortKey
-                  
-                  cboPath = Trim(CstringToVBstring(.cboPath))
-      
+
+                  sCboPath = Trim(CstringToVBstring(.cboPath))
+                  If agEditor.tag = "" Then
+                        DebugLog "We don't have a file to load, so load the most recent directory...", 2
+                        cboPath = sCboPath
+                        DebugLog "File browser path set to: " & cboPath, 2
+                  End If
+
                   chkFileBrowser.value = -CInt(.ShowFileBrowser)
                   chkFileBrowser_Click
-                  
                   staTusBar1.Visible = .ShowStatusBar
                   mnuViewStatusBar.Checked = .ShowStatusBar
+
                   picToolBar.Visible = .ShowToolBar
                   mnuViewToolbar.Checked = .ShowToolBar
                   If Not .ShowToolBar Then
@@ -5334,27 +5339,46 @@ Private Sub GetWindowSettings()
                         mnuNext.Visible = True
                         mnuPrev.Visible = True
                   End If
-                  
+
                   If .ShowToolBar Then picQuery.Visible = .ShowFind
                   mfHideFind = Not .ShowFind
-            
                   mfSkipFormResize = False
+
+                  DebugLog "Rearranging controls..."
                   RearrangeControls
+                  DebugLog "Rearranged controls."
+            End With
+            
+            With gAllPrefs
+                  DebugLog "Loading bookmarks..."
+                  For iBookm = 1 To .BookmarkCount
+                        AddToBookmarks Trim(CstringToVBstring(.Bookmarks(iBookm)))
+                  Next iBookm
+                  DebugLog "Loaded " & .BookmarkCount & " bookmarks."
+                  
+                  DebugLog "Loading history..."
+                  For iHistIndex = 1 To .HistoryCount
+                        AddToHistorySimply Trim(CstringToVBstring(.History(iHistIndex)))
+                  Next iHistIndex
+                  DebugLog "Loaded " & .HistoryCount & " historical records."
             End With
       Else
+            DebugLog "Did not find any previous settings."
             cboPath = ""
             BrowserResizeHorizontal picBrowser.Width
       End If
       
-      lValueSize = LenB(mEditorPrefs)
-      lRetVal = RegQueryValueExAny(lKey, "agEditor", 0, lDataType, ByVal mEditorPrefs, lValueSize)
+      On Error GoTo EDITOR_PREFS_ERROR
+      DoEvents
       If lRetVal = 0 Then
-            With mEditorPrefs
+            DebugLog "Found editor settings. Applying them..."
+            With gAllPrefs.EditorPrefs
                   chkWordWrap.value = .WordWrap
                   chkWordWrap_Click
+
                   chkReadOnly.value = .ReadOnly
                   chkReadOnly_Click
-            
+
                   fntTemp.Name = Trim(CstringToVBstring(.FontName))
                   fntTemp.Size = .FontSize
                   fntTemp.Bold = .FontBold
@@ -5369,28 +5393,50 @@ Private Sub GetWindowSettings()
                   lblFontSize = Round(.FontSize, 1)
                   SetRealStdFont agEditor, fntTemp, .TextColor
             End With
+      Else
+            DebugLog "Did not find any previous editor settings."
       End If
+      On Error GoTo 0
                   
       ' It's important to set the above prior to loading a file.
       ' Otherwise agEditor's display routines are called again and again for an entire file,
       ' rather than for a blank editor.
       
-      EditorLoadFile agEditor.tag, GetViewMode(agEditor.tag, GetIconType(gFSO.getextensionname(agEditor.tag)))
+      DebugLog "Attempting to auto-load file: " & agEditor.tag & "..."
+      fileLoaded = EditorLoadFile(agEditor.tag, GetViewMode(agEditor.tag, GetIconType(gFSO.getextensionname(agEditor.tag))))
+      If fileLoaded Then
+            DebugLog "File loaded."
+      Else
+            DebugLog "File was NOT loaded."
+      End If
                   
       If lRetVal = 0 Then
-            With mEditorPrefs
+            With gAllPrefs.EditorPrefs
                   ' If the file has been changed so that selection and scroll positions are meaningless,
                   ' just skip them...
                   On Error Resume Next
-                  If Trim(Command()) = "" Then
+                  If Trim(gCommandFile) = "" Then
                         agEditor.SetSelection .SelStart, .SelEnd
                         SendMessage agEditor.RichEdithWnd, EM_SETSCROLLPOS, 0, .ScrollPos
                   End If
                   On Error GoTo 0
             End With
       End If
-      
       RegCloseKey lKey
+      DebugLog "All settings complete."
+      Exit Sub
+      
+SETTINGS_ERROR:
+      frmMain.Caption = "ERROR: Could not load settings. Err: " & Err.Description
+      DebugLog frmMain.Caption, 2
+      MsgBox frmMain.Caption
+      Exit Sub
+      
+EDITOR_PREFS_ERROR:
+      frmMain.Caption = "ERROR: Could not load editor prefs. Err: " & Err.Description
+      DebugLog frmMain.Caption, 2
+      MsgBox frmMain.Caption
+      Exit Sub
 End Sub
 
 Private Sub txtReplace_Change()
