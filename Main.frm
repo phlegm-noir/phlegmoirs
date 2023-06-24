@@ -1425,7 +1425,7 @@ Begin VB.Form frmMain
          Shortcut        =   ^N
       End
       Begin VB.Menu mnuFileOpen 
-         Caption         =   "&Open"
+         Caption         =   "&Open (File Browser)"
          Shortcut        =   ^O
       End
       Begin VB.Menu mnuFileSave 
@@ -1439,29 +1439,11 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuFileDiv1 
          Caption         =   "-"
       End
-      Begin VB.Menu mnuBrowserOpenDefault 
-         Caption         =   "Open With &Default Program"
-      End
-      Begin VB.Menu mnuBrowserSort 
-         Caption         =   "Reverse &Sort Order"
-         Shortcut        =   ^H
-      End
-      Begin VB.Menu mnuFileDiv5 
-         Caption         =   "-"
-      End
       Begin VB.Menu mnuFileNext 
-         Caption         =   "Next &File"
+         Caption         =   "Open Next &File"
       End
       Begin VB.Menu mnuFilePrev 
-         Caption         =   "&Previous File"
-      End
-      Begin VB.Menu mnuFileSyncContents 
-         Caption         =   "Sync &Contents"
-         Shortcut        =   ^{F5}
-      End
-      Begin VB.Menu mnuFileParentDirectory 
-         Caption         =   "Parent Directo&ury"
-         Shortcut        =   ^{F6}
+         Caption         =   "Open &Previous File"
       End
       Begin VB.Menu mnuFileDiv2 
          Caption         =   "-"
@@ -1495,14 +1477,12 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnueditcut 
          Caption         =   "Cu&t"
-         Shortcut        =   ^X
       End
       Begin VB.Menu mnuEditCopy 
          Caption         =   "&Copy"
       End
       Begin VB.Menu mnuEditPaste 
          Caption         =   "&Paste"
-         Shortcut        =   ^V
       End
       Begin VB.Menu mnuEditDiv1 
          Caption         =   "-"
@@ -2557,7 +2537,28 @@ Private Sub btnCloseFind_Click()
 End Sub
 
 Private Sub btnSyncContents_Click()
-      mnuFileSyncContents_Click
+      
+      ' What this really does is:
+      '     1. go to directory containing open file
+      '     2. select open file from list
+
+      Dim litCurrentFile As ListItem
+      
+      If agEditor.tag = "" Then Exit Sub
+      
+      Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.tag))
+      
+      If litCurrentFile Is Nothing Then
+            cboPath = SnipFileName(agEditor.tag)
+            Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.tag))
+            If litCurrentFile Is Nothing Then
+                  MsgBox "It seems that your file was deleted by another application." & _
+                        "  If you wish to keep it, save at once!"
+                  Exit Sub
+            End If
+      End If
+      litCurrentFile.Selected = True
+      If Not gfFullScreenMode Then litCurrentFile.EnsureVisible
 End Sub
 
 Private Sub btnDeleteSelected_Click()
@@ -2638,7 +2639,18 @@ Private Sub btnFindPrev_Click()
 End Sub
 
 Private Sub btnFolderUp_Click()
-      mnuFileParentDirectory_Click
+      ' When we go up a dir, preserve the existing filter except in a drives list.
+      Dim sParentDir As String
+      
+      If gBrowserData.DrivesMode Or gBrowserData.BookmarkMode Then Exit Sub
+      
+      sParentDir = ParentDirectoryOf(gBrowserData.Dir)
+      
+      If gBrowserData.ERROR Or sParentDir = "" Then
+            cboPath = sParentDir
+      Else
+            cboPath = sParentDir & gBrowserData.Filter
+      End If
 End Sub
 
 
@@ -2730,7 +2742,7 @@ Private Sub btnReplace_Click()
             mnuQueryReplace_Click
 
       ' Otherwise, if we were already in replace mode, it replaces (if legal).
-      ElseIf btnReplace.Enabled Then
+      ElseIf btnReplace.Enabled And Not chkReadOnly Then
             agEditor.InsertContents SF_TEXT, txtReplace
             btnFindNext_Click
       End If
@@ -2873,6 +2885,10 @@ Private Sub chkFindOptions_MouseMove(Button As Integer, Shift As Integer, X As S
       staTusBar1.Panels(eStat.Tips).Text = chkFindOptions.ToolTipText
 End Sub
 
+Private Sub btnReplace_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+      staTusBar1.Panels(eStat.Tips).Text = btnReplace.ToolTipText
+End Sub
+
 Private Sub btnprevfile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       staTusBar1.Panels(eStat.Tips).Text = btnPrevFile.ToolTipText
 End Sub
@@ -2961,8 +2977,10 @@ Private Sub chkReadOnly_Click()
             agEditor.BackColor = &H8000000F
             btnEdit.Visible = True
             If mfReplaceMode Then mnuQueryReplace_Click
+            btnReplace.Enabled = False
       Else
             btnEdit.Visible = False
+            btnReplace.Enabled = True
             agEditor.BackColor = &H80000005
       End If
 End Sub
@@ -3197,7 +3215,6 @@ Private Sub Form_Unload(Cancel As Integer)
       Set gFSO = Nothing
 End Sub
 
-
 Private Sub Image1_DblClick()
       ' This needs to (effectively) call an Image1_mousedown... but with what parameters???
       Dim poiPrev As POINTAPI
@@ -3352,7 +3369,7 @@ Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
             Case eIconType.Directory, eIconType.Drive, eIconType.Floppy, eIconType.Cdrom, eIconType.Network
                   ' Open the folder, or go up a folder.
                   If Item.Text = ".." Then
-                        mnuFileParentDirectory_Click
+                        btnFolderUp_Click
                   Else
                         cboPath = sItemName & "\"
                   End If
@@ -3455,7 +3472,7 @@ End Sub
 Private Sub mnuBookmark_Click(Index As Integer)
       EditorLoadFile mnuBookmark(Index).tag, GetViewMode(mnuBookmark(Index).tag, eIconType.Bookmark)
       
-      mnuFileSyncContents_Click
+      btnSyncContents_Click
 End Sub
 
 Private Sub mnuBookmarksAdd_Click()
@@ -3550,21 +3567,93 @@ Private Sub BrowserDeleteSelected()
       End If
 End Sub
 
-Private Sub mnuBrowserOpenDefault_Click()
-      mnuListOpenDefault_Click
-End Sub
-
 Private Sub mnuBrowserRefresh_Click()
       btnRefresh_Click
-End Sub
-
-Private Sub mnuBrowserSort_Click()
-      btnSort_Click
 End Sub
 
 Private Sub mnuEdit_Click()
       mnuEditUndo.Enabled = agEditor.CanUndo
       mnuEditRedo.Enabled = agEditor.CanRedo
+      mnueditcut.Enabled = True
+      mnuEditCopy.Enabled = True
+      mnuEditPaste.Enabled = True
+      mnuEditFind.Enabled = True
+      mnuEditReplace.Enabled = True
+      mnuEditFindNext.Enabled = True
+      mnuEditFindBackwards.Enabled = True
+      
+      If giEditorMode <> eViewMode.TextView Then
+            mnuEditUndo.Enabled = False
+            mnuEditRedo.Enabled = False
+            mnueditcut.Enabled = False
+            mnuEditCopy.Enabled = False
+            mnuEditPaste.Enabled = False
+            mnuEditFind.Enabled = False
+            mnuEditReplace.Enabled = False
+            mnuEditFindNext.Enabled = False
+            mnuEditFindBackwards.Enabled = False
+      End If
+      
+      If chkReadOnly Then
+            mnuEditUndo.Enabled = False
+            mnuEditRedo.Enabled = False
+            mnueditcut.Enabled = False
+            mnuEditPaste.Enabled = False
+            mnuEditReplace.Enabled = False
+      End If
+      
+      If ActiveControl.Name <> "agEditor" Then
+            mnuEditUndo.Enabled = False
+            mnuEditRedo.Enabled = False
+            mnueditcut.Enabled = False
+            mnuEditCopy.Enabled = False
+            mnuEditPaste.Enabled = False
+      End If
+      
+      If agEditor.SelectedText = "" Then
+            mnueditcut.Enabled = False
+            mnuEditCopy.Enabled = False
+            If txtFind = "" Then
+                  mnuEditFindNext.Enabled = False
+                  mnuEditFindBackwards.Enabled = False
+            End If
+      End If
+End Sub
+
+Private Sub mnuEditCopy_Click()
+      agEditor.Copy
+End Sub
+
+Private Sub mnuEditCut_Click()
+      agEditor.Cut
+End Sub
+
+Private Sub mnuEditPaste_Click()
+      agEditor.Paste
+End Sub
+
+Private Sub mnuQuery_Click()
+      mnuQueryReplace.Enabled = True
+      If chkReadOnly Then mnuQueryReplace.Enabled = False
+End Sub
+
+Private Sub mnuView_Click()
+      mnuViewFont.Enabled = True
+      mnuViewZoomIn.Enabled = True
+      mnuViewZoomOut.Enabled = True
+      mnuViewReadOnly.Enabled = True
+      mnuViewWordWrap.Enabled = True
+      
+      If giEditorMode = eViewMode.PropertiesView Then
+            mnuViewZoomIn.Enabled = False
+            mnuViewZoomOut.Enabled = False
+      End If
+      
+      If giEditorMode <> eViewMode.TextView Then
+            mnuViewFont.Enabled = False
+            mnuViewReadOnly.Enabled = False
+            mnuViewWordWrap.Enabled = False
+      End If
 End Sub
 
 Private Sub mnuViewHistory_Click()
@@ -3595,31 +3684,6 @@ Private Sub mnuEditUndo_Click()
       agEditor.Undo
 End Sub
 
-'
-'   What this really does is:
-'      1. go to directory containing open file
-'      2. select open file from list
-'
-Private Sub mnuFileSyncContents_Click()
-      Dim litCurrentFile As ListItem
-      
-      If agEditor.tag = "" Then Exit Sub
-      
-      Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.tag))
-      
-      If litCurrentFile Is Nothing Then
-            cboPath = SnipFileName(agEditor.tag)
-            Set litCurrentFile = lvwBrowser.FindItem(SnipPath(agEditor.tag))
-            If litCurrentFile Is Nothing Then
-                  MsgBox "It seems that your file was deleted by another application." & _
-                        "  If you wish to keep it, save at once!"
-                  Exit Sub
-            End If
-      End If
-      litCurrentFile.Selected = True
-      If Not gfFullScreenMode Then litCurrentFile.EnsureVisible
-End Sub
-
 Private Sub mnuFileExit_Click()
       Unload Me
 End Sub
@@ -3627,7 +3691,7 @@ End Sub
 Private Sub mnuFileHistory_Click(Index As Integer)
       EditorLoadFile mnuFileHistory(Index).tag, GetViewMode(mnuFileHistory(Index).tag, eIconType.Bookmark)
       
-      mnuFileSyncContents_Click
+      btnSyncContents_Click
 End Sub
 
 Private Sub mnuFileNext_Click()
@@ -3640,21 +3704,6 @@ Private Sub mnuFileOpen_Click()
             mnuViewFilebrowser_Click
       End If
       lvwBrowser.SetFocus
-End Sub
-
-' When we go up a dir, preserve the existing filter except in a drives list.
-Private Sub mnuFileParentDirectory_Click()
-      Dim sParentDir As String
-      
-      If gBrowserData.DrivesMode Or gBrowserData.BookmarkMode Then Exit Sub
-      
-      sParentDir = ParentDirectoryOf(gBrowserData.Dir)
-      
-      If gBrowserData.ERROR Or sParentDir = "" Then
-            cboPath = sParentDir
-      Else
-            cboPath = sParentDir & gBrowserData.Filter
-      End If
 End Sub
 
 Private Sub mnuFilePrev_Click()
@@ -3956,6 +4005,25 @@ Private Sub mnuEditReplace_Click()
       End If
 End Sub
 
+Private Sub mnuWrite_Click()
+      mnuWriteDelete.Enabled = True
+      mnuWriteCut.Enabled = True
+      mnuWriteCopy.Enabled = True
+      mnuWritePaste.Enabled = True
+      
+      If chkReadOnly Then
+            mnuWriteDelete.Enabled = False
+            mnuWriteCut.Enabled = False
+            mnuWritePaste.Enabled = False
+      End If
+      
+      If agEditor.SelectedText = "" Then
+            mnuWriteDelete.Enabled = False
+            mnuWriteCut.Enabled = False
+            mnuWriteCopy.Enabled = False
+      End If
+End Sub
+
 Private Sub mnuWriteDelete_Click()
       agEditor.InsertContents SF_TEXT, ""
 End Sub
@@ -4065,7 +4133,7 @@ End Sub
 
 Private Sub txtFind_Change()
       If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
-            btnReplace.Enabled = True
+            If Not chkReadOnly Then btnReplace.Enabled = True
             If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
       ElseIf mfReplaceMode Then
             btnReplace.Enabled = False
@@ -4176,7 +4244,7 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
       End If
       
       If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
-            btnReplace.Enabled = True
+            If Not chkReadOnly Then btnReplace.Enabled = True
             If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
       ElseIf mfReplaceMode Then
             btnReplace.Enabled = False
@@ -4213,6 +4281,9 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                   If ActiveControl.Name <> "agEditor" And Shift = vbCtrlMask + vbShiftMask Then
                         btnFont_Click
                   End If
+                  
+            Case vbKeyH
+                  If Shift = vbCtrlMask And chkFileBrowser Then btnSort_Click
             
             Case vbKeyF11
                   If Shift = 0 Then btnFullScreen_Click
@@ -4232,7 +4303,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                   If Shift = vbCtrlMask + vbShiftMask Then
                         mnuviewzoomin_Click
                         
-                  ElseIf Shift = vbAltMask And chkFindOptions.value = vbUnchecked Then
+                  ElseIf Shift = vbAltMask And chkFindOptions.Visible And chkFindOptions.value = vbUnchecked Then
                         'Alt+period  opens popup menu for find options
                         chkFindOptions.SetFocus
                         chkFindOptions.value = vbChecked
@@ -4240,6 +4311,9 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                         ' Same button closes find options menu, if already opened
                         chkFindOptions.value = vbUnchecked
                   End If
+                  
+            Case vbKeyF5
+                  If Shift = vbCtrlMask And chkFileBrowser Then btnSyncContents_Click
             
             Case vbKeyEscape  ' Popup menu doesn't wanna die by itself; escape closes it.
                                                 ' Sure wish there were a way to test if a menu is open!
@@ -4376,7 +4450,7 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                                     lvwBrowser.ColumnHeaders.Item(1).Width - ColumnSizeInc
                         End If
                   Else
-                        mnuFileParentDirectory_Click   ' Ordinary left arrow...
+                        btnFolderUp_Click   ' Ordinary left arrow...
                   End If
             
             Case vbKeyF2
@@ -4500,6 +4574,15 @@ Private Sub mnuFileNew_Click()
       chkReadOnly.value = vbUnchecked
 End Sub
 
+Private Sub mnuFile_Click()
+      mnuFileSave.Enabled = True
+      mnuFileSaveAs.Enabled = True
+      If giEditorMode <> eViewMode.TextView Or chkReadOnly Then
+            mnuFileSave.Enabled = False
+            mnuFileSaveAs.Enabled = False
+      End If
+End Sub
+
 Private Sub mnuFileSave_Click()
       Dim fSuccess As Boolean
       Dim dteSaveTime As Date
@@ -4518,7 +4601,6 @@ Private Sub mnuFileSave_Click()
             SaveFile agEditor.tag
       End If
 End Sub
-
 
 Public Function SaveFile(ByVal sFileName As String)
       Dim fSuccess, fNewFile As Boolean
@@ -4755,9 +4837,11 @@ Private Sub InitializeMenus()
       
       mnuWriteFind.Caption = mnuWriteFind.Caption & vbTab & "Ctrl+F"
       mnuWriteCut.Caption = "Cu&t" & vbTab & "Ctrl+X"
+      mnueditcut.Caption = "Cu&t" & vbTab & "Ctrl+X"
       mnuWriteCopy.Caption = "&Copy" & vbTab & "Ctrl+C"
       mnuEditCopy.Caption = "&Copy" & vbTab & "Ctrl+C"
       mnuWritePaste.Caption = "&Paste" & vbTab & "Ctrl+V"
+      mnuEditPaste.Caption = "&Paste" & vbTab & "Ctrl+V"
       
       mnuListDelete.Caption = mnuListDelete.Caption & vbTab & "Del"
       mnuListProperties.Caption = "&Properties" & vbTab & "Alt+Enter"
@@ -5231,7 +5315,7 @@ End Sub
 
 Private Sub txtReplace_Change()
       If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
-            btnReplace.Enabled = True
+            If Not chkReadOnly Then btnReplace.Enabled = True
       ElseIf mfReplaceMode Then
             btnReplace.Enabled = False
       End If
