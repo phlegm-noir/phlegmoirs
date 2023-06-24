@@ -2097,6 +2097,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnFont.Visible = True
                   chkWordWrap.Visible = True
                   btnFullScreen.Visible = False
+                  If chkReadOnly Then btnEdit.Visible = True
                   If Not mfHideFind And mnuViewToolbar.Checked Then picQuery.Visible = True
                   
                   sliZoom.Visible = False
@@ -2121,6 +2122,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnFont.Visible = False
                   chkWordWrap.Visible = False
                   btnFullScreen.Visible = True
+                  btnEdit.Visible = False
                   If Not mfHideFind Then picQuery.Visible = False
                   
                   sliZoom.Visible = True
@@ -2152,6 +2154,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnFont.Visible = True
                   chkWordWrap.Visible = True
                   btnFullScreen.Visible = False
+                  btnEdit.Visible = False
                   If Not mfHideFind Then picQuery.Visible = False
                   
                   sliZoom.Visible = False
