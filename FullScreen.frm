@@ -185,8 +185,6 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
-      'Debug.Print KeyCode
-      
       With frmMain.sliZoom
             Select Case KeyCode
                   Case 107, 187 ' "+" and Keypad "+"

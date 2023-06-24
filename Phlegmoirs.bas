@@ -219,7 +219,9 @@ Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
       
       ' ...with iPrecision digits after the demical.
       
-      If curBytes < 1024@ Then
+      If curBytes = 1 Then
+            FormatBytes = CStr(curBytes) & " byte"
+      ElseIf curBytes < 1024@ Then
             FormatBytes = CStr(curBytes) & " bytes"
       ElseIf curBytes < 1048576@ Then
             FormatBytes = CStr(Round(curBytes / 1024@, iPrecision)) & " KB"
@@ -300,16 +302,12 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
 
                   lWheelTurns = MAKEPOINT(wParam).Y / WHEEL_DELTA
                   lRetVal = GetWindowRect(hwnd, recClient)
-                  'Debug.Print "from wm_mousewheel:     x: "; MAKEPOINT(lParam).X & " y: " & MAKEPOINT(lParam).Y
-                  'Debug.Print "from wm_mousewheel:     x: "; recClient.Left & " y: " & recClient.Top
 
                   With HitTestInfo
                         .pt.X = MAKEPOINT(lParam).X - recClient.Left
                         .pt.Y = MAKEPOINT(lParam).Y - recClient.Top
                   End With
                   lRetVal = SendMessage(hwnd, LVM_HITTEST, ByVal 0, HitTestInfo)
-'                  Debug.Print "from wm_mousewheel:     x: "; HitTestInfo.pt.X & " y: " & HitTestInfo.pt.Y & _
-                        "   " & HitTestInfo.flags & "    wheel turns: " & lWheelTurns
 
                   If (HitTestInfo.flags And LVHT_BELOW) Or (HitTestInfo.flags And LVHT_ABOVE) Then
                         Dim iTurn As Integer
@@ -347,7 +345,6 @@ Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
             iWheelTurn = poiWheel.Y / WHEEL_DELTA
             iVirtKeys = poiWheel.X
             poiWheel = MAKEPOINT(lParam)
-            'Debug.Print iWheelTurn & "   " & iVirtKeys & "   " & poiWheel.x & "   " & poiWheel.y & "   " & Hex(wParam)
             frmMain.WheelInput iWheelTurn, iVirtKeys, poiWheel.X, poiWheel.Y
       End If
       TrackMouseWheel = CallWindowProc(gpOldpicEditorProc, hwnd, uMsg, wParam, lParam)
@@ -366,7 +363,6 @@ Public Function TrackMouseWheelFullScreen(ByVal hwnd As Long, ByVal uMsg As Long
             iWheelTurn = poiWheel.Y / WHEEL_DELTA
             iVirtKeys = poiWheel.X
             poiWheel = MAKEPOINT(lParam)
-            'Debug.Print iWheelTurn & "   " & iVirtKeys & "   " & poiWheel.x & "   " & poiWheel.y & "   " & Hex(wParam)
             frmMain.WheelInput iWheelTurn, iVirtKeys, poiWheel.X, poiWheel.Y
       End If
       TrackMouseWheelFullScreen = CallWindowProc(gpOldfrmFullScreenProc, hwnd, uMsg, wParam, lParam)

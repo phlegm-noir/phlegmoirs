@@ -1591,6 +1591,7 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuBookmarksAddPath 
          Caption         =   "Add Current &Path"
          Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu mnuBookmarksManage 
          Caption         =   "&Manage"
@@ -2783,13 +2784,10 @@ Private Sub btnZoomOut_Click()
 End Sub
 
 Private Sub chkFindOptions_Click()
-      Debug.Print "chkQuery..._Click"
-      
       If chkFindOptions.value = vbChecked Then
             PopupMenu mnuQuery, vbPopupMenuRightAlign, AbsoluteRight(chkFindOptions), _
                   AbsoluteBottom(chkFindOptions)
       End If
-
 End Sub
 
 Private Sub btnRefresh_Click()
@@ -2870,18 +2868,6 @@ End Sub
 Private Sub chkFindOptions_LostFocus()
       chkFindOptions.value = vbUnchecked
 End Sub
-
-'Private Sub chkFindOptions_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-'      Debug.Print "chkQuery..._Mousedown"
-'      'PopupMenu mnuQuery, vbPopupMenuRightAlign
-'      If mfQueryMenuOpen = False Then
-'            PopupMenu mnuQuery, vbPopupMenuRightAlign, AbsoluteRight(chkFindOptions), _
-'                  AbsoluteBottom(chkFindOptions)
-'      End If
-'
-'End Sub
-
-
 
 Private Sub chkFindOptions_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       staTusBar1.Panels(eStat.Tips).Text = chkFindOptions.ToolTipText
@@ -2967,10 +2953,6 @@ Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single,
       staTusBar1.Panels(eStat.Tips).Text = ""
 End Sub
 
-Private Sub chkFindOptions_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      Debug.Print "chkquery..._mouseup"
-End Sub
-
 Private Sub chkReadOnly_Click()
       
       mnuViewReadOnly.Checked = chkReadOnly.value
@@ -3016,8 +2998,6 @@ Private Sub cboPath_Change()
 End Sub
 
 Private Sub cboPath_Click()
-      'debug.print "cboPath_CLICK!!!! " & cboPath.ListIndex
-      
       ' So as it turns out, this is the event that fires when you select another
       '   item from the combobox list (via keyboard or mouse).  It is better thought
       '   of as a Change event for the combobox acting as a drop-down list.
@@ -3035,14 +3015,6 @@ Private Sub cboPath_Click()
       cboPath_Change
 End Sub
 
-Private Sub cboPath_DropDown()
-      'debug.print "cboPath_DROPDOWN"
-End Sub
-
-Private Sub cboPath_Scroll()
-      'debug.print "cboPath_SCROLL"
-End Sub
-
 Private Sub chkFileBrowser_Click()
       picBrowser.Visible = chkFileBrowser.value
       mnuViewFilebrowser.Checked = chkFileBrowser.value
@@ -3050,14 +3022,10 @@ Private Sub chkFileBrowser_Click()
       
       RearrangeControls
 End Sub
-
-'
-'   cbopath_GotFocus
-'
-'   When focus is obtained, put the cursor right where we would have moved it anyway:
-'   At the end of the path, before the extension if one exists.
-'
 Private Sub cboPath_GotFocus()
+      ' When focus is obtained, put the cursor right where we would have moved it anyway:
+      ' At the end of the path, before the extension if one exists.
+      
       If cboPath <> "(Bookmarks)" And cboPath <> "(History)" Then
             
             Dim iExtensionLength As Integer
@@ -3069,18 +3037,7 @@ Private Sub cboPath_GotFocus()
 End Sub
 
 Private Sub cboPath_KeyDown(KeyCode As Integer, Shift As Integer)
-      Dim iSlash As Integer
-'      Debug.Print "cbopath.selstart" & cboPath.SelStart
       Select Case KeyCode
-            Case vbKeyBack
-                  If Shift = vbCtrlMask Then
-                        ' ctrl+backspace = delete to the previous slash.
-                        With cboPath
-                              iSlash = InStrRev(.Text, "\", .SelStart + .SelLength)
-                              
-                              If iSlash > 0 Then .Text = Mid(.Text, iSlash, .SelStart + .SelLength - iSlash)
-                        End With
-                  End If
             Case vbKeyReturn
                   lvwBrowser.SetFocus
             
@@ -3379,10 +3336,6 @@ Private Function RenameFile(sOldPath As String, sNewPath As String, sIfOpenFile 
       RenameFile = Cancel
 End Function
 
-Private Sub lvwBrowser_BeforeLabelEdit(Cancel As Integer)
-      'debug.print "lvwBrowser_Before " & Cancel
-End Sub
-
 Private Sub lvwBrowser_Click()
       miBrowserMouseButton = 0  ' These probably an overcaution --
       miBrowserShift = 0                  ' They are reset in the next MouseDown anyway.
@@ -3445,7 +3398,6 @@ Private Sub lvwBrowser_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeade
 End Sub
 
 Private Sub lvwBrowser_DblClick()
-'      Debug.Print "lvwBrowser_DBLCLICK"
       mfBrowserDoubleClick = True
       If Not mfBrowserItemClicked Then
             btnFolderUp_Click
@@ -3457,19 +3409,11 @@ Private Sub lvwBrowser_ItemClick(ByVal Item As MSComctlLib.ListItem)
       ListMenuEnable lvwBrowser.SelectedItem
 End Sub
 
-
-Private Sub lvwBrowser_KeyUp(KeyCode As Integer, Shift As Integer)
-      'debug.print "lvwBrowser_KEYUP"
-End Sub
-
 Private Sub lvwBrowser_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-'      Debug.Print "lvwBrowser_MOUSEDOWN "; Button & " " & Shift
-      
       lvwBrowser_MouseMove Button, Shift, X, Y
       mfBrowserItemClicked = False
       miBrowserMouseButton = Button
       miBrowserShift = Shift
-      
 End Sub
 
 Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -3917,10 +3861,6 @@ Private Sub mnuPrev_Click()
       btnPrevFile_Click
 End Sub
 
-Private Sub mnuQuery_Click()
-      Debug.Print "mnuQuery_Click"
-End Sub
-
 Private Sub mnuQueryClose_Click()
       If Not mfHideFind Then
             mfHideFind = True
@@ -4026,7 +3966,6 @@ End Sub
 
 Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
       
-      'Debug.Print KeyCode
       Select Case KeyCode
             Case 107, 187 ' "+" and Keypad "+"
                   If Shift = 0 Then
@@ -4274,7 +4213,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                   If ActiveControl.Name <> "agEditor" And Shift = vbCtrlMask + vbShiftMask Then
                         btnFont_Click
                   End If
-                  
+            
             Case vbKeyF11
                   If Shift = 0 Then btnFullScreen_Click
             
@@ -4419,8 +4358,6 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
       
       Dim iIndex As Integer
       Const ColumnSizeInc = 50
-      
-      'debug.print "KEYDOWN " & KeyCode & " " & Shift
       
       Select Case KeyCode
                         
