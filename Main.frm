@@ -3529,42 +3529,51 @@ Private Sub BrowserDeleteSelected()
       sTheDamned = gBrowserData.Dir & lvwBrowser.SelectedItem
       
       If gBrowserData.BookmarkMode Then
-            
             sBookKey = lvwBrowser.SelectedItem.key
             lvwBrowser.ListItems.Remove sBookKey
-            
             BookmarkSaveChanges
+            Exit Sub
             
       ElseIf gBrowserData.DrivesMode Then
             Caption = "I WILL NOT DELETE YOUR DISK. FIND SOMEONE ELSE."
+            Exit Sub
+      
       ElseIf Not FileExists(sTheDamned) Then
             Caption = "Can't delete what isn't there: " & sTheDamned
-      ElseIf GetAttr(sTheDamned) And vbDirectory Then
-            Caption = "This program would rather not be held responsible for mass deletions.  Please use another."
-
-'                  RmDir sTheDamned
-'                  Caption = "Folder deleted successfully: " & sTheDamned
-'                  RefreshAll
-      Else
-            On Error Resume Next
-            iRetVal = RecycleFile(sTheDamned)
-            If Err > 0 Then
-                  Caption = Err.Number & ": " & Err.Description
-                  DebugLog Caption
-                  
-            ElseIf iRetVal <> 0 Then
-                  Caption = "Error " & iRetVal
-                  DebugLog Caption
-            Else
-                  If sTheDamned = agEditor.tag Then
-                        agEditor.tag = ""
-                        mnuFileNew_Click
-                  End If
-                  Caption = "File deleted successfully: " & sTheDamned
-                  RefreshAll
-            End If
-            On Error GoTo 0
+            Exit Sub
       End If
+      
+      On Error GoTo DELETION_ERROR
+            
+      Dim Attrs
+      Attrs = GetAttr(sTheDamned)
+      
+      If Attrs And vbDirectory Then
+            Caption = "This program would rather not be held responsible for mass deletions. Please use another."
+            Exit Sub
+'            RmDir sTheDamned
+'            Caption = "Folder deleted successfully: " & sTheDamned
+'            RefreshAll
+      End If
+
+      iRetVal = RecycleFile(sTheDamned)
+      If iRetVal <> 0 Then
+            Caption = "ERROR deleting file. Return code: " & iRetVal
+            DebugLog Caption
+      Else
+            If sTheDamned = agEditor.tag Then
+                  agEditor.tag = ""
+                  mnuFileNew_Click
+            End If
+            Caption = "File deleted successfully: " & sTheDamned
+            RefreshAll
+      End If
+      Exit Sub
+
+DELETION_ERROR:
+      Caption = "ERROR deleting file: " & Err.Description
+      DebugLog Caption
+
 End Sub
 
 Private Sub mnuBrowserRefresh_Click()
