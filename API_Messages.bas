@@ -29,7 +29,6 @@ Public Const EM_EXGETSEL As Long = (WM_USER + 52)
 
 Public Const EM_GETSELTEXT As Long = (WM_USER + 62)
 
-
 Public Const EM_GETLINECOUNT = 186
 
 Public Const EM_CHARFROMPOS As Long = &HD7
@@ -121,8 +120,6 @@ Public Const SCF_DEFAULT As Long = &H0
 Public Const SCF_SELECTION As Long = &H1
 Public Const SCF_ALL As Long = &H4
 
-
-
 Public Const EM_GETCHARFORMAT As Long = (WM_USER + 58)
       ' p1 = default character formatting, nonzero = current selection's formatting
       ' p2 = CHARFORMAT2 structure (or CHARFORMAT, for richedit < 2.0)
@@ -143,7 +140,3 @@ Public Const LVM_SETCOLUMNWIDTH As Long = (LVM_FIRST + 30)
       ' p2 = new column width in pixels
 Public Const LVSCW_AUTOSIZE As Long = -1
 Public Const LVSCW_AUTOSIZE_USEHEADER As Long = -2
-
-
-
-

@@ -247,55 +247,6 @@ Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
       End With
 End Function
 
-Function GetRealStdFont(ByRef editor As agRichEdit, Optional ByRef lTextColor As Long) As StdFont
-      ' OK, I put in a byref value to pass on the text color, which is not included in the StdFont type.
-      ' The function returns a StdFont containing the rest of the font data.
-      
-      Const CFE_BOLD As Long = &H1
-      Const CFE_ITALIC As Long = &H2
-      Const CFE_STRIKEOUT As Long = &H8
-      Const CFE_UNDERLINE As Long = &H4
-      
-      Const CFM_FACE As Long = &H20000000
-      Const CFM_SIZE As Long = &H80000000
-      Const CFM_CHARSET As Long = &H8000000
-      Const CFM_BOLD As Long = &H1
-      Const CFM_COLOR As Long = &H40000000
-      Const CFM_ITALIC As Long = &H2
-      Const CFM_LINK As Long = &H20
-      Const CFM_OFFSET As Long = &H10000000
-      Const CFM_STRIKEOUT As Long = &H8
-      Const CFM_UNDERLINE As Long = &H4
-      Const CFM_WEIGHT As Long = &H400000
-      
-      
-      Dim char2 As CHARFORMAT2
-      Dim lRetVal As Long
-      Dim fntNew As New StdFont
-      
-      char2.cbSize = LenB(char2)
-      ' Tell it which CHARFORMAT2 properties carry relevant data:
-      char2.dwMask = CFM_SIZE + CFM_FACE + CFM_BOLD + CFM_COLOR + _
-                  CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE
-            ' I took out cfm_charset and cfm_weight, because they are set automatically
-      lRetVal = SendMessage(editor.RichEdithWnd, EM_GETCHARFORMAT, ByVal 0, char2)
-      
-      If lRetVal <> 0 Then
-            With fntNew
-                  .Size = char2.yHeight / 20!
-                  .Name = CstringToVBstring(StrConv(char2.szFaceName, vbUnicode))
-                  .Bold = char2.dwEffects And CFE_BOLD
-                  .Italic = char2.dwEffects And CFE_ITALIC
-                  .Strikethrough = char2.dwEffects And CFE_STRIKEOUT
-                  .Underline = char2.dwEffects And CFE_UNDERLINE
-            End With
-            lTextColor = char2.crTextColor
-            Set GetRealStdFont = fntNew
-      Else
-            Set GetRealStdFont = Nothing
-      End If
-End Function
-
 Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
 
@@ -643,7 +594,7 @@ Public Function GetFileSize(ByVal sSource As String) As Currency
       If sSource = "" Then
             GetFileSize = 0
       Else
-            GetFileSize = gFSO.GetFile(sSource).Size
+            GetFileSize = gFSO.getfile(sSource).Size
       End If
 End Function
 
@@ -722,99 +673,6 @@ Public Function CharacterCount(ByRef editor As agRichEdit) As Long
 
       CharacterCount = lLastLineIndex + lLastLineLength
 End Function
-
-Public Function GetRealFontName(ByRef editor As agRichEdit) As String
-      Const CFM_FACE As Long = &H20000000
-      Const CFM_SIZE As Long = &H80000000
-      
-      Dim char2 As CHARFORMAT2
-      Dim lRetVal As Long
-      
-      char2.cbSize = LenB(char2)
-      char2.dwMask = CFM_FACE
-      char2.dwEffects = 0
-      lRetVal = SendMessage(editor.RichEdithWnd, EM_GETCHARFORMAT, ByVal 0, char2)
-      
-      ' Make it 16-bit characters, and trim the fat.
-      GetRealFontName = CstringToVBstring(StrConv(char2.szFaceName, vbUnicode))
-End Function
-
-Public Function GetRealFontSize(ByRef editor As agRichEdit) As Single
-      Const CFM_FACE As Long = &H20000000
-      Const CFM_SIZE As Long = &H80000000
-      
-      Dim char2 As CHARFORMAT2
-      
-      char2.cbSize = LenB(char2)
-      char2.dwMask = CFM_SIZE '+ CFM_FACE
-      char2.dwEffects = 0
-      SendMessage editor.RichEdithWnd, EM_GETCHARFORMAT, ByVal SCF_SELECTION, char2
-      GetRealFontSize = char2.yHeight / 20! ' convert twips to printer's points
-End Function
-
-Public Function SetRealFontSize(ByRef editor As agRichEdit, ByVal sNewSize As Single) As Single
-      Const CFM_FACE As Long = &H20000000
-      Const CFM_SIZE As Long = &H80000000
-      
-      Dim char2 As CHARFORMAT2
-      
-      char2.cbSize = LenB(char2)
-      char2.dwMask = CFM_SIZE
-      char2.dwEffects = 0
-      char2.yHeight = sNewSize * 20
-      SendMessage editor.RichEdithWnd, EM_SETCHARFORMAT, ByVal SCF_ALL, char2
-      SetRealFontSize = char2.yHeight / 20!  ' return this, see if it's moved or something weird like that.
-End Function
-
-Public Function SetRealStdFont(ByRef editor As agRichEdit, ByRef fnt As StdFont, _
-      Optional lTextColor As Long = vbWindowText) As Long
-
-      Const CFE_BOLD As Long = &H1
-      Const CFE_ITALIC As Long = &H2
-      Const CFE_STRIKEOUT As Long = &H8
-      Const CFE_UNDERLINE As Long = &H4
-      
-      Const CFM_FACE As Long = &H20000000
-      Const CFM_SIZE As Long = &H80000000
-      Const CFM_CHARSET As Long = &H8000000
-      Const CFM_BOLD As Long = &H1
-      Const CFM_COLOR As Long = &H40000000
-      Const CFM_ITALIC As Long = &H2
-      Const CFM_LINK As Long = &H20
-      Const CFM_OFFSET As Long = &H10000000
-      Const CFM_STRIKEOUT As Long = &H8
-      Const CFM_UNDERLINE As Long = &H4
-      Const CFM_WEIGHT As Long = &H400000
-      
-      Dim char2 As CHARFORMAT2
-      Dim sFontName As String
-      Dim bDyn() As Byte, i As Integer
-      
-      With char2
-            .cbSize = LenB(char2)
-            ' Tell it which CHARFORMAT2 properties carry relevant data:
-            .dwMask = CFM_SIZE + CFM_FACE + CFM_CHARSET + CFM_BOLD + _
-                  CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE + CFM_WEIGHT
-            
-            .dwMask = .dwMask + CFM_COLOR
-            .crTextColor = TranslateColor(lTextColor)
-            
-            If fnt.Bold Then .dwEffects = .dwEffects + CFE_BOLD
-            If fnt.Italic Then .dwEffects = .dwEffects + CFE_ITALIC
-            If fnt.Underline Then .dwEffects = .dwEffects + CFE_UNDERLINE
-            If fnt.Strikethrough Then .dwEffects = .dwEffects + CFE_STRIKEOUT
-            .yHeight = fnt.Size * 20
-            .bCharSet = fnt.Charset
-            .wWeight = fnt.Weight
-            ' the font name takes some string manipulation...
-            bDyn = StrConv(fnt.Name & Chr(0), vbFromUnicode)
-            For i = LBound(bDyn) To UBound(bDyn)
-                  .szFaceName(i) = bDyn(i)
-            Next i
-      End With
-      SetRealStdFont = SendMessage(editor.RichEdithWnd, EM_SETCHARFORMAT, ByVal SCF_ALL, char2)
-End Function
-
 
 Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
       On Error Resume Next

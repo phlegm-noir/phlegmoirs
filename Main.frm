@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MsComCtl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
 Begin VB.Form frmMain 
    AutoRedraw      =   -1  'True
@@ -22,14 +22,14 @@ Begin VB.Form frmMain
       Left            =   2640
       ScaleHeight     =   6960
       ScaleWidth      =   8535
-      TabIndex        =   1
+      TabIndex        =   42
       TabStop         =   0   'False
       Top             =   840
       Width           =   8535
       Begin TabDlg.SSTab sstProperties 
          Height          =   6375
          Left            =   240
-         TabIndex        =   35
+         TabIndex        =   44
          Top             =   360
          Visible         =   0   'False
          Width           =   6615
@@ -70,7 +70,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   3135
             Left            =   240
-            TabIndex        =   37
+            TabIndex        =   45
             Top             =   480
             Width           =   6135
             Begin VB.CommandButton btnOpenDefault 
@@ -95,7 +95,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   1
                Left            =   1440
-               TabIndex        =   44
+               TabIndex        =   56
                Top             =   2400
                UseMnemonic     =   0   'False
                Width           =   2895
@@ -114,7 +114,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   0
                Left            =   120
-               TabIndex        =   43
+               TabIndex        =   46
                Top             =   360
                Width           =   45
             End
@@ -133,7 +133,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   2
                Left            =   1440
-               TabIndex        =   45
+               TabIndex        =   48
                Top             =   840
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -153,7 +153,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   3
                Left            =   1440
-               TabIndex        =   46
+               TabIndex        =   50
                Top             =   1200
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -173,7 +173,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   4
                Left            =   1440
-               TabIndex        =   47
+               TabIndex        =   52
                Top             =   1560
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -193,7 +193,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   5
                Left            =   1440
-               TabIndex        =   48
+               TabIndex        =   54
                Top             =   1920
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -213,7 +213,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   4
                Left            =   240
-               TabIndex        =   42
+               TabIndex        =   47
                Top             =   840
                Width           =   1005
             End
@@ -232,7 +232,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   5
                Left            =   240
-               TabIndex        =   41
+               TabIndex        =   49
                Top             =   1200
                Width           =   1005
             End
@@ -251,7 +251,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   6
                Left            =   240
-               TabIndex        =   40
+               TabIndex        =   51
                Top             =   1560
                Width           =   1005
             End
@@ -270,7 +270,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   7
                Left            =   240
-               TabIndex        =   39
+               TabIndex        =   53
                Top             =   1920
                Width           =   1005
             End
@@ -289,7 +289,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   8
                Left            =   240
-               TabIndex        =   38
+               TabIndex        =   55
                Top             =   2400
                Width           =   1125
             End
@@ -298,7 +298,7 @@ Begin VB.Form frmMain
             Caption         =   "ID3 tag info"
             Height          =   2415
             Left            =   240
-            TabIndex        =   36
+            TabIndex        =   58
             Top             =   3720
             Width           =   6135
             Begin VB.Label lblPropValue 
@@ -315,7 +315,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   9
                Left            =   1440
-               TabIndex        =   56
+               TabIndex        =   66
                Top             =   1800
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -334,7 +334,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   8
                Left            =   1440
-               TabIndex        =   55
+               TabIndex        =   64
                Top             =   1320
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -353,7 +353,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   7
                Left            =   1440
-               TabIndex        =   54
+               TabIndex        =   62
                Top             =   840
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -372,7 +372,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   6
                Left            =   1440
-               TabIndex        =   53
+               TabIndex        =   60
                Top             =   360
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -392,7 +392,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   9
                Left            =   480
-               TabIndex        =   52
+               TabIndex        =   63
                Top             =   1320
                Width           =   735
             End
@@ -411,7 +411,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   2
                Left            =   480
-               TabIndex        =   51
+               TabIndex        =   61
                Top             =   840
                Width           =   735
             End
@@ -430,7 +430,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   1
                Left            =   480
-               TabIndex        =   50
+               TabIndex        =   65
                Top             =   1800
                Width           =   735
             End
@@ -449,7 +449,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   3
                Left            =   480
-               TabIndex        =   49
+               TabIndex        =   59
                Top             =   360
                Width           =   735
             End
@@ -458,7 +458,7 @@ Begin VB.Form frmMain
       Begin agRichEditBox.agRichEdit agEditor 
          Height          =   5535
          Left            =   5520
-         TabIndex        =   2
+         TabIndex        =   43
          Top             =   -240
          Width           =   4215
          _ExtentX        =   7435
@@ -571,7 +571,7 @@ Begin VB.Form frmMain
       Left            =   0
       ScaleHeight     =   6960
       ScaleWidth      =   5100
-      TabIndex        =   4
+      TabIndex        =   30
       TabStop         =   0   'False
       Top             =   600
       Width           =   5100
@@ -582,7 +582,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "Main.frx":4DA6
          Style           =   1  'Graphical
-         TabIndex        =   15
+         TabIndex        =   41
          TabStop         =   0   'False
          ToolTipText     =   "Scroll To Top"
          Top             =   420
@@ -595,7 +595,7 @@ Begin VB.Form frmMain
          Left            =   1824
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   9
+         TabIndex        =   38
          TabStop         =   0   'False
          ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
          Top             =   420
@@ -608,7 +608,7 @@ Begin VB.Form frmMain
          Left            =   1560
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   14
+         TabIndex        =   37
          TabStop         =   0   'False
          ToolTipText     =   "Delete File (Del)"
          Top             =   420
@@ -621,7 +621,7 @@ Begin VB.Form frmMain
          Left            =   1296
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   10
+         TabIndex        =   36
          TabStop         =   0   'False
          ToolTipText     =   "Refresh Files (F5)"
          Top             =   420
@@ -634,7 +634,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "Main.frx":4EF0
          Style           =   1  'Graphical
-         TabIndex        =   8
+         TabIndex        =   35
          TabStop         =   0   'False
          ToolTipText     =   "Reverse the sort order (Ctrl+H)"
          Top             =   420
@@ -647,7 +647,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "Main.frx":4FF2
          Style           =   1  'Graphical
-         TabIndex        =   5
+         TabIndex        =   34
          TabStop         =   0   'False
          ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
          Top             =   420
@@ -660,7 +660,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "Main.frx":537C
          Style           =   1  'Graphical
-         TabIndex        =   12
+         TabIndex        =   33
          TabStop         =   0   'False
          ToolTipText     =   "Go forward a directory (Alt+Right)"
          Top             =   420
@@ -680,7 +680,7 @@ Begin VB.Form frmMain
          ItemData        =   "Main.frx":54C6
          Left            =   0
          List            =   "Main.frx":54C8
-         TabIndex        =   6
+         TabIndex        =   31
          Text            =   "*"
          ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
          Top             =   100
@@ -689,7 +689,7 @@ Begin VB.Form frmMain
       Begin MSComctlLib.ListView lvwBrowser 
          Height          =   4335
          Left            =   0
-         TabIndex        =   7
+         TabIndex        =   39
          Tag             =   "c:\test\"
          Top             =   720
          Width           =   2295
@@ -761,7 +761,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "Main.frx":57E4
          Style           =   1  'Graphical
-         TabIndex        =   11
+         TabIndex        =   32
          TabStop         =   0   'False
          ToolTipText     =   "Go back a directory (Alt+Left)"
          Top             =   420
@@ -771,7 +771,7 @@ Begin VB.Form frmMain
          BackStyle       =   0  'Transparent
          Height          =   25005
          Left            =   2295
-         TabIndex        =   13
+         TabIndex        =   40
          Top             =   0
          Width           =   375
       End
@@ -792,7 +792,7 @@ Begin VB.Form frmMain
       Left            =   0
       ScaleHeight     =   540
       ScaleWidth      =   11700
-      TabIndex        =   3
+      TabIndex        =   0
       TabStop         =   0   'False
       Top             =   0
       Width           =   11760
@@ -802,7 +802,7 @@ Begin VB.Form frmMain
          Left            =   4800
          ScaleHeight     =   540
          ScaleWidth      =   4035
-         TabIndex        =   58
+         TabIndex        =   15
          TabStop         =   0   'False
          Top             =   -25
          Visible         =   0   'False
@@ -812,7 +812,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   65
+            TabIndex        =   24
             ToolTipText     =   "Replace"
             Top             =   290
             Visible         =   0   'False
@@ -823,7 +823,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   64
+            TabIndex        =   16
             ToolTipText     =   "Search within file (Ctrl+F)"
             Top             =   0
             Width           =   2175
@@ -842,9 +842,9 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   175
             Left            =   3840
-            TabIndex        =   63
+            TabIndex        =   17
             TabStop         =   0   'False
-            ToolTipText     =   "Close Font Dialog"
+            ToolTipText     =   "Close Find Dialog"
             Top             =   0
             Width           =   175
          End
@@ -864,7 +864,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":592E
             Style           =   1  'Graphical
-            TabIndex        =   62
+            TabIndex        =   21
             TabStop         =   0   'False
             ToolTipText     =   "Find Next (F3)"
             Top             =   270
@@ -886,7 +886,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":5A78
             Style           =   1  'Graphical
-            TabIndex        =   61
+            TabIndex        =   22
             TabStop         =   0   'False
             ToolTipText     =   "Find Previous (Shift+F3)"
             Top             =   270
@@ -907,7 +907,7 @@ Begin VB.Form frmMain
             Height          =   285
             Left            =   2640
             Style           =   1  'Graphical
-            TabIndex        =   60
+            TabIndex        =   19
             TabStop         =   0   'False
             ToolTipText     =   "More search options (Alt+period)"
             Top             =   0
@@ -929,7 +929,7 @@ Begin VB.Form frmMain
             Left            =   2640
             MaskColor       =   &H80000000&
             Picture         =   "Main.frx":5BC2
-            TabIndex        =   59
+            TabIndex        =   23
             TabStop         =   0   'False
             ToolTipText     =   "Replace (Ctrl+R)"
             Top             =   270
@@ -948,7 +948,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   375
             Left            =   3480
-            TabIndex        =   67
+            TabIndex        =   20
             Top             =   120
             Width           =   570
          End
@@ -966,7 +966,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   180
             Left            =   30
-            TabIndex        =   66
+            TabIndex        =   18
             Top             =   60
             Width           =   465
          End
@@ -984,7 +984,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   175
          Left            =   6480
-         TabIndex        =   34
+         TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Hide Toolbar (F7)"
          Top             =   120
@@ -1005,7 +1005,7 @@ Begin VB.Form frmMain
          Left            =   6240
          Picture         =   "Main.frx":5D0C
          Style           =   1  'Graphical
-         TabIndex        =   23
+         TabIndex        =   28
          TabStop         =   0   'False
          Top             =   240
          Visible         =   0   'False
@@ -1026,7 +1026,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   33
+         TabIndex        =   4
          TabStop         =   0   'False
          ToolTipText     =   "Edit This File"
          Top             =   0
@@ -1047,7 +1047,7 @@ Begin VB.Form frmMain
          Left            =   4200
          Picture         =   "Main.frx":614E
          Style           =   1  'Graphical
-         TabIndex        =   16
+         TabIndex        =   25
          TabStop         =   0   'False
          ToolTipText     =   "Next file down (Ctrl+""]"")"
          Top             =   0
@@ -1067,7 +1067,7 @@ Begin VB.Form frmMain
          Left            =   3600
          Picture         =   "Main.frx":6590
          Style           =   1  'Graphical
-         TabIndex        =   17
+         TabIndex        =   14
          TabStop         =   0   'False
          ToolTipText     =   "Next file up (Ctrl+""["")"
          Top             =   0
@@ -1087,7 +1087,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   252
          Left            =   3240
-         TabIndex        =   26
+         TabIndex        =   11
          TabStop         =   0   'False
          ToolTipText     =   "Zoom In"
          Top             =   320
@@ -1107,7 +1107,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   252
          Left            =   2400
-         TabIndex        =   30
+         TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Reset Zoom"
          Top             =   360
@@ -1128,7 +1128,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   252
          Left            =   2400
-         TabIndex        =   27
+         TabIndex        =   10
          TabStop         =   0   'False
          ToolTipText     =   "Zoom Out"
          Top             =   320
@@ -1147,7 +1147,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   330
          Left            =   2400
-         TabIndex        =   19
+         TabIndex        =   8
          TabStop         =   0   'False
          ToolTipText     =   "Set Font (Shift+Ctrl+F)"
          Top             =   0
@@ -1168,7 +1168,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1800
          Style           =   1  'Graphical
-         TabIndex        =   20
+         TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Toggle Word Wrap (Ctrl+W)"
          Top             =   0
@@ -1190,7 +1190,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   6120
          Style           =   1  'Graphical
-         TabIndex        =   25
+         TabIndex        =   26
          TabStop         =   0   'False
          ToolTipText     =   "Toggle Read-Only mode"
          Top             =   0
@@ -1212,7 +1212,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   6480
          Style           =   1  'Graphical
-         TabIndex        =   29
+         TabIndex        =   27
          TabStop         =   0   'False
          ToolTipText     =   "Options..."
          Top             =   0
@@ -1234,7 +1234,7 @@ Begin VB.Form frmMain
          Left            =   6240
          Picture         =   "Main.frx":69D2
          Style           =   1  'Graphical
-         TabIndex        =   22
+         TabIndex        =   29
          TabStop         =   0   'False
          Top             =   240
          Visible         =   0   'False
@@ -1243,7 +1243,7 @@ Begin VB.Form frmMain
       Begin MSComctlLib.Slider sliZoom 
          Height          =   372
          Left            =   1800
-         TabIndex        =   28
+         TabIndex        =   1
          TabStop         =   0   'False
          ToolTipText     =   "Adjust picture zoom"
          Top             =   -24
@@ -1274,7 +1274,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   31
+         TabIndex        =   5
          TabStop         =   0   'False
          ToolTipText     =   "Full Screen (F11)"
          Top             =   0
@@ -1295,7 +1295,7 @@ Begin VB.Form frmMain
          Left            =   1200
          Picture         =   "Main.frx":6E14
          Style           =   1  'Graphical
-         TabIndex        =   18
+         TabIndex        =   6
          TabStop         =   0   'False
          ToolTipText     =   "Save File (Ctrl+S)"
          Top             =   0
@@ -1316,7 +1316,7 @@ Begin VB.Form frmMain
          Left            =   600
          Picture         =   "Main.frx":7256
          Style           =   1  'Graphical
-         TabIndex        =   24
+         TabIndex        =   3
          TabStop         =   0   'False
          ToolTipText     =   "New File (Ctrl+N)"
          Top             =   0
@@ -1328,7 +1328,7 @@ Begin VB.Form frmMain
          Left            =   0
          Picture         =   "Main.frx":7460
          Style           =   1  'Graphical
-         TabIndex        =   21
+         TabIndex        =   2
          TabStop         =   0   'False
          ToolTipText     =   "Show/Hide the File Browser (F8)"
          Top             =   0
@@ -1349,7 +1349,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   180
          Left            =   2520
-         TabIndex        =   32
+         TabIndex        =   13
          Top             =   360
          Width           =   960
       End
@@ -1358,7 +1358,7 @@ Begin VB.Form frmMain
       Align           =   2  'Align Bottom
       Height          =   300
       Left            =   0
-      TabIndex        =   0
+      TabIndex        =   67
       Top             =   7950
       Width           =   11760
       _ExtentX        =   20743
@@ -1441,9 +1441,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Menu mnuBrowserOpenDefault 
          Caption         =   "Open With &Default Program"
-      End
-      Begin VB.Menu mnuFileRename 
-         Caption         =   "&Rename Open File"
       End
       Begin VB.Menu mnuBrowserSort 
          Caption         =   "Reverse &Sort Order"
@@ -1738,10 +1735,10 @@ Dim mfEditorLoading As Boolean
 ' File Browser related variables
 ' *************************************************************
 Dim mfBrowserDoubleClick As Boolean
-Dim mfBrowserItemClicked As Boolean  ' here,
-Dim mfBrowserButtonPressed As Boolean ' here,
-Dim miBrowserMouseButton As Integer  ' here,
-Dim miBrowserShift As Integer      ' and here, TODO: make it use gBrowserData instead of these.
+Dim mfBrowserItemClicked As Boolean
+Dim mfBrowserButtonPressed As Boolean
+Dim miBrowserMouseButton As Integer
+Dim miBrowserShift As Integer
 Dim mfStartLabelEditFromButton As Boolean
 
 ' *************************************************************
@@ -1832,7 +1829,7 @@ Private Sub AddToHistorySmartly(ByVal sNewHistory As String)
       Next iIndex
       
       If fFoundSame And fHistoryGrew Then Unload mnuFileHistory(mnuFileHistory.UBound)
-      If gBrowserData.HistoryMode Then btnRefresh_Click
+      If gBrowserData.HistoryMode Then RefreshAll
 End Sub
 
 Private Sub BookmarkSaveChanges()
@@ -1995,7 +1992,7 @@ End Sub
             
             Dim sizeBig ' this can be bigger than a long integer
             sizeBig = 0
-            sizeBig = gFSO.GetFile(BD.Dir + sFileName).Size ' size=0 if error
+            sizeBig = gFSO.getfile(BD.Dir + sFileName).Size ' size=0 if error
             
             ' Add that file!
             
@@ -2052,11 +2049,9 @@ Private Sub BrowserGetHistory()
       lvwBrowser.Sorted = False
       
       For iIndex = 1 To mnuFileHistory.UBound
-            ' TODO: get icon from file extension
             Set litCurrentItem = lvwBrowser.ListItems.Add(, "b" & CInt(iIndex), mnuFileHistory(iIndex).tag, _
                   eIconType.Bookmark, eIconType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuFileHistory(iIndex).tag)
-            ' TODO: add file info to subitems
       Next iIndex
       gBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
       If Not gBrowserData.ListEmpty Then
@@ -2204,7 +2199,7 @@ Private Sub LoadPropertiesView(ByVal sFileName As String)
       
       hFile = FindFirstFile(sFileName, WFD)
       fraProperties.Caption = WFD.cFileName
-      lblPropValue(2) = Format(gFSO.GetFile(sFileName).Size, "#,#0")
+      lblPropValue(2) = Format(gFSO.getfile(sFileName).Size, "#,#0")
       lblPropValue(4) = FormatNonLocalFileTime(WFD.ftLastWriteTime)
       lblPropValue(3) = FormatNonLocalFileTime(WFD.ftCreationTime)
       lblPropValue(5) = FormatNonLocalFileTime(WFD.ftLastAccessTime)
@@ -2478,8 +2473,6 @@ Private Sub PathForward()
       End With
 End Sub
 
-
-
 Private Sub ShowFileProperties(ByVal sPath As String)
       ' SImply calls the Explorer file properties dialog.  Hope this works.
       
@@ -2551,7 +2544,7 @@ End Sub
 
 
 Private Sub agEditor_ProgressStatus(ByVal lAmount As Long, ByVal lTotal As Long)
-'      Debug.Print "PROGRESS: "; lAmount & " " & lTotal
+      ' Debug.Print "PROGRESS: "; lAmount & " " & lTotal
 
       ' TODO: if a second file is told to load, it cancels this one but won't remove it from the editor first.
       
@@ -2655,7 +2648,7 @@ Private Sub btnFont_Click()
       Const cdlCFScalableOnly As Long = &H20000
       Const cdlCFEffects As Long = &H100
       
-      Set fntTemp = GetRealStdFont(agEditor, lTextColor)
+      Set fntTemp = GetRealStdFont(agEditor.RichEdithWnd, lTextColor)
       
       'make the dialog choices begin with what the agEditor shows
       With dlgFont
@@ -2682,8 +2675,8 @@ Private Sub btnFont_Click()
             ' So that even if it did set the bCharset property to the stdfont.charset value,
             ' it would not have been seen.
             
-            ' And it assumes charset = 0, which it is for most fonts.
-            ' That's why it won't work with symbol fonts, which have charset = 2. Until now.
+            ' And it assumes charset = 0, which is true for most fonts.
+            ' That's why it wouldn't work (until now) with symbol fonts, which have charset = 2.
             
             .Bold = dlgFont.FontBold
             .Italic = dlgFont.FontItalic
@@ -2692,14 +2685,14 @@ Private Sub btnFont_Click()
             .Size = CCur(dlgFont.FontSize)
             ' Weight is set automatically. (It seems that) 400 = plain, 700 = bold.
       End With
-      'agEditor.SetFont fntTemp, , , , ercSetFormatAll
-      lRetVal = SetRealStdFont(agEditor, fntTemp, dlgFont.Color)
+      'agEditor.SetFont fntTemp, , , , ercSetFormatAll <-- the simple call that doesn't work looks like this
+      lRetVal = SetRealStdFont(agEditor.RichEdithWnd, fntTemp, dlgFont.Color)
       
-      btnFont.Caption = GetRealStdFont(agEditor).Name
+      btnFont.Caption = GetRealStdFont(agEditor.RichEdithWnd).Name
       If Len(btnFont.Caption) > 11 Then
             btnFont.Caption = Left(Trim(btnFont.Caption), 10) & "..."
       End If
-      lblFontSize = Round(GetRealStdFont(agEditor).Size, 1)
+      lblFontSize = Round(GetRealStdFont(agEditor.RichEdithWnd).Size, 0)
       
       SaveSettingsToRegistry ' losing your font setting is so annoying; save them NOW!
 End Sub
@@ -2718,10 +2711,6 @@ Private Sub btnNextFile_Click()
       BrowserExecuteNext
 End Sub
 
-Private Sub btnOptions_Click()
-'      frmOptions.Show
-End Sub
-
 Private Sub btnPathBack_Click()
       PathBack
 End Sub
@@ -2729,7 +2718,6 @@ End Sub
 Private Sub btnPathForward_Click()
       PathForward
 End Sub
-
 
 Private Sub btnPrevFile_Click()
       BrowserExecuteNext True
@@ -2755,7 +2743,6 @@ Private Sub btnZoomDefault_Mousedown(Button As Integer, Shift As Integer, X As S
       sliZoom.value = 100
       Image1.Move 0, 0, gImageData.DefaultWidth, gImageData.DefaultHeight
 End Sub
-
  
 Private Sub btnZoomIn_Click()
       Select Case giEditorMode
@@ -2770,24 +2757,8 @@ Private Sub btnZoomIn_Click()
                   
             Case Else  ' Increase the Font Size
                   Dim iFontSize As Integer
-                  
-                  iFontSize = CInt(GetRealFontSize(agEditor))
-                  
-                  If iFontSize < 12 Then
-                        iFontSize = iFontSize + 1
-                  ElseIf iFontSize < 28 Then
-                        iFontSize = iFontSize + (2 - iFontSize Mod 2)   ' rounding to the previous even number
-                  ElseIf iFontSize < 36 Then
-                        iFontSize = 36
-                  ElseIf iFontSize < 48 Then
-                        iFontSize = 48
-                  ElseIf iFontSize < 72 Then
-                        iFontSize = 72
-                  Else
-                        iFontSize = iFontSize + (10 - iFontSize Mod 10)
-                  End If
-                  
-                  SetRealFontSize agEditor, iFontSize
+                  iFontSize = CInt(GetRealFontSize(agEditor.RichEdithWnd))
+                  iFontSize = SetRealFontSize(agEditor.RichEdithWnd, GetNextFontSize(iFontSize))
                   lblFontSize = iFontSize
       End Select
 End Sub
@@ -2805,28 +2776,8 @@ Private Sub btnZoomOut_Click()
             
             Case Else   ' Decrease the Font Size
                   Dim iFontSize As Integer
-                  
-                  iFontSize = CInt(GetRealFontSize(agEditor))
-                  
-                  If iFontSize <= 1 Then
-                        iFontSize = 1
-                  ElseIf iFontSize <= 13 Then
-                        iFontSize = iFontSize - 1
-                  ElseIf iFontSize <= 28 Then
-                        iFontSize = iFontSize - (2 - iFontSize Mod 2)  ' rounding to the previous even number
-                  ElseIf iFontSize <= 36 Then
-                        iFontSize = 28
-                  ElseIf iFontSize <= 48 Then
-                        iFontSize = 36
-                  ElseIf iFontSize <= 72 Then
-                        iFontSize = 48
-                  ElseIf iFontSize <= 80 Then
-                        iFontSize = 72
-                  Else
-                        iFontSize = iFontSize - (10 - iFontSize Mod 10)
-                  End If
-                  
-                  SetRealFontSize agEditor, iFontSize
+                  iFontSize = CInt(GetRealFontSize(agEditor.RichEdithWnd))
+                  iFontSize = SetRealFontSize(agEditor.RichEdithWnd, GetPrevFontSize(iFontSize))
                   lblFontSize = iFontSize
       End Select
 End Sub
@@ -2842,10 +2793,16 @@ Private Sub chkFindOptions_Click()
 End Sub
 
 Private Sub btnRefresh_Click()
-      ' A lot like invoking cboPath_Change, but with the distinction that
-      ' there is no check for gBrowserData.DirUnchanged, and
-      ' there is no need to re-parse gBrowserData.
-            
+      RefreshAll
+      If agEditor.tag = "" Then
+            frmMain.Caption = "(New File)"
+      Else
+            frmMain.Caption = agEditor.tag & "  (" & Format(GetFileSize(agEditor.tag), "#,#0") & " bytes saved on " _
+                        & FileModifiedTime(agEditor.tag) & ")"
+      End If
+End Sub
+
+Private Sub RefreshAll()
       With gBrowserData
             .DirPrev = .Dir
             .FilterPrev = .Filter
@@ -2865,7 +2822,6 @@ Private Sub btnRefresh_Click()
       End With
       
       BrowserAutoSelectListItem gBrowserData
-      
 End Sub
 
 Private Sub btnSave_Click()
@@ -2984,19 +2940,6 @@ Private Sub btnSyncContents_MouseMove(Button As Integer, Shift As Integer, X As 
 End Sub
 
 Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      ' TODO: this needs to not happen, if frmMain is not the front window
-      
-'      Debug.Print "agEditor: " & agEditor.CharFromPos(x / Screen.TwipsPerPixelX, y / Screen.TwipsPerPixelY)
-'
-'      Dim poiTemp As POINTAPI, lRetVal As Long
-'      poiTemp.x = x / Screen.TwipsPerPixelX
-'      poiTemp.y = y / Screen.TwipsPerPixelY
-'      lRetVal = SendMessage(agEditor.RichEdithWnd, EM_CHARFROMPOS, ByVal 0, poiTemp)
-'      Debug.Print "API: " & lRetVal & " " & Timer
-      
-      'Debug.Print Screen.ActiveForm.name & " "; Screen.ActiveControl.name & " " & Timer
-      'Debug.Print GetForegroundWindow & "   " & frmMain.hwnd & " " & agEditor.RichEdithWnd
-      
       If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "agEditor") And _
@@ -3354,36 +3297,15 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 
-Private Sub lblFind_DblClick()
-'      If Debugging Then
-'            Dim penis(4) As Collection
-'            penis(1) = btnFindNext
-'            penis(2) = btnFindPrev
-'            penis(3) = chkFindOptions
-'            penis(4) = btnReplace
-'
-'            For p = 1 To 4
-'                  Debug.Print
-'            Next p
-'      End If
-      Debug.Print "btnfindnext.move " & btnFindNext.Left & "," & _
-            btnFindNext.Top & "," & btnFindNext.Width & "," & btnFindNext.Height
-      Debug.Print "btnfindprev.move " & btnFindPrev.Left & "," & _
-            btnFindPrev.Top & "," & btnFindPrev.Width & "," & btnFindPrev.Height
-      Debug.Print "chkfindoptions.move " & chkFindOptions.Left & "," & _
-            chkFindOptions.Top & "," & chkFindOptions.Width & "," & chkFindOptions.Height
-      Debug.Print "btnreplace.move " & btnReplace.Left & "," & _
-            btnReplace.Top & "," & btnReplace.Width & "," & btnReplace.Height
-End Sub
-
-
 '
 '  lvwBrowser_AfterLabelEdit (in other words, "rename")
 '
+'     It is even allowable to rename an open file without saving as a new file or deleting anything.
+'
+'     Unsaved progress will not be tampered with, but NOR WILL IT BE SAVED, until you save it.
+'
 Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
 
-      ' TODO: finish this, and make it work for directories.
-      
       Dim sFolder As String, sOldPath As String
       
       sFolder = gBrowserData.Dir
@@ -3399,66 +3321,63 @@ Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
             Exit Sub
       End If
       
-      
       If NewString Like "*:\*" Then sFolder = ""  ' If it looks like a full path, treat it like one.
       sOldPath = gBrowserData.Dir & lvwBrowser.SelectedItem
       
-      If FileExists(sOldPath) = False Then
-            Caption = "Can't rename what's not there: " & sOldPath
-            btnRefresh_Click
+      Cancel = RenameFileWithChecks(sOldPath, sFolder & NewString)
+End Sub
+
+Private Function RenameFileWithChecks(sOldPath As String, sNewPath As String) As Boolean
+      Dim Cancel As Boolean
+      
+      If Not FileExists(sOldPath) Then
+            frmMain.Caption = "Can't rename what's not there: " & sOldPath
+            RefreshAll
             Cancel = True
       
-      ElseIf lvwBrowser.SelectedItem = NewString Or sOldPath = NewString Then
+      ElseIf StrComp(sOldPath, sNewPath, vbBinaryCompare) = 0 Then
             
-            If StrComp(lvwBrowser.SelectedItem, NewString, vbBinaryCompare) = 0 Or _
-                  StrComp(sOldPath, NewString, vbBinaryCompare) = 0 Then
-                  
-                  Cancel = True  ' No change whatsoever.
-            
-            Else ' Change in caps only.  We'll rename it anyway, just to be a sport.
-                  
-                  On Error Resume Next
-                  Name sOldPath As sFolder & NewString
-                  If Err > 0 Then
-                        Caption = Err.Number & ": " & Err.Description
-                        DebugLog Caption
-                        Cancel = True
-                  ElseIf sOldPath = agEditor.tag Then
-                        Caption = "Adjusted the capitalization of open file to: " & sFolder & NewString
-                        agEditor.tag = sFolder & NewString
-                  Else
-                        Caption = "Renamed.  Even though all you changed was the capitalization.  Freak."
-                        agEditor.tag = sFolder & NewString
-                  End If
-                  On Error GoTo 0
-            
-            End If
+            Cancel = True  ' No change whatsoever.
       
-      ElseIf FileExists(sFolder & NewString) Then
-            Caption = "This name sucks: " & Chr(34) & sFolder & NewString & Chr(34) & ".  Change it."
+      ElseIf StrComp(sOldPath, sNewPath, vbTextCompare) = 0 Then
+            
+            Cancel = RenameFile(sOldPath, sNewPath, _
+                  "Adjusted the capitalization of open file to: " & sNewPath, _
+                  "Renamed.  Even though all you changed was the capitalization. Freak.")
+      
+      ElseIf FileExists(sNewPath) Then
+            frmMain.Caption = "This name sucks: " & Chr(34) & sNewPath & Chr(34) & ".  Change it."
             Cancel = True
-            
-      Else   ' ...and finally, we rename a file.
-            On Error Resume Next
-            Name sOldPath As sFolder & NewString
-            If Err > 0 Then
-                  Caption = Err.Number & ": " & Err.Description
-                  DebugLog Caption
-                  Cancel = True
-            ElseIf sOldPath = agEditor.tag Then
-                  Caption = "Renamed open file: " & sFolder & NewString
-                  agEditor.tag = sFolder & NewString
-            Else
-                  Caption = "Rename successful: " & sFolder & NewString
-                  agEditor.tag = sFolder & NewString
-            End If
-            On Error GoTo 0
-      
+      Else
+            Cancel = RenameFile(sOldPath, sNewPath, _
+                  "Renamed open file: " & sNewPath, "Rename successful: " & sNewPath)
       End If
       
-      btnRefresh_Click
-      btnSyncContents_Click
-End Sub
+      If Not Cancel Then
+            lvwBrowser.SelectedItem.Text = gFSO.GetFileName(sNewPath)
+            'RefreshAll
+            btnSyncContents_Click
+      End If
+      RenameFileWithChecks = Cancel
+End Function
+
+Private Function RenameFile(sOldPath As String, sNewPath As String, sIfOpenFile As String, sIfOtherFile As String) As Boolean
+      On Error Resume Next
+      Dim Cancel As Boolean
+      Name sOldPath As sNewPath
+      If Err > 0 Then
+            frmMain.Caption = Err.Number & ": " & Err.Description
+            DebugLog frmMain.Caption
+            Cancel = True
+      ElseIf sOldPath = agEditor.tag Then
+            frmMain.Caption = sIfOpenFile
+            agEditor.tag = sNewPath
+      Else
+            frmMain.Caption = sIfOtherFile
+      End If
+      On Error GoTo 0
+      RenameFile = Cancel
+End Function
 
 Private Sub lvwBrowser_BeforeLabelEdit(Cancel As Integer)
       'debug.print "lvwBrowser_Before " & Cancel
@@ -3598,9 +3517,6 @@ End Sub
 Private Sub mnuBookmarksAdd_Click()
       Dim iBookm As Integer
       
-      ' TODO: ctrl+M doesn't work from the Editor
-      ' find a better shortcut, and see what else doesn't work from the editor.
-      
       For iBookm = 1 To mnuBookmark.UBound
             If mnuBookmark(iBookm).tag = agEditor.tag Then
                   Exit Sub
@@ -3610,7 +3526,7 @@ Private Sub mnuBookmarksAdd_Click()
       AddToBookmarks agEditor.tag
       SaveSettingsToRegistry
       
-      If gBrowserData.BookmarkMode Then btnRefresh_Click
+      If gBrowserData.BookmarkMode Then RefreshAll
 End Sub
 
 Private Function AddToHistorySimply(ByVal sNewHistory As String) As String
@@ -3645,7 +3561,7 @@ Private Sub BrowserDeleteSelected()
       Dim sTheDamned As String
       
       ' No deletion of history.  If you'd like to delete a file you see in the history,
-      ' do it some other way.  (For now, at least).
+      ' do it some other way like by opening 10 more unique files.
       
       If lvwBrowser.ListItems.Count = 0 Or gBrowserData.HistoryMode Then Exit Sub
       
@@ -3653,13 +3569,13 @@ Private Sub BrowserDeleteSelected()
       
       If gBrowserData.BookmarkMode Then
             
-            sBookKey = lvwBrowser.SelectedItem.key      ' TODO: FIIIIIIIIXXXXXXXXX
+            sBookKey = lvwBrowser.SelectedItem.key
             lvwBrowser.ListItems.Remove sBookKey
             
             BookmarkSaveChanges
             
       ElseIf gBrowserData.DrivesMode Then
-            Caption = "I WILL NOT DELETE YOUR DISK.  FIND SOMEONE ELSE."
+            Caption = "I WILL NOT DELETE YOUR DISK. FIND SOMEONE ELSE."
       ElseIf Not FileExists(sTheDamned) Then
             Caption = "Can't delete what isn't there: " & sTheDamned
       ElseIf GetAttr(sTheDamned) And vbDirectory Then
@@ -3667,7 +3583,7 @@ Private Sub BrowserDeleteSelected()
 
 '                  RmDir sTheDamned
 '                  Caption = "Folder deleted successfully: " & sTheDamned
-'                  btnRefresh_Click
+'                  RefreshAll
       Else
             On Error Resume Next
             iRetVal = RecycleFile(sTheDamned)
@@ -3684,7 +3600,7 @@ Private Sub BrowserDeleteSelected()
                         mnuFileNew_Click
                   End If
                   Caption = "File deleted successfully: " & sTheDamned
-                  btnRefresh_Click
+                  RefreshAll
             End If
             On Error GoTo 0
       End If
@@ -3801,69 +3717,6 @@ Private Sub mnuFilePrev_Click()
       btnPrevFile_Click
 End Sub
 
-Private Sub mnuFileRename_Click()
-
-      ' Rename an open file without saving as a new file or deleting anything.
-      
-      ' Unsaved progress will not be tampered with, but NOR WILL IT BE SAVED, until you save it.
-      
-      ' TODO: Auto-select new file after the rename.
-      ' Currently fucked because it's looking for the old name in btnRefresh_Click.
-
-      Dim sOldPath As String, sNewPath As String
-      
-      sOldPath = agEditor.tag
-      sNewPath = InputBox("To what name would you rechristen this document, your majesty?", _
-            "Rename", sOldPath)
-      
-      If Dir(SnipFileName(sNewPath), vbDirectory) = "" Then
-            Caption = "Can't rename due to invalid directory: " & SnipFileName(sNewPath)
-      
-      ElseIf Not FileExists(sOldPath) Then
-            Caption = "Can't rename what's not there: " & sOldPath
-            btnRefresh_Click
-      
-      ElseIf sOldPath = sNewPath Then
-            
-            If StrComp(sOldPath, sNewPath, vbBinaryCompare) = 0 Then
-                  
-                  ' No change whatsoever.
-            
-            Else  ' Change in caps only.  We'll rename it anyway, just to be a sport.
-                  
-                  On Error Resume Next
-                  Name sOldPath As sNewPath
-                  If Err > 0 Then
-                        Caption = Err.Number & ": " & Err.Description
-                        DebugLog Caption
-                  Else
-                        Caption = "Renamed.  Even though all you changed was the capitalization.  Freak."
-                        agEditor.tag = sNewPath
-                        btnRefresh_Click
-                  End If
-                  On Error GoTo 0
-            
-            End If
-      
-      ElseIf FileExists(sNewPath) Then
-            Caption = "This name sucks: " & Chr(34) & sNewPath & Chr(34) & ".  Change it."
-            
-      Else   ' ...and finally, we rename a file.
-            On Error Resume Next
-            Name sOldPath As sNewPath
-            If Err > 0 Then
-                  Caption = Err.Number & ": " & Err.Description
-                  DebugLog Caption
-            Else
-                  Caption = "Rename successful: " & sNewPath
-                  agEditor.tag = sNewPath
-                  btnRefresh_Click
-                  btnSyncContents_Click
-            End If
-            On Error GoTo 0
-      
-      End If
-End Sub
 Private Sub mnuFileSaveAs_Click()
       Dim sDefaultPath As String, sFileName As String
       Dim vDate As Variant
@@ -3956,12 +3809,7 @@ Private Sub mnuListCopyPath_Click()
 End Sub
 
 Private Sub mnuListDelete_Click()
-      ' TODO: remove bookmark from list here, but also need buttons,
-      
-      ' menu disabled in lvwBrowser_MouseUp unless item is clicked on.
-            
       BrowserDeleteSelected
-      
 End Sub
 
 Private Sub lblDivider_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -4103,7 +3951,6 @@ Private Sub mnuQueryReplace_Click()
       Else
             mfReplaceMode = True
             txtReplace.Visible = True
-            If txtReplace = "" Then txtReplace = txtFind
             txtReplace.SetFocus
             txtReplace.SelStart = 0
             txtReplace.SelLength = Len(txtReplace)
@@ -4123,7 +3970,7 @@ Private Sub mnuQueryWholeWord_Click()
 End Sub
 
 
-Private Sub mnueditfind_Click()
+Private Sub mnuEditFind_Click()
       ' Ctrl+F puts the selected text into the query box, but does not proceed with a find until you hit the button.
       
       If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub  ' no search/replace within pictures.
@@ -4135,35 +3982,31 @@ Private Sub mnueditfind_Click()
             RearrangeControls
       End If
       On Error Resume Next
-      If ActiveControl.Name = "agEditor" And agEditor.SelectedText <> "" Then _
+      If agEditor.SelectedText <> "" Then
             txtFind = Trim(agEditor.SelectedText)
+            txtReplace = ""
+      End If
       On Error GoTo 0
       txtFind.SetFocus
 End Sub
 
-Private Sub mnueditfindBackwards_Click()
+Private Sub mnuEditFindBackwards_Click()
       btnFindPrev_Click
 End Sub
 
-Private Sub mnueditfindNext_Click()
+Private Sub mnuEditFindNext_Click()
       btnFindNext_Click
-End Sub
-
-Private Sub mnuViewOptions_Click()
-'      frmOptions.Show
 End Sub
 
 Private Sub mnuViewReadOnly_Click()
       chkReadOnly.value = Abs(chkReadOnly.value - 1)
 End Sub
 
-
 Private Sub mnuEditReplace_Click()
       If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub
       
-      mfHideFind = False
-      If mnuViewToolbar.Checked = False Then mnuViewToolbar_Click
-      picQuery.Visible = True
+      mnuEditFind_Click
+      
       If mfReplaceMode And ActiveControl.Name <> "txtReplace" And txtReplace = "" Then
             txtReplace.SetFocus
       ElseIf mfReplaceMode And ActiveControl.Name <> "txtreplace" And Not btnReplace.Enabled Then
@@ -4178,11 +4021,8 @@ Private Sub mnuWriteDelete_Click()
 End Sub
 
 Private Sub mnuWriteFind_Click()
-      mnueditfind_Click
+      mnuEditFind_Click
 End Sub
-
-
-
 
 Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
       
@@ -4285,7 +4125,7 @@ Private Sub sliZoom_Scroll()
 End Sub
 
 Private Sub txtFind_Change()
-      If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
+      If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
             btnReplace.Enabled = True
             If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
       ElseIf mfReplaceMode Then
@@ -4297,6 +4137,14 @@ Private Sub txtFind_Change()
       miTotalResults = 0
       lblFindResult = ""
 End Sub
+
+Private Function GetFindCompareMode() As Integer
+      If mnuQueryMatchCase.Checked Then
+            GetFindCompareMode = vbBinaryCompare
+      Else
+            GetFindCompareMode = vbTextCompare
+      End If
+End Function
 
 'Private Sub txtFind_Change()
 '      Dim pos As Integer
@@ -4353,6 +4201,14 @@ Private Sub agEditor_KeyDown(KeyCode As Integer, Shift As Integer)
                   If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecuteNext
             Case vbKeyBack, vbKeyP, 219   ' Left Bracket "["
                   If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecuteNext True
+            Case vbKeyM
+                  If Shift = vbCtrlMask Then
+                        mnuBookmarksManage_Click
+                  End If
+            Case vbKeyF
+                  If Shift = vbCtrlMask + vbShiftMask Then
+                        btnFont_Click
+                  End If
       End Select
 End Sub
 
@@ -4380,7 +4236,7 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
             staTusBar1.Panels(eStat.SelText) = lMax - lMin
       End If
       
-      If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
+      If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
             btnReplace.Enabled = True
             If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
       ElseIf mfReplaceMode Then
@@ -4412,12 +4268,13 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                               ShowFileProperties agEditor.tag
                         End If
                   End If
-                  
+            
+            
             Case vbKeyF
-                  If Shift = vbCtrlMask + vbShiftMask Then ' TODO: this is still writing letters to the editor.
+                  If ActiveControl.Name <> "agEditor" And Shift = vbCtrlMask + vbShiftMask Then
                         btnFont_Click
                   End If
-            
+                  
             Case vbKeyF11
                   If Shift = 0 Then btnFullScreen_Click
             
@@ -4558,8 +4415,7 @@ End Sub
 
 Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
       ' Left = up folder.  Right = open folder.
-      ' Trying to copy the functionality of explorer,
-      ' somehow, but without a visible tree.
+      ' Trying to copy the functionality of explorer somehow, but without a visible tree.
       
       Dim iIndex As Integer
       Const ColumnSizeInc = 50
@@ -4585,13 +4441,15 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   Else
                         mnuFileParentDirectory_Click   ' Ordinary left arrow...
                   End If
-                                                 
+            
+            Case vbKeyF2
+                  mnuListRename_Click
                                                  
             Case vbKeyF13 ' F13, but contains code for it and for right arrow.
                               ' See ListViewProc for details.
                               
                   ' Right = open a folder or a drive, but leave a file alone.
-                  '     ...and don't fucking scroll anywhere.
+                  '     ...and we take pains to disarm the listview's urge to scroll right on right arrow
                   
                   If Shift = vbShiftMask Then
                         ' Oh, and shift+right is going to increase column width
@@ -4768,7 +4626,7 @@ Public Function SaveFile(ByVal sFileName As String)
             agEditor.tag = sFileName
             Caption = sFileName & "  (" & Format(bytes, "#,#0") & " bytes saved on " _
                   & FileModifiedTime(sFileName) & ")"
-            btnRefresh_Click
+            RefreshAll
             btnSyncContents_Click
             AddToHistorySmartly sFileName
       Else
@@ -4820,8 +4678,6 @@ End Sub
 
 
 Private Sub RearrangeControls()
-
-      ' TODO: clean up these godawful variable names!
 
       ' Put the various controls where they need to be.
       '   agEditor, lvwBrowser
@@ -4918,8 +4774,6 @@ Private Sub RearrangeControls()
       lvwBrowser.Height = iBrowserHeight - lvwBrowser.Top + topmargin
 
 
-'      If mnuViewToolbar.Checked Then btnToolbarClose.Left = frmMain.ScaleWidth - btnToolbarClose.Width - 50
-            
       If giEditorMode = eViewMode.TextView Then
             ' a few things in the statusbar could change in a window resize:
             '   x, xmax, y, ymax
@@ -4944,7 +4798,6 @@ Private Sub RearrangeControls()
       staTusBar1.Panels(eStat.Tips).Width = frmMain.Width
       
       picEditor.Visible = True
-      'If sHadFocus = "agEditor" Then agEditor.SetFocus
 End Sub
 
 Private Sub mnuViewStatusBar_Click()
@@ -5097,7 +4950,7 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                               Exit Function
                         ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
                               Dim f, ts
-                              Set f = gFSO.GetFile(sFileName)
+                              Set f = gFSO.getfile(sFileName)
                               Set ts = f.OpenAsTextStream(eIoMode.ForReading, encoding)
                               If ts.atendofstream() Then
                                     agEditor.Text = ""
@@ -5238,7 +5091,7 @@ Private Sub SaveSettingsToRegistry()
                   .ReadOnly = vbUnchecked
             End If
             
-            Set fntTemp = GetRealStdFont(agEditor, .TextColor)
+            Set fntTemp = GetRealStdFont(agEditor.RichEdithWnd, .TextColor)
             ' Here, we'll store the color as a system color, if it happens to match the button text.
             If .TextColor = TranslateColor(vbWindowText) Then .TextColor = vbWindowText
             .FontBold = fntTemp.Bold
@@ -5390,8 +5243,8 @@ Private Sub LoadRegistrySettings()
                   Else
                         btnFont.Caption = Trim(.FontName)
                   End If
-                  lblFontSize = Round(.FontSize, 1)
-                  SetRealStdFont agEditor, fntTemp, .TextColor
+                  SetRealStdFont agEditor.RichEdithWnd, fntTemp, .TextColor
+                  lblFontSize = Round(.FontSize, 0)
             End With
       Else
             DebugLog "Did not find any previous editor settings."
@@ -5440,7 +5293,7 @@ EDITOR_PREFS_ERROR:
 End Sub
 
 Private Sub txtReplace_Change()
-      If mfReplaceMode And txtFind = agEditor.SelectedText And txtFind <> "" Then
+      If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
             btnReplace.Enabled = True
       ElseIf mfReplaceMode Then
             btnReplace.Enabled = False

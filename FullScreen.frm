@@ -85,10 +85,6 @@ Private Sub btnClose_Click()
       Unload frmFullScreen
 End Sub
 
-Private Sub btnClose_KeyDown(KeyCode As Integer, Shift As Integer)
-      Debug.Print "button: " & KeyCode & " " & Timer
-End Sub
-
 Private Sub Form_Load()
       gfFullScreenMode = True
       Set gImageData.OutPic = Image1
@@ -137,7 +133,7 @@ Private Sub Image1_DblClick()
       
       GetCursorPos poiPrev
       
-      gImageData.PrevX = poiPrev.X * Screen.TwipsPerPixelX  ' TODO: FIX.  FORMULA DOESN'T WORK.
+      gImageData.PrevX = poiPrev.X * Screen.TwipsPerPixelX
       gImageData.PrevY = poiPrev.Y * Screen.TwipsPerPixelY
       gImageData.Dragging = True
 End Sub
