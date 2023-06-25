@@ -224,8 +224,6 @@ End Function
 
 Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
 Attribute AbsoluteLeft.VB_UserMemId = 1610612757
-      Dim iMargins As Long
-      
       On Error Resume Next
       AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
       If Err > 0 Then AbsoluteLeft = ctrl.Left
@@ -240,8 +238,6 @@ End Function
 
 Public Function AbsoluteTop(ByRef ctrl As Control) As Long
 Attribute AbsoluteTop.VB_UserMemId = 1610612758
-      Dim iMargins As Long
-      
       On Error Resume Next
       AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
       If Err > 0 Then AbsoluteTop = ctrl.Top
@@ -324,8 +320,6 @@ Attribute FileModifiedTime.VB_UserMemId = 1610612755
       ' example date string:   2005-03-15 6:14:21
       
       Dim WFD As WIN32_FIND_DATA
-      Dim localTime As FILETIME
-      Dim sysTime As SYSTEMTIME
       Dim hFile As Long
       
       hFile = FindFirstFile(sSource, WFD)
@@ -371,7 +365,6 @@ Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
       
       Dim localTime As FILETIME
       Dim sysTime As SYSTEMTIME
-      Dim hFile As Long
       
       FileTimeToLocalFileTime NLFT, localTime
       FileTimeToSystemTime localTime, sysTime
@@ -724,8 +717,6 @@ Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
 Attribute TrackMouseLeave.VB_UserMemId = 1610612740
             
-      Dim objPFB As Object
-      
       If uMsg = WM_MOUSELEAVE Then
             Beep
       End If

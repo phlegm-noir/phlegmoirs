@@ -113,7 +113,6 @@ Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef fnt As StdFont, 
       Optional lTextColor As Long = vbWindowText) As Long
 
       Dim char2 As CHARFORMAT2
-      Dim sFontName As String
       Dim bDyn() As Byte, i As Integer
       
       With char2

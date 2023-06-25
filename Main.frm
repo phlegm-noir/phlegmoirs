@@ -1717,28 +1717,21 @@ Dim mfEditorLoading As Boolean
 ' *************************************************************
 Dim mfBrowserDoubleClick As Boolean
 Dim mfBrowserItemClicked As Boolean
-Dim mfBrowserButtonPressed As Boolean
 Dim miBrowserMouseButton As Integer
 Dim miBrowserShift As Integer
-Dim mfStartLabelEditFromButton As Boolean
 
 ' *************************************************************
 ' cboPath related variables
 ' *************************************************************
 Dim miPathRecent As Integer
-Dim mfValidCboPath As Boolean
 
 ' *************************************************************
 ' Find related variables
 ' *************************************************************
 Dim mfHideFind As Boolean
 Dim mfReplaceMode As Boolean
-Dim miCurrentQuery As Integer
-Dim msLastFindQuery As String
-Dim mfFindQueryChanged As Boolean
 Dim miFindResult As Integer
 Dim mlFirstResultPos As Long
-Dim mfQueryMenuOpen As Boolean
 Dim mfFinding As Boolean
 Dim miTotalResults As Integer
 
@@ -2429,8 +2422,7 @@ Attribute btnFindNext_Click.VB_UserMemId = 1610809422
       If txtFind = "" Then txtFind = agEditor.SelectedText
       
       Dim lFoundMin As Long, lFoundMax As Long, lStartMin As Long, lStartMax As Long
-      Dim lFindRetval As Long, fFindInSelection As Boolean
-      Dim iFindOptions As Integer
+      Dim lFindRetval As Long
       
       agEditor.GetSelection lStartMin, lStartMax
       
@@ -2495,8 +2487,7 @@ Attribute btnFindPrev_Click.VB_UserMemId = 1610809372
       If txtFind = "" Then txtFind = agEditor.SelectedText
       
       Dim lFoundMin As Long, lFoundMax As Long, lStartMin As Long, lStartMax As Long
-      Dim lFindRetval As Long, fFindInSelection As Boolean
-      Dim iFindOptions As Integer
+      Dim lFindRetval As Long
       
       agEditor.GetSelection lStartMin, lStartMax
       
@@ -3038,7 +3029,6 @@ Attribute EditorFindText.VB_UserMemId = 1610809423
 '      Const EM_FINDTEXT As Long = (WM_USER + 56)
       Const EM_FINDTEXTEX As Long = (WM_USER + 79)
 
-      Dim fFindNext As Boolean, fFindInSelection As Boolean
       Dim lFindOptions As Long
       Dim fexFindData As FINDTEXTEX
       
@@ -3426,7 +3416,6 @@ Attribute Form_MouseDown.VB_UserMemId = 1610809511
       ' Our form doesn't need it.  We'll have him pass it to the control it's over.
 
       Dim ctrlhWnd As Long
-      Dim retval As Long
       Dim poiCursor As POINTAPI
 
       If Button <> vbRightButton Or Shift <> 0 Then Exit Sub
@@ -4087,7 +4076,6 @@ Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
       ' Left = up folder.  Right = open folder.
       ' Trying to copy the functionality of explorer somehow, but without a visible tree.
       
-      Dim iIndex As Integer
       Const ColumnSizeInc = 50
       
       Select Case KeyCode
@@ -4514,9 +4502,6 @@ End Sub
 
 Private Sub mnuFileSave_Click()
 Attribute mnuFileSave_Click.VB_UserMemId = 1610809517
-      Dim fSuccess As Boolean
-      Dim dteSaveTime As Date
-
       If Not agEditor.Visible Then
             Caption = "ERROR: can only save in editor mode."
             Exit Sub
@@ -5126,8 +5111,6 @@ Attribute RearrangeControls.VB_UserMemId = 1610809523
       
       Const topmargin = 100
       Const leftmargin = 0
-      Const rightMargin = 150
-      Const midspace = 100
       Const bottommargin = 30
       Const toolbarWidth = 4905
       
@@ -5313,8 +5296,7 @@ End Function
 Public Function SaveFile(ByVal sFileName As String)
 Attribute SaveFile.VB_UserMemId = 1610809518
       Dim fSuccess, fNewFile As Boolean
-      Dim dteSaveTime As Date
-
+      
       If Len(sFileName) > 100 Or agEditor.Text = "" Or gTextEncoding = eTextEncoding.UNICODE Then
             Dim ts
             On Error GoTo File_Error

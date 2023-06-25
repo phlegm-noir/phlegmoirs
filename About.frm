@@ -100,9 +100,6 @@ Attribute VB_Exposed = False
 Option Compare Binary
 Option Explicit
 
-Dim miRedMessage As Integer
-Dim msRedReg(0 To 14) As String
-
 Private Sub cmdOK_Click()
   Unload Me
 End Sub
