@@ -126,12 +126,12 @@ End Sub
 
 Private Sub Image1_DblClick()
       ' This needs to (effectively) call an Image1_mousedown... but with what parameters???
-      Dim poiPrev As POINTAPI
+      Dim tPrev As POINTAPI
       
-      GetCursorPos poiPrev
+      GetCursorPos tPrev
       
-      gImageData.PrevX = poiPrev.X * Screen.TwipsPerPixelX
-      gImageData.PrevY = poiPrev.Y * Screen.TwipsPerPixelY
+      gImageData.PrevX = tPrev.X * Screen.TwipsPerPixelX
+      gImageData.PrevY = tPrev.Y * Screen.TwipsPerPixelY
       gImageData.Dragging = True
 End Sub
 

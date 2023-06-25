@@ -334,19 +334,12 @@ Public Function MAKEPOINT(ByVal lParam As Long) As POINTAPI
       MAKEPOINT.X = lParam And &H7FFF&    ' mask to get low order word
 End Function
 
-Public Function MakePOINTAPI(ByVal lx As Integer, ByVal ly As Integer) As POINTAPI
-      ' This just takes two values, and makes a point.  So there's no messy declarations where it matters.
-      
-      MakePOINTAPI.X = lx
-      MakePOINTAPI.Y = ly
-End Function
-
-Function TranslateColor(ByVal clr As OLE_COLOR, _
-      Optional ByVal hPal As Long = 0) As Long
+Function TranslateColor(ByVal Clr As OLE_COLOR, _
+      Optional ByVal lHPalette As Long = 0) As Long
       
       Const CLR_INVALID As Long = &HFFFF&
 
-      If OleTranslateColor(clr, hPal, TranslateColor) Then
+      If OleTranslateColor(Clr, lHPalette, TranslateColor) Then
             TranslateColor = CLR_INVALID
       End If
 End Function
