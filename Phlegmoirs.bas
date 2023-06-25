@@ -395,17 +395,17 @@ Attribute getAllProperties.VB_UserMemId = 1610612763
                         "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
                         "Protected")
                   
-                  Dim i
-                  For i = 0 To 320
+                  Dim iIndex
+                  For iIndex = 0 To 320
                         Dim columnName, value
-                        columnName = objFolder.GetDetailsOf(objFolder.Items, i)
-                        value = objFolder.GetDetailsOf(objFolderItem, i)
-                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(i)) + ")"
+                        columnName = objFolder.GetDetailsOf(objFolder.Items, iIndex)
+                        value = objFolder.GetDetailsOf(objFolderItem, iIndex)
+                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(iIndex)) + ")"
                         
                         If value <> "" And Not ArrContains(uninteresting, columnName) Then
-                              Debug.Print Str(i) + ". " + columnName + ": " + vbTab + value
+                              Debug.Print Str(iIndex) + ". " + columnName + ": " + vbTab + value
                         End If
-                  Next i
+                  Next iIndex
             End If
             
             Set objFolderItem = Nothing

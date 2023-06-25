@@ -3,6 +3,9 @@ Attribute VB_Name = "APIOther"
 ' Windows API: other
 ' *************************************************************
 
+Option Explicit
+Option Compare Binary
+
 Public Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
       ByVal hwnd As Long, _
       ByVal wMsg As Long, _

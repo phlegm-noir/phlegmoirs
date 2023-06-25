@@ -114,7 +114,7 @@ Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef fnt As StdFont, 
       Optional lTextColor As Long = vbWindowText) As Long
 
       Dim char2 As CHARFORMAT2
-      Dim bDyn() As Byte, i As Integer
+      Dim bDyn() As Byte, iIndex As Integer
       
       With char2
             .cbSize = LenB(char2)
@@ -134,9 +134,9 @@ Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef fnt As StdFont, 
             .wWeight = fnt.Weight
             ' the font name takes some string manipulation...
             bDyn = StrConv(fnt.Name & Chr(0), vbFromUnicode)
-            For i = LBound(bDyn) To UBound(bDyn)
-                  .szFaceName(i) = bDyn(i)
-            Next i
+            For iIndex = LBound(bDyn) To UBound(bDyn)
+                  .szFaceName(iIndex) = bDyn(iIndex)
+            Next iIndex
       End With
       SetRealStdFont = SendMessage(lEditorHwnd, EM_SETCHARFORMAT, ByVal SCF_ALL, char2)
 End Function

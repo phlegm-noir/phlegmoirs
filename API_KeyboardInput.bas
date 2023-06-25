@@ -3,6 +3,8 @@ Attribute VB_Name = "APIKeyb"
 ' Windows API: keyboard input
 ' *************************************************************
 
+Option Explicit
+Option Compare Binary
 
 Public Const VK_RIGHT As Long = &H27
 Public Const VK_LEFT As Long = &H25

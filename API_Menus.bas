@@ -3,6 +3,8 @@ Attribute VB_Name = "APIMenus"
 ' Windows API: menu functions
 ' *************************************************************
 
+Option Explicit
+Option Compare Binary
 
 Public Type MENUITEMINFO
       cbSize As Long

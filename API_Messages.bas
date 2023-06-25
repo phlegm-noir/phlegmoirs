@@ -3,6 +3,9 @@ Attribute VB_Name = "APIMsg"
 ' Windows API: message/notification constants
 ' *************************************************************
 
+Option Explicit
+Option Compare Binary
+
 Public Const WM_USER As Long = &H400
 
 Public Const EM_LINEINDEX = &HBB

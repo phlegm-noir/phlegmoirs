@@ -3,6 +3,9 @@ Attribute VB_Name = "APICaret"
 ' Windows API: carets and cursors
 ' *************************************************************
 
+Option Explicit
+Option Compare Binary
+
 Public Const EM_GETSCROLLPOS As Long = (WM_USER + 221) ' Rich Edit 3.0+
       ' p1 = 0
       ' p2 = POINT

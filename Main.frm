@@ -1709,31 +1709,31 @@ Option Explicit
 ' *************************************************************
 ' General/Settings variables
 ' *************************************************************
-Dim mfSkipFormResize As Boolean
-Dim mfEditorLoading As Boolean
+Private mfSkipFormResize As Boolean
+Private mfEditorLoading As Boolean
 
 ' *************************************************************
 ' File Browser related variables
 ' *************************************************************
-Dim mfBrowserDoubleClick As Boolean
-Dim mfBrowserItemClicked As Boolean
-Dim miBrowserMouseButton As Integer
-Dim miBrowserShift As Integer
+Private mfBrowserDoubleClick As Boolean
+Private mfBrowserItemClicked As Boolean
+Private miBrowserMouseButton As Integer
+Private miBrowserShift As Integer
 
 ' *************************************************************
 ' cboPath related variables
 ' *************************************************************
-Dim miPathRecent As Integer
+Private miPathRecent As Integer
 
 ' *************************************************************
 ' Find related variables
 ' *************************************************************
-Dim mfHideFind As Boolean
-Dim mfReplaceMode As Boolean
-Dim miFindResult As Integer
-Dim mlFirstResultPos As Long
-Dim mfFinding As Boolean
-Dim miTotalResults As Integer
+Private mfHideFind As Boolean
+Private mfReplaceMode As Boolean
+Private miFindResult As Integer
+Private mlFirstResultPos As Long
+Private mfFinding As Boolean
+Private miTotalResults As Integer
 
 Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       Dim iIndex As Integer
@@ -3009,9 +3009,9 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                               mfEditorLoading = False
                               Exit Function
                         ElseIf Len(sFileName) > 100 Or encoding = eTextEncoding.UNICODE Then
-                              Dim f, ts
-                              Set f = gFSO.getfile(sFileName)
-                              Set ts = f.OpenAsTextStream(eIoMode.ForReading, encoding)
+                              Dim objF, ts
+                              Set objF = gFSO.getfile(sFileName)
+                              Set ts = objF.OpenAsTextStream(eIoMode.ForReading, encoding)
                               If ts.atendofstream() Then
                                     agEditor.Text = ""
                               Else
