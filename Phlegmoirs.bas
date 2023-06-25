@@ -6,12 +6,19 @@ Option Explicit
 ' Global Settings
 ' *************************************************************
 
-Public Const REGISTRY_VERSION = "0.16.3" ' Not the current build number, but the last time I changed the registry structure.
+Public Const REGISTRY_VERSION = "0.19.0" ' Not the current build number, but the last time I changed the registry structure.
 Public Const LOG_TO_FILE As Boolean = False
 Public Const MINIMUM_LOG_LEVEL As Integer = 1
 Public Const DEBUGGING As Boolean = False
-Public Const MAX_HISTORY = 10
-Public Const MAX_BOOKMARKS = 30
+Public Const MAX_HISTORY As Integer = 10
+Public Const MAX_BOOKMARKS As Integer = 30
+Public Const FOCUS_FOLLOWS_MOUSE As Boolean = False
+Public Const AUTOSIZE_COLUMNS As Boolean = True ' Will autosize type, size, and modified while retaining filename width
+Public Const COLUMN_TOO_SMALL = 600 ' We won't keep the auto-size if it's beneath a certain point
+
+' Got registry slots for their order just in case
+' This is not fully implemented, especially any possible conflicts with AUTOSIZE_COLUMNS
+Public Const ALLOW_REARRANGE_COLUMNS As Boolean = False
 
 ' *************************************************************
 ' My custom types
@@ -26,7 +33,10 @@ Public Type TStatType
       xmax As Long
 End Type
 
+' These prefs objects are for the registry.
+' Not for use during the session.
 Public Type TEditorPrefs
+      AutoLoadFile As String * 255
       WordWrap As Integer
       ReadOnly As Integer
       SelStart As Long
@@ -40,38 +50,40 @@ Public Type TEditorPrefs
       FontStrikethrough As Boolean
       TextColor As Long
       ScrollPos As POINTAPI
-      
-      ' Reserved, not used:
-      BackColor As Long
+End Type
+
+Public Type TBrowserPrefs
+      AutoLoadPath As String * 255
+      SortMethod As Integer
+      SortKey As Integer
+      NameColumnWidth As Long
+      TypeColumnWidth As Long
+      SizeColumnWidth As Long
+      ModifiedColumnWidth As Long
+      NameColumnIndex As Integer
+      TypeColumnIndex As Integer
+      SizeColumnIndex As Integer
+      ModifiedColumnIndex As Integer
 End Type
 
 Public Type TWindowPrefs
       WNP As WINDOWPLACEMENT
       BrowserWidth As Long
-      SortMethod As Integer
-      SortKey As Integer
-      NameColumn As Integer  ' These store the column positions, and are negative if hidden
-      TypeColumn As Integer
-      SizeColumn As Integer
-      ModifiedColumn As Integer
-      
       ShowFileBrowser As Boolean
       ShowStatusBar As Boolean
       ShowToolBar As Boolean
       ShowFind As Boolean
-      AutoLoadFile As String * 255
-      cboPath As String * 255
-      FocusFollowsMouse As Boolean
-      
-      ' Reserved, not used:
-      FullScreen As Boolean
+      ImageZoom As Integer
 End Type
 
 Public Type TAllPrefs
       WindowPrefs As TWindowPrefs
+      BrowserPrefs As TBrowserPrefs
       EditorPrefs As TEditorPrefs
       HistoryCount As Integer
       History(MAX_HISTORY) As String * 255
+      PathHistoryCount As Integer
+      PathHistory(MAX_HISTORY) As String * 255
       BookmarkCount As Integer
       Bookmarks(MAX_BOOKMARKS) As String * 255
 End Type
@@ -187,7 +199,6 @@ End Enum
 ' *************************************************************
 
 Public gStats As TStatType
-Public gAllPrefs As TAllPrefs
 Public gsPhlegmKey As String
 Public gsPhlegmDate As String
 
@@ -348,24 +359,6 @@ Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
             frmMain.WheelInput iWheelTurn, iVirtKeys, poiWheel.X, poiWheel.Y
       End If
       TrackMouseWheel = CallWindowProc(gpOldpicEditorProc, hwnd, uMsg, wParam, lParam)
-End Function
-
-Public Function TrackMouseWheelFullScreen(ByVal hwnd As Long, ByVal uMsg As Long, _
-            ByVal wParam As Long, ByVal lParam As Long) As Long
-
-      ' This is for picture manipulation; applies to frmFullScreen.
-      
-      If uMsg = WM_MOUSEWHEEL Then
-            Dim poiWheel As POINTAPI
-            Dim iVirtKeys As Integer, iWheelTurn As Integer
-            
-            poiWheel = MAKEPOINT(wParam)
-            iWheelTurn = poiWheel.Y / WHEEL_DELTA
-            iVirtKeys = poiWheel.X
-            poiWheel = MAKEPOINT(lParam)
-            frmMain.WheelInput iWheelTurn, iVirtKeys, poiWheel.X, poiWheel.Y
-      End If
-      TrackMouseWheelFullScreen = CallWindowProc(gpOldfrmFullScreenProc, hwnd, uMsg, wParam, lParam)
 End Function
 
 Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _

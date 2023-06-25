@@ -1923,9 +1923,7 @@ Public Sub BrowserExecuteNext(Optional ByVal Reverse As Boolean = False)
       End If
 End Sub
 
-
-
- Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
+Private Sub BrowserGetFilesAndFolders(ByRef BD As TBrowserData)
       DebugLog "Gonna load some files and folders at: " & BD.Dir
       Dim iIcon As eIconType, iTempKey As Integer
       Dim curTotalBytes
@@ -1946,7 +1944,6 @@ End Sub
       iTempKey = lvwBrowser.SortKey
       lvwBrowser.SortKey = 0
       lvwBrowser.Sorted = False ' Sorting each element would have to slow things down, wouldn't it?
-      
       
       If BD.Filter = "" Then BD.Filter = "*"
       hNextFile = FindFirstFile(BD.Dir & BD.Filter, WFD)
@@ -2002,10 +1999,7 @@ End Sub
       lvwBrowser.Sorted = True
       lvwBrowser.SortKey = iTempKey
       
-      ' Code to autosize the columns, if we want it
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE '_USEHEADER
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
+      AutosizeColumns
       lvwBrowser.Visible = True
       If fHadFocus Then lvwBrowser.SetFocus
       
@@ -2014,12 +2008,29 @@ End Sub
       Exit Sub
 
 BROWSER_LOAD_FILES_ERROR:
+      lvwBrowser.Visible = True
       sErrorMsg = "BrowserGetFilesAndFolders error: " & Err.Description
       DebugLog sErrorMsg, 2
       MsgBox sErrorMsg
       Exit Sub
 End Sub
 
+Private Sub AutosizeColumns()
+      If AUTOSIZE_COLUMNS Then
+            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
+            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
+            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
+            If lvwBrowser.ColumnHeaders.Item("Type").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.Item("Type").Width = COLUMN_TOO_SMALL
+            End If
+            If lvwBrowser.ColumnHeaders.Item("Size").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.Item("Size").Width = COLUMN_TOO_SMALL
+            End If
+            If lvwBrowser.ColumnHeaders.Item("Modified").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.Item("Modified").Width = COLUMN_TOO_SMALL
+            End If
+      End If
+End Sub
 
 Private Sub BrowserGetHistory()
       Dim iIndex As Integer
@@ -2034,15 +2045,10 @@ Private Sub BrowserGetHistory()
                   eIconType.Bookmark, eIconType.Bookmark)
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuFileHistory(iIndex).tag)
       Next iIndex
+      
       gBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
-      If Not gBrowserData.ListEmpty Then
-'            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 0, LVSCW_AUTOSIZE
-'            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
-'            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
-'            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
-      End If
+      If Not gBrowserData.ListEmpty Then AutosizeColumns
       staTusBar1.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " most recent files"
-
 End Sub
 
 Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Integer
@@ -2305,7 +2311,6 @@ Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
       ' c:\temp\READMYLIPS  (no wildcard, won't filter but will move selection to a matching filename)
       
       Dim sFileName As String
-      
       sInput = Trim(sInput)
       
       With BD
@@ -2316,7 +2321,6 @@ Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
             .ListEmpty = (lvwBrowser.ListItems.Count = 0)
             .DirPrev = .Dir
             .FilterPrev = .Filter
-            
             
             If sInput = "(Bookmarks)" Then  ' We are in Manage Bookmarks mode.
                   .BookmarkMode = True
@@ -2369,11 +2373,8 @@ Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
             
             If Not .ListEmpty Then .SelTextPrev = lvwBrowser.SelectedItem.Text
             
-            
             .InputPrev = sInput
       End With
-
-
 End Sub
 
 Private Sub PathAddRecent(ByVal sPath As String)
@@ -2420,11 +2421,7 @@ Private Sub BrowserGetBookmarks()
             litCurrentItem.ListSubItems.Add 1, , gFSO.getextensionname(mnuBookmark(iIndex).tag)
       Next iIndex
       gBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 0, LVSCW_AUTOSIZE
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
-'      SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
-      
+      AutosizeColumns
       staTusBar1.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " bookmarks"
 End Sub
 
@@ -2497,12 +2494,14 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
                         .Top = .Container.Height - .Height
                   End If
                   
-            ElseIf iVirtKeys = MK_MBUTTON Then
-                  ' Hold down wheel while turning = move picture right/left
+            ElseIf iVirtKeys = MK_LBUTTON Then ' Right mouse button + wheel scroll
+                  ' Move picture right/left
                   .Left = .Left - iWheelTurn * MoveIncrement * 3
+                  gImageData.Moved = True
                   
-            ElseIf iVirtKeys = MK_RBUTTON Then
-                  ' Right mouse button + wheel scroll = Picture Zoom
+            ElseIf iVirtKeys = MK_MBUTTON Then ' Hold down the wheel while spinning it (if you can even do that)
+                  
+                  ' Picture Zoom, large increment
                   Dim iPresses As Integer
                   ' So we'll be lazy and just press the appropriate zoom button once for each mouse turn.
                   For iPresses = 1 To Abs(iWheelTurn)
@@ -2516,12 +2515,12 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
                   gImageData.Zoomed = True
                   If gfFullScreenMode Then frmFullScreen.lblFileNameZoom = Caption & "  "
                   
-            ElseIf iVirtKeys = MK_LBUTTON Then
-                  ' Left mouse button + wheel scroll = Picture zoom, small increment
-                  sliZoom.value = sliZoom.value - iWheelTurn * sliZoom.SmallChange
+            ElseIf iVirtKeys = MK_RBUTTON Then ' Left mouse button + wheel scroll
+                  
+                  ' Picture zoom, small increment
+                  sliZoom.value = sliZoom.value + iWheelTurn * sliZoom.SmallChange
                   gImageData.Zoomed = True
                   If gfFullScreenMode Then frmFullScreen.lblFileNameZoom = Caption & "  "
-                  
             End If
       End With
 End Sub
@@ -2945,7 +2944,7 @@ Private Sub btnSyncContents_MouseMove(Button As Integer, Shift As Integer, X As 
 End Sub
 
 Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
+      If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "agEditor") And _
                   Not ActiveControl.Name = "txtFind" And Not ActiveControl.Name = "txtReplace" Then
@@ -3242,7 +3241,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
+      If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
@@ -3443,7 +3442,7 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Singl
       ' Can't prevent people from making this helper column visible... but it'll be gone pretty quick
       If lvwBrowser.ColumnHeaders(5).Width > 0 Then lvwBrowser.ColumnHeaders(5).Width = 0
       
-      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
+      If FOCUS_FOLLOWS_MOUSE Then
             ' Autofocus on the file browser.
             ' But we don't do that from within cboPath, because it would be very annoying to
             ' have your typing of a directory interrupted by stray movement of the mouse.
@@ -4102,7 +4101,7 @@ Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
+      If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
@@ -4112,10 +4111,12 @@ Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single
 End Sub
 
 Private Sub picEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If giEditorMode = eViewMode.PictureView And Not gImageData.Zoomed And Button = vbLeftButton Then
+      If giEditorMode = eViewMode.PictureView And Not gImageData.Moved And Not gImageData.Zoomed And _
+                  Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             BrowserExecuteNext
-      ElseIf giEditorMode = eViewMode.PictureView And Not gImageData.Zoomed And Button = vbRightButton Then
+      ElseIf giEditorMode = eViewMode.PictureView And Not gImageData.Moved And Not gImageData.Zoomed And _
+                  Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             BrowserExecuteNext True
@@ -4130,7 +4131,7 @@ Private Sub sliZoom_Change()
 End Sub
 
 Private Sub sliZoom_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If gAllPrefs.WindowPrefs.FocusFollowsMouse Then
+      If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "sliZoom") Then
                   sliZoom.SetFocus
@@ -5075,14 +5076,8 @@ Public Sub ImageSetZoom(iZoom As Integer)
       Caption = agEditor.tag & "  (" & iZoom & "%)"
 End Sub
 
-Private Sub SaveSettingsToRegistry()
-      Dim lMin As Long, lMax As Long, lKey As Long, lRetVal As Long
-      Dim lNewOrUsed As Long, lValueSize As Long
-      Dim iIndex As Integer
-      Dim sErrorMsg As String
-      Dim fntTemp As New StdFont
-      
-      With gAllPrefs.WindowPrefs
+Private Sub GatherWindowPrefs(ByRef Prefs As TWindowPrefs)
+      With Prefs
             .WNP.Length = LenB(.WNP)
             GetWindowPlacement hwnd, .WNP
             If .WNP.showCmd = SW_MINIMIZE Then
@@ -5090,28 +5085,41 @@ Private Sub SaveSettingsToRegistry()
             ElseIf .WNP.showCmd = SW_SHOWMINIMIZED Then  '  <-- It'll be this one, not SW_MINIMIZE.
                   .WNP.showCmd = SW_SHOWNORMAL                ' Including the other for paranoia.
             End If
-            
             .BrowserWidth = picBrowser.Width
-            .SortKey = lvwBrowser.SortKey
-            On Error GoTo 0
-'            .NameColumn = lvwBrowser.ColumnHeaders.Item("Name").Position
-'            .TypeColumn = lvwBrowser.ColumnHeaders.Item("Type").Position
-'            .SizeColumn = lvwBrowser.ColumnHeaders.Item("Size").Position
-'            .ModifiedColumn = lvwBrowser.ColumnHeaders.Item("Modified").Position
-            On Error Resume Next
-            
             .ShowFileBrowser = picBrowser.Visible
             .ShowStatusBar = staTusBar1.Visible
             .ShowToolBar = picToolBar.Visible
             .ShowFind = Not mfHideFind
-            .SortMethod = lvwBrowser.SortOrder
-            .AutoLoadFile = agEditor.tag
-            .cboPath = cboPath
+            .ImageZoom = sliZoom.value
       End With
+End Sub
+
+Private Sub GatherBrowserPrefs(ByRef Prefs As TBrowserPrefs)
+      With Prefs
+            .AutoLoadPath = cboPath
+            .SortMethod = lvwBrowser.SortOrder
+            .SortKey = lvwBrowser.SortKey
+            On Error GoTo 0
+            .NameColumnIndex = lvwBrowser.ColumnHeaders.Item("Name").Position
+            .TypeColumnIndex = lvwBrowser.ColumnHeaders.Item("Type").Position
+            .SizeColumnIndex = lvwBrowser.ColumnHeaders.Item("Size").Position
+            .ModifiedColumnIndex = lvwBrowser.ColumnHeaders.Item("Modified").Position
+            .NameColumnWidth = lvwBrowser.ColumnHeaders.Item("Name").Width
+            .TypeColumnWidth = lvwBrowser.ColumnHeaders.Item("Type").Width
+            .SizeColumnWidth = lvwBrowser.ColumnHeaders.Item("Size").Width
+            .ModifiedColumnWidth = lvwBrowser.ColumnHeaders.Item("Modified").Width
+            On Error Resume Next
+      End With
+End Sub
+
+Private Sub GatherEditorPrefs(ByRef Prefs As TEditorPrefs)
+      Dim lMin As Long, lMax As Long
+      Dim fntTemp As New StdFont
       
       agEditor.GetSelection lMin, lMax
-      
-      With gAllPrefs.EditorPrefs
+
+      With Prefs
+            .AutoLoadFile = agEditor.tag
             .FirstVisibleLine = agEditor.FirstVisibleLine
             .SelEnd = lMax
             .SelStart = lMin
@@ -5136,18 +5144,39 @@ Private Sub SaveSettingsToRegistry()
             
             SendMessage agEditor.RichEdithWnd, EM_GETSCROLLPOS, 0, .ScrollPos
       End With
-      
-      With gAllPrefs
+End Sub
+
+Private Sub GatherHistoryAndBookmarks(ByRef Prefs As TAllPrefs)
+      Dim iIndex As Integer
+      With Prefs
             .BookmarkCount = mnuBookmark.UBound
-            For iIndex = 1 To mnuBookmark.UBound
+            For iIndex = 1 To .BookmarkCount
                   .Bookmarks(iIndex) = mnuBookmark(iIndex).tag
             Next iIndex
             
             .HistoryCount = mnuFileHistory.UBound
-            For iIndex = 1 To mnuFileHistory.UBound
+            For iIndex = 1 To .HistoryCount
                   .History(iIndex) = mnuFileHistory(iIndex).tag
             Next iIndex
+            
+            .PathHistoryCount = cboPath.ListCount
+            If .PathHistoryCount > MAX_HISTORY Then .PathHistoryCount = MAX_HISTORY
+            For iIndex = 1 To .PathHistoryCount
+                  .PathHistory(iIndex) = cboPath.List(iIndex)
+            Next iIndex
       End With
+End Sub
+
+Private Sub SaveSettingsToRegistry()
+      Dim lKey As Long, lRetVal As Long
+      Dim lNewOrUsed As Long, lValueSize As Long
+      Dim sErrorMsg As String
+      Dim AllPrefs As TAllPrefs
+      
+      GatherWindowPrefs AllPrefs.WindowPrefs
+      GatherBrowserPrefs AllPrefs.BrowserPrefs
+      GatherEditorPrefs AllPrefs.EditorPrefs
+      GatherHistoryAndBookmarks AllPrefs
             
       ' Create storage key.
       
@@ -5157,10 +5186,10 @@ Private Sub SaveSettingsToRegistry()
       
       ' Store the Settings.
       
-      lValueSize = LenB(gAllPrefs)
-      lRetVal = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, ByVal gAllPrefs, lValueSize)
+      lValueSize = LenB(AllPrefs)
+      lRetVal = RegSetValueExAny(lKey, "Settings", 0, REG_NONE, ByVal AllPrefs, lValueSize)
       If lRetVal <> 0 Then
-            sErrorMsg = "RegSetValueEx Failed. settings: " & LenB(gAllPrefs) & " " & lKey
+            sErrorMsg = "RegSetValueEx Failed. settings: " & LenB(AllPrefs) & " " & lKey
             DebugLog sErrorMsg, 2
             MsgBox sErrorMsg, , App.title
       End If
@@ -5169,121 +5198,152 @@ Private Sub SaveSettingsToRegistry()
       Debug.Print "Settings saved at: " & Now
 End Sub
 
+Private Sub LoadWindowPrefs(ByRef Prefs As TWindowPrefs)
+      With Prefs
+            BrowserResizeHorizontal .BrowserWidth
+
+            .WNP.Length = LenB(.WNP)
+            SetWindowPlacement hwnd, .WNP
+
+            chkFileBrowser.value = -CInt(.ShowFileBrowser)
+            chkFileBrowser_Click
+            staTusBar1.Visible = .ShowStatusBar
+            mnuViewStatusBar.Checked = .ShowStatusBar
+
+            picToolBar.Visible = .ShowToolBar
+            mnuViewToolbar.Checked = .ShowToolBar
+            If Not .ShowToolBar Then
+                  mnuPlus.Caption = "+"
+                  mnuNext.Visible = True
+                  mnuPrev.Visible = True
+            End If
+
+            If .ShowToolBar Then picQuery.Visible = .ShowFind
+            mfHideFind = Not .ShowFind
+            sliZoom = .ImageZoom
+
+            DebugLog "Rearranging controls..."
+            RearrangeControls
+            DebugLog "Rearranged controls."
+      End With
+End Sub
+
+Private Sub LoadBrowserPrefs(ByRef Prefs As TBrowserPrefs)
+      Dim sCboPath As String
+      With Prefs
+            lvwBrowser.SortOrder = .SortMethod
+            lvwBrowser.SortKey = .SortKey
+            If ALLOW_REARRANGE_COLUMNS Then
+                  lvwBrowser.AllowColumnReorder = True
+                  lvwBrowser.ColumnHeaders.Item("Name").Position = .NameColumnIndex
+                  lvwBrowser.ColumnHeaders.Item("Type").Position = .TypeColumnIndex
+                  lvwBrowser.ColumnHeaders.Item("Size").Position = .SizeColumnIndex
+                  lvwBrowser.ColumnHeaders.Item("Modified").Position = .ModifiedColumnIndex
+            End If
+            lvwBrowser.ColumnHeaders.Item("Name").Width = .NameColumnWidth
+            If Not AUTOSIZE_COLUMNS Then
+                  lvwBrowser.ColumnHeaders.Item("Type").Width = .TypeColumnWidth
+                  lvwBrowser.ColumnHeaders.Item("Size").Width = .SizeColumnWidth
+                  lvwBrowser.ColumnHeaders.Item("Modified").Width = .ModifiedColumnWidth
+            End If
+            sCboPath = Trim(CstringToVBstring(.AutoLoadPath))
+            If agEditor.tag = "" Then
+                  DebugLog "We don't have a file to load, so load the most recent directory...", 2
+                  cboPath = sCboPath
+                  DebugLog "File browser path set to: " & cboPath, 2
+            ElseIf agEditor.tag <> "" And sCboPath <> "" Then
+                  ' if we're not gonna load it, at least make it the most recent path history item
+                  PathAddRecent sCboPath
+            End If
+            DoEvents
+      End With
+End Sub
+
+Private Sub LoadEditorPrefs(ByRef Prefs As TEditorPrefs)
+      Dim fntTemp As New StdFont
+            
+      On Error GoTo EDITOR_PREFS_ERROR
+      DebugLog "Found editor settings. Applying them..."
+      With Prefs
+            chkWordWrap.value = .WordWrap
+            chkWordWrap_Click
+
+            chkReadOnly.value = .ReadOnly
+            chkReadOnly_Click
+
+            fntTemp.Name = Trim(CstringToVBstring(.FontName))
+            fntTemp.Size = .FontSize
+            fntTemp.Bold = .FontBold
+            fntTemp.Italic = .FontItalic
+            fntTemp.Strikethrough = .FontStrikethrough
+            fntTemp.Underline = .FontUnderline
+            If Len(Trim(.FontName)) > 11 Then
+                  btnFont.Caption = Left(Trim(.FontName), 10) & "..."
+            Else
+                  btnFont.Caption = Trim(.FontName)
+            End If
+            SetRealStdFont agEditor.RichEdithWnd, fntTemp, .TextColor
+            lblFontSize = Round(.FontSize, 0)
+      End With
+      Exit Sub
+      
+EDITOR_PREFS_ERROR:
+      frmMain.Caption = "ERROR: Could not load editor prefs. Err: " & Err.Description
+      DebugLog frmMain.Caption, 2
+      MsgBox frmMain.Caption
+End Sub
+
+Private Sub LoadHistoryAndBookmarks(ByRef Prefs As TAllPrefs)
+      Dim iBookm As Integer, iHistIndex As Integer
+      With Prefs
+            DebugLog "Loading bookmarks..."
+            For iBookm = 1 To .BookmarkCount
+                  AddToBookmarks Trim(CstringToVBstring(.Bookmarks(iBookm)))
+            Next iBookm
+            DebugLog "Loaded " & .BookmarkCount & " bookmarks."
+            
+            DebugLog "Loading file history..."
+            For iHistIndex = 1 To .HistoryCount
+                  AddToHistorySimply Trim(CstringToVBstring(.History(iHistIndex)))
+            Next iHistIndex
+            DebugLog "Loaded " & .HistoryCount & " historical file records."
+            
+            DebugLog "Loading path history..."
+            For iHistIndex = .PathHistoryCount To 1 Step -1
+                  PathAddRecent Trim(CstringToVBstring(.PathHistory(iHistIndex)))
+            Next iHistIndex
+            DebugLog "Loaded " & .HistoryCount & " historical path records."
+      End With
+End Sub
+
 Private Sub LoadRegistrySettings()
       DebugLog "Retrieving registry settings, version " & REGISTRY_VERSION & "..."
       On Error GoTo SETTINGS_ERROR
       
       Dim lRetVal As Long, lKey As Long
-      Dim sCboPath As String
-      Dim fileLoaded As Boolean
       Dim lDataType As Long ' receiving only
       Dim lValueSize As Long ' in/out
-      Dim sTemp As String * 255
-      Dim fntTemp As New StdFont
-      Dim iBookm As Integer, iHistIndex As Integer
-      Dim sEx As String
-      Dim udtWindowPlacement As WINDOWPLACEMENT
-      Dim rectRestored As RECT
+      Dim fileLoaded As Boolean
+      Dim AllPrefs As TAllPrefs
+      
+      mfSkipFormResize = True
       
       lRetVal = RegOpenKeyEx(HKEY_CURRENT_USER, gsPhlegmKey, 0, KEY_QUERY_VALUE, lKey)
-      lValueSize = LenB(gAllPrefs)
-      lRetVal = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal gAllPrefs, lValueSize)
+      lValueSize = LenB(AllPrefs)
+      lRetVal = RegQueryValueExAny(lKey, "Settings", 0, lDataType, ByVal AllPrefs, lValueSize)
       
       If lRetVal = 0 Then
-            With gAllPrefs.WindowPrefs
-                  mfSkipFormResize = True
-                  BrowserResizeHorizontal .BrowserWidth
-
-                  .WNP.Length = LenB(.WNP)
-                  SetWindowPlacement hwnd, .WNP
-
-                  lvwBrowser.SortOrder = .SortMethod
-                  If agEditor.tag = "" Then agEditor.tag = Trim(CstringToVBstring(.AutoLoadFile))
-
-'                  lvwBrowser.ColumnHeaders.Item("Name").Position = .NameColumn
-'                  lvwBrowser.ColumnHeaders.Item("Type").Position = .TypeColumn
-'                  lvwBrowser.ColumnHeaders.Item("Size").Position = .SizeColumn
-'                  lvwBrowser.ColumnHeaders.Item("Modified").Position = .ModifiedColumn
-                  lvwBrowser.SortKey = .SortKey
-
-                  sCboPath = Trim(CstringToVBstring(.cboPath))
-                  If agEditor.tag = "" Then
-                        DebugLog "We don't have a file to load, so load the most recent directory...", 2
-                        cboPath = sCboPath
-                        DebugLog "File browser path set to: " & cboPath, 2
-                  End If
-
-                  chkFileBrowser.value = -CInt(.ShowFileBrowser)
-                  chkFileBrowser_Click
-                  staTusBar1.Visible = .ShowStatusBar
-                  mnuViewStatusBar.Checked = .ShowStatusBar
-
-                  picToolBar.Visible = .ShowToolBar
-                  mnuViewToolbar.Checked = .ShowToolBar
-                  If Not .ShowToolBar Then
-                        mnuPlus.Caption = "+"
-                        mnuNext.Visible = True
-                        mnuPrev.Visible = True
-                  End If
-
-                  If .ShowToolBar Then picQuery.Visible = .ShowFind
-                  mfHideFind = Not .ShowFind
-                  mfSkipFormResize = False
-
-                  DebugLog "Rearranging controls..."
-                  RearrangeControls
-                  DebugLog "Rearranged controls."
-            End With
-            
-            With gAllPrefs
-                  DebugLog "Loading bookmarks..."
-                  For iBookm = 1 To .BookmarkCount
-                        AddToBookmarks Trim(CstringToVBstring(.Bookmarks(iBookm)))
-                  Next iBookm
-                  DebugLog "Loaded " & .BookmarkCount & " bookmarks."
-                  
-                  DebugLog "Loading history..."
-                  For iHistIndex = 1 To .HistoryCount
-                        AddToHistorySimply Trim(CstringToVBstring(.History(iHistIndex)))
-                  Next iHistIndex
-                  DebugLog "Loaded " & .HistoryCount & " historical records."
-            End With
+            If agEditor.tag = "" Then agEditor.tag = Trim(CstringToVBstring(AllPrefs.EditorPrefs.AutoLoadFile))
+            LoadWindowPrefs AllPrefs.WindowPrefs
+            LoadHistoryAndBookmarks AllPrefs
+            LoadBrowserPrefs AllPrefs.BrowserPrefs
+            LoadEditorPrefs AllPrefs.EditorPrefs
       Else
             DebugLog "Did not find any previous settings."
             cboPath = ""
             BrowserResizeHorizontal picBrowser.Width
       End If
       
-      On Error GoTo EDITOR_PREFS_ERROR
-      DoEvents
-      If lRetVal = 0 Then
-            DebugLog "Found editor settings. Applying them..."
-            With gAllPrefs.EditorPrefs
-                  chkWordWrap.value = .WordWrap
-                  chkWordWrap_Click
-
-                  chkReadOnly.value = .ReadOnly
-                  chkReadOnly_Click
-
-                  fntTemp.Name = Trim(CstringToVBstring(.FontName))
-                  fntTemp.Size = .FontSize
-                  fntTemp.Bold = .FontBold
-                  fntTemp.Italic = .FontItalic
-                  fntTemp.Strikethrough = .FontStrikethrough
-                  fntTemp.Underline = .FontUnderline
-                  If Len(Trim(.FontName)) > 11 Then
-                        btnFont.Caption = Left(Trim(.FontName), 10) & "..."
-                  Else
-                        btnFont.Caption = Trim(.FontName)
-                  End If
-                  SetRealStdFont agEditor.RichEdithWnd, fntTemp, .TextColor
-                  lblFontSize = Round(.FontSize, 0)
-            End With
-      Else
-            DebugLog "Did not find any previous editor settings."
-      End If
-      On Error GoTo 0
-                  
       ' It's important to set the above prior to loading a file.
       ' Otherwise agEditor's display routines are called again and again for an entire file,
       ' rather than for a blank editor.
@@ -5295,9 +5355,9 @@ Private Sub LoadRegistrySettings()
       Else
             DebugLog "File was NOT loaded."
       End If
-                  
+
       If lRetVal = 0 Then
-            With gAllPrefs.EditorPrefs
+            With AllPrefs.EditorPrefs
                   ' If the file has been changed so that selection and scroll positions are meaningless,
                   ' just skip them...
                   On Error Resume Next
@@ -5308,6 +5368,7 @@ Private Sub LoadRegistrySettings()
                   On Error GoTo 0
             End With
       End If
+      mfSkipFormResize = False
       RegCloseKey lKey
       DebugLog "All settings complete."
       Exit Sub
@@ -5316,13 +5377,7 @@ SETTINGS_ERROR:
       frmMain.Caption = "ERROR: Could not load settings. Err: " & Err.Description
       DebugLog frmMain.Caption, 2
       MsgBox frmMain.Caption
-      Exit Sub
-      
-EDITOR_PREFS_ERROR:
-      frmMain.Caption = "ERROR: Could not load editor prefs. Err: " & Err.Description
-      DebugLog frmMain.Caption, 2
-      MsgBox frmMain.Caption
-      Exit Sub
+      mfSkipFormResize = False
 End Sub
 
 Private Sub txtReplace_Change()

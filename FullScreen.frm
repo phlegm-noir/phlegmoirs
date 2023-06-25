@@ -97,7 +97,7 @@ Private Sub Form_Load()
       lblFileNameZoom = frmMain.Caption & "  "
       
       gpOldfrmFullScreenProc = SetWindowLong(hwnd, GWL_WNDPROC, _
-            AddressOf TrackMouseWheelFullScreen)
+            AddressOf TrackMouseWheel)
 End Sub
 
 Private Sub CopyDimensions()
@@ -112,14 +112,14 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If Not gImageData.Zoomed And Button = vbLeftButton Then
+      If Not gImageData.Zoomed And Not gImageData.Moved And Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             frmMain.BrowserExecuteNext
-      ElseIf Not gImageData.Zoomed And Button = vbRightButton Then
+      ElseIf Not gImageData.Zoomed And Not gImageData.Moved And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             frmMain.BrowserExecuteNext True
-      ElseIf Not gImageData.Moved And Button = vbMiddleButton Then
+      ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbMiddleButton Then
             Unload frmFullScreen
       End If
       
@@ -254,5 +254,5 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub RedoCaption()
-      lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.value & ")  "
+      lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.value & "%)  "
 End Sub
