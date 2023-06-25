@@ -92,8 +92,8 @@ Private Sub CopyDimensions()
 End Sub
 
 Private Sub Form_Load()
-      gfFullScreenMode = True
-      Set gImageData.OutPic = Image1
+      gbFullScreenMode = True
+      Set gtImageData.OutPic = Image1
       
       picFullScreen.Move 0, 0, ScaleWidth, ScaleHeight
       CopyDimensions
@@ -102,7 +102,7 @@ Private Sub Form_Load()
       lblFileNameZoom.Left = picFullScreen.Width - lblFileNameZoom.Width
       lblFileNameZoom = frmMain.Caption & "  "
       
-      gpOldfrmFullScreenProc = SetWindowLong(hwnd, GWL_WNDPROC, _
+      glOldfrmFullScreenProc = SetWindowLong(hwnd, GWL_WNDPROC, _
             AddressOf TrackMouseWheel)
 End Sub
 
@@ -112,15 +112,15 @@ Private Sub Form_Resize()
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-      SetWindowLong hwnd, GWL_WNDPROC, gpOldfrmFullScreenProc
-      gpOldfrmFullScreenProc = 0
+      SetWindowLong hwnd, GWL_WNDPROC, glOldfrmFullScreenProc
+      glOldfrmFullScreenProc = 0
       
       With Image1
             frmMain.Image1.Move .Left, .Top, .Width, .Height
             frmMain.Image1.Picture = .Picture
       End With
-      Set gImageData.OutPic = frmMain.Image1
-      gfFullScreenMode = False
+      Set gtImageData.OutPic = frmMain.Image1
+      gbFullScreenMode = False
       frmMain.Show
 End Sub
 
@@ -130,42 +130,42 @@ Private Sub Image1_DblClick()
       
       GetCursorPos tPrev
       
-      gImageData.PrevX = tPrev.X * Screen.TwipsPerPixelX
-      gImageData.PrevY = tPrev.Y * Screen.TwipsPerPixelY
-      gImageData.Dragging = True
+      gtImageData.PrevX = tPrev.X * Screen.TwipsPerPixelX
+      gtImageData.PrevY = tPrev.Y * Screen.TwipsPerPixelY
+      gtImageData.Dragging = True
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      gImageData.PrevX = X
-      gImageData.PrevY = Y
+      gtImageData.PrevX = X
+      gtImageData.PrevY = Y
       If Button = vbLeftButton Then
-            gImageData.Dragging = True
+            gtImageData.Dragging = True
       End If
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If gImageData.Dragging Then
-            Image1.Move Image1.Left + X - gImageData.PrevX, Image1.Top + Y - gImageData.PrevY, _
+      If gtImageData.Dragging Then
+            Image1.Move Image1.Left + X - gtImageData.PrevX, Image1.Top + Y - gtImageData.PrevY, _
                   Image1.Width, Image1.Height
-            If X <> gImageData.PrevX Or Y <> gImageData.PrevY Then gImageData.Moved = True
+            If X <> gtImageData.PrevX Or Y <> gtImageData.PrevY Then gtImageData.Moved = True
       End If
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
       ' Mouse button lifted?  Stop the drag!
-      gImageData.Dragging = False
+      gtImageData.Dragging = False
       
-      If Not gImageData.Moved And Not gImageData.Zoomed And Button = vbLeftButton Then
+      If Not gtImageData.Moved And Not gtImageData.Zoomed And Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             frmMain.BrowserExecuteNext
-      ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbRightButton Then
+      ElseIf Not gtImageData.Moved And Not gtImageData.Zoomed And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             frmMain.BrowserExecuteNext True
       End If
       
-      gImageData.Moved = False
-      gImageData.Zoomed = False
+      gtImageData.Moved = False
+      gtImageData.Zoomed = False
 End Sub
 
 Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -190,7 +190,7 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
                   Case vbKey0, 106 ' 0 and Keypad "*" -- reset position and size.
                         .value = 100
                         RedoCaption
-                        Image1.Move 0, 0, gImageData.DefaultWidth, gImageData.DefaultHeight
+                        Image1.Move 0, 0, gtImageData.DefaultWidth, gtImageData.DefaultHeight
                   Case 103, 55   ' 7 and Keypad 7
                         .value = .value / 2
                         RedoCaption
@@ -198,13 +198,13 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
                         .value = .value * 2
                         RedoCaption
                   Case vbKeyDown
-                        Image1.Top = Image1.Top + MoveIncrement
+                        Image1.Top = Image1.Top + MOVE_INCREMENT
                   Case vbKeyUp
-                        Image1.Top = Image1.Top - MoveIncrement
+                        Image1.Top = Image1.Top - MOVE_INCREMENT
                   Case vbKeyLeft
-                        Image1.Left = Image1.Left - MoveIncrement
+                        Image1.Left = Image1.Left - MOVE_INCREMENT
                   Case vbKeyRight
-                        Image1.Left = Image1.Left + MoveIncrement
+                        Image1.Left = Image1.Left + MOVE_INCREMENT
                   
                   Case vbKeyHome
                         Image1.Top = 0
@@ -238,19 +238,19 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If Not gImageData.Zoomed And Not gImageData.Moved And Button = vbLeftButton Then
+      If Not gtImageData.Zoomed And Not gtImageData.Moved And Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             frmMain.BrowserExecuteNext
-      ElseIf Not gImageData.Zoomed And Not gImageData.Moved And Button = vbRightButton Then
+      ElseIf Not gtImageData.Zoomed And Not gtImageData.Moved And Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             frmMain.BrowserExecuteNext True
-      ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbMiddleButton Then
+      ElseIf Not gtImageData.Moved And Not gtImageData.Zoomed And Button = vbMiddleButton Then
             Unload frmFullScreen
       End If
       
-      gImageData.Zoomed = False
-      gImageData.Moved = False
+      gtImageData.Zoomed = False
+      gtImageData.Moved = False
 End Sub
 
 Private Sub RedoCaption()

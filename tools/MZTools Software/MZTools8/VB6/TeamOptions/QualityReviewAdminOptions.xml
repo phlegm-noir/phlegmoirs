@@ -110,7 +110,7 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>Module constants must be all upper case</Description>
+        <Description>Module constants = ALL_CAPS</Description>
         <Kind>ModuleConstantProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -128,16 +128,39 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>Module fields must start with "m_", use type prefix and Pascal case</Description>
+        <Description>module fields = m[type][PascalCase]</Description>
         <Kind>ModuleFieldProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
         <WhenConditionsOperator>All</WhenConditionsOperator>
-        <WhenConditions />
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ModuleFieldProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Access</PropertyDisplayedName>
+            <PropertyInternalName>Access</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>NoneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>Public</DisplayedValue>
+                  <InternalValue>16</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
         <Explanation />
         <HowToFix />
         <Type>1</Type>
-        <Prefix1>m_</Prefix1>
+        <Prefix1>m</Prefix1>
         <Prefix2>$P[TYPE_TAG]</Prefix2>
         <Case>Pascal</Case>
         <Suffix1 />
@@ -146,7 +169,48 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>Method constants must be all upper case</Description>
+        <Description>public module fields = g[type][PascalCase]</Description>
+        <Kind>ModuleFieldProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ModuleFieldProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Access</PropertyDisplayedName>
+            <PropertyInternalName>Access</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>OneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>Public</DisplayedValue>
+                  <InternalValue>16</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1>g</Prefix1>
+        <Prefix2>$P[TYPE_TAG]</Prefix2>
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Method constants = ALL_CAPS</Description>
         <Kind>MethodConstantProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -164,7 +228,7 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>Method variables must use type prefix and Pascal case</Description>
+        <Description>Method variables = [type][PascalCase]</Description>
         <Kind>MethodVariableProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -182,7 +246,7 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>ByRef parameters must use "r_" prefix, type prefix and Pascal case</Description>
+        <Description>ByRef parameters = r[type][PascalCase]</Description>
         <Kind>ParameterProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -214,7 +278,7 @@
         <Explanation />
         <HowToFix />
         <Type>1</Type>
-        <Prefix1>r_</Prefix1>
+        <Prefix1>r</Prefix1>
         <Prefix2>$P[TYPE_TAG]</Prefix2>
         <Case>Pascal</Case>
         <Suffix1 />
@@ -223,7 +287,7 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>ByVal parameters must use type prefix and Pascal case</Description>
+        <Description>ByVal parameters = [type][PascalCase]</Description>
         <Kind>ParameterProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />

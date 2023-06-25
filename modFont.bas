@@ -72,7 +72,7 @@ Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextCo
       
       Dim tChar2 As CHARFORMAT2
       Dim lRetVal As Long
-      Dim objNewFont As New StdFont
+      Dim oNewFont As New StdFont
       
       tChar2.cbSize = LenB(tChar2)
       ' Tell it which CHARFORMAT2 properties carry relevant data:
@@ -83,7 +83,7 @@ Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextCo
       lRetVal = SendMessage(lEditorHwnd, EM_GETCHARFORMAT, ByVal 0, tChar2)
       
       If lRetVal <> 0 Then
-            With objNewFont
+            With oNewFont
                   .Size = tChar2.yHeight / TWIPS_PER_POINT
                   .Name = CstringToVBstring(StrConv(tChar2.szFaceName, vbUnicode))
                   .Bold = tChar2.dwEffects And CFE_BOLD
@@ -92,7 +92,7 @@ Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextCo
                   .Underline = tChar2.dwEffects And CFE_UNDERLINE
             End With
             lTextColor = tChar2.crTextColor
-            Set GetRealStdFont = objNewFont
+            Set GetRealStdFont = oNewFont
       Else
             Set GetRealStdFont = Nothing
       End If
@@ -109,7 +109,7 @@ Public Function SetRealFontSize(ByVal lEditorHwnd As Long, ByVal fNewSize As Sin
       SetRealFontSize = tChar2.yHeight / TWIPS_PER_POINT  ' return this, see if it's moved or something weird like that.
 End Function
 
-Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef r_objNewFont As StdFont, _
+Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef roNewFont As StdFont, _
       Optional lTextColor As Long = vbWindowText) As Long
 
       Dim tChar2 As CHARFORMAT2
@@ -124,15 +124,15 @@ Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef r_objNewFont As 
             .dwMask = .dwMask + CFM_COLOR
             .crTextColor = TranslateColor(lTextColor)
             
-            If r_objNewFont.Bold Then .dwEffects = .dwEffects + CFE_BOLD
-            If r_objNewFont.Italic Then .dwEffects = .dwEffects + CFE_ITALIC
-            If r_objNewFont.Underline Then .dwEffects = .dwEffects + CFE_UNDERLINE
-            If r_objNewFont.Strikethrough Then .dwEffects = .dwEffects + CFE_STRIKEOUT
-            .yHeight = r_objNewFont.Size * TWIPS_PER_POINT
-            .bCharSet = r_objNewFont.Charset
-            .wWeight = r_objNewFont.Weight
+            If roNewFont.Bold Then .dwEffects = .dwEffects + CFE_BOLD
+            If roNewFont.Italic Then .dwEffects = .dwEffects + CFE_ITALIC
+            If roNewFont.Underline Then .dwEffects = .dwEffects + CFE_UNDERLINE
+            If roNewFont.Strikethrough Then .dwEffects = .dwEffects + CFE_STRIKEOUT
+            .yHeight = roNewFont.Size * TWIPS_PER_POINT
+            .bCharSet = roNewFont.Charset
+            .wWeight = roNewFont.Weight
             ' the font name takes some string manipulation...
-            cDyn = StrConv(r_objNewFont.Name & Chr(0), vbFromUnicode)
+            cDyn = StrConv(roNewFont.Name & Chr(0), vbFromUnicode)
             For iIndex = LBound(cDyn) To UBound(cDyn)
                   .szFaceName(iIndex) = cDyn(iIndex)
             Next iIndex

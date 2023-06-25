@@ -197,54 +197,52 @@ End Enum
 ' Global Variables
 ' *************************************************************
 
-Public gStats As TStatType
+Public gtStats As TStatType
 Public gsPhlegmKey As String
 Public gsPhlegmDate As String
 
-Public gpOldLvwProc As Long, gpOldpicBrowserProc As Long, gpOldpicEditorProc As Long
-Public gpOldfrmFullScreenProc As Long
-Public objtest As Object
-Public gFSO As Object
-Public gBrowserData As TBrowserData
-Public gImageData As TImageData
-Public giEditorMode As eViewMode
-Public gTextEncoding As Integer
-Public gfFullScreenMode As Integer
-Public gCommandFile As String
+Public glOldLvwProc As Long, glOldpicBrowserProc As Long, glOldpicEditorProc As Long
+Public glOldfrmFullScreenProc As Long
+Public goFso As Object
+Public gtBrowserData As TBrowserData
+Public gtImageData As TImageData
+Public geEditorMode As eViewMode
+Public giTextEncoding As Integer
+Public gbFullScreenMode As Boolean
+Public gsCommandFile As String
 
-Public Const MoveIncrement = -512
-Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
+Public Const MOVE_INCREMENT = -512
 
-Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
-      AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
+Public Function AbsoluteBottom(ByRef roCtrl As Control) As Long
+      AbsoluteBottom = AbsoluteTop(roCtrl) + roCtrl.Height
 End Function
 
 ' WARNING: these do not account for frame/picturebox borders.  Use informally.
 
-Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
+Public Function AbsoluteLeft(ByRef roCtrl As Control) As Long
       On Error Resume Next
-      AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
-      If Err > 0 Then AbsoluteLeft = ctrl.Left
+      AbsoluteLeft = roCtrl.Left + AbsoluteLeft(roCtrl.Container)
+      If Err > 0 Then AbsoluteLeft = roCtrl.Left
       DebugLog "AbsoluteLeft throws an error, whatever that means..."
       On Error GoTo 0
 End Function
 
-Public Function AbsoluteRight(ByRef ctrl As Control) As Long
-      AbsoluteRight = AbsoluteLeft(ctrl) + ctrl.Width
+Public Function AbsoluteRight(ByRef roCtrl As Control) As Long
+      AbsoluteRight = AbsoluteLeft(roCtrl) + roCtrl.Width
 End Function
 
-Public Function AbsoluteTop(ByRef ctrl As Control) As Long
+Public Function AbsoluteTop(ByRef roCtrl As Control) As Long
       On Error Resume Next
-      AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
-      If Err > 0 Then AbsoluteTop = ctrl.Top
+      AbsoluteTop = roCtrl.Top + AbsoluteTop(roCtrl.Container)
+      If Err > 0 Then AbsoluteTop = roCtrl.Top
       DebugLog "AbsoluteTop throws an error, whatever that means..."
       On Error GoTo 0
 End Function
 
-Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
-      Dim Index As Integer
-      For Index = LBound(arrString) To UBound(arrString)
-            If arrString(Index) = PassedValue Then
+Public Function ArrContains(arrString, ByVal sPassedValue As String) As Boolean
+      Dim iIndex As Integer
+      For iIndex = LBound(arrString) To UBound(arrString)
+            If arrString(iIndex) = sPassedValue Then
                   ArrContains = True
                   Exit Function
             End If
@@ -254,13 +252,13 @@ End Function
 
 ' Extract the character count, when counting only one character per carriage return.
 
-Public Function CharacterCount(ByRef editor As agRichEdit) As Long
+Public Function CharacterCount(ByRef roEditor As agRichEdit) As Long
       
       Dim lLastLineLength As Long, lLastLineIndex As Long
       
-      lLastLineIndex = SendMessage(editor.RichEdithWnd, EM_LINEINDEX, ByVal (editor.LineCount - 1), ByVal 0)
+      lLastLineIndex = SendMessage(roEditor.RichEdithWnd, EM_LINEINDEX, ByVal (roEditor.LineCount - 1), ByVal 0)
       
-      lLastLineLength = SendMessage(editor.RichEdithWnd, EM_LINELENGTH, ByVal lLastLineIndex + 1, ByVal 0)
+      lLastLineLength = SendMessage(roEditor.RichEdithWnd, EM_LINELENGTH, ByVal lLastLineIndex + 1, ByVal 0)
 
       CharacterCount = lLastLineIndex + lLastLineLength
 End Function
@@ -268,13 +266,13 @@ End Function
 Public Function CstringToVBstring(ByVal sCstring As String) As String
       ' Removes first null character and anything following it.
       On Error GoTo CONVERSION_ERROR
-      Dim lngNullPosition As Long
+      Dim lNullPos As Long
       
-      lngNullPosition = InStr(1, sCstring, Chr(0))
-      If lngNullPosition = 0 Then
+      lNullPos = InStr(1, sCstring, Chr(0))
+      If lNullPos = 0 Then
             CstringToVBstring = sCstring
       Else
-            CstringToVBstring = Left(sCstring, lngNullPosition - 1)
+            CstringToVBstring = Left(sCstring, lNullPos - 1)
       End If
       Exit Function
 CONVERSION_ERROR:
@@ -296,34 +294,34 @@ End Sub
 
 Public Function FileExists(ByVal sSource As String) As Boolean
 
-      Dim WFD As WIN32_FIND_DATA
-      Dim hFile As Long
+      Dim tWfd As WIN32_FIND_DATA
+      Dim lHfile As Long
       
-      hFile = FindFirstFile(sSource, WFD)
-      FileExists = hFile <> -1 ' invalid handle value
+      lHfile = FindFirstFile(sSource, tWfd)
+      FileExists = lHfile <> -1 ' invalid handle value
       
-      FindClose (hFile)
+      FindClose (lHfile)
    
 End Function
 
 Public Function FileModifiedTime(ByVal sSource As String) As String
       ' example date string:   2005-03-15 6:14:21
       
-      Dim WFD As WIN32_FIND_DATA
-      Dim hFile As Long
+      Dim tWfd As WIN32_FIND_DATA
+      Dim lHfile As Long
       
-      hFile = FindFirstFile(sSource, WFD)
+      lHfile = FindFirstFile(sSource, tWfd)
       
-      If hFile > 0 Then
-            FileModifiedTime = FormatNonLocalFileTime(WFD.ftLastWriteTime)
+      If lHfile > 0 Then
+            FileModifiedTime = FormatNonLocalFileTime(tWfd.ftLastWriteTime)
       Else
             FileModifiedTime = ""
       End If
       
-      FindClose (hFile)
+      FindClose (lHfile)
 End Function
 
-Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
+Function FormatBytes(ByVal oBytes, iPrecision As Integer) As String
       ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
       ' formats it to read likeathis:
       
@@ -335,16 +333,16 @@ Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
       
       ' ...with iPrecision digits after the demical.
       
-      If curBytes = 1 Then
-            FormatBytes = CStr(curBytes) & " byte"
-      ElseIf curBytes < 1024@ Then
-            FormatBytes = CStr(curBytes) & " bytes"
-      ElseIf curBytes < 1048576@ Then
-            FormatBytes = CStr(Round(curBytes / 1024@, iPrecision)) & " KB"
-      ElseIf curBytes < 1073741824@ Then
-            FormatBytes = CStr(Round(curBytes / 1048576@, iPrecision)) & " MB"
-      ElseIf curBytes < 1099511627776@ Then
-            FormatBytes = CStr(Round(curBytes / 1073741824@, iPrecision)) & " GB"
+      If oBytes = 1 Then
+            FormatBytes = CStr(oBytes) & " byte"
+      ElseIf oBytes < 1024@ Then
+            FormatBytes = CStr(oBytes) & " bytes"
+      ElseIf oBytes < 1048576@ Then
+            FormatBytes = CStr(Round(oBytes / 1024@, iPrecision)) & " KB"
+      ElseIf oBytes < 1073741824@ Then
+            FormatBytes = CStr(Round(oBytes / 1048576@, iPrecision)) & " MB"
+      ElseIf oBytes < 1099511627776@ Then
+            FormatBytes = CStr(Round(oBytes / 1073741824@, iPrecision)) & " GB"
       Else
             FormatBytes = "Size Unknown"
       End If
@@ -353,62 +351,62 @@ End Function
 Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
       ' example date string:   2005-03-15 6:14:21
       
-      Dim localTime As FILETIME
-      Dim sysTime As SYSTEMTIME
+      Dim tLocalTime As FILETIME
+      Dim tSysTime As SYSTEMTIME
       
-      FileTimeToLocalFileTime NLFT, localTime
-      FileTimeToSystemTime localTime, sysTime
-      With sysTime
+      FileTimeToLocalFileTime NLFT, tLocalTime
+      FileTimeToSystemTime tLocalTime, tSysTime
+      With tSysTime
             FormatNonLocalFileTime = .wYear & "-" & Format(.wMonth, "00") & "-" & Format(.wDay, "00") _
                   & ", " & Format(.wHour, "00") & ":" & Format(.wMinute, "00") & ":" & Format(.wSecond, "00")
       End With
 End Function
 
 Public Function getAllProperties(sFileName As String)
-      Dim sBaseName, sPathName
-      sPathName = gFSO.getParentFolderName(sFileName)
-      sBaseName = gFSO.GetFileName(sFileName)
+      Dim oBaseName, oPathName
+      oPathName = goFso.getParentFolderName(sFileName)
+      oBaseName = goFso.GetFileName(sFileName)
       
-      Dim objShell, objFolder
-      Set objShell = CreateObject("shell.application")
-      Set objFolder = objShell.NameSpace(sPathName)
+      Dim oShell, oFolder
+      Set oShell = CreateObject("shell.application")
+      Set oFolder = oShell.NameSpace(oPathName)
       
-      If (Not objFolder Is Nothing) Then
-            Dim objFolderItem
-            Set objFolderItem = objFolder.ParseName(sBaseName)
+      If (Not oFolder Is Nothing) Then
+            Dim oFolderItem
+            Set oFolderItem = oFolder.ParseName(oBaseName)
             
-            If (Not objFolderItem Is Nothing) Then
-                  Dim uninteresting
-                  uninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
+            If (Not oFolderItem Is Nothing) Then
+                  Dim oUninteresting
+                  oUninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
                         "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
                         "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
                         "Protected")
                   
-                  Dim iIndex
-                  For iIndex = 0 To 320
-                        Dim columnName, value
-                        columnName = objFolder.GetDetailsOf(objFolder.Items, iIndex)
-                        value = objFolder.GetDetailsOf(objFolderItem, iIndex)
-                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(iIndex)) + ")"
+                  Dim oIndex
+                  For oIndex = 0 To 320
+                        Dim oColumnName, oValue
+                        oColumnName = oFolder.GetDetailsOf(oFolder.Items, oIndex)
+                        oValue = oFolder.GetDetailsOf(oFolderItem, oIndex)
+                        If oColumnName = "" Then oColumnName = "UNKNOWN(" + Trim(Str(oIndex)) + ")"
                         
-                        If value <> "" And Not ArrContains(uninteresting, columnName) Then
-                              Debug.Print Str(iIndex) + ". " + columnName + ": " + vbTab + value
+                        If oValue <> "" And Not ArrContains(oUninteresting, oColumnName) Then
+                              Debug.Print Str(oIndex) + ". " + oColumnName + ": " + vbTab + oValue
                         End If
-                  Next iIndex
+                  Next oIndex
             End If
             
-            Set objFolderItem = Nothing
+            Set oFolderItem = Nothing
       End If
       
-      Set objFolder = Nothing
-      Set objShell = Nothing
+      Set oFolder = Nothing
+      Set oShell = Nothing
 End Function
 
 Public Function GetFileSize(ByVal sSource As String) As Currency
       If sSource = "" Then
             GetFileSize = 0
       Else
-            GetFileSize = gFSO.getfile(sSource).Size
+            GetFileSize = goFso.getfile(sSource).Size
       End If
 End Function
 
@@ -487,38 +485,38 @@ Public Function GetNumberedCaption(ByVal sFileName As String, ByVal iIndex As In
       End If
 End Function
 
-Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType) As eViewMode
-      Const PicFileTooBig = 10000000
-      Const NonPicFileTooBig = 2097152
+Public Function GetViewMode(ByVal sFileName As String, ByVal eMode As eIconType) As eViewMode
+      Const PIC_FILE_TOO_BIG = 10000000
+      Const NON_PIC_FILE_TOO_BIG = 2097152
       Dim sEx As String
-      Dim fileSize
+      Dim oFileSize
       
-      If Not gFSO.FileExists(sFileName) Then
+      If Not goFso.FileExists(sFileName) Then
             GetViewMode = eViewMode.ERROR
             DebugLog "ViewMode: ERROR for file: " & sFileName & "..."
             Exit Function
       End If
       
-      sEx = gFSO.getextensionname(sFileName)
+      sEx = goFso.getextensionname(sFileName)
       
-      If iMode = eIconType.Bookmark Then
-            iMode = GetIconType(sEx)
+      If eMode = eIconType.Bookmark Then
+            eMode = GetIconType(sEx)
       End If
       
-      Select Case iMode
+      Select Case eMode
             Case eIconType.Picture
-                  fileSize = GetFileSize(sFileName)
+                  oFileSize = GetFileSize(sFileName)
                   
-                  If sEx = "png" Or sEx = "webp" Or fileSize > PicFileTooBig Then
+                  If sEx = "png" Or sEx = "webp" Or oFileSize > PIC_FILE_TOO_BIG Then
                         GetViewMode = eViewMode.PropertiesView
                   Else
                         GetViewMode = eViewMode.PictureView
                   End If
             
             Case eIconType.Text, eIconType.rtf, eIconType.other
-                  fileSize = GetFileSize(sFileName)
+                  oFileSize = GetFileSize(sFileName)
                   
-                  If fileSize > NonPicFileTooBig Then
+                  If oFileSize > NON_PIC_FILE_TOO_BIG Then
                         GetViewMode = eViewMode.PropertiesView
                   Else
                         GetViewMode = eViewMode.TextView
@@ -544,59 +542,59 @@ Public Function IsPathFull(ByVal sInput As String) As Long
       IsPathFull = InStrRev(sInput, ":")
 End Function
 
-Public Function IsUnicodeFile(FilePath)
-      Dim objStream
-      Dim intAsc1Chr, intAsc2Chr
+Public Function IsUnicodeFile(oFilePath)
+      Dim oStream
+      Dim oAsc1Chr, oAsc2Chr
       
-      If Not gFSO.FileExists(FilePath) Then
+      If Not goFso.FileExists(oFilePath) Then
             IsUnicodeFile = eTextEncoding.ERROR
-            DebugLog "Text encoding=ERROR for file: " & FilePath
+            DebugLog "Text encoding=ERROR for file: " & oFilePath
             Exit Function
-      ElseIf GetFileSize(FilePath) = 1 Then
+      ElseIf GetFileSize(oFilePath) = 1 Then
             IsUnicodeFile = eTextEncoding.ASCII
             Exit Function
       End If
       
       On Error Resume Next
-      Set objStream = gFSO.OpenTextFile(FilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
-      intAsc1Chr = AscW(objStream.Read(1))
-      intAsc2Chr = AscW(objStream.Read(1))
-      objStream.Close
+      Set oStream = goFso.OpenTextFile(oFilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
+      oAsc1Chr = AscW(oStream.Read(1))
+      oAsc2Chr = AscW(oStream.Read(1))
+      oStream.Close
       If Err > 0 Then
             IsUnicodeFile = eTextEncoding.ERROR
-            DebugLog "Text encoding=ERROR for file: " & FilePath
+            DebugLog "Text encoding=ERROR for file: " & oFilePath
             Exit Function
       End If
       On Error GoTo 0
       
-      If (intAsc1Chr = 255) And (intAsc2Chr = 254) Then
+      If (oAsc1Chr = 255) And (oAsc2Chr = 254) Then
             IsUnicodeFile = eTextEncoding.UNICODE
       Else
             IsUnicodeFile = eTextEncoding.ASCII
       End If
       
-      Set objStream = Nothing
+      Set oStream = Nothing
 End Function
 
-Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
-      ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Function ListViewProc(ByVal lHwnd As Long, ByVal lMsg As Long, _
+      ByVal lWparam As Long, ByVal lLparam As Long) As Long
 
-      Select Case uMsg
+      Select Case lMsg
             Case WM_KEYDOWN
                   ' The problem: right arrow key wants to scroll right.  I want it to do things
                   ' like enter the given folder, which would cause the listview to do both at once.
                   
-                  ' Solution: this modified windows procedure will translate a right arrow (without ctrl)
+                  ' Solution: this modified windows procedure will translate a right arrow (without roCtrl)
                   ' into an F13 keyDown and then continue the window procedure.
                   
                   ' Elsewhere, F13 will be bound to do the desired right arrow key things.
                   
                   ' If somebody wants to scroll right with arrow keys, they can use ctrl+right.
                   
-                  If wParam = vbKeyRight And Not IsKeyDown(VK_CONTROL) Then
+                  If lWparam = vbKeyRight And Not IsKeyDown(VK_CONTROL) Then
                         
-                        ListViewProc = CallWindowProc(gpOldLvwProc, hwnd, _
-                              WM_KEYDOWN, vbKeyF13, lParam)
+                        ListViewProc = CallWindowProc(glOldLvwProc, lHwnd, _
+                              WM_KEYDOWN, vbKeyF13, lLparam)
                         Exit Function
                   End If
             
@@ -629,28 +627,28 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                   ' But it's normally either 1 or -1, sending a message for each turn.
                   Dim lWheelTurns As Long
                   
-                  Dim HitTestInfo As LVHITTESTINFO
-                  Dim recClient As RECT
+                  Dim tHitTestInfo As LVHITTESTINFO
+                  Dim tRecClient As RECT
 
-                  lWheelTurns = MAKEPOINT(wParam).Y / WHEEL_DELTA
-                  lRetVal = GetWindowRect(hwnd, recClient)
+                  lWheelTurns = MAKEPOINT(lWparam).Y / WHEEL_DELTA
+                  lRetVal = GetWindowRect(lHwnd, tRecClient)
 
-                  With HitTestInfo
-                        .pt.X = MAKEPOINT(lParam).X - recClient.Left
-                        .pt.Y = MAKEPOINT(lParam).Y - recClient.Top
+                  With tHitTestInfo
+                        .pt.X = MAKEPOINT(lLparam).X - tRecClient.Left
+                        .pt.Y = MAKEPOINT(lLparam).Y - tRecClient.Top
                   End With
-                  lRetVal = SendMessage(hwnd, LVM_HITTEST, ByVal 0, HitTestInfo)
+                  lRetVal = SendMessage(lHwnd, LVM_HITTEST, ByVal 0, tHitTestInfo)
 
-                  If (HitTestInfo.flags And LVHT_BELOW) Or (HitTestInfo.flags And LVHT_ABOVE) Then
+                  If (tHitTestInfo.flags And LVHT_BELOW) Or (tHitTestInfo.flags And LVHT_ABOVE) Then
                         Dim iTurn As Integer
                         If lWheelTurns > 0 Then
                               For iTurn = 1 To lWheelTurns * 3
-                                    lRetVal = SendMessage(hwnd, WM_HSCROLL, ByVal SB_LINELEFT, ByVal 0)
+                                    lRetVal = SendMessage(lHwnd, WM_HSCROLL, ByVal SB_LINELEFT, ByVal 0)
                               Next iTurn
                               Exit Function
                         ElseIf lWheelTurns < 0 Then
                               For iTurn = -1 To lWheelTurns * 3 Step -1
-                                    lRetVal = SendMessage(hwnd, WM_HSCROLL, ByVal SB_LINERIGHT, ByVal 0)
+                                    lRetVal = SendMessage(lHwnd, WM_HSCROLL, ByVal SB_LINERIGHT, ByVal 0)
                               Next iTurn
                               Exit Function
                         ElseIf lWheelTurns = 0 Then
@@ -661,20 +659,20 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
       End Select
       
       ' Do all the default things too, as defined by the old procedure
-      ListViewProc = CallWindowProc(gpOldLvwProc, hwnd, uMsg, wParam, lParam)
+      ListViewProc = CallWindowProc(glOldLvwProc, lHwnd, lMsg, lWparam, lLparam)
 End Function
 
 Public Function RecycleFile(ByVal sPath As String) As Integer
       ' Send a file to the Recycle Bin.
       
-      Dim shfFileOperation As SHFILEOPSTRUCT
+      Dim tFileOperations As SHFILEOPSTRUCT
       
-      With shfFileOperation
+      With tFileOperations
             .wFunc = FO_DELETE
             .pFrom = sPath
             .fFlags = FOF_ALLOWUNDO
       End With
-      RecycleFile = SHFileOperation(shfFileOperation)
+      RecycleFile = SHFileOperation(tFileOperations)
 End Function
 
 Public Function SnipFileName(ByVal sPath As String) As String
@@ -693,31 +691,31 @@ Public Function SnipPath(ByVal sPath As String) As String
       SnipPath = Right(sPath, Len(sPath) - iSlash)
 End Function
 
-Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
-      ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Function TrackMouseLeave(ByVal lHwnd As Long, ByVal lMsg As Long, _
+      ByVal lWparam As Long, ByVal lLparam As Long) As Long
             
-      If uMsg = WM_MOUSELEAVE Then
+      If lMsg = WM_MOUSELEAVE Then
             Beep
       End If
-      TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hwnd, uMsg, wParam, lParam)
+      TrackMouseLeave = CallWindowProc(glOldpicBrowserProc, lHwnd, lMsg, lWparam, lLparam)
 End Function
 
-Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
-      ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Function TrackMouseWheel(ByVal lHwnd As Long, ByVal lMsg As Long, _
+      ByVal lWparam As Long, ByVal lLparam As Long) As Long
 
       ' This is for picture manipulation; applies to picEditor.
       
-      If uMsg = WM_MOUSEWHEEL Then
-            Dim poiWheel As POINTAPI
+      If lMsg = WM_MOUSEWHEEL Then
+            Dim tPoiWheel As POINTAPI
             Dim iVirtKeys As Integer, iWheelTurn As Integer
             
-            poiWheel = MAKEPOINT(wParam)
-            iWheelTurn = poiWheel.Y / WHEEL_DELTA
-            iVirtKeys = poiWheel.X
-            poiWheel = MAKEPOINT(lParam)
-            frmMain.WheelInput iWheelTurn, iVirtKeys, poiWheel.X, poiWheel.Y
+            tPoiWheel = MAKEPOINT(lWparam)
+            iWheelTurn = tPoiWheel.Y / WHEEL_DELTA
+            iVirtKeys = tPoiWheel.X
+            tPoiWheel = MAKEPOINT(lLparam)
+            frmMain.WheelInput iWheelTurn, iVirtKeys, tPoiWheel.X, tPoiWheel.Y
       End If
-      TrackMouseWheel = CallWindowProc(gpOldpicEditorProc, hwnd, uMsg, wParam, lParam)
+      TrackMouseWheel = CallWindowProc(glOldpicEditorProc, lHwnd, lMsg, lWparam, lLparam)
 End Function
 
 Public Function TrimTrailingSlash(ByVal sPath As String) As String
@@ -728,10 +726,10 @@ Public Function TrimTrailingSlash(ByVal sPath As String) As String
       End If
 End Function
 
-Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
+Public Function VBstringToCstring(ByVal sVbString As String) As Byte()
       ' Just, never you mind this.  Not the inverse of above.
-      sVBstring = sVBstring & Chr(0)
-      VBstringToCstring = sVBstring
-      'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
+      sVbString = sVbString & Chr(0)
+      VBstringToCstring = sVbString
+      'VBstringToCstring = StrConv(sVbString, vbFromUnicode)
 End Function
 
