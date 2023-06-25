@@ -247,14 +247,14 @@ End Function
 
 Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
 Attribute ArrContains.VB_UserMemId = 1610612764
-   Dim Index As Integer
-    For Index = LBound(arrString) To UBound(arrString)
-      If arrString(Index) = PassedValue Then
-        ArrContains = True
-        Exit Function
-      End If
-    Next
-    ArrContains = False
+      Dim Index As Integer
+      For Index = LBound(arrString) To UBound(arrString)
+            If arrString(Index) = PassedValue Then
+                  ArrContains = True
+                  Exit Function
+            End If
+      Next
+      ArrContains = False
 End Function
 
 ' Extract the character count, when counting only one character per carriage return.
@@ -297,7 +297,7 @@ Attribute DebugLog.VB_UserMemId = 1610612745
             sFile = "phlegmoirs_err.log"
             iFile = FreeFile
             Open sFile For Append As #iFile
-                  Print #iFile, Now & ": " & sMsg
+            Print #iFile, Now & ": " & sMsg
             Close #iFile
       End If
 End Sub
@@ -391,9 +391,9 @@ Attribute getAllProperties.VB_UserMemId = 1610612763
             If (Not objFolderItem Is Nothing) Then
                   Dim uninteresting
                   uninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
-                  "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
-                  "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
-                  "Protected")
+                        "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
+                        "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
+                        "Protected")
                   
                   Dim i
                   For i = 0 To 320
@@ -590,16 +590,16 @@ Attribute IsUnicodeFile.VB_UserMemId = 1610612748
       On Error GoTo 0
       
       If (intAsc1Chr = 255) And (intAsc2Chr = 254) Then
-          IsUnicodeFile = eTextEncoding.UNICODE
+            IsUnicodeFile = eTextEncoding.UNICODE
       Else
-          IsUnicodeFile = eTextEncoding.ASCII
+            IsUnicodeFile = eTextEncoding.ASCII
       End If
       
       Set objStream = Nothing
 End Function
 
 Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
-            ByVal wParam As Long, ByVal lParam As Long) As Long
+      ByVal wParam As Long, ByVal lParam As Long) As Long
 
       Select Case uMsg
             Case WM_KEYDOWN
@@ -642,10 +642,13 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
                   Const SB_RIGHT As Long = 7
 
                   Dim lRetVal As Long
-                  Dim lWheelTurns As Long  ' Can be positive or negative (not zero)
-                                          ' If you spin the wheel REALLY fast, it sends a single
-                                          ' WM_MOUSEWHEEL message grouping multiple turns together.
-                                          ' But it's normally either 1 or -1, sending a message for each turn.
+                  
+                  ' Can be positive or negative (not zero)
+                  ' If you spin the wheel REALLY fast, it sends a single
+                  ' WM_MOUSEWHEEL message grouping multiple turns together.
+                  ' But it's normally either 1 or -1, sending a message for each turn.
+                  Dim lWheelTurns As Long
+                  
                   Dim HitTestInfo As LVHITTESTINFO
                   Dim recClient As RECT
 
@@ -714,7 +717,7 @@ Attribute SnipPath.VB_UserMemId = 1610612741
 End Function
 
 Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
-            ByVal wParam As Long, ByVal lParam As Long) As Long
+      ByVal wParam As Long, ByVal lParam As Long) As Long
 Attribute TrackMouseLeave.VB_UserMemId = 1610612740
             
       If uMsg = WM_MOUSELEAVE Then
@@ -724,7 +727,7 @@ Attribute TrackMouseLeave.VB_UserMemId = 1610612740
 End Function
 
 Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
-            ByVal wParam As Long, ByVal lParam As Long) As Long
+      ByVal wParam As Long, ByVal lParam As Long) As Long
 
       ' This is for picture manipulation; applies to picEditor.
       

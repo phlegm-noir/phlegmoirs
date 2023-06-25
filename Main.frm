@@ -1740,7 +1740,7 @@ Private Sub AddToBookmarks(ByVal sNewBookmark As String)
       
       If mnuBookmark.UBound >= MAX_BOOKMARKS Then
             MsgBox "You've reached the " & MAX_BOOKMARKS & " bookmark limit. " & _
-            "Manage your bookmarks to make room.", , "Bookmark Limit"
+                  "Manage your bookmarks to make room.", , "Bookmark Limit"
             Exit Sub
       End If
       
@@ -1757,7 +1757,6 @@ Private Sub AddToBookmarks(ByVal sNewBookmark As String)
 End Sub
 
 Private Function AddToHistorySimply(ByVal sNewHistory As String) As String
-Attribute AddToHistorySimply.VB_UserMemId = 1610809441
       On Error GoTo SIMPLY_ERROR
       Dim iIndex As Integer
 
@@ -1792,7 +1791,7 @@ Private Sub AddToHistorySmartly(ByVal sNewHistory As String)
       End If
       If sNewHistory = "" Then Exit Sub
      
-     ' Add us a new menu item, assuming we're not full yet.
+      ' Add us a new menu item, assuming we're not full yet.
      
       If mnuFileHistory.UBound < MAX_HISTORY Then
             Load mnuFileHistory(mnuFileHistory.UBound + 1)
@@ -1830,7 +1829,6 @@ Private Sub AddToHistorySmartly(ByVal sNewHistory As String)
 End Sub
 
 Private Sub agEditor_Change()
-Attribute agEditor_Change.VB_UserMemId = 1610809520
 
       If Not mfEditorLoading And giEditorMode = eViewMode.TextView And Not (agEditor.tag = "" And agEditor.Text = "") Then
             staTusBar1.Panels(eStat.Modified) = "Modified"
@@ -1838,8 +1836,8 @@ Attribute agEditor_Change.VB_UserMemId = 1610809520
       
       If staTusBar1.Visible Then
             With gStats
-                .imax = CharacterCount(agEditor)
-                .ymax = agEditor.LineCount
+                  .imax = CharacterCount(agEditor)
+                  .ymax = agEditor.LineCount
             End With
             
             FillStats
@@ -1852,7 +1850,6 @@ Attribute agEditor_Change.VB_UserMemId = 1610809520
 End Sub
 
 Private Sub agEditor_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute agEditor_KeyDown.VB_UserMemId = 1610809507
       Select Case KeyCode
             Case vbKeySpace, vbKeyN, 221   ' Right Bracket "]"
                   If Shift = 0 And chkReadOnly.value = vbChecked Then BrowserExecuteNext
@@ -1870,7 +1867,6 @@ Attribute agEditor_KeyDown.VB_UserMemId = 1610809507
 End Sub
 
 Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute ageditor_MouseMove.VB_UserMemId = 1610809412
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "agEditor") And _
@@ -1899,14 +1895,12 @@ Attribute ageditor_MouseMove.VB_UserMemId = 1610809412
 End Sub
 
 Private Sub agEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute agEditor_MouseUp.VB_UserMemId = 1610809521
       If (Button = vbRightButton And Shift = 0) Then
-          Me.PopupMenu mnuWrite
+            Me.PopupMenu mnuWrite
       End If
 End Sub
 
 Private Sub agEditor_ProgressStatus(ByVal lAmount As Long, ByVal lTotal As Long)
-Attribute agEditor_ProgressStatus.VB_UserMemId = 1610809367
       ' Debug.Print "PROGRESS: "; lAmount & " " & lTotal
 
       ' TODO: if a second file is told to load, it cancels this one but won't remove it from the editor first.
@@ -1915,7 +1909,6 @@ Attribute agEditor_ProgressStatus.VB_UserMemId = 1610809367
 End Sub
 
 Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByVal eSelType As agricheditbox.ERECSelectionTypeConstants)
-Attribute agEditor_SelectionChange.VB_UserMemId = 1610809508
       ' Update a few items on the status bar.
       
       Dim lLineIndex As Long, lCharIndex As Long
@@ -1926,13 +1919,13 @@ Attribute agEditor_SelectionChange.VB_UserMemId = 1610809508
       
       If staTusBar1.Visible Then
             With gStats
-                .Y = lLineIndex + 1
+                  .Y = lLineIndex + 1
                 
-                ' We want gStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
-                .i = lMin
-                SendMessage agEditor.RichEdithWnd, EM_EXGETSEL, 0, chrSelection
-                .X = lMin - lCharIndex + 1
-                .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal lCharIndex, 0) + 1
+                  ' We want gStats.i to count CRs and LFs both, since agEditor.CharacterCount does that.
+                  .i = lMin
+                  SendMessage agEditor.RichEdithWnd, EM_EXGETSEL, 0, chrSelection
+                  .X = lMin - lCharIndex + 1
+                  .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal lCharIndex, 0) + 1
             End With
         
             FillStats
@@ -1956,7 +1949,6 @@ Attribute agEditor_SelectionChange.VB_UserMemId = 1610809508
 End Sub
 
 Private Sub AutosizeColumns()
-Attribute AutosizeColumns.VB_UserMemId = 1610809350
       If AUTOSIZE_COLUMNS Then
             SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
             SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
@@ -1994,22 +1986,20 @@ Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
       
       If BD.ListEmpty Or BD.BookmarkMode Then Exit Function
       
-      ' Auto-select first filename to match partialfilename, if given.
-      
       If BD.PartialFileName <> "" Then
+            ' Auto-select first filename to match partialfilename, if given.
             Set litCurrentItem = lvwBrowser.FindItem(BD.PartialFileName, , , lvwPartial)
             If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
       
-      ' Auto-select the directory we just moved out of, if doing a ParentDirectory.
             
       ElseIf BD.GoingToParent Then
-      
+            ' Auto-select the directory we just moved out of, if doing a ParentDirectory.
             Set litCurrentItem = lvwBrowser.FindItem(gFSO.GetBaseName(BD.DirPrev))
             If Not (litCurrentItem Is Nothing) Then litCurrentItem.Selected = True
             
-      ' Auto-select the item previously selected, for a refresh.
       
       ElseIf BD.DirUnchanged Then
+            ' Auto-select the item previously selected, for a refresh.
             Set litCurrentItem = lvwBrowser.FindItem(BD.SelTextPrev)
 
             If (litCurrentItem Is Nothing) Then
@@ -2018,9 +2008,7 @@ Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
                   litCurrentItem.Selected = True
             End If
             
-      ' Otherwise, auto-select the first item.
-            
-      Else
+      Else ' Otherwise, auto-select the first item.
             lvwBrowser.ListItems(1).Selected = True
       End If
                   
@@ -2031,7 +2019,6 @@ Private Function BrowserAutoSelectListItem(ByRef BD As TBrowserData)
 End Function
 
 Private Sub BrowserDeleteSelected()
-Attribute BrowserDeleteSelected.VB_UserMemId = 1610809443
       Dim sBookKey As String, iRetVal As Integer
       Dim sTheDamned As String
       
@@ -2065,9 +2052,9 @@ Attribute BrowserDeleteSelected.VB_UserMemId = 1610809443
       If Attrs And vbDirectory Then
             Caption = "This program would rather not be held responsible for mass deletions. Please use another."
             Exit Sub
-'            RmDir sTheDamned
-'            Caption = "Folder deleted successfully: " & sTheDamned
-'            RefreshAll
+            ' RmDir sTheDamned
+            ' Caption = "Folder deleted successfully: " & sTheDamned
+            ' RefreshAll
       End If
 
       iRetVal = RecycleFile(sTheDamned)
@@ -2091,7 +2078,6 @@ DELETION_ERROR:
 End Sub
 
 Private Sub BrowserExecuteItem(ByVal Item As MSComctlLib.ListItem)
-Attribute BrowserExecuteItem.VB_UserMemId = 1610809433
       If (lvwBrowser.ListItems.Count = 0) Then Exit Sub
       
       Dim sItemName As String
@@ -2124,9 +2110,9 @@ Public Sub BrowserExecuteNext(Optional ByVal Reverse As Boolean = False)
       Dim iInc, iLimit As Integer
       Dim viewMode As eViewMode
 
-       ' Open the item next to the open file, not next to whatever thing is selected.
-       ' It is possible to select something else via arrow keys or right-click + cancel.
-       ' So we start with a sync.
+      ' Open the item next to the open file, not next to whatever thing is selected.
+      ' It is possible to select something else via arrow keys or right-click + cancel.
+      ' So we start with a sync.
       If (agEditor.tag <> "") And (Not gBrowserData.BookmarkMode) And (Not gBrowserData.HistoryMode) Then
             btnSyncContents_Click
       End If
@@ -2168,7 +2154,6 @@ Public Sub BrowserExecuteNext(Optional ByVal Reverse As Boolean = False)
 End Sub
 
 Private Sub BrowserGetBookmarks()
-Attribute BrowserGetBookmarks.VB_UserMemId = 1610809362
       Dim iIndex As Integer
       Dim litCurrentItem As ListItem
       
@@ -2188,7 +2173,6 @@ Attribute BrowserGetBookmarks.VB_UserMemId = 1610809362
 End Sub
 
 Private Function BrowserGetDrives() As Integer
-Attribute BrowserGetDrives.VB_UserMemId = 1610809526
       ' Find all logical drives and display them in lvwBrowser
       ' Returns the number of logical drives found.
       
@@ -2331,7 +2315,6 @@ BROWSER_LOAD_FILES_ERROR:
 End Sub
 
 Private Sub BrowserGetHistory()
-Attribute BrowserGetHistory.VB_UserMemId = 1610809351
       Dim iIndex As Integer
       Dim litCurrentItem As ListItem
       
@@ -2351,7 +2334,6 @@ Attribute BrowserGetHistory.VB_UserMemId = 1610809351
 End Sub
 
 Private Function BrowserResizeHorizontal(ByVal iSupposedWidth As Integer) As Integer
-Attribute BrowserResizeHorizontal.VB_UserMemId = 1610809352
       ' This is like a miniature RearrangeControls() for just picBrowser and everything within,
       ' and it happens to only affect their horizontal components.
       
@@ -2386,37 +2368,30 @@ Attribute BrowserResizeHorizontal.VB_UserMemId = 1610809352
 End Function
 
 Private Sub btnCloseFind_Click()
-Attribute btnCloseFind_Click.VB_UserMemId = 1610809368
       mnuQueryClose_Click
 End Sub
 
 Private Sub btnDeleteSelected_Click()
-Attribute btnDeleteSelected_Click.VB_UserMemId = 1610809370
       BrowserDeleteSelected
 End Sub
 
 Private Sub btndeleteselected_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btndeleteselected_MouseMove.VB_UserMemId = 1610809410
       staTusBar1.Panels(eStat.Tips).Text = btnDeleteSelected.ToolTipText
 End Sub
 
 Private Sub btnEdit_Click()
-Attribute btnEdit_Click.VB_UserMemId = 1610809371
       mnuViewReadOnly_Click
 End Sub
 
 Private Sub btnfileback_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnfileback_MouseMove.VB_UserMemId = 1610809409
       staTusBar1.Panels(eStat.Tips).Text = btnFileBack.ToolTipText
 End Sub
 
 Private Sub btnfileforward_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnfileforward_MouseMove.VB_UserMemId = 1610809408
       staTusBar1.Panels(eStat.Tips).Text = btnFileForward.ToolTipText
 End Sub
 
 Private Sub btnFindNext_Click()
-Attribute btnFindNext_Click.VB_UserMemId = 1610809422
       If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub
       
       If txtFind = "" Then txtFind = agEditor.SelectedText
@@ -2468,12 +2443,10 @@ Attribute btnFindNext_Click.VB_UserMemId = 1610809422
 End Sub
 
 Private Sub btnFindNext_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnFindNext_MouseMove.VB_UserMemId = 1610809407
       staTusBar1.Panels(eStat.Tips).Text = btnFindNext.ToolTipText
 End Sub
 
 Private Sub btnFindPrev_Click()
-Attribute btnFindPrev_Click.VB_UserMemId = 1610809372
       ' So I've decided that it's possible to have negative numbers of find results.
       ' This is what happens when you click "Find Previous",
       ' and there wasn't a previous find, but there is a match.
@@ -2542,12 +2515,10 @@ Attribute btnFindPrev_Click.VB_UserMemId = 1610809372
 End Sub
 
 Private Sub btnfindprev_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnfindprev_MouseMove.VB_UserMemId = 1610809406
       staTusBar1.Panels(eStat.Tips).Text = btnFindPrev.ToolTipText
 End Sub
 
 Private Sub btnFolderUp_Click()
-Attribute btnFolderUp_Click.VB_UserMemId = 1610809373
       ' When we go up a dir, preserve the existing filter except in a drives list.
       Dim sParentDir As String
       
@@ -2563,12 +2534,10 @@ Attribute btnFolderUp_Click.VB_UserMemId = 1610809373
 End Sub
 
 Private Sub btnfolderup_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnfolderup_MouseMove.VB_UserMemId = 1610809405
       staTusBar1.Panels(eStat.Tips).Text = btnFolderUp.ToolTipText
 End Sub
 
 Private Sub btnFont_Click()
-Attribute btnFont_Click.VB_UserMemId = 1610809374
       Dim fntTemp As New StdFont ' StdFont is a Class
       Dim lRetVal As Long, lTextColor As Long
       Const cdlCFScreenFonts As Long = &H1
@@ -2625,122 +2594,101 @@ Attribute btnFont_Click.VB_UserMemId = 1610809374
 End Sub
 
 Private Sub btnfont_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnfont_MouseMove.VB_UserMemId = 1610809404
       staTusBar1.Panels(eStat.Tips).Text = btnFont.ToolTipText
 End Sub
 
 Private Sub btnFullScreen_Click()
-Attribute btnFullScreen_Click.VB_UserMemId = 1610809375
       Hide
       frmFullScreen.Show
 End Sub
 
 Private Sub btnNewFile_Click()
-Attribute btnNewFile_Click.VB_UserMemId = 1610809376
       mnuFileNew_Click
 End Sub
 
 Private Sub btnnewfile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnnewfile_MouseMove.VB_UserMemId = 1610809403
       staTusBar1.Panels(eStat.Tips).Text = btnNewFile.ToolTipText
 End Sub
 
 Private Sub btnNextFile_Click()
-Attribute btnNextFile_Click.VB_UserMemId = 1610809377
       BrowserExecuteNext
 End Sub
 
 Private Sub btnnextfile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnnextfile_MouseMove.VB_UserMemId = 1610809402
       staTusBar1.Panels(eStat.Tips).Text = btnNextFile.ToolTipText
 End Sub
 
 Private Sub btnPathBack_Click()
-Attribute btnPathBack_Click.VB_UserMemId = 1610809378
       PathBack
 End Sub
 
 Private Sub btnpathback_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnpathback_MouseMove.VB_UserMemId = 1610809401
       staTusBar1.Panels(eStat.Tips).Text = btnPathBack.ToolTipText
 End Sub
 
 Private Sub btnPathForward_Click()
-Attribute btnPathForward_Click.VB_UserMemId = 1610809379
       PathForward
 End Sub
 
 Private Sub btnpathforward_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnpathforward_MouseMove.VB_UserMemId = 1610809400
       staTusBar1.Panels(eStat.Tips).Text = btnPathForward.ToolTipText
 End Sub
 
 Private Sub btnPrevFile_Click()
-Attribute btnPrevFile_Click.VB_UserMemId = 1610809380
       BrowserExecuteNext True
 End Sub
 
 Private Sub btnprevfile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnprevfile_MouseMove.VB_UserMemId = 1610809399
       staTusBar1.Panels(eStat.Tips).Text = btnPrevFile.ToolTipText
 End Sub
 
 Private Sub btnRefresh_Click()
-Attribute btnRefresh_Click.VB_UserMemId = 1610809387
       RefreshAll
       If agEditor.tag = "" Then
             frmMain.Caption = "(New File)"
       Else
             frmMain.Caption = agEditor.tag & "  (" & Format(GetFileSize(agEditor.tag), "#,#0") & " bytes saved on " _
-                        & FileModifiedTime(agEditor.tag) & ")"
+                  & FileModifiedTime(agEditor.tag) & ")"
       End If
 End Sub
 
 Private Sub btnrefresh_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnrefresh_MouseMove.VB_UserMemId = 1610809395
       staTusBar1.Panels(eStat.Tips).Text = btnRefresh.ToolTipText
 End Sub
 
 Private Sub btnReplace_Click()
-Attribute btnReplace_Click.VB_UserMemId = 1610809381
-      ' The replace button puts us in replace mode if we aren't already there.
       If Not mfReplaceMode Then
+            ' The replace button puts us in replace mode if we aren't already there.
             mnuQueryReplace_Click
 
-      ' Otherwise, if we were already in replace mode, it replaces (if legal).
       ElseIf btnReplace.Enabled And Not chkReadOnly Then
+            ' Otherwise, if we were already in replace mode, it replaces (if legal).
             agEditor.InsertContents SF_TEXT, txtReplace
             btnFindNext_Click
       End If
 End Sub
 
 Private Sub btnReplace_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnReplace_MouseMove.VB_UserMemId = 1610809398
       staTusBar1.Panels(eStat.Tips).Text = btnReplace.ToolTipText
 End Sub
 
 Private Sub btnSave_Click()
-Attribute btnSave_Click.VB_UserMemId = 1610809389
       mnuFileSave_Click
 End Sub
 
 Private Sub btnSave_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnSave_MouseMove.VB_UserMemId = 1610809394
       staTusBar1.Panels(eStat.Tips).Text = btnSave.ToolTipText
 End Sub
 
 Private Sub btnScrollToTop_Click()
-Attribute btnScrollToTop_Click.VB_UserMemId = 1610809390
       If lvwBrowser.ListItems.Count > 0 Then lvwBrowser.ListItems(1).EnsureVisible
 End Sub
 
 Private Sub btnScrolltotop_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnScrolltotop_MouseMove.VB_UserMemId = 1610809392
       staTusBar1.Panels(eStat.Tips).Text = btnScrollToTop.ToolTipText
 End Sub
 
 Private Sub btnSort_Click()
-Attribute btnSort_Click.VB_UserMemId = 1610809391
       Dim iTempKey As Integer
       
       ' List remains sorted at all times.  Only the order can be reversed.
@@ -2759,12 +2707,10 @@ Attribute btnSort_Click.VB_UserMemId = 1610809391
 End Sub
 
 Private Sub btnSort_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnSort_MouseMove.VB_UserMemId = 1610809393
       staTusBar1.Panels(eStat.Tips).Text = btnSort.ToolTipText
 End Sub
 
 Private Sub btnSyncContents_Click()
-Attribute btnSyncContents_Click.VB_UserMemId = 1610809369
       
       ' What this really does is:
       '     1. go to directory containing open file
@@ -2790,24 +2736,20 @@ Attribute btnSyncContents_Click.VB_UserMemId = 1610809369
 End Sub
 
 Private Sub btnSyncContents_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnSyncContents_MouseMove.VB_UserMemId = 1610809411
       staTusBar1.Panels(eStat.Tips).Text = btnSyncContents.ToolTipText
 End Sub
 
 Private Sub btnToolbarClose_Click()
-Attribute btnToolbarClose_Click.VB_UserMemId = 1610809382
       mnuViewToolbar_Click
 End Sub
 
 Private Sub btnZoomDefault_Mousedown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute btnZoomDefault_Mousedown.VB_UserMemId = 1610809383
       sliZoom.value = 100
       Image1.Move 0, 0, gImageData.DefaultWidth, gImageData.DefaultHeight
 End Sub
 
  
 Private Sub btnZoomIn_Click()
-Attribute btnZoomIn_Click.VB_UserMemId = 1610809384
       Select Case giEditorMode
       
             Case eViewMode.PictureView
@@ -2827,7 +2769,6 @@ Attribute btnZoomIn_Click.VB_UserMemId = 1610809384
 End Sub
 
 Private Sub btnZoomOut_Click()
-Attribute btnZoomOut_Click.VB_UserMemId = 1610809385
       Select Case giEditorMode
             
             Case eViewMode.PictureView
@@ -2847,7 +2788,6 @@ Attribute btnZoomOut_Click.VB_UserMemId = 1610809385
 End Sub
 
 Private Sub cboPath_Change()
-Attribute cboPath_Change.VB_UserMemId = 1610809415
       
       ParsePath cboPath, gBrowserData
       
@@ -2873,7 +2813,6 @@ Attribute cboPath_Change.VB_UserMemId = 1610809415
 End Sub
 
 Private Sub cboPath_Click()
-Attribute cboPath_Click.VB_UserMemId = 1610809416
       ' So as it turns out, this is the event that fires when you select another
       '   item from the combobox list (via keyboard or mouse).  It is better thought
       '   of as a Change event for the combobox acting as a drop-down list.
@@ -2892,7 +2831,6 @@ Attribute cboPath_Click.VB_UserMemId = 1610809416
 End Sub
 
 Private Sub cboPath_GotFocus()
-Attribute cboPath_GotFocus.VB_UserMemId = 1610809418
       ' When focus is obtained, put the cursor right where we would have moved it anyway:
       ' At the end of the path, before the extension if one exists.
       
@@ -2907,7 +2845,6 @@ Attribute cboPath_GotFocus.VB_UserMemId = 1610809418
 End Sub
 
 Private Sub cboPath_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute cboPath_KeyDown.VB_UserMemId = 1610809419
       Select Case KeyCode
             Case vbKeyReturn
                   lvwBrowser.SetFocus
@@ -2926,7 +2863,6 @@ Attribute cboPath_KeyDown.VB_UserMemId = 1610809419
 End Sub
 
 Private Sub chkFileBrowser_Click()
-Attribute chkFileBrowser_Click.VB_UserMemId = 1610809417
       picBrowser.Visible = chkFileBrowser.value
       mnuViewFilebrowser.Checked = chkFileBrowser.value
       staTusBar1.Panels(eStat.BrowserStats).Visible = chkFileBrowser.value
@@ -2935,12 +2871,10 @@ Attribute chkFileBrowser_Click.VB_UserMemId = 1610809417
 End Sub
 
 Private Sub chkFileBrowser_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute chkFileBrowser_MouseMove.VB_UserMemId = 1610809420
       staTusBar1.Panels(eStat.Tips).Text = chkFileBrowser.ToolTipText
 End Sub
 
 Private Sub chkFindOptions_Click()
-Attribute chkFindOptions_Click.VB_UserMemId = 1610809386
       If chkFindOptions.value = vbChecked Then
             PopupMenu mnuQuery, vbPopupMenuRightAlign, AbsoluteRight(chkFindOptions), _
                   AbsoluteBottom(chkFindOptions)
@@ -2948,17 +2882,14 @@ Attribute chkFindOptions_Click.VB_UserMemId = 1610809386
 End Sub
 
 Private Sub chkFindOptions_LostFocus()
-Attribute chkFindOptions_LostFocus.VB_UserMemId = 1610809396
       chkFindOptions.value = vbUnchecked
 End Sub
 
 Private Sub chkFindOptions_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute chkFindOptions_MouseMove.VB_UserMemId = 1610809397
       staTusBar1.Panels(eStat.Tips).Text = chkFindOptions.ToolTipText
 End Sub
 
 Private Sub chkReadOnly_Click()
-Attribute chkReadOnly_Click.VB_UserMemId = 1610809413
       
       mnuViewReadOnly.Checked = chkReadOnly.value
       agEditor.ReadOnly = chkReadOnly.value
@@ -2975,7 +2906,6 @@ Attribute chkReadOnly_Click.VB_UserMemId = 1610809413
 End Sub
 
 Private Sub chkWordWrap_Click()
-Attribute chkWordWrap_Click.VB_UserMemId = 1610809421
       
       Dim lineindex As Long, charindex As Long, lMin As Long, lMax As Long
       
@@ -2995,10 +2925,10 @@ Attribute chkWordWrap_Click.VB_UserMemId = 1610809421
       
       If staTusBar1.Visible Then
             With gStats
-                .X = lMin - charindex + 1
-                .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
-                .Y = lineindex + 1
-                .ymax = agEditor.LineCount
+                  .X = lMin - charindex + 1
+                  .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
+                  .Y = lineindex + 1
+                  .ymax = agEditor.LineCount
             End With
             FillStats
       End If
@@ -3015,18 +2945,17 @@ End Sub
 '  specified direction.  That means the start position has to come first.  NOT the lower of the values first.
 
 Private Function EditorFindText( _
-            ByVal sFindme As String, _
-            ByVal iDirection As eDirection, _
-            ByVal lRangeStart As Long, _
-            ByVal lRangeEnd As Long, _
-            ByRef lFoundMin As Long, _
-            ByRef lFoundMax As Long) As Long
-Attribute EditorFindText.VB_UserMemId = 1610809423
+      ByVal sFindme As String, _
+      ByVal iDirection As eDirection, _
+      ByVal lRangeStart As Long, _
+      ByVal lRangeEnd As Long, _
+      ByRef lFoundMin As Long, _
+      ByRef lFoundMax As Long) As Long
       
       Const FR_MATCHCASE As Long = &H4
       Const FR_WHOLEWORD As Long = &H2
       Const FR_DOWN As Long = &H1
-'      Const EM_FINDTEXT As Long = (WM_USER + 56)
+      ' Const EM_FINDTEXT As Long = (WM_USER + 56)
       Const EM_FINDTEXTEX As Long = (WM_USER + 79)
 
       Dim lFindOptions As Long
@@ -3047,7 +2976,6 @@ Attribute EditorFindText.VB_UserMemId = 1610809423
 End Function
 
 Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
-Attribute EditorLoadFile.VB_UserMemId = 1610809533
       
       Dim sCaption As String
 
@@ -3121,10 +3049,10 @@ Attribute EditorLoadFile.VB_UserMemId = 1610809533
                   DefaultWidth = gImageData.OutPic.Picture.Width * twipConversion
                   DefaultHeight = gImageData.OutPic.Picture.Height * twipConversion
                   If Width > 65535 Then
-                      DefaultWidth = 65535
+                        DefaultWidth = 65535
                   End If
                   If DefaultHeight >= 65535 Then
-                      DefaultHeight = 65535
+                        DefaultHeight = 65535
                   End If
                   gImageData.DefaultWidth = DefaultWidth
                   gImageData.DefaultHeight = DefaultHeight
@@ -3167,7 +3095,6 @@ Attribute EditorLoadFile.VB_UserMemId = 1610809533
 End Function
 
 Private Sub EditorSetMode(iMode As eViewMode)
-Attribute EditorSetMode.VB_UserMemId = 1610809353
 
       ' When we change the sort of data to display (text, picture, more to be determined),
       ' there are some things that have to be set, hidden, etc.
@@ -3265,7 +3192,6 @@ Attribute EditorSetMode.VB_UserMemId = 1610809353
 End Sub
 
 Private Sub FillStats()
-Attribute FillStats.VB_UserMemId = 1610809522
 
       staTusBar1.Panels(eStat.Stats) = "Char: " & Format(gStats.i, "#,#0") & "/" & Format(gStats.imax, "#,#0") _
             & "  Ln: " & Format(gStats.Y, "#,#0") & "/" & Format(gStats.ymax, "#,#0") & "  Col: " & gStats.X _
@@ -3273,7 +3199,6 @@ Attribute FillStats.VB_UserMemId = 1610809522
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute Form_KeyDown.VB_UserMemId = 1610809509
 
       Select Case KeyCode
             Case 220 '  Backslash.  Making Alt+\ into a spare Tab key for the right side of the keyboard.
@@ -3329,8 +3254,10 @@ Attribute Form_KeyDown.VB_UserMemId = 1610809509
             Case vbKeyF5
                   If Shift = vbCtrlMask And chkFileBrowser Then btnSyncContents_Click
             
-            Case vbKeyEscape  ' Popup menu doesn't wanna die by itself; escape closes it.
-                                                ' Sure wish there were a way to test if a menu is open!
+            Case vbKeyEscape
+                  ' Popup menu doesn't wanna die by itself; escape closes it.
+                  ' Sure wish there were a way to test if a menu is open!
+                  
                   If Shift = 0 And chkFindOptions.value = vbChecked Then
                         chkFindOptions.value = vbUnchecked
                   ElseIf Shift = 0 And (ActiveControl.Name = "txtFind" Or ActiveControl.Name = "txtReplace") Then
@@ -3342,7 +3269,6 @@ Attribute Form_KeyDown.VB_UserMemId = 1610809509
 End Sub
 
 Private Sub Form_Load()
-Attribute Form_Load.VB_UserMemId = 1610809510
       Dim vDate As Variant
       Dim sLoadErrorMsg As String
       
@@ -3409,7 +3335,6 @@ LOAD_ERROR:
 End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute Form_MouseDown.VB_UserMemId = 1610809511
       ' If we open a popupmenu, and then right click off into space,
       '   the mousedown event is called for the form (not for the control we are
       '   hovering over nor the menu itself.)
@@ -3431,21 +3356,18 @@ Attribute Form_MouseDown.VB_UserMemId = 1610809511
 End Sub
 
 Private Sub form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute form_MouseMove.VB_UserMemId = 1610809414
       staTusBar1.Panels(eStat.Tips).Text = ""
 End Sub
 
 Private Sub Form_Resize()
-Attribute Form_Resize.VB_UserMemId = 1610809512
       If mfSkipFormResize Then
-'            Beep
+            ' Beep
       Else
             RearrangeControls
       End If
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-Attribute Form_Unload.VB_UserMemId = 1610809424
       SaveSettingsToRegistry
       If Not DEBUGGING Then
             SetWindowLong lvwBrowser.hwnd, GWL_WNDPROC, gpOldLvwProc
@@ -3462,7 +3384,6 @@ Attribute Form_Unload.VB_UserMemId = 1610809424
 End Sub
 
 Private Sub GatherBrowserPrefs(ByRef Prefs As TBrowserPrefs)
-Attribute GatherBrowserPrefs.VB_UserMemId = 1610809536
       With Prefs
             .AutoLoadPath = cboPath
             .SortMethod = lvwBrowser.SortOrder
@@ -3481,7 +3402,6 @@ Attribute GatherBrowserPrefs.VB_UserMemId = 1610809536
 End Sub
 
 Private Sub GatherEditorPrefs(ByRef Prefs As TEditorPrefs)
-Attribute GatherEditorPrefs.VB_UserMemId = 1610809537
       Dim lMin As Long, lMax As Long
       Dim fntTemp As New StdFont
       
@@ -3516,7 +3436,6 @@ Attribute GatherEditorPrefs.VB_UserMemId = 1610809537
 End Sub
 
 Private Sub GatherHistoryAndBookmarks(ByRef Prefs As TAllPrefs)
-Attribute GatherHistoryAndBookmarks.VB_UserMemId = 1610809538
       Dim iIndex As Integer
       With Prefs
             .BookmarkCount = mnuBookmark.UBound
@@ -3538,7 +3457,6 @@ Attribute GatherHistoryAndBookmarks.VB_UserMemId = 1610809538
 End Sub
 
 Private Sub GatherWindowPrefs(ByRef Prefs As TWindowPrefs)
-Attribute GatherWindowPrefs.VB_UserMemId = 1610809535
       With Prefs
             .WNP.Length = LenB(.WNP)
             GetWindowPlacement hwnd, .WNP
@@ -3557,7 +3475,6 @@ Attribute GatherWindowPrefs.VB_UserMemId = 1610809535
 End Sub
 
 Private Function GetFindCompareMode() As Integer
-Attribute GetFindCompareMode.VB_UserMemId = 1610809500
       If mnuQueryMatchCase.Checked Then
             GetFindCompareMode = vbBinaryCompare
       Else
@@ -3566,7 +3483,6 @@ Attribute GetFindCompareMode.VB_UserMemId = 1610809500
 End Function
 
 Private Sub Image1_DblClick()
-Attribute Image1_DblClick.VB_UserMemId = 1610809425
       ' This needs to (effectively) call an Image1_mousedown... but with what parameters???
       Dim poiPrev As POINTAPI
       Dim recPicBox As RECT
@@ -3581,7 +3497,6 @@ Attribute Image1_DblClick.VB_UserMemId = 1610809425
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute Image1_MouseDown.VB_UserMemId = 1610809426
       gImageData.PrevX = X
       gImageData.PrevY = Y
       If Button = vbLeftButton Then
@@ -3591,7 +3506,6 @@ Attribute Image1_MouseDown.VB_UserMemId = 1610809426
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute Image1_MouseMove.VB_UserMemId = 1610809427
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
@@ -3607,7 +3521,6 @@ Attribute Image1_MouseMove.VB_UserMemId = 1610809427
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute Image1_MouseUp.VB_UserMemId = 1610809428
       ' Mouse button lifted?  Stop the drag!
       gImageData.Dragging = False
       
@@ -3629,7 +3542,7 @@ Attribute ImageSetZoom.VB_UserMemId = 1610809534
       gImageData.OutPic.Stretch = True
       gImageData.OutPic.Move gImageData.OutPic.Left, gImageData.OutPic.Top, _
             gImageData.DefaultWidth * CSng(iZoom) / 100#, gImageData.DefaultHeight * CSng(iZoom) / 100#
-'      miImageZoom = iZoom
+      ' miImageZoom = iZoom
       Caption = agEditor.tag & "  (" & iZoom & "%)"
 End Sub
 
@@ -3654,7 +3567,6 @@ Attribute ImageZoomOut.VB_UserMemId = 1610809356
 End Sub
 
 Private Sub InitializeMenus()
-Attribute InitializeMenus.VB_UserMemId = 1610809525
       mnuEditUndo.Caption = "Undo" & vbTab & "Ctrl+Z"
       mnuEditRedo.Caption = "Redo" & vbTab & "Ctrl+Y"
       mnuViewFont.Caption = "Font..." & vbTab & "Shift+Ctrl+F"
@@ -3678,7 +3590,6 @@ Attribute InitializeMenus.VB_UserMemId = 1610809525
 End Sub
 
 Private Sub lblDivider_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lblDivider_MouseDown.VB_UserMemId = 1610809469
       
       If lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "" Then
             
@@ -3687,7 +3598,6 @@ Attribute lblDivider_MouseDown.VB_UserMemId = 1610809469
 End Sub
 
 Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lblDivider_MouseMove.VB_UserMemId = 1610809470
       Dim iOffset As Integer
 
       If lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "Resizing" Then
@@ -3699,7 +3609,7 @@ Attribute lblDivider_MouseMove.VB_UserMemId = 1610809470
                   agEditor.Move 0, 0, picEditor.Width, picEditor.Height
             End With
             If X <> 0 Then
-                RearrangeControls
+                  ' RearrangeControls
             End If
       Else
             lblDivider.MousePointer = vbSizeWE
@@ -3707,7 +3617,6 @@ Attribute lblDivider_MouseMove.VB_UserMemId = 1610809470
 End Sub
 
 Private Sub lblDivider_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lblDivider_MouseUp.VB_UserMemId = 1610809471
       If lblDivider.MousePointer = vbSizeWE Then
             lblDivider.MousePointer = 0
             lblDivider.tag = ""
@@ -3716,7 +3625,6 @@ Attribute lblDivider_MouseUp.VB_UserMemId = 1610809471
 End Sub
 
 Private Sub ListMenuDisable()
-Attribute ListMenuDisable.VB_UserMemId = 1610809357
 
       If Not mnuListOpenDefault.Enabled Then Exit Sub
       
@@ -3730,7 +3638,6 @@ Attribute ListMenuDisable.VB_UserMemId = 1610809357
 End Sub
 
 Private Sub ListMenuEnable(litHoverItem As ListItem)
-Attribute ListMenuEnable.VB_UserMemId = 1610809358
       ' This will be called when a listitem is clicked, and it will enable or disable parts
       ' of the right click menu, based on the sort of listitem is passed to it.
       
@@ -3765,7 +3672,6 @@ Attribute ListMenuEnable.VB_UserMemId = 1610809358
 End Sub
 
 Private Sub LoadBrowserPrefs(ByRef Prefs As TBrowserPrefs)
-Attribute LoadBrowserPrefs.VB_UserMemId = 1610809541
       Dim sCboPath As String
       With Prefs
             lvwBrowser.SortOrder = .SortMethod
@@ -3797,7 +3703,6 @@ Attribute LoadBrowserPrefs.VB_UserMemId = 1610809541
 End Sub
 
 Private Sub LoadEditorPrefs(ByRef Prefs As TEditorPrefs)
-Attribute LoadEditorPrefs.VB_UserMemId = 1610809542
       Dim fntTemp As New StdFont
             
       On Error GoTo EDITOR_PREFS_ERROR
@@ -3832,7 +3737,6 @@ EDITOR_PREFS_ERROR:
 End Sub
 
 Private Sub LoadHistoryAndBookmarks(ByRef Prefs As TAllPrefs)
-Attribute LoadHistoryAndBookmarks.VB_UserMemId = 1610809543
       Dim iBookm As Integer, iHistIndex As Integer
       With Prefs
             DebugLog "Loading bookmarks..."
@@ -3856,7 +3760,6 @@ Attribute LoadHistoryAndBookmarks.VB_UserMemId = 1610809543
 End Sub
 
 Private Sub LoadPropertiesView(ByVal sFileName As String)
-Attribute LoadPropertiesView.VB_UserMemId = 1610809354
       Dim WFD As WIN32_FIND_DATA
       Dim hFile As Long
       Dim sEx As String
@@ -3892,7 +3795,6 @@ Attribute LoadPropertiesView.VB_UserMemId = 1610809354
 End Sub
 
 Private Sub LoadRegistrySettings()
-Attribute LoadRegistrySettings.VB_UserMemId = 1610809544
       DebugLog "Retrieving registry settings, version " & REGISTRY_VERSION & "..."
       On Error GoTo SETTINGS_ERROR
       
@@ -3957,7 +3859,6 @@ SETTINGS_ERROR:
 End Sub
 
 Private Sub LoadWindowPrefs(ByRef Prefs As TWindowPrefs)
-Attribute LoadWindowPrefs.VB_UserMemId = 1610809540
       With Prefs
             BrowserResizeHorizontal .BrowserWidth
 
@@ -3995,7 +3896,6 @@ End Sub
 '     Unsaved progress will not be tampered with, but NOR WILL IT BE SAVED, until you save it.
 '
 Private Sub lvwBrowser_AfterLabelEdit(Cancel As Integer, NewString As String)
-Attribute lvwBrowser_AfterLabelEdit.VB_UserMemId = 1610809429
 
       Dim sFolder As String, sOldPath As String
       
@@ -4019,13 +3919,11 @@ Attribute lvwBrowser_AfterLabelEdit.VB_UserMemId = 1610809429
 End Sub
 
 Private Sub lvwBrowser_Click()
-Attribute lvwBrowser_Click.VB_UserMemId = 1610809432
       miBrowserMouseButton = 0  ' These probably an overcaution --
       miBrowserShift = 0                  ' They are reset in the next MouseDown anyway.
 End Sub
 
 Private Sub lvwBrowser_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-Attribute lvwBrowser_ColumnClick.VB_UserMemId = 1610809434
       If gBrowserData.HistoryMode Then Exit Sub
       
       Dim iNewKey As Integer
@@ -4058,7 +3956,6 @@ Attribute lvwBrowser_ColumnClick.VB_UserMemId = 1610809434
 End Sub
 
 Private Sub lvwBrowser_DblClick()
-Attribute lvwBrowser_DblClick.VB_UserMemId = 1610809435
       mfBrowserDoubleClick = True
       If Not mfBrowserItemClicked Then
             btnFolderUp_Click
@@ -4066,13 +3963,11 @@ Attribute lvwBrowser_DblClick.VB_UserMemId = 1610809435
 End Sub
 
 Private Sub lvwBrowser_ItemClick(ByVal Item As MSComctlLib.ListItem)
-Attribute lvwBrowser_ItemClick.VB_UserMemId = 1610809436
       mfBrowserItemClicked = True
       ListMenuEnable lvwBrowser.SelectedItem
 End Sub
 
 Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
       ' Left = up folder.  Right = open folder.
       ' Trying to copy the functionality of explorer somehow, but without a visible tree.
       
@@ -4101,8 +3996,7 @@ Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
             Case vbKeyF2
                   mnuListRename_Click
                                                  
-            Case vbKeyF13 ' F13, but contains code for it and for right arrow.
-                              ' See ListViewProc for details.
+            Case vbKeyF13 ' F13, but contains code for it and for right arrow. See ListViewProc for details.
                               
                   ' Right = open a folder or a drive, but leave a file alone.
                   '     ...and we take pains to disarm the listview's urge to scroll right on right arrow
@@ -4115,7 +4009,7 @@ Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
                   ElseIf lvwBrowser.ListItems.Count > 0 Then
                         With lvwBrowser.SelectedItem
                               If .Icon = eIconType.Directory Or .Icon = eIconType.Drive Or .Icon = eIconType.Cdrom Or _
-                                                .Icon = eIconType.Floppy Or .Icon = eIconType.Network And Shift = 0 Then
+                                    .Icon = eIconType.Floppy Or .Icon = eIconType.Network And Shift = 0 Then
                                     BrowserExecuteItem lvwBrowser.SelectedItem
                               End If
                         End With
@@ -4134,7 +4028,7 @@ Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
                   
                   If Shift = vbAltMask Then
                         PathForward
-                  ' Ctrl+right = scroll right.  (Happens automatically.)
+                        ' Ctrl+right = scroll right.  (Happens automatically.)
                   End If
                   
             Case vbKeyN
@@ -4178,7 +4072,6 @@ Attribute lvwBrowser_KeyDown.VB_UserMemId = 1610809513
 End Sub
 
 Private Sub lvwBrowser_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lvwBrowser_MouseDown.VB_UserMemId = 1610809437
       lvwBrowser_MouseMove Button, Shift, X, Y
       mfBrowserItemClicked = False
       miBrowserMouseButton = Button
@@ -4186,7 +4079,6 @@ Attribute lvwBrowser_MouseDown.VB_UserMemId = 1610809437
 End Sub
 
 Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lvwBrowser_MouseMove.VB_UserMemId = 1610809438
       
       Dim litHoverItem As ListItem
       
@@ -4223,7 +4115,6 @@ Attribute lvwBrowser_MouseMove.VB_UserMemId = 1610809438
 End Sub
 
 Private Sub lvwBrowser_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute lvwBrowser_MouseUp.VB_UserMemId = 1610809514
       Dim litHoverItem As ListItem
       
       Set litHoverItem = lvwBrowser.HitTest(X, Y)  ' To see if we're over an item.
@@ -4256,7 +4147,6 @@ Attribute lvwBrowser_MouseUp.VB_UserMemId = 1610809514
 End Sub
 
 Private Sub mnuBookmarksAdd_Click()
-Attribute mnuBookmarksAdd_Click.VB_UserMemId = 1610809440
       Dim iBookm As Integer
       
       For iBookm = 1 To mnuBookmark.UBound
@@ -4272,45 +4162,37 @@ Attribute mnuBookmarksAdd_Click.VB_UserMemId = 1610809440
 End Sub
 
 Private Sub mnuBookmarksManage_Click()
-Attribute mnuBookmarksManage_Click.VB_UserMemId = 1610809442
       If mnuViewFilebrowser.Checked = False Then mnuViewFilebrowser_Click
       cboPath = "(Bookmarks)"
 End Sub
 
 Private Sub mnuBookmark_Click(Index As Integer)
-Attribute mnuBookmark_Click.VB_UserMemId = 1610809439
       EditorLoadFile mnuBookmark(Index).tag, GetViewMode(mnuBookmark(Index).tag, eIconType.Bookmark)
       
       btnSyncContents_Click
 End Sub
 
 Private Sub mnuBrowserRefresh_Click()
-Attribute mnuBrowserRefresh_Click.VB_UserMemId = 1610809444
       btnRefresh_Click
 End Sub
 
 Private Sub mnuEditCopy_Click()
-Attribute mnuEditCopy_Click.VB_UserMemId = 1610809446
       agEditor.Copy
 End Sub
 
 Private Sub mnuEditCut_Click()
-Attribute mnuEditCut_Click.VB_UserMemId = 1610809447
       agEditor.Cut
 End Sub
 
 Private Sub mnuEditFindBackwards_Click()
-Attribute mnuEditFindBackwards_Click.VB_UserMemId = 1610809486
       btnFindPrev_Click
 End Sub
 
 Private Sub mnuEditFindNext_Click()
-Attribute mnuEditFindNext_Click.VB_UserMemId = 1610809487
       btnFindNext_Click
 End Sub
 
 Private Sub mnuEditFind_Click()
-Attribute mnuEditFind_Click.VB_UserMemId = 1610809485
       ' Ctrl+F puts the selected text into the query box, but does not proceed with a find until you hit the button.
       
       If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub  ' no search/replace within pictures.
@@ -4331,17 +4213,14 @@ Attribute mnuEditFind_Click.VB_UserMemId = 1610809485
 End Sub
 
 Private Sub mnuEditPaste_Click()
-Attribute mnuEditPaste_Click.VB_UserMemId = 1610809448
       agEditor.Paste
 End Sub
 
 Private Sub mnuEditRedo_Click()
-Attribute mnuEditRedo_Click.VB_UserMemId = 1610809455
       agEditor.Redo
 End Sub
 
 Private Sub mnuEditReplace_Click()
-Attribute mnuEditReplace_Click.VB_UserMemId = 1610809489
       If giEditorMode = eViewMode.PictureView Or giEditorMode = eViewMode.PropertiesView Then Exit Sub
       
       mnuEditFind_Click
@@ -4356,12 +4235,10 @@ Attribute mnuEditReplace_Click.VB_UserMemId = 1610809489
 End Sub
 
 Private Sub mnuEditUndo_Click()
-Attribute mnuEditUndo_Click.VB_UserMemId = 1610809456
       agEditor.Undo
 End Sub
 
 Private Sub mnuEdit_Click()
-Attribute mnuEdit_Click.VB_UserMemId = 1610809445
       mnuEditUndo.Enabled = agEditor.CanUndo
       mnuEditRedo.Enabled = agEditor.CanRedo
       mnueditcut.Enabled = True
@@ -4411,19 +4288,16 @@ Attribute mnuEdit_Click.VB_UserMemId = 1610809445
 End Sub
 
 Private Sub mnuFileExit_Click()
-Attribute mnuFileExit_Click.VB_UserMemId = 1610809457
       Unload Me
 End Sub
 
 Private Sub mnuFileHistory_Click(Index As Integer)
-Attribute mnuFileHistory_Click.VB_UserMemId = 1610809458
       EditorLoadFile mnuFileHistory(Index).tag, GetViewMode(mnuFileHistory(Index).tag, eIconType.Bookmark)
       
       btnSyncContents_Click
 End Sub
 
 Private Sub mnuFileNew_Click()
-Attribute mnuFileNew_Click.VB_UserMemId = 1610809515
       agEditor.Text = ""
       agEditor.tag = ""
       gTextEncoding = eTextEncoding.ASCII
@@ -4434,12 +4308,10 @@ Attribute mnuFileNew_Click.VB_UserMemId = 1610809515
 End Sub
 
 Private Sub mnuFileNext_Click()
-Attribute mnuFileNext_Click.VB_UserMemId = 1610809459
       btnNextFile_Click
 End Sub
 
 Private Sub mnuFileOpen_Click()
-Attribute mnuFileOpen_Click.VB_UserMemId = 1610809460
       If mnuViewFilebrowser.Checked = False Then
             mnuViewFilebrowser.Checked = True
             mnuViewFilebrowser_Click
@@ -4448,12 +4320,10 @@ Attribute mnuFileOpen_Click.VB_UserMemId = 1610809460
 End Sub
 
 Private Sub mnuFilePrev_Click()
-Attribute mnuFilePrev_Click.VB_UserMemId = 1610809461
       btnPrevFile_Click
 End Sub
 
 Private Sub mnuFileSaveAs_Click()
-Attribute mnuFileSaveAs_Click.VB_UserMemId = 1610809462
       Dim sDefaultPath As String, sFileName As String
       Dim vDate As Variant
       
@@ -4501,7 +4371,6 @@ Attribute mnuFileSaveAs_Click.VB_UserMemId = 1610809462
 End Sub
 
 Private Sub mnuFileSave_Click()
-Attribute mnuFileSave_Click.VB_UserMemId = 1610809517
       If Not agEditor.Visible Then
             Caption = "ERROR: can only save in editor mode."
             Exit Sub
@@ -4518,7 +4387,6 @@ Attribute mnuFileSave_Click.VB_UserMemId = 1610809517
 End Sub
 
 Private Sub mnuFile_Click()
-Attribute mnuFile_Click.VB_UserMemId = 1610809516
       mnuFileSave.Enabled = True
       mnuFileSaveAs.Enabled = True
       If giEditorMode <> eViewMode.TextView Or chkReadOnly Then
@@ -4528,23 +4396,19 @@ Attribute mnuFile_Click.VB_UserMemId = 1610809516
 End Sub
 
 Private Sub mnuHelpAbout_Click()
-Attribute mnuHelpAbout_Click.VB_UserMemId = 1610809463
       frmAbout.Show
-'      MsgBox App.Title & " v" & App.Major & "." & App.Minor & "." & App.Revision
+      ' MsgBox App.Title & " v" & App.Major & "." & App.Minor & "." & App.Revision
 End Sub
 
 Private Sub mnuHelpReadme_Click()
-Attribute mnuHelpReadme_Click.VB_UserMemId = 1610809464
       ShellExecute 0, "open", "https://github.com/phlegm-noir/phlegmoirs/blob/main/README.md", 0, 0, 1
 End Sub
 
 Private Sub mnuListCancel_Click()
-Attribute mnuListCancel_Click.VB_UserMemId = 1610809466
       SendKeys "{ESC}"
 End Sub
 
 Private Sub mnuListCopyPath_Click()
-Attribute mnuListCopyPath_Click.VB_UserMemId = 1610809467
       Clipboard.Clear
       If gBrowserData.BookmarkMode Or gBrowserData.HistoryMode Then
             Clipboard.SetText lvwBrowser.SelectedItem
@@ -4554,17 +4418,14 @@ Attribute mnuListCopyPath_Click.VB_UserMemId = 1610809467
 End Sub
 
 Private Sub mnuListDelete_Click()
-Attribute mnuListDelete_Click.VB_UserMemId = 1610809468
       BrowserDeleteSelected
 End Sub
 
 Private Sub mnuListHideFileBrowser_Click()
-Attribute mnuListHideFileBrowser_Click.VB_UserMemId = 1610809472
       mnuViewFilebrowser_Click
 End Sub
 
 Private Sub mnuListOpenDefault_Click()
-Attribute mnuListOpenDefault_Click.VB_UserMemId = 1610809474
       Dim sPath As String
       
       ' opens the file in whatever program windows chooses for it.
@@ -4579,12 +4440,10 @@ Attribute mnuListOpenDefault_Click.VB_UserMemId = 1610809474
 End Sub
 
 Private Sub mnuListOpen_Click()
-Attribute mnuListOpen_Click.VB_UserMemId = 1610809473
       BrowserExecuteItem lvwBrowser.SelectedItem
 End Sub
 
 Private Sub mnuListProperties_Click()
-Attribute mnuListProperties_Click.VB_UserMemId = 1610809475
       ' SImply calls the Explorer file properties dialog.  Hope this works.
       
       If gBrowserData.BookmarkMode Or gBrowserData.HistoryMode Then
@@ -4595,7 +4454,6 @@ Attribute mnuListProperties_Click.VB_UserMemId = 1610809475
 End Sub
 
 Private Sub mnuListRename_Click()
-Attribute mnuListRename_Click.VB_UserMemId = 1610809476
       ' I've decided to make history unchangeable.  It could have worked the other way,
       ' but it's one of those features that would make you more scared than impressed.
       
@@ -4610,7 +4468,6 @@ End Sub
 '   Show only files of extension sEx.
 '
 Private Sub mnuListShowOnly_Click()
-Attribute mnuListShowOnly_Click.VB_UserMemId = 1610809477
       Dim sEx As String
       
       If gBrowserData.BookmarkMode Or gBrowserData.HistoryMode Then Exit Sub
@@ -4621,7 +4478,6 @@ Attribute mnuListShowOnly_Click.VB_UserMemId = 1610809477
 End Sub
 
 Private Sub mnuList_Click()
-Attribute mnuList_Click.VB_UserMemId = 1610809465
       
       ' This is the popup menu for lvwBrowser.  Click fires whenever the menu is popped up.
       
@@ -4644,22 +4500,18 @@ Attribute mnuList_Click.VB_UserMemId = 1610809465
 End Sub
 
 Private Sub mnuNext_Click()
-Attribute mnuNext_Click.VB_UserMemId = 1610809478
       btnNextFile_Click
 End Sub
 
 Private Sub mnuPlus_Click()
-Attribute mnuPlus_Click.VB_UserMemId = 1610809479
       mnuViewToolbar_Click
 End Sub
 
 Private Sub mnuPrev_Click()
-Attribute mnuPrev_Click.VB_UserMemId = 1610809480
       btnPrevFile_Click
 End Sub
 
 Private Sub mnuQueryClose_Click()
-Attribute mnuQueryClose_Click.VB_UserMemId = 1610809481
       If Not mfHideFind Then
             mfHideFind = True
             picQuery.Visible = False
@@ -4668,12 +4520,10 @@ Attribute mnuQueryClose_Click.VB_UserMemId = 1610809481
 End Sub
 
 Private Sub mnuQueryMatchCase_Click()
-Attribute mnuQueryMatchCase_Click.VB_UserMemId = 1610809482
       mnuQueryMatchCase.Checked = Not mnuQueryMatchCase.Checked
 End Sub
 
 Private Sub mnuQueryReplace_Click()
-Attribute mnuQueryReplace_Click.VB_UserMemId = 1610809483
       ' This is where the mode actually switches
       If mfReplaceMode Then
             mfReplaceMode = False
@@ -4705,46 +4555,38 @@ Attribute mnuQueryReplace_Click.VB_UserMemId = 1610809483
 End Sub
 
 Private Sub mnuQueryWholeWord_Click()
-Attribute mnuQueryWholeWord_Click.VB_UserMemId = 1610809484
       mnuQueryWholeWord.Checked = Not mnuQueryWholeWord.Checked
 End Sub
 
 Private Sub mnuQuery_Click()
-Attribute mnuQuery_Click.VB_UserMemId = 1610809449
       mnuQueryReplace.Enabled = True
       If chkReadOnly Then mnuQueryReplace.Enabled = False
 End Sub
 
 Private Sub mnuViewFilebrowser_Click()
-Attribute mnuViewFilebrowser_Click.VB_UserMemId = 1610809519
-    chkFileBrowser = Abs(chkFileBrowser.value - 1)
+      chkFileBrowser = Abs(chkFileBrowser.value - 1)
 End Sub
 
 Private Sub mnuviewfont_Click()
-Attribute mnuviewfont_Click.VB_UserMemId = 1610809453
       btnFont_Click
 End Sub
 
 Private Sub mnuViewHistory_Click()
-Attribute mnuViewHistory_Click.VB_UserMemId = 1610809451
       If mnuViewFilebrowser.Checked = False Then mnuViewFilebrowser_Click
       cboPath = "(History)"
 End Sub
 
 Private Sub mnuViewReadOnly_Click()
-Attribute mnuViewReadOnly_Click.VB_UserMemId = 1610809488
       chkReadOnly.value = Abs(chkReadOnly.value - 1)
 End Sub
 
 Private Sub mnuViewStatusBar_Click()
-Attribute mnuViewStatusBar_Click.VB_UserMemId = 1610809524
       staTusBar1.Visible = Not staTusBar1.Visible
       mnuViewStatusBar.Checked = Not mnuViewStatusBar.Checked
       RearrangeControls
 End Sub
 
 Private Sub mnuViewToolbar_Click()
-Attribute mnuViewToolbar_Click.VB_UserMemId = 1610809527
       If mnuViewToolbar.Checked Then
             mnuViewToolbar.Checked = False
             picToolBar.Visible = False
@@ -4764,25 +4606,21 @@ Attribute mnuViewToolbar_Click.VB_UserMemId = 1610809527
 End Sub
 
 Private Sub mnuViewWordWrap_Click()
-Attribute mnuViewWordWrap_Click.VB_UserMemId = 1610809528
       chkWordWrap.value = Abs(chkWordWrap.value - 1)
 End Sub
 
 Private Sub mnuviewzoomin_Click()
-Attribute mnuviewzoomin_Click.VB_UserMemId = 1610809454
 '      btnZoomIn_MouseDown vbLeftButton, 0, 10, 10
       btnZoomIn_Click
 End Sub
 
 Private Sub mnuviewzoomout_Click()
-Attribute mnuviewzoomout_Click.VB_UserMemId = 1610809452
 '      btnZoomOut_MouseDown vbLeftButton, 0, 10, 10
       
       btnZoomOut_Click
 End Sub
 
 Private Sub mnuView_Click()
-Attribute mnuView_Click.VB_UserMemId = 1610809450
       mnuViewFont.Enabled = True
       mnuViewZoomIn.Enabled = True
       mnuViewZoomOut.Enabled = True
@@ -4802,37 +4640,30 @@ Attribute mnuView_Click.VB_UserMemId = 1610809450
 End Sub
 
 Private Sub mnuWindowSaveSettings_Click()
-Attribute mnuWindowSaveSettings_Click.VB_UserMemId = 1610809529
       SaveSettingsToRegistry
 End Sub
 
 Private Sub mnuWriteCopy_Click()
-Attribute mnuWriteCopy_Click.VB_UserMemId = 1610809530
       agEditor.Copy
 End Sub
 
 Private Sub mnuWriteCut_Click()
-Attribute mnuWriteCut_Click.VB_UserMemId = 1610809531
       agEditor.Cut
 End Sub
 
 Private Sub mnuWriteDelete_Click()
-Attribute mnuWriteDelete_Click.VB_UserMemId = 1610809491
       agEditor.InsertContents SF_TEXT, ""
 End Sub
 
 Private Sub mnuWriteFind_Click()
-Attribute mnuWriteFind_Click.VB_UserMemId = 1610809492
       mnuEditFind_Click
 End Sub
 
 Private Sub mnuWritePaste_Click()
-Attribute mnuWritePaste_Click.VB_UserMemId = 1610809532
       agEditor.Paste
 End Sub
 
 Private Sub mnuWrite_Click()
-Attribute mnuWrite_Click.VB_UserMemId = 1610809490
       mnuWriteDelete.Enabled = True
       mnuWriteCut.Enabled = True
       mnuWriteCopy.Enabled = True
@@ -4852,7 +4683,6 @@ Attribute mnuWrite_Click.VB_UserMemId = 1610809490
 End Sub
 
 Private Function ParentDirectoryOf(ByVal sPath As String)
-Attribute ParentDirectoryOf.VB_UserMemId = 1610809359
       Dim iSlash As Integer
       
       If sPath = "\" Then
@@ -4871,7 +4701,6 @@ End Function
 '   ...and much, much more!
 '
 Private Sub ParsePath(ByVal sInput As String, ByRef BD As TBrowserData)
-Attribute ParsePath.VB_UserMemId = 1610809360
       ' (Bookmarks)      (that means bookmark mode, of course!)
       ' (History)           (History mode)
       '                            (a blank is intrepreted as "root" / drives list mode)
@@ -4948,7 +4777,6 @@ Attribute ParsePath.VB_UserMemId = 1610809360
 End Sub
 
 Private Sub PathAddRecent(ByVal sPath As String)
-Attribute PathAddRecent.VB_UserMemId = 1610809361
       ' Supplement recent paths list, unless we are currently scrolling through them.
       ' Top of the List = Lowest of the ListIndeces = Forward(recent)most of the paths.
             
@@ -4978,7 +4806,6 @@ Attribute PathAddRecent.VB_UserMemId = 1610809361
 End Sub
 
 Private Function PathBack() As Boolean
-Attribute PathBack.VB_UserMemId = 1610809363
       ' Go back in the recent paths list
       
       PathBack = False
@@ -5002,14 +4829,12 @@ Attribute PathBack.VB_UserMemId = 1610809363
 End Function
 
 Private Sub PathForward()
-Attribute PathForward.VB_UserMemId = 1610809364
       With cboPath
             If .ListIndex > 0 Then .ListIndex = .ListIndex - 1
       End With
 End Sub
 
 Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute picEditor_KeyDown.VB_UserMemId = 1610809493
       
       Select Case KeyCode
             Case 107, 187 ' "+" and Keypad "+"
@@ -5067,7 +4892,6 @@ Attribute picEditor_KeyDown.VB_UserMemId = 1610809493
 End Sub
 
 Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute picEditor_MouseMove.VB_UserMemId = 1610809494
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
@@ -5078,13 +4902,12 @@ Attribute picEditor_MouseMove.VB_UserMemId = 1610809494
 End Sub
 
 Private Sub picEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute picEditor_MouseUp.VB_UserMemId = 1610809495
       If giEditorMode = eViewMode.PictureView And Not gImageData.Moved And Not gImageData.Zoomed And _
-                  Button = vbLeftButton Then
+            Button = vbLeftButton Then
             ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
             BrowserExecuteNext
       ElseIf giEditorMode = eViewMode.PictureView And Not gImageData.Moved And Not gImageData.Zoomed And _
-                  Button = vbRightButton Then
+            Button = vbRightButton Then
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             BrowserExecuteNext True
@@ -5095,7 +4918,6 @@ Attribute picEditor_MouseUp.VB_UserMemId = 1610809495
 End Sub
 
 Private Sub RearrangeControls()
-Attribute RearrangeControls.VB_UserMemId = 1610809523
 
       ' Put the various controls where they need to be.
       '   agEditor, lvwBrowser
@@ -5158,8 +4980,8 @@ Attribute RearrangeControls.VB_UserMemId = 1610809523
       
       ' Check to see if we've gone out of bounds...
       
-            ' Caution: iEdWidth would come back around a second time as 1499.
-            ' I *think* that I fixed it with that 1510 down there, rather than 1500.
+      ' Caution: iEdWidth would come back around a second time as 1499.
+      ' I *think* that I fixed it with that 1510 down there, rather than 1500.
       If iEdWidth < 1500 And WindowState = vbMaximized Then
             BrowserResizeHorizontal picBrowser.Width
             RearrangeControls
@@ -5203,10 +5025,10 @@ Attribute RearrangeControls.VB_UserMemId = 1610809523
             
             If staTusBar1.Visible Then
                   With gStats
-                      .X = lMin - charindex + 1
-                      .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
-                      .Y = lineindex + 1
-                      .ymax = agEditor.LineCount
+                        .X = lMin - charindex + 1
+                        .xmax = SendMessage(agEditor.RichEdithWnd, EM_LINELENGTH, ByVal charindex, 0) + 1
+                        .Y = lineindex + 1
+                        .ymax = agEditor.LineCount
                   End With
                   FillStats
             End If
@@ -5217,7 +5039,6 @@ Attribute RearrangeControls.VB_UserMemId = 1610809523
 End Sub
 
 Private Sub RefreshAll()
-Attribute RefreshAll.VB_UserMemId = 1610809388
       With gBrowserData
             .DirPrev = .Dir
             .FilterPrev = .Filter
@@ -5240,7 +5061,6 @@ Attribute RefreshAll.VB_UserMemId = 1610809388
 End Sub
 
 Private Function RenameFile(sOldPath As String, sNewPath As String, sIfOpenFile As String, sIfOtherFile As String) As Boolean
-Attribute RenameFile.VB_UserMemId = 1610809431
       On Error Resume Next
       Dim Cancel As Boolean
       Name sOldPath As sNewPath
@@ -5259,7 +5079,6 @@ Attribute RenameFile.VB_UserMemId = 1610809431
 End Function
 
 Private Function RenameFileWithChecks(sOldPath As String, sNewPath As String) As Boolean
-Attribute RenameFileWithChecks.VB_UserMemId = 1610809430
       Dim Cancel As Boolean
       
       If Not FileExists(sOldPath) Then
@@ -5350,7 +5169,6 @@ File_Error:
 End Function
 
 Private Sub SaveSettingsToRegistry()
-Attribute SaveSettingsToRegistry.VB_UserMemId = 1610809539
       Dim lKey As Long, lRetVal As Long
       Dim lNewOrUsed As Long, lValueSize As Long
       Dim sErrorMsg As String
@@ -5364,7 +5182,7 @@ Attribute SaveSettingsToRegistry.VB_UserMemId = 1610809539
       ' Create storage key.
       
       lRetVal = RegCreateKeyEx(HKEY_CURRENT_USER, gsPhlegmKey, 0, "", 0, _
-                  KEY_ALL_ACCESS, ByVal 0, lKey, lNewOrUsed)
+            KEY_ALL_ACCESS, ByVal 0, lKey, lNewOrUsed)
       If lRetVal <> 0 Then MsgBox "RegCreateKey Failed: " & lKey
       
       ' Store the Settings.
@@ -5382,7 +5200,6 @@ Attribute SaveSettingsToRegistry.VB_UserMemId = 1610809539
 End Sub
 
 Private Sub ShowFileProperties(ByVal sPath As String)
-Attribute ShowFileProperties.VB_UserMemId = 1610809365
       ' SImply calls the Explorer file properties dialog.  Hope this works.
       
       Dim seeEx As SHELLEXECUTEINFO
@@ -5396,12 +5213,10 @@ Attribute ShowFileProperties.VB_UserMemId = 1610809365
 End Sub
 
 Private Sub sliZoom_Change()
-Attribute sliZoom_Change.VB_UserMemId = 1610809496
       ImageSetZoom (sliZoom.value)
 End Sub
 
 Private Sub sliZoom_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute sliZoom_MouseMove.VB_UserMemId = 1610809497
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
             If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "sliZoom") Then
@@ -5412,12 +5227,10 @@ Attribute sliZoom_MouseMove.VB_UserMemId = 1610809497
 End Sub
 
 Private Sub sliZoom_Scroll()
-Attribute sliZoom_Scroll.VB_UserMemId = 1610809498
       ImageSetZoom (sliZoom.value)
 End Sub
 
 Private Sub txtFind_Change()
-Attribute txtFind_Change.VB_UserMemId = 1610809499
       If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
             If Not chkReadOnly Then btnReplace.Enabled = True
             If ActiveControl.Name = "txtReplace" Then btnReplace.Default = True
@@ -5442,14 +5255,12 @@ End Sub
 'End Sub
 
 Private Sub txtFind_GotFocus()
-Attribute txtFind_GotFocus.VB_UserMemId = 1610809501
       txtFind.SelStart = 0
       txtFind.SelLength = Len(txtFind)
       btnFindNext.Default = True
 End Sub
 
 Private Sub txtFind_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute txtFind_KeyDown.VB_UserMemId = 1610809502
 '      If KeyCode = vbKeyReturn And Shift = 0 Then
 '            If txtFind <> "" Then btnFindNext_Click
       If KeyCode = vbKeyReturn And Shift = vbShiftMask Then
@@ -5460,32 +5271,27 @@ Attribute txtFind_KeyDown.VB_UserMemId = 1610809502
 End Sub
 
 Private Sub txtFind_KeyUp(KeyCode As Integer, Shift As Integer)
-Attribute txtFind_KeyUp.VB_UserMemId = 1610809503
       If KeyCode = vbKeyShift Then
             btnFindNext.Default = True
       End If
 End Sub
 
 Private Sub txtFind_LostFocus()
-Attribute txtFind_LostFocus.VB_UserMemId = 1610809504
       btnFindPrev.Default = False
       btnFindNext.Default = False
 End Sub
 
 Private Sub txtFind_OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single)
-Attribute txtFind_OLEDragDrop.VB_UserMemId = 1610809505
       txtFind = Data.GetData(vbCFText)
       txtFind_KeyDown vbKeyReturn, 0
 End Sub
 
 Private Sub txtFind_OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single, State As Integer)
-Attribute txtFind_OLEDragOver.VB_UserMemId = 1610809506
       txtFind.SelStart = 0
       txtFind.SelLength = Len(txtFind)
 End Sub
 
 Private Sub txtReplace_Change()
-Attribute txtReplace_Change.VB_UserMemId = 1610809545
       If mfReplaceMode And StrComp(txtFind, agEditor.SelectedText, GetFindCompareMode()) = 0 And txtFind <> "" Then
             If Not chkReadOnly Then btnReplace.Enabled = True
       ElseIf mfReplaceMode Then
@@ -5494,23 +5300,14 @@ Attribute txtReplace_Change.VB_UserMemId = 1610809545
 End Sub
 
 Private Sub txtReplace_GotFocus()
-Attribute txtReplace_GotFocus.VB_UserMemId = 1610809546
       If btnReplace.Enabled Then
             btnReplace.Default = True
-      Else 'If btnReplace.Enabled Then
+      Else
             btnFindNext.Default = True
       End If
 End Sub
 
-Private Sub txtReplace_KeyDown(KeyCode As Integer, Shift As Integer)
-Attribute txtReplace_KeyDown.VB_UserMemId = 1610809547
-'      If KeyCode = vbKeyReturn And Shift = 0 Then
-'            If btnReplace.Default Then btnReplace_Click
-'      End If
-End Sub
-
 Private Sub txtReplace_LostFocus()
-Attribute txtReplace_LostFocus.VB_UserMemId = 1610809548
       btnReplace.Default = False
       btnFindNext.Default = False
 End Sub
@@ -5534,9 +5331,10 @@ Attribute WheelInput.VB_UserMemId = 1610809366
                         .Top = 0
                   End If
             
-            ' Wheel scroll down = move picture up = make Top value LOWER.
-            ' ...the bottom value not to fall below the bottom value of its container.
             ElseIf iVirtKeys = 0 And iWheelTurn < 0 Then
+                  ' Wheel scroll down = move picture up = make Top value LOWER.
+                  ' ...the bottom value not to fall below the bottom value of its container.
+                  
                   If .Top + .Height > .Container.Height + iWheelMoveIncrement Then
                         .Top = .Top - iWheelMoveIncrement
                   ElseIf .Top + .Height > .Container.Height Then

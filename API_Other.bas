@@ -4,16 +4,16 @@ Attribute VB_Name = "APIOther"
 ' *************************************************************
 
 Public Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
-       ByVal hwnd As Long, _
-       ByVal wMsg As Long, _
-       ByRef wParam As Any, _
-       ByRef lParam As Any) As Long
+      ByVal hwnd As Long, _
+      ByVal wMsg As Long, _
+      ByRef wParam As Any, _
+      ByRef lParam As Any) As Long
 
 Public Declare Function SendMessageStr Lib "user32.dll" Alias "SendMessageA" ( _
-       ByVal hwnd As Long, _
-       ByVal wMsg As Long, _
-       ByRef wParam As Any, _
-       ByRef lParam As String) As Long
+      ByVal hwnd As Long, _
+      ByVal wMsg As Long, _
+      ByRef wParam As Any, _
+      ByRef lParam As String) As Long
 
 Public Type RECT
       Left As Long
@@ -45,38 +45,13 @@ Public Type CHARFORMAT2
       crBackColor As Long
       lcid As Long
       dwReserved As Long
-       sStyle As Integer
+      sStyle As Integer
       wKerning As Integer
       bUnderlineType As Byte
       bAnimation As Byte
       bRevAuthor As Byte
       bReserved1 As Byte
 End Type
-
-' charformat constants:
-'Public Const CFE_SUBSCRIPT As Long = &H10000
-'Public Const CFE_SUPERSCRIPT As Long = &H20000
-'Public Const CFM_BACKCOLOR As Long = &H4000000
-'Public Const CFM_BOLD As Long = &H1
-'Public Const CFM_CHARSET As Long = &H8000000
-'Public Const CFM_COLOR As Long = &H40000000
-'Public Const CFM_EMBOSS As Long = &H800
-'Public Const CFM_FACE As Long = &H20000000
-'Public Const CFM_HIDDEN As Long = &H100
-'Public Const CFM_ITALIC As Long = &H2
-'Public Const CFM_OFFSET As Long = &H10000000
-'Public Const CFM_OUTLINE As Long = &H200
-'Public Const CFM_PROTECTED As Long = &H10
-'Public Const CFM_SIZE As Long = &H80000000
-'Public Const CFM_SMALLCAPS As Long = &H40
-'Public Const CFM_SPACING As Long = &H200000
-'Public Const CFM_STYLE As Long = &H80000
-'Public Const CFM_SUBSCRIPT As Long = CFE_SUBSCRIPT Or CFE_SUPERSCRIPT
-'Public Const CFM_SUPERSCRIPT As Long = CFM_SUBSCRIPT
-'Public Const CFM_UNDERLINE As Long = &H4
-'Public Const CFM_UNDERLINETYPE As Long = &H800000
-'Public Const CFM_WEIGHT As Long = &H400000
-
 
 Type FINDTEXTEX
       chrg As CHARRANGE
@@ -93,7 +68,6 @@ Public Type WINDOWPLACEMENT
       rcNormalPosition As RECT
 End Type
 
-
 Public Const SW_MINIMIZE As Long = 6
 Public Const SW_RESTORE As Long = 9
 Public Const SW_SHOWMINIMIZED As Long = 2
@@ -105,16 +79,16 @@ Public Declare Function GetWindowPlacement Lib "user32.dll" ( _
       
 
 Public Declare Function SetWindowPlacement Lib "user32.dll" ( _
-       ByVal hwnd As Long, _
-       ByRef lpwndpl As WINDOWPLACEMENT) As Long
+      ByVal hwnd As Long, _
+      ByRef lpwndpl As WINDOWPLACEMENT) As Long
       
 Public Declare Function GetWindowRect Lib "user32.dll" ( _
-       ByVal hwnd As Long, _
-       ByRef lpRect As RECT) As Long
+      ByVal hwnd As Long, _
+      ByRef lpRect As RECT) As Long
 
 Public Declare Function GetClientRect Lib "user32.dll" ( _
-       ByVal hwnd As Long, _
-       ByRef lpRect As RECT) As Long
+      ByVal hwnd As Long, _
+      ByRef lpRect As RECT) As Long
 
 Public Const SWP_HIDEWINDOW As Long = &H80
 Public Const SWP_NOACTIVATE As Long = &H10
@@ -367,7 +341,7 @@ Attribute MakePOINTAPI.VB_UserMemId = 1610612738
 End Function
 
 Function TranslateColor(ByVal clr As OLE_COLOR, _
-            Optional ByVal hPal As Long = 0) As Long
+      Optional ByVal hPal As Long = 0) As Long
       
       Const CLR_INVALID As Long = &HFFFF&
 

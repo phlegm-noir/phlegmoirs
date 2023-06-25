@@ -101,7 +101,7 @@ Option Compare Binary
 Option Explicit
 
 Private Sub cmdOK_Click()
-  Unload Me
+      Unload Me
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -109,8 +109,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
-    Me.Caption = "About " & App.title
-    lblVersion.Caption = "Version " & App.Major & "." & App.Minor & "." & App.Revision
-    lblTitle.Caption = App.title
+      Me.Caption = "About " & App.title
+      lblVersion.Caption = "Version " & App.Major & "." & App.Minor & "." & App.Revision
+      lblTitle.Caption = App.title
 End Sub
 

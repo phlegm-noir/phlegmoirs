@@ -6,18 +6,18 @@ Attribute VB_Name = "APIMsg"
 Public Const WM_USER As Long = &H400
 
 Public Const EM_LINEINDEX = &HBB
-    'p1 = line number, -1 for currently selected
-    'p2 = 0
-    ' EM_LINEINDEX gets the index, from the rtxt's beginning,
-    '   of the first character on a specific line.
+      'p1 = line number, -1 for currently selected
+      'p2 = 0
+      ' EM_LINEINDEX gets the index, from the rtxt's beginning,
+      '   of the first character on a specific line.
 
 Public Const EM_LINELENGTH = &HC1
-    'p1 = character index (not line index), -1 for (see help)
-    'p2 = 0
+      'p1 = character index (not line index), -1 for (see help)
+      'p2 = 0
 
 Public Const EM_SETSEL = &HB1
-    'p1 = position of first selected char, -1 for no selection
-    'p2 = position of last selected char + 1
+      'p1 = position of first selected char, -1 for no selection
+      'p2 = position of last selected char + 1
     
 Public Const EM_GETSEL As Long = &HB0
 
@@ -43,8 +43,8 @@ Public Const EM_UNDO = &HC7
       ' p1 = 0
       ' p2 = 0
 Public Const EM_REDO = WM_USER + 84
-    'p1=0
-    'p2=0
+      'p1=0
+      'p2=0
 Public Const EM_SETUNDOLIMIT = WM_USER + 84
       ' p1 = maximum undo actions
       ' p2 = 0
@@ -65,9 +65,9 @@ Public Const EM_GETTEXTMODE = WM_USER + 90
       ' p2 = 0
 
 Public Const WM_CANCELMODE As Long = &H1F
-    'p1=0
-    'p2=0
-    'using this to disappear a popup menu
+      'p1=0
+      'p2=0
+      'using this to disappear a popup menu
 
 Public Const WM_SETREDRAW As Long = &HB
       'p1 = true/false

@@ -14,38 +14,38 @@ Public Const EM_SETSCROLLPOS As Long = (WM_USER + 222) ' Rich Edit 3.0+
       ' always returns 1
 
 Public Type POINTAPI
-    X As Long
-    Y As Long
+      X As Long
+      Y As Long
 End Type
 
 Public Declare Function GetCaretPos Lib "user32.dll" ( _
-     ByRef lpPoint As POINTAPI) As Long
+      ByRef lpPoint As POINTAPI) As Long
 
 Public Declare Function HideCaret Lib "user32.dll" ( _
-     ByVal hwnd As Long) As Long
+      ByVal hwnd As Long) As Long
 
 Public Declare Function SetCaretPos Lib "user32.dll" ( _
-     ByVal X As Long, _
-     ByVal Y As Long) As Long
+      ByVal X As Long, _
+      ByVal Y As Long) As Long
 Public Declare Function ShowCaret Lib "user32.dll" ( _
-     ByVal hwnd As Long) As Long
+      ByVal hwnd As Long) As Long
 
 Public Const MOUSEEVENTF_LEFTDOWN = &H2
 Public Const MOUSEEVENTF_LEFTUP = &H4
 
 Public Declare Sub mouse_event Lib "user32.dll" ( _
-     ByVal dwFlags As Long, _
-     ByVal dx As Long, _
-     ByVal dy As Long, _
-     ByVal cButtons As Long, _
-     ByVal dwExtraInfo As Long)
+      ByVal dwFlags As Long, _
+      ByVal dx As Long, _
+      ByVal dy As Long, _
+      ByVal cButtons As Long, _
+      ByVal dwExtraInfo As Long)
 
 Public Declare Function GetCursorPos Lib "user32.dll" ( _
-     ByRef lpPoint As POINTAPI) As Long
+      ByRef lpPoint As POINTAPI) As Long
 
 Public Declare Function SetCursorPos Lib "user32.dll" ( _
-     ByVal X As Long, _
-     ByVal Y As Long) As Long
+      ByVal X As Long, _
+      ByVal Y As Long) As Long
      
 Public Type TrackMouseEvent
       cbSize As Long

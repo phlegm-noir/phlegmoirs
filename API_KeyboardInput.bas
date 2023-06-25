@@ -14,7 +14,6 @@ Public Const VK_UP As Long = &H26
 Public Const VK_DOWN As Long = &H28
 Public Const VK_TAB As Long = &H9
 
-
 Public Const WM_KEYDOWN As Long = &H100
       'p1 = virtual key code
       'p2 = key data

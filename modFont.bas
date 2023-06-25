@@ -78,8 +78,9 @@ Attribute GetRealStdFont.VB_UserMemId = 1610612743
       char2.cbSize = LenB(char2)
       ' Tell it which CHARFORMAT2 properties carry relevant data:
       char2.dwMask = CFM_SIZE + CFM_FACE + CFM_BOLD + CFM_COLOR + _
-                  CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE
-            ' I took out cfm_charset and cfm_weight, because they are set automatically
+            CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE
+      
+      ' I took out cfm_charset and cfm_weight, because they are set automatically
       lRetVal = SendMessage(lEditorHwnd, EM_GETCHARFORMAT, ByVal 0, char2)
       
       If lRetVal <> 0 Then

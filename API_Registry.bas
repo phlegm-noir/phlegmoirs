@@ -11,17 +11,17 @@ Attribute VB_Name = "APIRegistry"
 
 
 Public Declare Function RegCreateKeyEx Lib "advapi32.dll" Alias "RegCreateKeyExA" ( _
-       ByVal hKey As Long, _
-       ByVal lpSubKey As String, _
-       ByVal Reserved As Long, _
-       ByVal lpClass As String, _
-       ByVal dwOptions As Long, _
-       ByVal samDesired As Long, _
-       ByRef lpSecurityAttributes As Any, _
-       ByRef phkResult As Long, _
-       ByRef lpdwDisposition As Long) As Long
+      ByVal hKey As Long, _
+      ByVal lpSubKey As String, _
+      ByVal Reserved As Long, _
+      ByVal lpClass As String, _
+      ByVal dwOptions As Long, _
+      ByVal samDesired As Long, _
+      ByRef lpSecurityAttributes As Any, _
+      ByRef phkResult As Long, _
+      ByRef lpdwDisposition As Long) As Long
        
-       ' ByRef lpSecurityAttributesas SECURITY_ATTRIBUTES, 'listed as Any in the APIguide
+      ' ByRef lpSecurityAttributesas SECURITY_ATTRIBUTES, 'listed as Any in the APIguide
        
 'Const HKEY_CLASSES_ROOT = &H80000000
 'Const HKEY_CURRENT_CONFIG = &H80000005
