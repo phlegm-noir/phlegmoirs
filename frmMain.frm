@@ -3538,7 +3538,6 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 Public Sub ImageSetZoom(iZoom As Integer)
-Attribute ImageSetZoom.VB_UserMemId = 1610809534
       gImageData.OutPic.Stretch = True
       gImageData.OutPic.Move gImageData.OutPic.Left, gImageData.OutPic.Top, _
             gImageData.DefaultWidth * CSng(iZoom) / 100#, gImageData.DefaultHeight * CSng(iZoom) / 100#
@@ -3547,14 +3546,12 @@ Attribute ImageSetZoom.VB_UserMemId = 1610809534
 End Sub
 
 Public Sub ImageZoomIn(iStep As Integer)
-Attribute ImageZoomIn.VB_UserMemId = 1610809355
       ' goes up to the next zoom divisible by iStep
       If sliZoom.value >= sliZoom.Max Then Exit Sub
       sliZoom.value = sliZoom.value + (iStep - (sliZoom.value Mod iStep))
 End Sub
 
 Public Sub ImageZoomOut(iStep As Integer)
-Attribute ImageZoomOut.VB_UserMemId = 1610809356
       ' Sets zoom to the next lowest integer divisibly by iStep.
       
       If sliZoom.value <= 0 Then Exit Sub
@@ -5113,7 +5110,6 @@ Private Function RenameFileWithChecks(sOldPath As String, sNewPath As String) As
 End Function
 
 Public Function SaveFile(ByVal sFileName As String)
-Attribute SaveFile.VB_UserMemId = 1610809518
       Dim fSuccess, fNewFile As Boolean
       
       If Len(sFileName) > 100 Or agEditor.Text = "" Or gTextEncoding = eTextEncoding.UNICODE Then
@@ -5313,7 +5309,6 @@ Private Sub txtReplace_LostFocus()
 End Sub
 
 Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, ly As Long)
-Attribute WheelInput.VB_UserMemId = 1610809366
       ' This is called from modPhlegmoirs.TrackMouseWheel
       ' It acts on picEditor while in picture mode.
       

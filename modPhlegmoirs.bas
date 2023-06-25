@@ -216,14 +216,12 @@ Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 
 Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
-Attribute AbsoluteBottom.VB_UserMemId = 1610612760
       AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
 End Function
 
 ' WARNING: these do not account for frame/picturebox borders.  Use informally.
 
 Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
-Attribute AbsoluteLeft.VB_UserMemId = 1610612757
       On Error Resume Next
       AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
       If Err > 0 Then AbsoluteLeft = ctrl.Left
@@ -232,12 +230,10 @@ Attribute AbsoluteLeft.VB_UserMemId = 1610612757
 End Function
 
 Public Function AbsoluteRight(ByRef ctrl As Control) As Long
-Attribute AbsoluteRight.VB_UserMemId = 1610612759
       AbsoluteRight = AbsoluteLeft(ctrl) + ctrl.Width
 End Function
 
 Public Function AbsoluteTop(ByRef ctrl As Control) As Long
-Attribute AbsoluteTop.VB_UserMemId = 1610612758
       On Error Resume Next
       AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
       If Err > 0 Then AbsoluteTop = ctrl.Top
@@ -246,7 +242,6 @@ Attribute AbsoluteTop.VB_UserMemId = 1610612758
 End Function
 
 Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
-Attribute ArrContains.VB_UserMemId = 1610612764
       Dim Index As Integer
       For Index = LBound(arrString) To UBound(arrString)
             If arrString(Index) = PassedValue Then
@@ -260,7 +255,6 @@ End Function
 ' Extract the character count, when counting only one character per carriage return.
 
 Public Function CharacterCount(ByRef editor As agRichEdit) As Long
-Attribute CharacterCount.VB_UserMemId = 1610612761
       
       Dim lLastLineLength As Long, lLastLineIndex As Long
       
@@ -272,7 +266,6 @@ Attribute CharacterCount.VB_UserMemId = 1610612761
 End Function
 
 Public Function CstringToVBstring(ByVal sCstring As String) As String
-Attribute CstringToVBstring.VB_UserMemId = 1610612743
       ' Removes first null character and anything following it.
       On Error GoTo CONVERSION_ERROR
       Dim lngNullPosition As Long
@@ -289,7 +282,6 @@ CONVERSION_ERROR:
 End Function
 
 Public Sub DebugLog(ByVal sMsg As String, Optional ByVal iLogLevel As Integer = 1)
-Attribute DebugLog.VB_UserMemId = 1610612745
       Debug.Print sMsg
       If LOG_TO_FILE And iLogLevel >= MINIMUM_LOG_LEVEL Then
             Dim iFile As Integer
@@ -303,7 +295,6 @@ Attribute DebugLog.VB_UserMemId = 1610612745
 End Sub
 
 Public Function FileExists(ByVal sSource As String) As Boolean
-Attribute FileExists.VB_UserMemId = 1610612753
 
       Dim WFD As WIN32_FIND_DATA
       Dim hFile As Long
@@ -316,7 +307,6 @@ Attribute FileExists.VB_UserMemId = 1610612753
 End Function
 
 Public Function FileModifiedTime(ByVal sSource As String) As String
-Attribute FileModifiedTime.VB_UserMemId = 1610612755
       ' example date string:   2005-03-15 6:14:21
       
       Dim WFD As WIN32_FIND_DATA
@@ -375,7 +365,6 @@ Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
 End Function
 
 Public Function getAllProperties(sFileName As String)
-Attribute getAllProperties.VB_UserMemId = 1610612763
       Dim sBaseName, sPathName
       sPathName = gFSO.getParentFolderName(sFileName)
       sBaseName = gFSO.GetFileName(sFileName)
@@ -416,7 +405,6 @@ Attribute getAllProperties.VB_UserMemId = 1610612763
 End Function
 
 Public Function GetFileSize(ByVal sSource As String) As Currency
-Attribute GetFileSize.VB_UserMemId = 1610612754
       If sSource = "" Then
             GetFileSize = 0
       Else
@@ -425,7 +413,6 @@ Attribute GetFileSize.VB_UserMemId = 1610612754
 End Function
 
 Public Function GetFullPathName(ByVal sInput As String) As String
-Attribute GetFullPathName.VB_UserMemId = 1610612751
       ' Just for the record:
       '     Dir believes that path names always end with a "\"
       '     CurDir believes that path names *never* end with a "\"
@@ -441,7 +428,6 @@ Attribute GetFullPathName.VB_UserMemId = 1610612751
 End Function
 
 Public Function GetIconType(sEx As String) As eIconType
-Attribute GetIconType.VB_UserMemId = 1610612746
       ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
       
       Select Case sEx
@@ -469,7 +455,6 @@ Attribute GetIconType.VB_UserMemId = 1610612746
 End Function
 
 Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
-Attribute GetMP3Info.VB_UserMemId = 1610612762
       On Error Resume Next
       ' open the specified file
       Open sFileName For Binary As #1
@@ -493,7 +478,6 @@ End Function
 
 ' Figure out the numbering of a menu caption, and which digit to underline.
 Public Function GetNumberedCaption(ByVal sFileName As String, ByVal iIndex As Integer) As String
-Attribute GetNumberedCaption.VB_UserMemId = 1610612765
       If iIndex < 10 Then
             GetNumberedCaption = "&" & iIndex & "   " & sFileName
       ElseIf iIndex = 10 Then
@@ -504,7 +488,6 @@ Attribute GetNumberedCaption.VB_UserMemId = 1610612765
 End Function
 
 Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType) As eViewMode
-Attribute GetViewMode.VB_UserMemId = 1610612747
       Const PicFileTooBig = 10000000
       Const NonPicFileTooBig = 2097152
       Dim sEx As String
@@ -551,12 +534,10 @@ Attribute GetViewMode.VB_UserMemId = 1610612747
 End Function
 
 Public Function IsKeyDown(ByVal lVirtKey As Long) As Boolean
-Attribute IsKeyDown.VB_UserMemId = 1610612752
       IsKeyDown = GetKeyState(lVirtKey) And &HF0000000
 End Function
 
 Public Function IsPathFull(ByVal sInput As String) As Long
-Attribute IsPathFull.VB_UserMemId = 1610612750
       ' returns 0 if not a full path
       ' if a full path, returns position of colon
       ' does NOT check if the path is a VALID path
@@ -564,7 +545,6 @@ Attribute IsPathFull.VB_UserMemId = 1610612750
 End Function
 
 Public Function IsUnicodeFile(FilePath)
-Attribute IsUnicodeFile.VB_UserMemId = 1610612748
       Dim objStream
       Dim intAsc1Chr, intAsc2Chr
       
@@ -685,7 +665,6 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
 End Function
 
 Public Function RecycleFile(ByVal sPath As String) As Integer
-Attribute RecycleFile.VB_UserMemId = 1610612756
       ' Send a file to the Recycle Bin.
       
       Dim shfFileOperation As SHFILEOPSTRUCT
@@ -699,7 +678,6 @@ Attribute RecycleFile.VB_UserMemId = 1610612756
 End Function
 
 Public Function SnipFileName(ByVal sPath As String) As String
-Attribute SnipFileName.VB_UserMemId = 1610612742
       Dim iSlash As Integer
       iSlash = InStrRev(sPath, "\")
       SnipFileName = Left(sPath, iSlash)
@@ -710,7 +688,6 @@ End Function
 ' *************************************************************
 
 Public Function SnipPath(ByVal sPath As String) As String
-Attribute SnipPath.VB_UserMemId = 1610612741
       Dim iSlash As Integer
       iSlash = InStrRev(sPath, "\")
       SnipPath = Right(sPath, Len(sPath) - iSlash)
@@ -718,7 +695,6 @@ End Function
 
 Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
       ByVal wParam As Long, ByVal lParam As Long) As Long
-Attribute TrackMouseLeave.VB_UserMemId = 1610612740
             
       If uMsg = WM_MOUSELEAVE Then
             Beep
@@ -745,7 +721,6 @@ Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
 End Function
 
 Public Function TrimTrailingSlash(ByVal sPath As String) As String
-Attribute TrimTrailingSlash.VB_UserMemId = 1610612749
       If Right(sPath, 1) = "\" Then
             TrimTrailingSlash = Left(sPath, Len(sPath) - 1)
       Else
@@ -754,7 +729,6 @@ Attribute TrimTrailingSlash.VB_UserMemId = 1610612749
 End Function
 
 Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
-Attribute VBstringToCstring.VB_UserMemId = 1610612744
       ' Just, never you mind this.  Not the inverse of above.
       sVBstring = sVBstring & Chr(0)
       VBstringToCstring = sVBstring

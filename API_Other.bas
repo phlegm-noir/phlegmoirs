@@ -313,7 +313,6 @@ End Type
 ' X = low order word
 
 Public Function MAKEPOINT(ByVal lParam As Long) As POINTAPI
-Attribute MAKEPOINT.VB_UserMemId = 1610612737
       ' BE CAREFUL WITH THESE PESKY AMPERSANDS!
       ' &n = octal n
       ' &Hn = hexadecimal n
@@ -336,7 +335,6 @@ Attribute MAKEPOINT.VB_UserMemId = 1610612737
 End Function
 
 Public Function MakePOINTAPI(ByVal lx As Integer, ByVal ly As Integer) As POINTAPI
-Attribute MakePOINTAPI.VB_UserMemId = 1610612738
       ' This just takes two values, and makes a point.  So there's no messy declarations where it matters.
       
       MakePOINTAPI.X = lx

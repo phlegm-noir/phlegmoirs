@@ -67,7 +67,6 @@ Public Function GetRealFontSize(ByVal lEditorHwnd As Long) As Integer
 End Function
 
 Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextColor As Long) As StdFont
-Attribute GetRealStdFont.VB_UserMemId = 1610612743
       ' OK, I put in a byref value to pass on the text color, which is not included in the StdFont type.
       ' The function returns a StdFont containing the rest of the font data.
       
