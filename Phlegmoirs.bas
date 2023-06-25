@@ -192,7 +192,6 @@ Enum eOverwrite
       Yes = True
       No = False
 End Enum
-
       
 ' *************************************************************
 ' Global Variables
@@ -216,7 +215,129 @@ Public gCommandFile As String
 Public Const MoveIncrement = -512
 Public Const glMAX_LONG_INTEGER = &H7FFFFFFF   '   2147483647
 
+Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
+Attribute AbsoluteBottom.VB_UserMemId = 1610612760
+      AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
+End Function
 
+' WARNING: these do not account for frame/picturebox borders.  Use informally.
+
+Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
+Attribute AbsoluteLeft.VB_UserMemId = 1610612757
+      Dim iMargins As Long
+      
+      On Error Resume Next
+      AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
+      If Err > 0 Then AbsoluteLeft = ctrl.Left
+      DebugLog "AbsoluteLeft throws an error, whatever that means..."
+      On Error GoTo 0
+End Function
+
+Public Function AbsoluteRight(ByRef ctrl As Control) As Long
+Attribute AbsoluteRight.VB_UserMemId = 1610612759
+      AbsoluteRight = AbsoluteLeft(ctrl) + ctrl.Width
+End Function
+
+Public Function AbsoluteTop(ByRef ctrl As Control) As Long
+Attribute AbsoluteTop.VB_UserMemId = 1610612758
+      Dim iMargins As Long
+      
+      On Error Resume Next
+      AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
+      If Err > 0 Then AbsoluteTop = ctrl.Top
+      DebugLog "AbsoluteTop throws an error, whatever that means..."
+      On Error GoTo 0
+End Function
+
+Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
+Attribute ArrContains.VB_UserMemId = 1610612764
+   Dim Index As Integer
+    For Index = LBound(arrString) To UBound(arrString)
+      If arrString(Index) = PassedValue Then
+        ArrContains = True
+        Exit Function
+      End If
+    Next
+    ArrContains = False
+End Function
+
+' Extract the character count, when counting only one character per carriage return.
+
+Public Function CharacterCount(ByRef editor As agRichEdit) As Long
+Attribute CharacterCount.VB_UserMemId = 1610612761
+      
+      Dim lLastLineLength As Long, lLastLineIndex As Long
+      
+      lLastLineIndex = SendMessage(editor.RichEdithWnd, EM_LINEINDEX, ByVal (editor.LineCount - 1), ByVal 0)
+      
+      lLastLineLength = SendMessage(editor.RichEdithWnd, EM_LINELENGTH, ByVal lLastLineIndex + 1, ByVal 0)
+
+      CharacterCount = lLastLineIndex + lLastLineLength
+End Function
+
+Public Function CstringToVBstring(ByVal sCstring As String) As String
+Attribute CstringToVBstring.VB_UserMemId = 1610612743
+      ' Removes first null character and anything following it.
+      On Error GoTo CONVERSION_ERROR
+      Dim lngNullPosition As Long
+      
+      lngNullPosition = InStr(1, sCstring, Chr(0))
+      If lngNullPosition = 0 Then
+            CstringToVBstring = sCstring
+      Else
+            CstringToVBstring = Left(sCstring, lngNullPosition - 1)
+      End If
+      Exit Function
+CONVERSION_ERROR:
+      DebugLog "CONVERSION ERROR: " & sCstring, 2
+End Function
+
+Public Sub DebugLog(ByVal sMsg As String, Optional ByVal iLogLevel As Integer = 1)
+Attribute DebugLog.VB_UserMemId = 1610612745
+      Debug.Print sMsg
+      If LOG_TO_FILE And iLogLevel >= MINIMUM_LOG_LEVEL Then
+            Dim iFile As Integer
+            Dim sFile As String
+            sFile = "phlegmoirs_err.log"
+            iFile = FreeFile
+            Open sFile For Append As #iFile
+                  Print #iFile, Now & ": " & sMsg
+            Close #iFile
+      End If
+End Sub
+
+Public Function FileExists(ByVal sSource As String) As Boolean
+Attribute FileExists.VB_UserMemId = 1610612753
+
+      Dim WFD As WIN32_FIND_DATA
+      Dim hFile As Long
+      
+      hFile = FindFirstFile(sSource, WFD)
+      FileExists = hFile <> -1 ' invalid handle value
+      
+      FindClose (hFile)
+   
+End Function
+
+Public Function FileModifiedTime(ByVal sSource As String) As String
+Attribute FileModifiedTime.VB_UserMemId = 1610612755
+      ' example date string:   2005-03-15 6:14:21
+      
+      Dim WFD As WIN32_FIND_DATA
+      Dim localTime As FILETIME
+      Dim sysTime As SYSTEMTIME
+      Dim hFile As Long
+      
+      hFile = FindFirstFile(sSource, WFD)
+      
+      If hFile > 0 Then
+            FileModifiedTime = FormatNonLocalFileTime(WFD.ftLastWriteTime)
+      Else
+            FileModifiedTime = ""
+      End If
+      
+      FindClose (hFile)
+End Function
 
 Function FormatBytes(ByVal curBytes, iPrecision As Integer) As String
       ' This function takes a quantity of bytes as a currency value ('cause it's 64-bit),
@@ -258,6 +379,230 @@ Public Function FormatNonLocalFileTime(NLFT As FILETIME) As String
             FormatNonLocalFileTime = .wYear & "-" & Format(.wMonth, "00") & "-" & Format(.wDay, "00") _
                   & ", " & Format(.wHour, "00") & ":" & Format(.wMinute, "00") & ":" & Format(.wSecond, "00")
       End With
+End Function
+
+Public Function getAllProperties(sFileName As String)
+Attribute getAllProperties.VB_UserMemId = 1610612763
+      Dim sBaseName, sPathName
+      sPathName = gFSO.getParentFolderName(sFileName)
+      sBaseName = gFSO.GetFileName(sFileName)
+      
+      Dim objShell, objFolder
+      Set objShell = CreateObject("shell.application")
+      Set objFolder = objShell.NameSpace(sPathName)
+      
+      If (Not objFolder Is Nothing) Then
+            Dim objFolderItem
+            Set objFolderItem = objFolder.ParseName(sBaseName)
+            
+            If (Not objFolderItem Is Nothing) Then
+                  Dim uninteresting
+                  uninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
+                  "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
+                  "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
+                  "Protected")
+                  
+                  Dim i
+                  For i = 0 To 320
+                        Dim columnName, value
+                        columnName = objFolder.GetDetailsOf(objFolder.Items, i)
+                        value = objFolder.GetDetailsOf(objFolderItem, i)
+                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(i)) + ")"
+                        
+                        If value <> "" And Not ArrContains(uninteresting, columnName) Then
+                              Debug.Print Str(i) + ". " + columnName + ": " + vbTab + value
+                        End If
+                  Next i
+            End If
+            
+            Set objFolderItem = Nothing
+      End If
+      
+      Set objFolder = Nothing
+      Set objShell = Nothing
+End Function
+
+Public Function GetFileSize(ByVal sSource As String) As Currency
+Attribute GetFileSize.VB_UserMemId = 1610612754
+      If sSource = "" Then
+            GetFileSize = 0
+      Else
+            GetFileSize = gFSO.getfile(sSource).Size
+      End If
+End Function
+
+Public Function GetFullPathName(ByVal sInput As String) As String
+Attribute GetFullPathName.VB_UserMemId = 1610612751
+      ' Just for the record:
+      '     Dir believes that path names always end with a "\"
+      '     CurDir believes that path names *never* end with a "\"
+      
+      Dim iColonPosition As Integer
+      
+      iColonPosition = InStrRev(sInput, ":")
+      If iColonPosition = 0 Then
+            GetFullPathName = CurDir & "\" & sInput
+      Else
+            GetFullPathName = sInput
+      End If
+End Function
+
+Public Function GetIconType(sEx As String) As eIconType
+Attribute GetIconType.VB_UserMemId = 1610612746
+      ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
+      
+      Select Case sEx
+            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur", "png", "webp"
+                  GetIconType = eIconType.Picture
+            
+            Case "dll", "ocx", "exe", "zip", "msi", "sys", "cab", "7z"
+                  GetIconType = eIconType.Properties
+            
+            Case "mp3", "ogg", "wav", "flac"
+                  GetIconType = eIconType.mp3
+            
+            Case "avi", "mpeg", "mp4", "webm", "flv"
+                  GetIconType = eIconType.video
+            
+            Case "rtf"
+                  GetIconType = eIconType.rtf
+            
+            Case "txt", "log"
+                  GetIconType = eIconType.Text
+            
+            Case Else
+                  GetIconType = eIconType.other
+      End Select
+End Function
+
+Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
+Attribute GetMP3Info.VB_UserMemId = 1610612762
+      On Error Resume Next
+      ' open the specified file
+      Open sFileName For Binary As #1
+      ' fill the strct's fileds
+      
+      With mp3info
+            Get #1, FileLen(sFileName) - 127, .tag
+            If Not .tag = "TAG" Then
+                  Close #1
+                  Exit Function
+            End If
+            Get #1, , .title
+            Get #1, , .artist
+            Get #1, , .album
+            Get #1, , .year
+            Get #1, , .comment
+            Get #1, , .genre
+            Close #1
+      End With
+End Function
+
+' Figure out the numbering of a menu caption, and which digit to underline.
+Public Function GetNumberedCaption(ByVal sFileName As String, ByVal iIndex As Integer) As String
+Attribute GetNumberedCaption.VB_UserMemId = 1610612765
+      If iIndex < 10 Then
+            GetNumberedCaption = "&" & iIndex & "   " & sFileName
+      ElseIf iIndex = 10 Then
+            GetNumberedCaption = "1&0   " & sFileName
+      Else
+            GetNumberedCaption = iIndex & "   " & sFileName
+      End If
+End Function
+
+Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType) As eViewMode
+Attribute GetViewMode.VB_UserMemId = 1610612747
+      Const PicFileTooBig = 10000000
+      Const NonPicFileTooBig = 2097152
+      Dim sEx As String
+      Dim fileSize
+      
+      If Not gFSO.FileExists(sFileName) Then
+            GetViewMode = eViewMode.ERROR
+            DebugLog "ViewMode: ERROR for file: " & sFileName & "..."
+            Exit Function
+      End If
+      
+      sEx = gFSO.getextensionname(sFileName)
+      
+      If iMode = eIconType.Bookmark Then
+            iMode = GetIconType(sEx)
+      End If
+      
+      Select Case iMode
+            Case eIconType.Picture
+                  fileSize = GetFileSize(sFileName)
+                  
+                  If sEx = "png" Or sEx = "webp" Or fileSize > PicFileTooBig Then
+                        GetViewMode = eViewMode.PropertiesView
+                  Else
+                        GetViewMode = eViewMode.PictureView
+                  End If
+            
+            Case eIconType.Text, eIconType.rtf, eIconType.other
+                  fileSize = GetFileSize(sFileName)
+                  
+                  If fileSize > NonPicFileTooBig Then
+                        GetViewMode = eViewMode.PropertiesView
+                  Else
+                        GetViewMode = eViewMode.TextView
+                  End If
+            
+            Case eIconType.Cdrom, eIconType.Directory, eIconType.Drive, eIconType.IconError, eIconType.Floppy, eIconType.Network
+                  GetViewMode = eViewMode.ERROR
+                  DebugLog "ViewMode: ERROR for file: " & sFileName
+            
+            Case Else
+                  GetViewMode = eViewMode.PropertiesView
+      End Select
+End Function
+
+Public Function IsKeyDown(ByVal lVirtKey As Long) As Boolean
+Attribute IsKeyDown.VB_UserMemId = 1610612752
+      IsKeyDown = GetKeyState(lVirtKey) And &HF0000000
+End Function
+
+Public Function IsPathFull(ByVal sInput As String) As Long
+Attribute IsPathFull.VB_UserMemId = 1610612750
+      ' returns 0 if not a full path
+      ' if a full path, returns position of colon
+      ' does NOT check if the path is a VALID path
+      IsPathFull = InStrRev(sInput, ":")
+End Function
+
+Public Function IsUnicodeFile(FilePath)
+Attribute IsUnicodeFile.VB_UserMemId = 1610612748
+      Dim objStream
+      Dim intAsc1Chr, intAsc2Chr
+      
+      If Not gFSO.FileExists(FilePath) Then
+            IsUnicodeFile = eTextEncoding.ERROR
+            DebugLog "Text encoding=ERROR for file: " & FilePath
+            Exit Function
+      ElseIf GetFileSize(FilePath) = 1 Then
+            IsUnicodeFile = eTextEncoding.ASCII
+            Exit Function
+      End If
+      
+      On Error Resume Next
+      Set objStream = gFSO.OpenTextFile(FilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
+      intAsc1Chr = AscW(objStream.Read(1))
+      intAsc2Chr = AscW(objStream.Read(1))
+      objStream.Close
+      If Err > 0 Then
+            IsUnicodeFile = eTextEncoding.ERROR
+            DebugLog "Text encoding=ERROR for file: " & FilePath
+            Exit Function
+      End If
+      On Error GoTo 0
+      
+      If (intAsc1Chr = 255) And (intAsc2Chr = 254) Then
+          IsUnicodeFile = eTextEncoding.UNICODE
+      Else
+          IsUnicodeFile = eTextEncoding.ASCII
+      End If
+      
+      Set objStream = Nothing
 End Function
 
 Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
@@ -343,6 +688,50 @@ Public Function ListViewProc(ByVal hwnd As Long, ByVal uMsg As Long, _
       ListViewProc = CallWindowProc(gpOldLvwProc, hwnd, uMsg, wParam, lParam)
 End Function
 
+Public Function RecycleFile(ByVal sPath As String) As Integer
+Attribute RecycleFile.VB_UserMemId = 1610612756
+      ' Send a file to the Recycle Bin.
+      
+      Dim shfFileOperation As SHFILEOPSTRUCT
+      
+      With shfFileOperation
+            .wFunc = FO_DELETE
+            .pFrom = sPath
+            .fFlags = FOF_ALLOWUNDO
+      End With
+      RecycleFile = SHFileOperation(shfFileOperation)
+End Function
+
+Public Function SnipFileName(ByVal sPath As String) As String
+Attribute SnipFileName.VB_UserMemId = 1610612742
+      Dim iSlash As Integer
+      iSlash = InStrRev(sPath, "\")
+      SnipFileName = Left(sPath, iSlash)
+End Function
+
+' *************************************************************
+' Useful functions and subs
+' *************************************************************
+
+Public Function SnipPath(ByVal sPath As String) As String
+Attribute SnipPath.VB_UserMemId = 1610612741
+      Dim iSlash As Integer
+      iSlash = InStrRev(sPath, "\")
+      SnipPath = Right(sPath, Len(sPath) - iSlash)
+End Function
+
+Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
+            ByVal wParam As Long, ByVal lParam As Long) As Long
+Attribute TrackMouseLeave.VB_UserMemId = 1610612740
+            
+      Dim objPFB As Object
+      
+      If uMsg = WM_MOUSELEAVE Then
+            Beep
+      End If
+      TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hwnd, uMsg, wParam, lParam)
+End Function
+
 Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
             ByVal wParam As Long, ByVal lParam As Long) As Long
 
@@ -361,177 +750,8 @@ Public Function TrackMouseWheel(ByVal hwnd As Long, ByVal uMsg As Long, _
       TrackMouseWheel = CallWindowProc(gpOldpicEditorProc, hwnd, uMsg, wParam, lParam)
 End Function
 
-Public Function TrackMouseLeave(ByVal hwnd As Long, ByVal uMsg As Long, _
-            ByVal wParam As Long, ByVal lParam As Long) As Long
-            
-      Dim objPFB As Object
-      
-      If uMsg = WM_MOUSELEAVE Then
-            Beep
-      End If
-      TrackMouseLeave = CallWindowProc(gpOldpicBrowserProc, hwnd, uMsg, wParam, lParam)
-End Function
-
-
-
-
-' *************************************************************
-' Useful functions and subs
-' *************************************************************
-
-Public Function SnipPath(ByVal sPath As String) As String
-      Dim iSlash As Integer
-      iSlash = InStrRev(sPath, "\")
-      SnipPath = Right(sPath, Len(sPath) - iSlash)
-End Function
-
-Public Function SnipFileName(ByVal sPath As String) As String
-      Dim iSlash As Integer
-      iSlash = InStrRev(sPath, "\")
-      SnipFileName = Left(sPath, iSlash)
-End Function
-
-Public Function CstringToVBstring(ByVal sCstring As String) As String
-      ' Removes first null character and anything following it.
-      On Error GoTo CONVERSION_ERROR
-      Dim lngNullPosition As Long
-      
-      lngNullPosition = InStr(1, sCstring, Chr(0))
-      If lngNullPosition = 0 Then
-            CstringToVBstring = sCstring
-      Else
-            CstringToVBstring = Left(sCstring, lngNullPosition - 1)
-      End If
-      Exit Function
-CONVERSION_ERROR:
-      DebugLog "CONVERSION ERROR: " & sCstring, 2
-End Function
-
-Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
-      ' Just, never you mind this.  Not the inverse of above.
-      sVBstring = sVBstring & Chr(0)
-      VBstringToCstring = sVBstring
-      'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
-End Function
-
-Public Sub DebugLog(ByVal sMsg As String, Optional ByVal iLogLevel As Integer = 1)
-      Debug.Print sMsg
-      If LOG_TO_FILE And iLogLevel >= MINIMUM_LOG_LEVEL Then
-            Dim iFile As Integer
-            Dim sFile As String
-            sFile = "phlegmoirs_err.log"
-            iFile = FreeFile
-            Open sFile For Append As #iFile
-                  Print #iFile, Now & ": " & sMsg
-            Close #iFile
-      End If
-End Sub
-Public Function GetIconType(sEx As String) As eIconType
-      ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
-      
-      Select Case sEx
-            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur", "png", "webp"
-                  GetIconType = eIconType.Picture
-            
-            Case "dll", "ocx", "exe", "zip", "msi", "sys", "cab", "7z"
-                  GetIconType = eIconType.Properties
-            
-            Case "mp3", "ogg", "wav", "flac"
-                  GetIconType = eIconType.mp3
-            
-            Case "avi", "mpeg", "mp4", "webm", "flv"
-                  GetIconType = eIconType.video
-            
-            Case "rtf"
-                  GetIconType = eIconType.rtf
-            
-            Case "txt", "log"
-                  GetIconType = eIconType.Text
-            
-            Case Else
-                  GetIconType = eIconType.other
-      End Select
-End Function
-
-Public Function GetViewMode(ByVal sFileName As String, ByVal iMode As eIconType) As eViewMode
-      Const PicFileTooBig = 10000000
-      Const NonPicFileTooBig = 2097152
-      Dim sEx As String
-      Dim fileSize
-      
-      If Not gFSO.FileExists(sFileName) Then
-            GetViewMode = eViewMode.ERROR
-            DebugLog "ViewMode: ERROR for file: " & sFileName & "..."
-            Exit Function
-      End If
-      
-      sEx = gFSO.getextensionname(sFileName)
-      
-      If iMode = eIconType.Bookmark Then
-            iMode = GetIconType(sEx)
-      End If
-      
-      Select Case iMode
-            Case eIconType.Picture
-                  fileSize = GetFileSize(sFileName)
-                  
-                  If sEx = "png" Or sEx = "webp" Or fileSize > PicFileTooBig Then
-                        GetViewMode = eViewMode.PropertiesView
-                  Else
-                        GetViewMode = eViewMode.PictureView
-                  End If
-            
-            Case eIconType.Text, eIconType.rtf, eIconType.other
-                  fileSize = GetFileSize(sFileName)
-                  
-                  If fileSize > NonPicFileTooBig Then
-                        GetViewMode = eViewMode.PropertiesView
-                  Else
-                        GetViewMode = eViewMode.TextView
-                  End If
-            
-            Case eIconType.Cdrom, eIconType.Directory, eIconType.Drive, eIconType.IconError, eIconType.Floppy, eIconType.Network
-                  GetViewMode = eViewMode.ERROR
-                  DebugLog "ViewMode: ERROR for file: " & sFileName
-            
-            Case Else
-                  GetViewMode = eViewMode.PropertiesView
-      End Select
-End Function
-Public Function IsUnicodeFile(FilePath)
-      Dim objStream
-      Dim intAsc1Chr, intAsc2Chr
-      
-      If Not gFSO.FileExists(FilePath) Then
-            IsUnicodeFile = eTextEncoding.ERROR
-            DebugLog "Text encoding=ERROR for file: " & FilePath
-            Exit Function
-      ElseIf GetFileSize(FilePath) = 1 Then
-            IsUnicodeFile = eTextEncoding.ASCII
-            Exit Function
-      End If
-      
-      On Error Resume Next
-      Set objStream = gFSO.OpenTextFile(FilePath, eIoMode.ForReading, eCreate.No, eTextEncoding.ASCII)
-      intAsc1Chr = AscW(objStream.Read(1))
-      intAsc2Chr = AscW(objStream.Read(1))
-      objStream.Close
-      If Err > 0 Then
-            IsUnicodeFile = eTextEncoding.ERROR
-            DebugLog "Text encoding=ERROR for file: " & FilePath
-            Exit Function
-      End If
-      On Error GoTo 0
-      
-      If (intAsc1Chr = 255) And (intAsc2Chr = 254) Then
-          IsUnicodeFile = eTextEncoding.UNICODE
-      Else
-          IsUnicodeFile = eTextEncoding.ASCII
-      End If
-      
-      Set objStream = Nothing
-End Function
 Public Function TrimTrailingSlash(ByVal sPath As String) As String
+Attribute TrimTrailingSlash.VB_UserMemId = 1610612749
       If Right(sPath, 1) = "\" Then
             TrimTrailingSlash = Left(sPath, Len(sPath) - 1)
       Else
@@ -539,210 +759,11 @@ Public Function TrimTrailingSlash(ByVal sPath As String) As String
       End If
 End Function
 
-Public Function IsPathFull(ByVal sInput As String) As Long
-      ' returns 0 if not a full path
-      ' if a full path, returns position of colon
-      ' does NOT check if the path is a VALID path
-      IsPathFull = InStrRev(sInput, ":")
+Public Function VBstringToCstring(ByVal sVBstring As String) As Byte()
+Attribute VBstringToCstring.VB_UserMemId = 1610612744
+      ' Just, never you mind this.  Not the inverse of above.
+      sVBstring = sVBstring & Chr(0)
+      VBstringToCstring = sVBstring
+      'VBstringToCstring = StrConv(sVBstring, vbFromUnicode)
 End Function
 
-Public Function GetFullPathName(ByVal sInput As String) As String
-      ' Just for the record:
-      '     Dir believes that path names always end with a "\"
-      '     CurDir believes that path names *never* end with a "\"
-      
-      Dim iColonPosition As Integer
-      
-      iColonPosition = InStrRev(sInput, ":")
-      If iColonPosition = 0 Then
-            GetFullPathName = CurDir & "\" & sInput
-      Else
-            GetFullPathName = sInput
-      End If
-End Function
-
-
-
-Public Function IsKeyDown(ByVal lVirtKey As Long) As Boolean
-      IsKeyDown = GetKeyState(lVirtKey) And &HF0000000
-End Function
-
-Public Function FileExists(ByVal sSource As String) As Boolean
-
-      Dim WFD As WIN32_FIND_DATA
-      Dim hFile As Long
-      
-      hFile = FindFirstFile(sSource, WFD)
-      FileExists = hFile <> -1 ' invalid handle value
-      
-      FindClose (hFile)
-   
-End Function
-
-Public Function GetFileSize(ByVal sSource As String) As Currency
-      If sSource = "" Then
-            GetFileSize = 0
-      Else
-            GetFileSize = gFSO.getfile(sSource).Size
-      End If
-End Function
-
-Public Function FileModifiedTime(ByVal sSource As String) As String
-      ' example date string:   2005-03-15 6:14:21
-      
-      Dim WFD As WIN32_FIND_DATA
-      Dim localTime As FILETIME
-      Dim sysTime As SYSTEMTIME
-      Dim hFile As Long
-      
-      hFile = FindFirstFile(sSource, WFD)
-      
-      If hFile > 0 Then
-            FileModifiedTime = FormatNonLocalFileTime(WFD.ftLastWriteTime)
-      Else
-            FileModifiedTime = ""
-      End If
-      
-      FindClose (hFile)
-End Function
-
-
-Public Function RecycleFile(ByVal sPath As String) As Integer
-      ' Send a file to the Recycle Bin.
-      
-      Dim shfFileOperation As SHFILEOPSTRUCT
-      
-      With shfFileOperation
-            .wFunc = FO_DELETE
-            .pFrom = sPath
-            .fFlags = FOF_ALLOWUNDO
-      End With
-      RecycleFile = SHFileOperation(shfFileOperation)
-End Function
-
-' WARNING: these do not account for frame/picturebox borders.  Use informally.
-
-Public Function AbsoluteLeft(ByRef ctrl As Control) As Long
-      Dim iMargins As Long
-      
-      On Error Resume Next
-      AbsoluteLeft = ctrl.Left + AbsoluteLeft(ctrl.Container)
-      If Err > 0 Then AbsoluteLeft = ctrl.Left
-      DebugLog "AbsoluteLeft throws an error, whatever that means..."
-      On Error GoTo 0
-End Function
-
-Public Function AbsoluteTop(ByRef ctrl As Control) As Long
-      Dim iMargins As Long
-      
-      On Error Resume Next
-      AbsoluteTop = ctrl.Top + AbsoluteTop(ctrl.Container)
-      If Err > 0 Then AbsoluteTop = ctrl.Top
-      DebugLog "AbsoluteTop throws an error, whatever that means..."
-      On Error GoTo 0
-End Function
-
-Public Function AbsoluteRight(ByRef ctrl As Control) As Long
-      AbsoluteRight = AbsoluteLeft(ctrl) + ctrl.Width
-End Function
-
-Public Function AbsoluteBottom(ByRef ctrl As Control) As Long
-      AbsoluteBottom = AbsoluteTop(ctrl) + ctrl.Height
-End Function
-
-' Extract the character count, when counting only one character per carriage return.
-
-Public Function CharacterCount(ByRef editor As agRichEdit) As Long
-      
-      Dim lLastLineLength As Long, lLastLineIndex As Long
-      
-      lLastLineIndex = SendMessage(editor.RichEdithWnd, EM_LINEINDEX, ByVal (editor.LineCount - 1), ByVal 0)
-      
-      lLastLineLength = SendMessage(editor.RichEdithWnd, EM_LINELENGTH, ByVal lLastLineIndex + 1, ByVal 0)
-
-      CharacterCount = lLastLineIndex + lLastLineLength
-End Function
-
-Public Function GetMP3Info(ByVal sFileName As String, mp3info As MP3TagInfo) As String()
-      On Error Resume Next
-      ' open the specified file
-      Open sFileName For Binary As #1
-      ' fill the strct's fileds
-      
-      With mp3info
-            Get #1, FileLen(sFileName) - 127, .tag
-            If Not .tag = "TAG" Then
-                  Close #1
-                  Exit Function
-            End If
-            Get #1, , .title
-            Get #1, , .artist
-            Get #1, , .album
-            Get #1, , .year
-            Get #1, , .comment
-            Get #1, , .genre
-            Close #1
-      End With
-End Function
-
-Public Function getAllProperties(sFileName As String)
-      Dim sBaseName, sPathName
-      sPathName = gFSO.getParentFolderName(sFileName)
-      sBaseName = gFSO.GetFileName(sFileName)
-      
-      Dim objShell, objFolder
-      Set objShell = CreateObject("shell.application")
-      Set objFolder = objShell.NameSpace(sPathName)
-      
-      If (Not objFolder Is Nothing) Then
-            Dim objFolderItem
-            Set objFolderItem = objFolder.ParseName(sBaseName)
-            
-            If (Not objFolderItem Is Nothing) Then
-                  Dim uninteresting
-                  uninteresting = Array("Attributes", "Owner", "Total size", "Computer", "File extension", _
-                  "Filename", "Space free", "Shared", "Folder name", "File location", "Folder", "Path", "Type", _
-                  "Link status", "Space used", "Sharing status", "UNKNOWN(296)", "Content", "Rating", "Shared with", _
-                  "Protected")
-                  
-                  Dim i
-                  For i = 0 To 320
-                        Dim columnName, value
-                        columnName = objFolder.GetDetailsOf(objFolder.Items, i)
-                        value = objFolder.GetDetailsOf(objFolderItem, i)
-                        If columnName = "" Then columnName = "UNKNOWN(" + Trim(Str(i)) + ")"
-                        
-                        If value <> "" And Not ArrContains(uninteresting, columnName) Then
-                              Debug.Print Str(i) + ". " + columnName + ": " + vbTab + value
-                        End If
-                  Next i
-            End If
-            
-            Set objFolderItem = Nothing
-      End If
-      
-      Set objFolder = Nothing
-      Set objShell = Nothing
-End Function
-
-Public Function ArrContains(arrString, ByVal PassedValue As String) As Boolean
-   Dim Index As Integer
-    For Index = LBound(arrString) To UBound(arrString)
-      If arrString(Index) = PassedValue Then
-        ArrContains = True
-        Exit Function
-      End If
-    Next
-    ArrContains = False
-End Function
-
-' Figure out the numbering of a menu caption, and which digit to underline.
-Public Function GetNumberedCaption(ByVal sFileName As String, ByVal iIndex As Integer) As String
-      If iIndex < 10 Then
-            GetNumberedCaption = "&" & iIndex & "   " & sFileName
-      ElseIf iIndex = 10 Then
-            GetNumberedCaption = "1&0   " & sFileName
-      Else
-            GetNumberedCaption = iIndex & "   " & sFileName
-      End If
-End Function

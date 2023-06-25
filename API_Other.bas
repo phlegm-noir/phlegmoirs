@@ -332,23 +332,11 @@ Public Type MP3TagInfo
       genre As String * 1
 End Type
 
-
-
-
-Function TranslateColor(ByVal clr As OLE_COLOR, _
-            Optional ByVal hPal As Long = 0) As Long
-      
-      Const CLR_INVALID As Long = &HFFFF&
-
-      If OleTranslateColor(clr, hPal, TranslateColor) Then
-            TranslateColor = CLR_INVALID
-      End If
-End Function
-
 ' Y = high order word
 ' X = low order word
 
 Public Function MAKEPOINT(ByVal lParam As Long) As POINTAPI
+Attribute MAKEPOINT.VB_UserMemId = 1610612737
       ' BE CAREFUL WITH THESE PESKY AMPERSANDS!
       ' &n = octal n
       ' &Hn = hexadecimal n
@@ -371,8 +359,20 @@ Public Function MAKEPOINT(ByVal lParam As Long) As POINTAPI
 End Function
 
 Public Function MakePOINTAPI(ByVal lx As Integer, ByVal ly As Integer) As POINTAPI
+Attribute MakePOINTAPI.VB_UserMemId = 1610612738
       ' This just takes two values, and makes a point.  So there's no messy declarations where it matters.
       
       MakePOINTAPI.X = lx
       MakePOINTAPI.Y = ly
 End Function
+
+Function TranslateColor(ByVal clr As OLE_COLOR, _
+            Optional ByVal hPal As Long = 0) As Long
+      
+      Const CLR_INVALID As Long = &HFFFF&
+
+      If OleTranslateColor(clr, hPal, TranslateColor) Then
+            TranslateColor = CLR_INVALID
+      End If
+End Function
+

@@ -85,6 +85,13 @@ Private Sub btnClose_Click()
       Unload frmFullScreen
 End Sub
 
+Private Sub CopyDimensions()
+Attribute CopyDimensions.VB_UserMemId = 1610809346
+      With frmMain.Image1
+            Image1.Move .Left, .Top, .Width, .Height
+      End With
+End Sub
+
 Private Sub Form_Load()
       gfFullScreenMode = True
       Set gImageData.OutPic = Image1
@@ -100,34 +107,28 @@ Private Sub Form_Load()
             AddressOf TrackMouseWheel)
 End Sub
 
-Private Sub CopyDimensions()
-      With frmMain.Image1
-            Image1.Move .Left, .Top, .Width, .Height
-      End With
-End Sub
-
 Private Sub Form_Resize()
+Attribute Form_Resize.VB_UserMemId = 1610809347
       picFullScreen.Move 0, 0, ScaleWidth, ScaleHeight
       lblFileNameZoom.Left = picFullScreen.Width - lblFileNameZoom.Width
 End Sub
 
-Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      If Not gImageData.Zoomed And Not gImageData.Moved And Button = vbLeftButton Then
-            ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
-            frmMain.BrowserExecuteNext
-      ElseIf Not gImageData.Zoomed And Not gImageData.Moved And Button = vbRightButton Then
-            ' On a right click, we go to the previous picture.
-            ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
-            frmMain.BrowserExecuteNext True
-      ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbMiddleButton Then
-            Unload frmFullScreen
-      End If
+Private Sub Form_Unload(Cancel As Integer)
+Attribute Form_Unload.VB_UserMemId = 1610809353
+      SetWindowLong hwnd, GWL_WNDPROC, gpOldfrmFullScreenProc
+      gpOldfrmFullScreenProc = 0
       
-      gImageData.Zoomed = False
-      gImageData.Moved = False
+      With Image1
+            frmMain.Image1.Move .Left, .Top, .Width, .Height
+            frmMain.Image1.Picture = .Picture
+      End With
+      Set gImageData.OutPic = frmMain.Image1
+      gfFullScreenMode = False
+      frmMain.Show
 End Sub
 
 Private Sub Image1_DblClick()
+Attribute Image1_DblClick.VB_UserMemId = 1610809349
       ' This needs to (effectively) call an Image1_mousedown... but with what parameters???
       Dim poiPrev As POINTAPI
       
@@ -139,6 +140,7 @@ Private Sub Image1_DblClick()
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Attribute Image1_MouseDown.VB_UserMemId = 1610809350
       gImageData.PrevX = X
       gImageData.PrevY = Y
       If Button = vbLeftButton Then
@@ -147,6 +149,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Attribute Image1_MouseMove.VB_UserMemId = 1610809351
       If gImageData.Dragging Then
             Image1.Move Image1.Left + X - gImageData.PrevX, Image1.Top + Y - gImageData.PrevY, _
                   Image1.Width, Image1.Height
@@ -155,6 +158,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Attribute Image1_MouseUp.VB_UserMemId = 1610809352
       ' Mouse button lifted?  Stop the drag!
       gImageData.Dragging = False
       
@@ -171,20 +175,8 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
       gImageData.Zoomed = False
 End Sub
 
-Private Sub Form_Unload(Cancel As Integer)
-      SetWindowLong hwnd, GWL_WNDPROC, gpOldfrmFullScreenProc
-      gpOldfrmFullScreenProc = 0
-      
-      With Image1
-            frmMain.Image1.Move .Left, .Top, .Width, .Height
-            frmMain.Image1.Picture = .Picture
-      End With
-      Set gImageData.OutPic = frmMain.Image1
-      gfFullScreenMode = False
-      frmMain.Show
-End Sub
-
 Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
+Attribute picFullScreen_KeyDown.VB_UserMemId = 1610809354
       With frmMain.sliZoom
             Select Case KeyCode
                   Case 107, 187 ' "+" and Keypad "+"
@@ -253,6 +245,25 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
 
 End Sub
 
+Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Attribute picfullscreen_MouseUp.VB_UserMemId = 1610809348
+      If Not gImageData.Zoomed And Not gImageData.Moved And Button = vbLeftButton Then
+            ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
+            frmMain.BrowserExecuteNext
+      ElseIf Not gImageData.Zoomed And Not gImageData.Moved And Button = vbRightButton Then
+            ' On a right click, we go to the previous picture.
+            ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
+            frmMain.BrowserExecuteNext True
+      ElseIf Not gImageData.Moved And Not gImageData.Zoomed And Button = vbMiddleButton Then
+            Unload frmFullScreen
+      End If
+      
+      gImageData.Zoomed = False
+      gImageData.Moved = False
+End Sub
+
 Private Sub RedoCaption()
+Attribute RedoCaption.VB_UserMemId = 1610809355
       lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.value & "%)  "
 End Sub
+

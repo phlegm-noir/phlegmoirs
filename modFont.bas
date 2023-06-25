@@ -66,6 +66,38 @@ Public Function GetRealFontSize(ByVal lEditorHwnd As Long) As Integer
       GetRealFontSize = char2.yHeight / TWIPS_PER_POINT
 End Function
 
+Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextColor As Long) As StdFont
+Attribute GetRealStdFont.VB_UserMemId = 1610612743
+      ' OK, I put in a byref value to pass on the text color, which is not included in the StdFont type.
+      ' The function returns a StdFont containing the rest of the font data.
+      
+      Dim char2 As CHARFORMAT2
+      Dim lRetVal As Long
+      Dim fntNew As New StdFont
+      
+      char2.cbSize = LenB(char2)
+      ' Tell it which CHARFORMAT2 properties carry relevant data:
+      char2.dwMask = CFM_SIZE + CFM_FACE + CFM_BOLD + CFM_COLOR + _
+                  CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE
+            ' I took out cfm_charset and cfm_weight, because they are set automatically
+      lRetVal = SendMessage(lEditorHwnd, EM_GETCHARFORMAT, ByVal 0, char2)
+      
+      If lRetVal <> 0 Then
+            With fntNew
+                  .Size = char2.yHeight / TWIPS_PER_POINT
+                  .Name = CstringToVBstring(StrConv(char2.szFaceName, vbUnicode))
+                  .Bold = char2.dwEffects And CFE_BOLD
+                  .Italic = char2.dwEffects And CFE_ITALIC
+                  .Strikethrough = char2.dwEffects And CFE_STRIKEOUT
+                  .Underline = char2.dwEffects And CFE_UNDERLINE
+            End With
+            lTextColor = char2.crTextColor
+            Set GetRealStdFont = fntNew
+      Else
+            Set GetRealStdFont = Nothing
+      End If
+End Function
+
 Public Function SetRealFontSize(ByVal lEditorHwnd As Long, ByVal sNewSize As Single) As Integer
       Dim char2 As CHARFORMAT2
       
@@ -107,36 +139,5 @@ Public Function SetRealStdFont(ByVal lEditorHwnd As Long, ByRef fnt As StdFont, 
             Next i
       End With
       SetRealStdFont = SendMessage(lEditorHwnd, EM_SETCHARFORMAT, ByVal SCF_ALL, char2)
-End Function
-
-Public Function GetRealStdFont(ByVal lEditorHwnd As Long, Optional ByRef lTextColor As Long) As StdFont
-      ' OK, I put in a byref value to pass on the text color, which is not included in the StdFont type.
-      ' The function returns a StdFont containing the rest of the font data.
-      
-      Dim char2 As CHARFORMAT2
-      Dim lRetVal As Long
-      Dim fntNew As New StdFont
-      
-      char2.cbSize = LenB(char2)
-      ' Tell it which CHARFORMAT2 properties carry relevant data:
-      char2.dwMask = CFM_SIZE + CFM_FACE + CFM_BOLD + CFM_COLOR + _
-                  CFM_ITALIC + CFM_STRIKEOUT + CFM_UNDERLINE
-            ' I took out cfm_charset and cfm_weight, because they are set automatically
-      lRetVal = SendMessage(lEditorHwnd, EM_GETCHARFORMAT, ByVal 0, char2)
-      
-      If lRetVal <> 0 Then
-            With fntNew
-                  .Size = char2.yHeight / TWIPS_PER_POINT
-                  .Name = CstringToVBstring(StrConv(char2.szFaceName, vbUnicode))
-                  .Bold = char2.dwEffects And CFE_BOLD
-                  .Italic = char2.dwEffects And CFE_ITALIC
-                  .Strikethrough = char2.dwEffects And CFE_STRIKEOUT
-                  .Underline = char2.dwEffects And CFE_UNDERLINE
-            End With
-            lTextColor = char2.crTextColor
-            Set GetRealStdFont = fntNew
-      Else
-            Set GetRealStdFont = Nothing
-      End If
 End Function
 
