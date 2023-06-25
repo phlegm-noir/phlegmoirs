@@ -10,7 +10,7 @@ Begin VB.Form frmMain
    ClientLeft      =   225
    ClientTop       =   870
    ClientWidth     =   11760
-   Icon            =   "Main.frx":0000
+   Icon            =   "frmMain.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   8250
@@ -50,7 +50,7 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          TabCaption(0)   =   "File Properties"
-         TabPicture(0)   =   "Main.frx":179A
+         TabPicture(0)   =   "frmMain.frx":179A
          Tab(0).ControlEnabled=   -1  'True
          Tab(0).Control(0)=   "fraID3"
          Tab(0).Control(0).Enabled=   0   'False
@@ -503,59 +503,59 @@ Begin VB.Form frmMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   14
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":17B6
+            Picture         =   "frmMain.frx":17B6
             Key             =   "Folder"
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":1C08
+            Picture         =   "frmMain.frx":1C08
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":1D1A
+            Picture         =   "frmMain.frx":1D1A
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":216C
+            Picture         =   "frmMain.frx":216C
             Key             =   "textfile"
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":25BE
+            Picture         =   "frmMain.frx":25BE
             Key             =   "otherfile"
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":2A10
+            Picture         =   "frmMain.frx":2A10
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":32EC
+            Picture         =   "frmMain.frx":32EC
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":373E
+            Picture         =   "frmMain.frx":373E
             Key             =   ""
          EndProperty
          BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":3B92
+            Picture         =   "frmMain.frx":3B92
             Key             =   ""
          EndProperty
          BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":3EAC
+            Picture         =   "frmMain.frx":3EAC
             Key             =   ""
          EndProperty
          BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":41C6
+            Picture         =   "frmMain.frx":41C6
             Key             =   ""
          EndProperty
          BeginProperty ListImage12 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":44E0
+            Picture         =   "frmMain.frx":44E0
             Key             =   ""
          EndProperty
          BeginProperty ListImage13 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":463A
+            Picture         =   "frmMain.frx":463A
             Key             =   ""
          EndProperty
          BeginProperty ListImage14 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "Main.frx":4A8C
+            Picture         =   "frmMain.frx":4A8C
             Key             =   ""
          EndProperty
       EndProperty
@@ -580,7 +580,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   2088
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":4DA6
+         Picture         =   "frmMain.frx":4DA6
          Style           =   1  'Graphical
          TabIndex        =   41
          TabStop         =   0   'False
@@ -632,7 +632,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   1032
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":4EF0
+         Picture         =   "frmMain.frx":4EF0
          Style           =   1  'Graphical
          TabIndex        =   35
          TabStop         =   0   'False
@@ -645,7 +645,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   528
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":4FF2
+         Picture         =   "frmMain.frx":4FF2
          Style           =   1  'Graphical
          TabIndex        =   34
          TabStop         =   0   'False
@@ -658,7 +658,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   264
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":537C
+         Picture         =   "frmMain.frx":537C
          Style           =   1  'Graphical
          TabIndex        =   33
          TabStop         =   0   'False
@@ -677,9 +677,9 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   300
-         ItemData        =   "Main.frx":54C6
+         ItemData        =   "frmMain.frx":54C6
          Left            =   0
-         List            =   "Main.frx":54C8
+         List            =   "frmMain.frx":54C8
          TabIndex        =   31
          Text            =   "*"
          ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
@@ -717,7 +717,7 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         MouseIcon       =   "Main.frx":54CA
+         MouseIcon       =   "frmMain.frx":54CA
          NumItems        =   5
          BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
             Key             =   "Name"
@@ -759,7 +759,7 @@ Begin VB.Form frmMain
          Height          =   264
          Left            =   0
          MaskColor       =   &H80000000&
-         Picture         =   "Main.frx":57E4
+         Picture         =   "frmMain.frx":57E4
          Style           =   1  'Graphical
          TabIndex        =   32
          TabStop         =   0   'False
@@ -862,7 +862,7 @@ Begin VB.Form frmMain
             Height          =   300
             Left            =   480
             MaskColor       =   &H80000000&
-            Picture         =   "Main.frx":592E
+            Picture         =   "frmMain.frx":592E
             Style           =   1  'Graphical
             TabIndex        =   21
             TabStop         =   0   'False
@@ -884,7 +884,7 @@ Begin VB.Form frmMain
             Height          =   300
             Left            =   1560
             MaskColor       =   &H80000000&
-            Picture         =   "Main.frx":5A78
+            Picture         =   "frmMain.frx":5A78
             Style           =   1  'Graphical
             TabIndex        =   22
             TabStop         =   0   'False
@@ -928,7 +928,7 @@ Begin VB.Form frmMain
             Height          =   300
             Left            =   2640
             MaskColor       =   &H80000000&
-            Picture         =   "Main.frx":5BC2
+            Picture         =   "frmMain.frx":5BC2
             TabIndex        =   23
             TabStop         =   0   'False
             ToolTipText     =   "Replace (Ctrl+R)"
@@ -1003,7 +1003,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   6240
-         Picture         =   "Main.frx":5D0C
+         Picture         =   "frmMain.frx":5D0C
          Style           =   1  'Graphical
          TabIndex        =   28
          TabStop         =   0   'False
@@ -1045,7 +1045,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   4200
-         Picture         =   "Main.frx":614E
+         Picture         =   "frmMain.frx":614E
          Style           =   1  'Graphical
          TabIndex        =   25
          TabStop         =   0   'False
@@ -1065,7 +1065,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   3600
-         Picture         =   "Main.frx":6590
+         Picture         =   "frmMain.frx":6590
          Style           =   1  'Graphical
          TabIndex        =   14
          TabStop         =   0   'False
@@ -1232,7 +1232,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   6240
-         Picture         =   "Main.frx":69D2
+         Picture         =   "frmMain.frx":69D2
          Style           =   1  'Graphical
          TabIndex        =   29
          TabStop         =   0   'False
@@ -1293,7 +1293,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   1200
-         Picture         =   "Main.frx":6E14
+         Picture         =   "frmMain.frx":6E14
          Style           =   1  'Graphical
          TabIndex        =   6
          TabStop         =   0   'False
@@ -1314,7 +1314,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   570
          Left            =   600
-         Picture         =   "Main.frx":7256
+         Picture         =   "frmMain.frx":7256
          Style           =   1  'Graphical
          TabIndex        =   3
          TabStop         =   0   'False
@@ -1326,7 +1326,7 @@ Begin VB.Form frmMain
          CausesValidation=   0   'False
          Height          =   570
          Left            =   0
-         Picture         =   "Main.frx":7460
+         Picture         =   "frmMain.frx":7460
          Style           =   1  'Graphical
          TabIndex        =   2
          TabStop         =   0   'False

@@ -23,7 +23,7 @@ Begin VB.Form frmAbout
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   240
-      Picture         =   "About.frx":0000
+      Picture         =   "frmAbout.frx":0000
       ScaleHeight     =   337.12
       ScaleMode       =   0  'User
       ScaleWidth      =   337.12
