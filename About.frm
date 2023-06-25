@@ -37,7 +37,7 @@ Begin VB.Form frmAbout
       Default         =   -1  'True
       Height          =   945
       Left            =   4320
-      TabIndex        =   0
+      TabIndex        =   4
       Top             =   960
       Width           =   1500
    End
@@ -70,7 +70,7 @@ Begin VB.Form frmAbout
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   1320
       Width           =   3855
    End
@@ -79,7 +79,7 @@ Begin VB.Form frmAbout
       ForeColor       =   &H00000000&
       Height          =   480
       Left            =   1050
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   240
       Width           =   3885
    End
@@ -87,7 +87,7 @@ Begin VB.Form frmAbout
       Caption         =   "Version"
       Height          =   225
       Left            =   1050
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   780
       Width           =   3885
    End
