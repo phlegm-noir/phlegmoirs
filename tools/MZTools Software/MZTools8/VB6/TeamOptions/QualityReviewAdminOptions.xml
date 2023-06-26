@@ -92,7 +92,7 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
-        <Description>Class fields must start with "m_", use type prefix and Pascal case</Description>
+        <Description>Class fields fields = m[type][PascalCase]</Description>
         <Kind>ClassFieldProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -101,7 +101,7 @@
         <Explanation />
         <HowToFix />
         <Type>1</Type>
-        <Prefix1>m_</Prefix1>
+        <Prefix1>m</Prefix1>
         <Prefix2>$P[TYPE_TAG]</Prefix2>
         <Case>Pascal</Case>
         <Suffix1 />

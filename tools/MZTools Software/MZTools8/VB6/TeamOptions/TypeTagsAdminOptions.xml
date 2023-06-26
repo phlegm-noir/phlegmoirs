@@ -53,5 +53,10 @@
       <TypeName>Double</TypeName>
       <Tag>d</Tag>
     </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Variant</TypeName>
+      <Tag>v</Tag>
+    </TypeTag>
   </TypeTags>
 </Options>
