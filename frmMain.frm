@@ -3572,6 +3572,12 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 Public Sub ImageSetZoom(iZoom As Integer)
+      If iZoom > sliZoom.Max Then
+            iZoom = sliZoom.Max
+      ElseIf iZoom < 0 Then
+            iZoom = 0
+      End If
+      
       gtImageData.OutPic.Move gtImageData.OutPic.Left, gtImageData.OutPic.Top, _
             gtImageData.DefaultWidth * CSng(iZoom) / 100#, gtImageData.DefaultHeight * CSng(iZoom) / 100#
       Caption = agEditor.tag & "  (" & iZoom & "%)"
@@ -5386,17 +5392,17 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
       ' This is called from modPhlegmoirs.TrackMouseWheel
       ' It acts on picEditor while in picture mode.
       
-      Dim iWheelMoveIncrement As Integer
-      ' iWheelMoveIncrement will be the positive distance that the wheel moves a picture.
-      iWheelMoveIncrement = -MOVE_INCREMENT * 3 * Abs(iWheelTurn) * sliZoom.Value / 100
+      Dim lWheelMoveIncrement As Long
+      ' lWheelMoveIncrement will be the positive distance that the wheel moves a picture.
+      lWheelMoveIncrement = -MOVE_INCREMENT * 3 * Abs(CLng(iWheelTurn)) * sliZoom.Value / 100
       
       With gtImageData.OutPic
             ' Wheel scroll up = move picture down = make Top value HIGHER
             ' ...but not to rise above zero.
             If iVirtKeys = 0 And iWheelTurn > 0 Then
                   If gtImageData.OutPic.Height > gtImageData.SurroundingBox.ScaleHeight Then
-                        If .Top < -iWheelMoveIncrement Then
-                              .Top = .Top + iWheelMoveIncrement
+                        If .Top < -lWheelMoveIncrement Then
+                              .Top = .Top + lWheelMoveIncrement
                         ElseIf .Top < 0 Then
                               .Top = 0
                         End If
@@ -5409,8 +5415,8 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
                   ' ...the bottom value not to fall below the bottom value of its container.
                   
                   If gtImageData.OutPic.Height > gtImageData.SurroundingBox.ScaleHeight Then
-                        If .Top + .Height > .Container.Height + iWheelMoveIncrement Then
-                              .Top = .Top - iWheelMoveIncrement
+                        If .Top + .Height > .Container.Height + lWheelMoveIncrement Then
+                              .Top = .Top - lWheelMoveIncrement
                         ElseIf .Top + .Height > .Container.Height Then
                               .Top = .Container.Height - .Height
                         End If
