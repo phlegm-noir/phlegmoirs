@@ -94,16 +94,20 @@ End Sub
 Private Sub Form_Load()
       gbFullScreenMode = True
       Set gtImageData.OutPic = Image1
+      Set gtImageData.SurroundingBox = picFullScreen
       
-      picFullScreen.Move 0, 0, ScaleWidth, ScaleHeight
-      CopyDimensions
+      picFullScreen.Move 0, 0, Screen.Width, Screen.Height
       Image1.Picture = frmMain.Image1.Picture
+      If geImageSizingMode = eImageSizingMode.AlwaysFit Then
+            frmMain.ImageZoomFit gtImageData.OutPic.Picture, frmMain.agEditor.tag
+      Else
+            CopyDimensions
+      End If
       
       lblFileNameZoom.Left = picFullScreen.Width - lblFileNameZoom.Width
       lblFileNameZoom = frmMain.Caption & "  "
       
-      glOldfrmFullScreenProc = SetWindowLong(hwnd, GWL_WNDPROC, _
-            AddressOf TrackMouseWheel)
+      glOldfrmFullScreenProc = SetWindowLong(hwnd, GWL_WNDPROC, AddressOf TrackMouseWheel)
 End Sub
 
 Private Sub Form_Resize()
@@ -120,6 +124,10 @@ Private Sub Form_Unload(Cancel As Integer)
             frmMain.Image1.Picture = .Picture
       End With
       Set gtImageData.OutPic = frmMain.Image1
+      Set gtImageData.SurroundingBox = frmMain.picEditor
+      If geImageSizingMode = eImageSizingMode.AlwaysFit Then
+            frmMain.ImageZoomFit gtImageData.OutPic.Picture, frmMain.agEditor.tag
+      End If
       gbFullScreenMode = False
       frmMain.Show
 End Sub
@@ -188,14 +196,14 @@ Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
                               RedoCaption
                         End If
                   Case vbKey0, 106 ' 0 and Keypad "*" -- reset position and size.
-                        .value = 100
+                        .Value = 100
                         RedoCaption
                         Image1.Move 0, 0, gtImageData.DefaultWidth, gtImageData.DefaultHeight
                   Case 103, 55   ' 7 and Keypad 7
-                        .value = .value / 2
+                        .Value = .Value / 2
                         RedoCaption
                   Case 104, 56   ' 8 and Keypad 8
-                        .value = .value * 2
+                        .Value = .Value * 2
                         RedoCaption
                   Case vbKeyDown
                         Image1.Top = Image1.Top + MOVE_INCREMENT
@@ -254,6 +262,6 @@ Private Sub picfullscreen_MouseUp(Button As Integer, Shift As Integer, X As Sing
 End Sub
 
 Private Sub RedoCaption()
-      lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.value & "%)  "
+      lblFileNameZoom = frmMain.agEditor.tag & " (" & frmMain.sliZoom.Value & "%)  "
 End Sub
 

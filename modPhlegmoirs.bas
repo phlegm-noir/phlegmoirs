@@ -6,7 +6,7 @@ Option Explicit
 ' Global Settings
 ' *************************************************************
 
-Public Const REGISTRY_VERSION = "0.19.0" ' Not the current build number, but the last time I changed the registry structure.
+Public Const REGISTRY_VERSION = "0.21.0" ' Not the current build number, but the last time I changed the registry structure.
 Public Const LOG_TO_FILE As Boolean = False
 Public Const MINIMUM_LOG_LEVEL As Integer = 1
 Public Const DEBUGGING As Boolean = False
@@ -74,6 +74,7 @@ Public Type TWindowPrefs
       ShowToolBar As Boolean
       ShowFind As Boolean
       ImageZoom As Integer
+      ImageSizingMode As eImageSizingMode
 End Type
 
 Public Type TAllPrefs
@@ -115,6 +116,7 @@ End Type
 
 Public Type TImageData
       OutPic As Object
+      SurroundingBox As Object
       DefaultHeight As Long
       DefaultWidth As Long
       PrevX As Single
@@ -192,6 +194,11 @@ Enum eOverwrite
       Yes = True
       No = False
 End Enum
+
+Enum eImageSizingMode
+      AlwaysFit = 0
+      Default100 = 1
+End Enum
       
 ' *************************************************************
 ' Global Variables
@@ -210,6 +217,7 @@ Public geEditorMode As eViewMode
 Public giTextEncoding As Integer
 Public gbFullScreenMode As Boolean
 Public gsCommandFile As String
+Public geImageSizingMode As eImageSizingMode
 
 Public Const MOVE_INCREMENT = -512
 

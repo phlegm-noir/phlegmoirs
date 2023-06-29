@@ -13,6 +13,7 @@ Begin VB.Form frmMain
    Icon            =   "frmMain.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    ScaleHeight     =   8250
    ScaleWidth      =   11760
    StartUpPosition =   3  'Windows Default
@@ -22,14 +23,14 @@ Begin VB.Form frmMain
       Left            =   2640
       ScaleHeight     =   6960
       ScaleWidth      =   8535
-      TabIndex        =   42
+      TabIndex        =   43
       TabStop         =   0   'False
       Top             =   840
       Width           =   8535
       Begin TabDlg.SSTab sstProperties 
          Height          =   6375
          Left            =   240
-         TabIndex        =   44
+         TabIndex        =   45
          Top             =   360
          Visible         =   0   'False
          Width           =   6615
@@ -70,14 +71,14 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   3135
             Left            =   240
-            TabIndex        =   45
+            TabIndex        =   46
             Top             =   480
             Width           =   6135
             Begin VB.CommandButton btnOpenDefault 
                Caption         =   "&Open"
                Height          =   375
                Left            =   4440
-               TabIndex        =   57
+               TabIndex        =   58
                Top             =   2400
                Width           =   1215
             End
@@ -95,7 +96,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   1
                Left            =   1440
-               TabIndex        =   56
+               TabIndex        =   57
                Top             =   2400
                UseMnemonic     =   0   'False
                Width           =   2895
@@ -114,7 +115,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   0
                Left            =   120
-               TabIndex        =   46
+               TabIndex        =   47
                Top             =   360
                Width           =   45
             End
@@ -133,7 +134,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   2
                Left            =   1440
-               TabIndex        =   48
+               TabIndex        =   49
                Top             =   840
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -153,7 +154,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   3
                Left            =   1440
-               TabIndex        =   50
+               TabIndex        =   51
                Top             =   1200
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -173,7 +174,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   4
                Left            =   1440
-               TabIndex        =   52
+               TabIndex        =   53
                Top             =   1560
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -193,7 +194,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   5
                Left            =   1440
-               TabIndex        =   54
+               TabIndex        =   55
                Top             =   1920
                UseMnemonic     =   0   'False
                Width           =   1935
@@ -213,7 +214,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   4
                Left            =   240
-               TabIndex        =   47
+               TabIndex        =   48
                Top             =   840
                Width           =   1005
             End
@@ -232,7 +233,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   5
                Left            =   240
-               TabIndex        =   49
+               TabIndex        =   50
                Top             =   1200
                Width           =   1005
             End
@@ -251,7 +252,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   6
                Left            =   240
-               TabIndex        =   51
+               TabIndex        =   52
                Top             =   1560
                Width           =   1005
             End
@@ -270,7 +271,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   7
                Left            =   240
-               TabIndex        =   53
+               TabIndex        =   54
                Top             =   1920
                Width           =   1005
             End
@@ -289,7 +290,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   8
                Left            =   240
-               TabIndex        =   55
+               TabIndex        =   56
                Top             =   2400
                Width           =   1125
             End
@@ -298,7 +299,7 @@ Begin VB.Form frmMain
             Caption         =   "ID3 tag info"
             Height          =   2415
             Left            =   240
-            TabIndex        =   58
+            TabIndex        =   59
             Top             =   3720
             Width           =   6135
             Begin VB.Label lblPropValue 
@@ -315,7 +316,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   9
                Left            =   1440
-               TabIndex        =   66
+               TabIndex        =   67
                Top             =   1800
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -334,7 +335,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   8
                Left            =   1440
-               TabIndex        =   64
+               TabIndex        =   65
                Top             =   1320
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -353,7 +354,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   7
                Left            =   1440
-               TabIndex        =   62
+               TabIndex        =   63
                Top             =   840
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -372,7 +373,7 @@ Begin VB.Form frmMain
                Height          =   375
                Index           =   6
                Left            =   1440
-               TabIndex        =   60
+               TabIndex        =   61
                Top             =   360
                UseMnemonic     =   0   'False
                Width           =   2655
@@ -392,7 +393,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   9
                Left            =   480
-               TabIndex        =   63
+               TabIndex        =   64
                Top             =   1320
                Width           =   735
             End
@@ -411,7 +412,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   2
                Left            =   480
-               TabIndex        =   61
+               TabIndex        =   62
                Top             =   840
                Width           =   735
             End
@@ -430,7 +431,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   1
                Left            =   480
-               TabIndex        =   65
+               TabIndex        =   66
                Top             =   1800
                Width           =   735
             End
@@ -449,7 +450,7 @@ Begin VB.Form frmMain
                Height          =   255
                Index           =   3
                Left            =   480
-               TabIndex        =   59
+               TabIndex        =   60
                Top             =   360
                Width           =   735
             End
@@ -458,7 +459,7 @@ Begin VB.Form frmMain
       Begin agRichEditBox.agRichEdit agEditor 
          Height          =   5535
          Left            =   5520
-         TabIndex        =   43
+         TabIndex        =   44
          Top             =   -240
          Width           =   4215
          _ExtentX        =   7435
@@ -485,6 +486,7 @@ Begin VB.Form frmMain
          Height          =   4560
          Left            =   0
          MousePointer    =   15  'Size All
+         Stretch         =   -1  'True
          Top             =   0
          Visible         =   0   'False
          Width           =   3600
@@ -571,7 +573,7 @@ Begin VB.Form frmMain
       Left            =   0
       ScaleHeight     =   6960
       ScaleWidth      =   5100
-      TabIndex        =   30
+      TabIndex        =   31
       TabStop         =   0   'False
       Top             =   600
       Width           =   5100
@@ -582,7 +584,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "frmMain.frx":4DA6
          Style           =   1  'Graphical
-         TabIndex        =   41
+         TabIndex        =   42
          TabStop         =   0   'False
          ToolTipText     =   "Scroll To Top"
          Top             =   420
@@ -595,7 +597,7 @@ Begin VB.Form frmMain
          Left            =   1824
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   38
+         TabIndex        =   39
          TabStop         =   0   'False
          ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
          Top             =   420
@@ -608,7 +610,7 @@ Begin VB.Form frmMain
          Left            =   1560
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   37
+         TabIndex        =   38
          TabStop         =   0   'False
          ToolTipText     =   "Delete File (Del)"
          Top             =   420
@@ -621,7 +623,7 @@ Begin VB.Form frmMain
          Left            =   1296
          MaskColor       =   &H80000000&
          Style           =   1  'Graphical
-         TabIndex        =   36
+         TabIndex        =   37
          TabStop         =   0   'False
          ToolTipText     =   "Refresh Files (F5)"
          Top             =   420
@@ -634,7 +636,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "frmMain.frx":4EF0
          Style           =   1  'Graphical
-         TabIndex        =   35
+         TabIndex        =   36
          TabStop         =   0   'False
          ToolTipText     =   "Reverse the sort order (Ctrl+H)"
          Top             =   420
@@ -647,7 +649,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "frmMain.frx":4FF2
          Style           =   1  'Graphical
-         TabIndex        =   34
+         TabIndex        =   35
          TabStop         =   0   'False
          ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
          Top             =   420
@@ -660,7 +662,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "frmMain.frx":537C
          Style           =   1  'Graphical
-         TabIndex        =   33
+         TabIndex        =   34
          TabStop         =   0   'False
          ToolTipText     =   "Go forward a directory (Alt+Right)"
          Top             =   420
@@ -680,7 +682,7 @@ Begin VB.Form frmMain
          ItemData        =   "frmMain.frx":54C6
          Left            =   0
          List            =   "frmMain.frx":54C8
-         TabIndex        =   31
+         TabIndex        =   32
          Text            =   "*"
          ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
          Top             =   100
@@ -689,7 +691,7 @@ Begin VB.Form frmMain
       Begin MSComctlLib.ListView lvwBrowser 
          Height          =   4335
          Left            =   0
-         TabIndex        =   39
+         TabIndex        =   40
          Tag             =   "c:\test\"
          Top             =   720
          Width           =   2295
@@ -761,7 +763,7 @@ Begin VB.Form frmMain
          MaskColor       =   &H80000000&
          Picture         =   "frmMain.frx":57E4
          Style           =   1  'Graphical
-         TabIndex        =   32
+         TabIndex        =   33
          TabStop         =   0   'False
          ToolTipText     =   "Go back a directory (Alt+Left)"
          Top             =   420
@@ -771,7 +773,7 @@ Begin VB.Form frmMain
          BackStyle       =   0  'Transparent
          Height          =   25005
          Left            =   2295
-         TabIndex        =   40
+         TabIndex        =   41
          Top             =   0
          Width           =   375
       End
@@ -796,13 +798,34 @@ Begin VB.Form frmMain
       TabStop         =   0   'False
       Top             =   0
       Width           =   11760
+      Begin VB.CommandButton btnFitImage 
+         Appearance      =   0  'Flat
+         Caption         =   "Fit"
+         BeginProperty Font 
+            Name            =   "Small Fonts"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   252
+         Left            =   2259
+         TabIndex        =   26
+         TabStop         =   0   'False
+         ToolTipText     =   "Fit Image To Window"
+         Top             =   360
+         Visible         =   0   'False
+         Width           =   459
+      End
       Begin VB.PictureBox picQuery 
          ClipControls    =   0   'False
          Height          =   600
          Left            =   4800
          ScaleHeight     =   540
          ScaleWidth      =   4035
-         TabIndex        =   15
+         TabIndex        =   10
          TabStop         =   0   'False
          Top             =   -25
          Visible         =   0   'False
@@ -812,7 +835,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   24
+            TabIndex        =   19
             ToolTipText     =   "Replace"
             Top             =   290
             Visible         =   0   'False
@@ -823,7 +846,7 @@ Begin VB.Form frmMain
             Left            =   480
             MaxLength       =   50
             OLEDropMode     =   1  'Manual
-            TabIndex        =   16
+            TabIndex        =   11
             ToolTipText     =   "Search within file (Ctrl+F)"
             Top             =   0
             Width           =   2175
@@ -842,7 +865,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   175
             Left            =   3840
-            TabIndex        =   17
+            TabIndex        =   12
             TabStop         =   0   'False
             ToolTipText     =   "Close Find Dialog"
             Top             =   0
@@ -864,7 +887,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "frmMain.frx":592E
             Style           =   1  'Graphical
-            TabIndex        =   21
+            TabIndex        =   16
             TabStop         =   0   'False
             ToolTipText     =   "Find Next (F3)"
             Top             =   270
@@ -886,7 +909,7 @@ Begin VB.Form frmMain
             MaskColor       =   &H80000000&
             Picture         =   "frmMain.frx":5A78
             Style           =   1  'Graphical
-            TabIndex        =   22
+            TabIndex        =   17
             TabStop         =   0   'False
             ToolTipText     =   "Find Previous (Shift+F3)"
             Top             =   270
@@ -907,7 +930,7 @@ Begin VB.Form frmMain
             Height          =   285
             Left            =   2640
             Style           =   1  'Graphical
-            TabIndex        =   19
+            TabIndex        =   14
             TabStop         =   0   'False
             ToolTipText     =   "More search options (Alt+period)"
             Top             =   0
@@ -929,7 +952,7 @@ Begin VB.Form frmMain
             Left            =   2640
             MaskColor       =   &H80000000&
             Picture         =   "frmMain.frx":5BC2
-            TabIndex        =   23
+            TabIndex        =   18
             TabStop         =   0   'False
             ToolTipText     =   "Replace (Ctrl+R)"
             Top             =   270
@@ -948,7 +971,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   375
             Left            =   3480
-            TabIndex        =   20
+            TabIndex        =   15
             Top             =   120
             Width           =   570
          End
@@ -966,7 +989,7 @@ Begin VB.Form frmMain
             EndProperty
             Height          =   180
             Left            =   30
-            TabIndex        =   18
+            TabIndex        =   13
             Top             =   60
             Width           =   465
          End
@@ -984,7 +1007,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   175
          Left            =   6480
-         TabIndex        =   9
+         TabIndex        =   23
          TabStop         =   0   'False
          ToolTipText     =   "Hide Toolbar (F7)"
          Top             =   120
@@ -1005,7 +1028,7 @@ Begin VB.Form frmMain
          Left            =   6240
          Picture         =   "frmMain.frx":5D0C
          Style           =   1  'Graphical
-         TabIndex        =   28
+         TabIndex        =   29
          TabStop         =   0   'False
          Top             =   240
          Visible         =   0   'False
@@ -1026,7 +1049,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   4
+         TabIndex        =   5
          TabStop         =   0   'False
          ToolTipText     =   "Edit This File"
          Top             =   0
@@ -1047,7 +1070,7 @@ Begin VB.Form frmMain
          Left            =   4200
          Picture         =   "frmMain.frx":614E
          Style           =   1  'Graphical
-         TabIndex        =   25
+         TabIndex        =   20
          TabStop         =   0   'False
          ToolTipText     =   "Next file down (Ctrl+""]"")"
          Top             =   0
@@ -1067,7 +1090,7 @@ Begin VB.Form frmMain
          Left            =   3600
          Picture         =   "frmMain.frx":6590
          Style           =   1  'Graphical
-         TabIndex        =   14
+         TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Next file up (Ctrl+""["")"
          Top             =   0
@@ -1087,7 +1110,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   252
          Left            =   3240
-         TabIndex        =   11
+         TabIndex        =   25
          TabStop         =   0   'False
          ToolTipText     =   "Zoom In"
          Top             =   320
@@ -1095,7 +1118,7 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton btnZoomDefault 
          Appearance      =   0  'Flat
-         Caption         =   "100%"
+         Caption         =   "100"
          BeginProperty Font 
             Name            =   "Small Fonts"
             Size            =   6.75
@@ -1106,13 +1129,13 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   252
-         Left            =   2400
-         TabIndex        =   12
+         Left            =   2718
+         TabIndex        =   28
          TabStop         =   0   'False
          ToolTipText     =   "Reset Zoom"
          Top             =   360
          Visible         =   0   'False
-         Width           =   615
+         Width           =   459
       End
       Begin VB.CommandButton btnZoomOut 
          Appearance      =   0  'Flat
@@ -1128,7 +1151,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   252
          Left            =   2400
-         TabIndex        =   10
+         TabIndex        =   24
          TabStop         =   0   'False
          ToolTipText     =   "Zoom Out"
          Top             =   320
@@ -1190,7 +1213,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   6120
          Style           =   1  'Graphical
-         TabIndex        =   26
+         TabIndex        =   21
          TabStop         =   0   'False
          ToolTipText     =   "Toggle Read-Only mode"
          Top             =   0
@@ -1212,7 +1235,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   6480
          Style           =   1  'Graphical
-         TabIndex        =   27
+         TabIndex        =   22
          TabStop         =   0   'False
          ToolTipText     =   "Options..."
          Top             =   0
@@ -1234,7 +1257,7 @@ Begin VB.Form frmMain
          Left            =   6240
          Picture         =   "frmMain.frx":69D2
          Style           =   1  'Graphical
-         TabIndex        =   29
+         TabIndex        =   30
          TabStop         =   0   'False
          Top             =   240
          Visible         =   0   'False
@@ -1274,7 +1297,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   5
+         TabIndex        =   4
          TabStop         =   0   'False
          ToolTipText     =   "Full Screen (F11)"
          Top             =   0
@@ -1349,7 +1372,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   180
          Left            =   2520
-         TabIndex        =   13
+         TabIndex        =   27
          Top             =   360
          Width           =   960
       End
@@ -1358,7 +1381,7 @@ Begin VB.Form frmMain
       Align           =   2  'Align Bottom
       Height          =   300
       Left            =   0
-      TabIndex        =   67
+      TabIndex        =   68
       Top             =   7950
       Width           =   11760
       _ExtentX        =   20743
@@ -1556,6 +1579,10 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuBrowserRefresh 
          Caption         =   "&Refresh"
          Shortcut        =   {F5}
+      End
+      Begin VB.Menu mnuViewFitImage 
+         Caption         =   "&Always Fit Images"
+         Checked         =   -1  'True
       End
       Begin VB.Menu mnuViewOptions 
          Caption         =   "Options..."
@@ -2518,6 +2545,10 @@ Private Sub btnfindprev_MouseMove(Button As Integer, Shift As Integer, X As Sing
       staTusBar1.Panels(eStat.Tips).Text = btnFindPrev.ToolTipText
 End Sub
 
+Private Sub btnFitImage_Click()
+      ImageZoomFit gtImageData.OutPic.Picture, agEditor.tag
+End Sub
+
 Private Sub btnFolderUp_Click()
       ' When we go up a dir, preserve the existing filter except in a drives list.
       Dim sParentDir As String
@@ -2744,7 +2775,7 @@ Private Sub btnToolbarClose_Click()
 End Sub
 
 Private Sub btnZoomDefault_Mousedown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-      sliZoom.Value = 100
+      ImageSetZoom 100
       Image1.Move 0, 0, gtImageData.DefaultWidth, gtImageData.DefaultHeight
 End Sub
 
@@ -2977,15 +3008,13 @@ End Function
 
 Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
       
-      Dim sCaption As String
-
       If mbEditorLoading Then agEditor.Text = ""
       
       If Trim(sFileName) = "" Then ' Blank means start a new file.
             mnuFileNew_Click
             Exit Function
       ElseIf Not FileExists(sFileName) Then
-            frmMain.Caption = "ERROR: file does not exist."
+            SetCaption "ERROR: file does not exist."
             agEditor.tag = ""
             Exit Function
       End If
@@ -3002,7 +3031,7 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                         iEncoding = IsUnicodeFile(sFileName)
                         
                         If iEncoding = eTextEncoding.ERROR Then
-                              frmMain.Caption = "Could not load file: " + sFileName
+                              SetCaption "Could not load file: " + sFileName
                               agEditor.tag = ""
                               giTextEncoding = eTextEncoding.ASCII
                               staTusBar1.Panels(eStat.encoding) = "ASCII"
@@ -3035,32 +3064,30 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
                         EditorLoadFile = True
                   End If
             
-                  sCaption = sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
+                  SetCaption sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
                         & FileModifiedTime(sFileName) & ")"
                   
             Case eViewMode.PictureView
                   mbEditorLoading = True
                   
-                  Dim oDefaultWidth, oDefaultHeight
                   EditorLoadFile = True
                   On Error Resume Next
-                  gtImageData.OutPic.Picture = LoadPicture(sFileName)
-                  Const TWIP_CONVERSION = 0.567
-                  oDefaultWidth = gtImageData.OutPic.Picture.Width * TWIP_CONVERSION
-                  oDefaultHeight = gtImageData.OutPic.Picture.Height * TWIP_CONVERSION
-                  If Width > 65535 Then
-                        oDefaultWidth = 65535
+                  Dim oPic As IPictureDisp
+                  Set gtImageData.OutPic.Picture = Nothing
+                  Set oPic = LoadPicture(sFileName)
+                  gtImageData.DefaultWidth = ScaleX(oPic.Width, vbHimetric, vbTwips)
+                  gtImageData.DefaultHeight = ScaleY(oPic.Height, vbHimetric, vbTwips)
+                  
+                  If geImageSizingMode = eImageSizingMode.Default100 Then
+                        gtImageData.OutPic.Picture = oPic
+                        ImageSetZoom (sliZoom.Value)
+                  
+                  ElseIf geImageSizingMode = eImageSizingMode.AlwaysFit Then
+                        ImageZoomFit oPic, sFileName
                   End If
-                  If oDefaultHeight >= 65535 Then
-                        oDefaultHeight = 65535
-                  End If
-                  gtImageData.DefaultWidth = oDefaultWidth
-                  gtImageData.DefaultHeight = oDefaultHeight
-                  ImageSetZoom (sliZoom.Value)
-                  sCaption = sFileName & "  (" & sliZoom.Value & "%)"
                   
                   If Err > 0 Then
-                        Caption = "ERROR: " & sFileName & ", picture couldn't load"
+                        SetCaption "ERROR: " & sFileName & ", picture couldn't load"
                         EditorLoadFile = False
                   End If
                   On Error GoTo 0
@@ -3068,24 +3095,18 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
             Case eViewMode.PropertiesView
                   mbEditorLoading = True
                   LoadPropertiesView sFileName
-                  sCaption = sFileName
+                  SetCaption sFileName
                   EditorLoadFile = True
       End Select
             
       If EditorLoadFile Or GetFileSize(sFileName) = 0 Then  ' Success!
             agEditor.tag = sFileName
-            frmMain.Caption = sCaption
-            If gbFullScreenMode Then
-                  frmFullScreen.lblFileNameZoom = sCaption & "  "
-            End If
             staTusBar1.Panels(eStat.Modified) = ""
             agEditor.SetSelection 0, 0
             AddToHistorySmartly sFileName
       
       Else  ' Miscellaneous Failure!  agEditor returns no clues as to the problem.
-            frmMain.Caption = "Could not load file. Command() = " & Chr(34) & Command() & Chr(34) _
-                  & "; File = " & Chr(34) & sFileName & Chr(34)
-            If gbFullScreenMode Then frmFullScreen.lblFileNameZoom = frmMain.Caption
+            SetCaption "Could not load file. Command() = """ & Command() & """; File = """ & sFileName & """"
             agEditor.tag = ""
             giTextEncoding = eTextEncoding.ASCII
             staTusBar1.Panels(eStat.encoding) = "ASCII"
@@ -3093,6 +3114,13 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
       
       mbEditorLoading = False
 End Function
+
+Private Sub SetCaption(sCaption As String)
+      frmMain.Caption = sCaption
+      If gbFullScreenMode Then
+            frmFullScreen.lblFileNameZoom = sCaption & "  "
+      End If
+End Sub
 
 Private Sub EditorSetMode(iMode As eViewMode)
 
@@ -3121,6 +3149,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnZoomOut.Move 2400, 320, 375, 252
                   btnZoomOut.Caption = "-"
                   btnZoomDefault.Visible = False
+                  btnFitImage.Visible = False
                   
                   staTusBar1.Panels(eStat.encoding).Visible = True
                   staTusBar1.Panels(eStat.Modified).Visible = True
@@ -3140,12 +3169,14 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnEdit.Visible = False
                   If Not mbHideFind Then picQuery.Visible = False
                   
+                  '4 buttons x-pos: 1800, 2259, 2718, 3177
                   sliZoom.Visible = True
-                  btnZoomIn.Move 3000, 360, 615, 252
+                  btnZoomIn.Move 3177, 360, 459, 252
                   btnZoomIn.Caption = "z+"
-                  btnZoomOut.Move 1800, 360, 615, 252
+                  btnZoomOut.Move 1800, 360, 459, 252
                   btnZoomOut.Caption = "z-"
                   btnZoomDefault.Visible = True
+                  btnFitImage.Visible = True
                   
                   If glOldpicEditorProc = 0 Then
                         glOldpicEditorProc = SetWindowLong(picEditor.hwnd, GWL_WNDPROC, _
@@ -3178,6 +3209,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnZoomOut.Move 2400, 320, 375, 252
                   btnZoomOut.Caption = "-"
                   btnZoomDefault.Visible = False
+                  btnFitImage.Visible = False
                   
                   staTusBar1.Panels(eStat.encoding).Visible = False
                   staTusBar1.Panels(eStat.Modified).Visible = False
@@ -3285,6 +3317,7 @@ Private Sub Form_Load()
             
       Set goFso = CreateObject("Scripting.FileSystemObject") ' Just one of these will do.
       Set gtImageData.OutPic = Image1
+      Set gtImageData.SurroundingBox = picEditor
       gtBrowserData.ListEmpty = True
       geEditorMode = Text
       
@@ -3471,6 +3504,7 @@ Private Sub GatherWindowPrefs(ByRef rtPrefs As TWindowPrefs)
             .ShowToolBar = picToolBar.Visible
             .ShowFind = Not mbHideFind
             .ImageZoom = sliZoom.Value
+            .ImageSizingMode = geImageSizingMode
       End With
 End Sub
 
@@ -3538,17 +3572,41 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 End Sub
 
 Public Sub ImageSetZoom(iZoom As Integer)
-      gtImageData.OutPic.Stretch = True
       gtImageData.OutPic.Move gtImageData.OutPic.Left, gtImageData.OutPic.Top, _
             gtImageData.DefaultWidth * CSng(iZoom) / 100#, gtImageData.DefaultHeight * CSng(iZoom) / 100#
-      ' miImageZoom = iZoom
       Caption = agEditor.tag & "  (" & iZoom & "%)"
+      sliZoom.Value = iZoom
+End Sub
+
+Public Sub ImageZoomFit(ByRef roPic As IPictureDisp, ByVal sFileName As String)
+      If roPic = 0 Then Exit Sub
+      Dim dRatio As Double, dAreaRatio As Double
+      Dim lTop As Long, lLeft As Long, lHeight As Long, lWidth As Long
+      dRatio = CDbl(gtImageData.DefaultWidth) / gtImageData.DefaultHeight
+      dAreaRatio = CDbl(gtImageData.SurroundingBox.ScaleWidth) / gtImageData.SurroundingBox.ScaleHeight
+      
+      If dRatio > dAreaRatio Then
+            ' pic is more wide than long, compared to its space
+            lLeft = 0
+            lWidth = gtImageData.SurroundingBox.ScaleWidth
+            lHeight = lWidth / dRatio
+            lTop = gtImageData.SurroundingBox.ScaleHeight / 2 - lHeight / 2
+      Else
+            lTop = 0
+            lHeight = gtImageData.SurroundingBox.ScaleHeight
+            lWidth = lHeight * dRatio
+            lLeft = gtImageData.SurroundingBox.ScaleWidth / 2 - lWidth / 2
+      End If
+      gtImageData.OutPic.Move lLeft, lTop, lWidth, lHeight
+      gtImageData.OutPic.Picture = roPic
+      sliZoom.Value = Format(CDbl(lHeight) / gtImageData.DefaultHeight * 100, "#,#0")
+      SetCaption sFileName & "  (" & sliZoom.Value & "%)"
 End Sub
 
 Public Sub ImageZoomIn(iStep As Integer)
       ' goes up to the next zoom divisible by iStep
       If sliZoom.Value >= sliZoom.Max Then Exit Sub
-      sliZoom.Value = sliZoom.Value + (iStep - (sliZoom.Value Mod iStep))
+      ImageSetZoom sliZoom.Value + (iStep - (sliZoom.Value Mod iStep))
 End Sub
 
 Public Sub ImageZoomOut(iStep As Integer)
@@ -3557,9 +3615,9 @@ Public Sub ImageZoomOut(iStep As Integer)
       If sliZoom.Value <= 0 Then Exit Sub
       
       If sliZoom.Value Mod iStep = 0 Then
-            sliZoom.Value = sliZoom.Value - iStep
+            ImageSetZoom sliZoom.Value - iStep
       Else
-            sliZoom.Value = sliZoom.Value - (sliZoom.Value Mod iStep)
+            ImageSetZoom sliZoom.Value - (sliZoom.Value Mod iStep)
       End If
 End Sub
 
@@ -3877,8 +3935,13 @@ Private Sub LoadWindowPrefs(ByRef rtPrefs As TWindowPrefs)
 
             If .ShowToolBar Then picQuery.Visible = .ShowFind
             mbHideFind = Not .ShowFind
-            sliZoom = .ImageZoom
-
+            ImageSetZoom .ImageZoom
+            geImageSizingMode = .ImageSizingMode
+            If geImageSizingMode = AlwaysFit Then
+                  mnuViewFitImage.Checked = True
+            Else
+                  mnuViewFitImage.Checked = False
+            End If
             DebugLog "Rearranging controls..."
             RearrangeControls
             DebugLog "Rearranged controls."
@@ -4564,6 +4627,15 @@ Private Sub mnuViewFilebrowser_Click()
       chkFileBrowser = Abs(chkFileBrowser.Value - 1)
 End Sub
 
+Private Sub mnuViewFitImage_Click()
+      mnuViewFitImage.Checked = Not mnuViewFitImage.Checked
+      If mnuViewFitImage.Checked Then
+            geImageSizingMode = eImageSizingMode.AlwaysFit
+      Else
+            geImageSizingMode = eImageSizingMode.Default100
+      End If
+End Sub
+
 Private Sub mnuviewfont_Click()
       btnFont_Click
 End Sub
@@ -4847,12 +4919,12 @@ Private Sub picEditor_KeyDown(KeyCode As Integer, Shift As Integer)
                         ImageZoomOut sliZoom.LargeChange
                   End If
             Case vbKey0, 106 ' 0 and Keypad "*" -- reset position and size.
-                  sliZoom.Value = 100
+                  ImageSetZoom 100
                   Image1.Move 0, 0, gtImageData.DefaultWidth, gtImageData.DefaultHeight
             Case 103, 55   ' 7 and Keypad 7
-                  sliZoom.Value = sliZoom.Value / 2
+                  ImageSetZoom sliZoom.Value / 2
             Case 104, 56   ' 8 and Keypad 8
-                  sliZoom.Value = sliZoom.Value * 2
+                  ImageSetZoom sliZoom.Value * 2
             Case vbKeyDown
                   Image1.Top = Image1.Top + MOVE_INCREMENT
             Case vbKeyUp
@@ -4908,6 +4980,10 @@ Private Sub picEditor_MouseUp(Button As Integer, Shift As Integer, X As Single, 
             ' On a right click, we go to the previous picture.
             ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
             BrowserExecuteNext True
+      ElseIf geEditorMode = eViewMode.PictureView And Not gtImageData.Moved And Not gtImageData.Zoomed And _
+            Button = vbMiddleButton Then
+            
+            btnFullScreen_Click
       End If
       
       gtImageData.Zoomed = False
@@ -5029,6 +5105,8 @@ Private Sub RearrangeControls()
                   End With
                   FillStats
             End If
+      ElseIf geEditorMode = eViewMode.PictureView And geImageSizingMode = eImageSizingMode.AlwaysFit Then
+            btnFitImage_Click
       End If
       staTusBar1.Panels(eStat.Tips).Width = frmMain.Width
       
@@ -5208,10 +5286,6 @@ Private Sub ShowFileProperties(ByVal sPath As String)
       ShellExecuteEx tExInfo
 End Sub
 
-Private Sub sliZoom_Change()
-      ImageSetZoom (sliZoom.Value)
-End Sub
-
 Private Sub sliZoom_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
@@ -5320,20 +5394,28 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
             ' Wheel scroll up = move picture down = make Top value HIGHER
             ' ...but not to rise above zero.
             If iVirtKeys = 0 And iWheelTurn > 0 Then
-                  If .Top < -iWheelMoveIncrement Then
-                        .Top = .Top + iWheelMoveIncrement
-                  ElseIf .Top < 0 Then
-                        .Top = 0
+                  If gtImageData.OutPic.Height > gtImageData.SurroundingBox.ScaleHeight Then
+                        If .Top < -iWheelMoveIncrement Then
+                              .Top = .Top + iWheelMoveIncrement
+                        ElseIf .Top < 0 Then
+                              .Top = 0
+                        End If
+                  Else
+                        BrowserExecuteNext True
                   End If
             
             ElseIf iVirtKeys = 0 And iWheelTurn < 0 Then
                   ' Wheel scroll down = move picture up = make Top value LOWER.
                   ' ...the bottom value not to fall below the bottom value of its container.
                   
-                  If .Top + .Height > .Container.Height + iWheelMoveIncrement Then
-                        .Top = .Top - iWheelMoveIncrement
-                  ElseIf .Top + .Height > .Container.Height Then
-                        .Top = .Container.Height - .Height
+                  If gtImageData.OutPic.Height > gtImageData.SurroundingBox.ScaleHeight Then
+                        If .Top + .Height > .Container.Height + iWheelMoveIncrement Then
+                              .Top = .Top - iWheelMoveIncrement
+                        ElseIf .Top + .Height > .Container.Height Then
+                              .Top = .Container.Height - .Height
+                        End If
+                  Else
+                        BrowserExecuteNext
                   End If
                   
             ElseIf iVirtKeys = MK_LBUTTON Then ' Right mouse button + wheel scroll
@@ -5360,7 +5442,7 @@ Public Sub WheelInput(iWheelTurn As Integer, iVirtKeys As Integer, lx As Long, l
             ElseIf iVirtKeys = MK_RBUTTON Then ' Left mouse button + wheel scroll
                   
                   ' Picture zoom, small increment
-                  sliZoom.Value = sliZoom.Value + iWheelTurn * sliZoom.SmallChange
+                  ImageSetZoom sliZoom.Value + iWheelTurn * sliZoom.SmallChange
                   gtImageData.Zoomed = True
                   If gbFullScreenMode Then frmFullScreen.lblFileNameZoom = Caption & "  "
             End If
