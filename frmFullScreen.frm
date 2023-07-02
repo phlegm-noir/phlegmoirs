@@ -7,7 +7,7 @@ Begin VB.Form frmFullScreen
    ClientWidth     =   8475
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
+   Picture         =   "frmFullScreen.frx":0000
    ScaleHeight     =   7005
    ScaleWidth      =   8475
    WindowState     =   2  'Maximized
@@ -24,7 +24,7 @@ Begin VB.Form frmFullScreen
       Top             =   0
       Width           =   8190
       Begin VB.CommandButton btnClose 
-         Caption         =   "X"
+         Appearance      =   0  'Flat
          BeginProperty Font 
             Name            =   "Small Fonts"
             Size            =   6.75
@@ -34,19 +34,23 @@ Begin VB.Form frmFullScreen
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   175
+         Height          =   400
          Left            =   0
+         MaskColor       =   &H00FFFFFF&
+         Picture         =   "frmFullScreen.frx":039C
+         Style           =   1  'Graphical
          TabIndex        =   1
          TabStop         =   0   'False
          ToolTipText     =   "Exit Fullscreen Mode (F11 or Esc)"
          Top             =   0
-         Width           =   175
+         UseMaskColor    =   -1  'True
+         Width           =   400
       End
       Begin VB.Label lblFileNameZoom 
          Alignment       =   1  'Right Justify
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "c:\penis\penis   69%"
+         Caption         =   "c:\pics\big ol zebra.jpg   79%"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   9.75
@@ -57,10 +61,10 @@ Begin VB.Form frmFullScreen
             Strikethrough   =   0   'False
          EndProperty
          Height          =   240
-         Left            =   4200
+         Left            =   5595
          TabIndex        =   2
          Top             =   0
-         Width           =   1785
+         Width           =   2550
       End
       Begin VB.Image Image1 
          Appearance      =   0  'Flat
@@ -163,17 +167,7 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
       ' Mouse button lifted?  Stop the drag!
       gtImageData.Dragging = False
       
-      If Not gtImageData.Moved And Not gtImageData.Zoomed And Button = vbLeftButton Then
-            ' On a left click, we'll go to the next picture.  We spare no expense on ease of use.
-            frmMain.BrowserExecuteNext
-      ElseIf Not gtImageData.Moved And Not gtImageData.Zoomed And Button = vbRightButton Then
-            ' On a right click, we go to the previous picture.
-            ' Essentially, it'll means we don't need the toolbar open for picture manipulation.
-            frmMain.BrowserExecuteNext True
-      End If
-      
-      gtImageData.Moved = False
-      gtImageData.Zoomed = False
+      picfullscreen_MouseUp Button, Shift, X, Y
 End Sub
 
 Private Sub picFullScreen_KeyDown(KeyCode As Integer, Shift As Integer)
