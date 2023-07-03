@@ -14,6 +14,7 @@ Begin VB.Form frmMain
    Icon            =   "frmMain.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    ScaleHeight     =   8250
    ScaleWidth      =   11760
    StartUpPosition =   3  'Windows Default
@@ -462,6 +463,7 @@ Begin VB.Form frmMain
          Left            =   5520
          TabIndex        =   44
          Top             =   -240
+         Visible         =   0   'False
          Width           =   4215
          _ExtentX        =   7435
          _ExtentY        =   9763
@@ -786,6 +788,7 @@ Begin VB.Form frmMain
          TabIndex        =   40
          Tag             =   "c:\test\"
          Top             =   840
+         Visible         =   0   'False
          Width           =   2295
          _ExtentX        =   4048
          _ExtentY        =   7646
@@ -1034,6 +1037,7 @@ Begin VB.Form frmMain
             Left            =   3480
             TabIndex        =   15
             Top             =   120
+            Visible         =   0   'False
             Width           =   570
          End
          Begin VB.Label lblFind 
@@ -2085,7 +2089,7 @@ Private Sub agEditor_SelectionChange(ByVal lMin As Long, ByVal lMax As Long, ByV
 End Sub
 
 Private Sub AutosizeColumns()
-      If AUTOSIZE_COLUMNS Then
+      If AUTOSIZE_COLUMNS And gtBrowserData.DoneLoading Then
             SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
             SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
             SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
@@ -2172,11 +2176,11 @@ Private Sub BrowserDeleteSelected()
             Exit Sub
             
       ElseIf gtBrowserData.DrivesMode Then
-            Caption = "I WILL NOT DELETE YOUR DISK. FIND SOMEONE ELSE."
+            frmMain.Caption = "I WILL NOT DELETE YOUR DISK. FIND SOMEONE ELSE."
             Exit Sub
       
       ElseIf Not FileExists(sTheDamned) Then
-            Caption = "Can't delete what isn't there: " & sTheDamned
+            frmMain.Caption = "Can't delete what isn't there: " & sTheDamned
             Exit Sub
       End If
       
@@ -2186,29 +2190,29 @@ Private Sub BrowserDeleteSelected()
       oAttrs = GetAttr(sTheDamned)
       
       If oAttrs And vbDirectory Then
-            Caption = "This program would rather not be held responsible for mass deletions. Please use another."
+            frmMain.Caption = "This program would rather not be held responsible for mass deletions. Please use another."
             Exit Sub
             ' RmDir sTheDamned
-            ' Caption = "Folder deleted successfully: " & sTheDamned
+            ' frmMain.Caption = "Folder deleted successfully: " & sTheDamned
             ' RefreshAll
       End If
 
       iRetVal = RecycleFile(sTheDamned)
       If iRetVal <> 0 Then
-            Caption = "ERROR deleting file. Return code: " & iRetVal
+            frmMain.Caption = "ERROR deleting file. Return code: " & iRetVal
             DebugLog Caption
       Else
             If sTheDamned = agEditor.tag Then
                   agEditor.tag = ""
                   mnuFileNew_Click
             End If
-            Caption = "File deleted successfully: " & sTheDamned
+            frmMain.Caption = "File deleted successfully: " & sTheDamned
             RefreshAll
       End If
       Exit Sub
 
 DELETION_ERROR:
-      Caption = "ERROR deleting file: " & Err.Description
+      frmMain.Caption = "ERROR deleting file: " & Err.Description
       DebugLog Caption
 
 End Sub
@@ -2230,10 +2234,10 @@ Private Sub BrowserExecuteItem(ByVal oItem As MSComctlLib.ListItem)
                   End If
             
             Case eIconType.Bookmark
-                  EditorLoadFile oItem.Text, GetViewMode(oItem.Text, oItem.Icon)
+                  LoadFile oItem.Text, GetViewMode(oItem.Text, oItem.Icon)
                   
             Case Else
-                  EditorLoadFile sItemName, GetViewMode(sItemName, oItem.Icon)
+                  LoadFile sItemName, GetViewMode(sItemName, oItem.Icon)
       End Select
 End Sub
 
@@ -2293,6 +2297,7 @@ Private Sub BrowserGetBookmarks()
       Dim iIndex As Integer
       Dim oCurrentItem As ListItem
       
+      lvwBrowser.Visible = False
       lvwBrowser.ListItems.Clear
       lvwBrowser.tag = "(Bookmarks)"
       ' I'm adding the index as a Key, to avoid using real indeces.
@@ -2305,6 +2310,7 @@ Private Sub BrowserGetBookmarks()
       Next iIndex
       gtBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
       AutosizeColumns
+      lvwBrowser.Visible = True
       staTusBar1.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " bookmarks"
 End Sub
 
@@ -2320,7 +2326,8 @@ Private Function BrowserGetDrives() As Integer
       Dim iIndex As Integer, iTempKey As Integer
       Dim oCurrentItem As ListItem
       
-            
+      lvwBrowser.Visible = False
+      
       lLength = GetLogicalDriveStrings(100, sDrivesFixed)
       sDriveString = Left(sDrivesFixed, lLength)
       sDriveArray = Split(sDriveString, Chr(0)) ' "(x,x, , )" is an error.  don't put in more commas unless
@@ -2343,9 +2350,7 @@ Private Function BrowserGetDrives() As Integer
                   Case 3: eDriveIcon = Network
                   Case 4: eDriveIcon = Cdrom
             End Select
-            Set oCurrentItem = lvwBrowser.ListItems.Add( _
-                  1, , sNextDrive, eDriveIcon, eDriveIcon)
-            oCurrentItem.ListSubItems.Add , , 0
+            Set oCurrentItem = lvwBrowser.ListItems.Add(1, , sNextDrive, eDriveIcon, eDriveIcon)
             
             iIndex = iIndex + 1
             sNextDrive = TrimTrailingSlash(sDriveArray(iIndex))
@@ -2354,6 +2359,8 @@ Private Function BrowserGetDrives() As Integer
       lvwBrowser.Sorted = True
       lvwBrowser.SortKey = iTempKey
       BrowserGetDrives = iIndex - 1
+      AutosizeColumns
+      lvwBrowser.Visible = True
       
       staTusBar1.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " drives"
 End Function
@@ -2454,6 +2461,7 @@ Private Sub BrowserGetHistory()
       Dim iIndex As Integer
       Dim oCurrentItem As ListItem
       
+      lvwBrowser.Visible = False
       lvwBrowser.ListItems.Clear
       lvwBrowser.tag = "(History)"
       lvwBrowser.Sorted = False
@@ -2466,6 +2474,7 @@ Private Sub BrowserGetHistory()
       
       gtBrowserData.ListEmpty = (lvwBrowser.ListItems.Count = 0)
       If Not gtBrowserData.ListEmpty Then AutosizeColumns
+      lvwBrowser.Visible = True
       staTusBar1.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " most recent files"
 End Sub
 
@@ -2948,7 +2957,7 @@ Private Sub cboPath_Change()
             ' Add to recent paths only if filtration was fruitful.
             If Not gtBrowserData.ListEmpty Then PathAddRecent gtBrowserData.Dir & gtBrowserData.Filter
       End If
-      
+
       BrowserAutoSelectListItem gtBrowserData
 End Sub
 
@@ -3115,7 +3124,77 @@ Private Function EditorFindText( _
       rlFoundMax = tFindData.chrgText.cpMax
 End Function
 
-Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
+Private Function LoadEditorFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
+                  
+      If Not gbFullScreenMode And GetFileSize(sFileName) > 0 Then
+            Dim iEncoding As Integer
+            iEncoding = IsUnicodeFile(sFileName)
+            
+            If iEncoding = eTextEncoding.ERROR Then
+                  SetCaption "Could not load file: " + sFileName
+                  agEditor.tag = ""
+                  giTextEncoding = eTextEncoding.ASCII
+                  staTusBar1.Panels(eStat.encoding) = "ASCII"
+                  mbEditorLoading = False
+                  Exit Function
+            ElseIf Len(sFileName) > 100 Or iEncoding = eTextEncoding.UNICODE Then
+                  Dim oFile, oStream
+                  Set oFile = goFso.getfile(sFileName)
+                  Set oStream = oFile.OpenAsTextStream(eIoMode.ForReading, iEncoding)
+                  If oStream.atendofstream() Then
+                        agEditor.Text = ""
+                  Else
+                        agEditor.Text = oStream.readall()
+                  End If
+                  oStream.Close
+                  LoadEditorFile = True
+            Else
+                  LoadEditorFile = agEditor.LoadFromFile(sFileName, SF_TEXT)
+            End If
+            giTextEncoding = iEncoding
+            If iEncoding = eTextEncoding.UNICODE Then
+                  staTusBar1.Panels(eStat.encoding) = "UNICODE"
+            Else
+                  staTusBar1.Panels(eStat.encoding) = "ASCII"
+            End If
+      Else
+            agEditor.Text = ""
+            giTextEncoding = eTextEncoding.ASCII
+            staTusBar1.Panels(eStat.encoding) = "ASCII"
+            LoadEditorFile = True
+      End If
+
+      SetCaption sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
+            & FileModifiedTime(sFileName) & ")"
+
+End Function
+
+Private Function LoadPictureFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
+      
+      LoadPictureFile = True
+      On Error Resume Next
+      Dim oPic As IPictureDisp
+      Set gtImageData.OutPic.Picture = Nothing
+      Set oPic = LoadPicture(sFileName)
+      gtImageData.DefaultWidth = ScaleX(oPic.Width, vbHimetric, vbTwips)
+      gtImageData.DefaultHeight = ScaleY(oPic.Height, vbHimetric, vbTwips)
+      
+      If geImageSizingMode = eImageSizingMode.Default100 Then
+            gtImageData.OutPic.Picture = oPic
+            ImageSetZoom sliZoom.Value, sFileName
+      
+      ElseIf geImageSizingMode = eImageSizingMode.AlwaysFit Then
+            ImageZoomFit oPic, sFileName
+      End If
+      
+      If Err > 0 Then
+            SetCaption "ERROR: " & sFileName & ", picture couldn't load"
+            LoadPictureFile = False
+      End If
+      On Error GoTo 0
+End Function
+
+Private Function LoadFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
       
       If mbEditorLoading Then agEditor.Text = ""
       
@@ -3127,88 +3206,26 @@ Private Function EditorLoadFile(ByVal sFileName As String, Optional ByVal iMode 
             agEditor.tag = ""
             Exit Function
       End If
-            
+      
       EditorSetMode iMode
       
       Select Case iMode
-            
             Case eViewMode.TextView
                   mbEditorLoading = True
-                  
-                  If Not gbFullScreenMode And GetFileSize(sFileName) > 0 Then
-                        Dim iEncoding As Integer
-                        iEncoding = IsUnicodeFile(sFileName)
-                        
-                        If iEncoding = eTextEncoding.ERROR Then
-                              SetCaption "Could not load file: " + sFileName
-                              agEditor.tag = ""
-                              giTextEncoding = eTextEncoding.ASCII
-                              staTusBar1.Panels(eStat.encoding) = "ASCII"
-                              mbEditorLoading = False
-                              Exit Function
-                        ElseIf Len(sFileName) > 100 Or iEncoding = eTextEncoding.UNICODE Then
-                              Dim oFile, oStream
-                              Set oFile = goFso.getfile(sFileName)
-                              Set oStream = oFile.OpenAsTextStream(eIoMode.ForReading, iEncoding)
-                              If oStream.atendofstream() Then
-                                    agEditor.Text = ""
-                              Else
-                                    agEditor.Text = oStream.readall()
-                              End If
-                              oStream.Close
-                              EditorLoadFile = True
-                        Else
-                              EditorLoadFile = agEditor.LoadFromFile(sFileName, SF_TEXT)
-                        End If
-                        giTextEncoding = iEncoding
-                        If iEncoding = eTextEncoding.UNICODE Then
-                              staTusBar1.Panels(eStat.encoding) = "UNICODE"
-                        Else
-                              staTusBar1.Panels(eStat.encoding) = "ASCII"
-                        End If
-                  Else
-                        agEditor.Text = ""
-                        giTextEncoding = eTextEncoding.ASCII
-                        staTusBar1.Panels(eStat.encoding) = "ASCII"
-                        EditorLoadFile = True
-                  End If
-            
-                  SetCaption sFileName & "  (" & Format(GetFileSize(sFileName), "#,#0") & " bytes saved on " _
-                        & FileModifiedTime(sFileName) & ")"
+                  LoadFile = LoadEditorFile(sFileName, iMode)
                   
             Case eViewMode.PictureView
                   mbEditorLoading = True
-                  
-                  EditorLoadFile = True
-                  On Error Resume Next
-                  Dim oPic As IPictureDisp
-                  Set gtImageData.OutPic.Picture = Nothing
-                  Set oPic = LoadPicture(sFileName)
-                  gtImageData.DefaultWidth = ScaleX(oPic.Width, vbHimetric, vbTwips)
-                  gtImageData.DefaultHeight = ScaleY(oPic.Height, vbHimetric, vbTwips)
-                  
-                  If geImageSizingMode = eImageSizingMode.Default100 Then
-                        gtImageData.OutPic.Picture = oPic
-                        ImageSetZoom (sliZoom.Value)
-                  
-                  ElseIf geImageSizingMode = eImageSizingMode.AlwaysFit Then
-                        ImageZoomFit oPic, sFileName
-                  End If
-                  
-                  If Err > 0 Then
-                        SetCaption "ERROR: " & sFileName & ", picture couldn't load"
-                        EditorLoadFile = False
-                  End If
-                  On Error GoTo 0
+                  LoadFile = LoadPictureFile(sFileName, iMode)
             
             Case eViewMode.PropertiesView
                   mbEditorLoading = True
                   LoadPropertiesView sFileName
                   SetCaption sFileName
-                  EditorLoadFile = True
+                  LoadFile = True
       End Select
             
-      If EditorLoadFile Or GetFileSize(sFileName) = 0 Then  ' Success!
+      If LoadFile Or GetFileSize(sFileName) = 0 Then  ' Success!
             agEditor.tag = sFileName
             staTusBar1.Panels(eStat.Modified) = ""
             agEditor.SetSelection 0, 0
@@ -3443,6 +3460,8 @@ Private Sub Form_Load()
       
       DoEvents
       LoadRegistrySettings
+      gtBrowserData.DoneLoading = True ' Why does it finish loading *here*? Proved this by debugging.
+
       
       gtStats.imax = CharacterCount(agEditor)
       FillStats
@@ -3458,9 +3477,9 @@ Private Sub Form_Load()
             lvwBrowser.SetFocus
       End If
       
-      If lvwBrowser.Visible Then
-            btnSyncContents_Click
-      End If
+      If agEditor.tag = "" Then AutosizeColumns ' in this specific case, the normal time to do this is too soon
+      
+      btnSyncContents_Click
       Exit Sub
 
 LOAD_ERROR:
@@ -3666,7 +3685,8 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
       picEditor_MouseUp Button, Shift, X, Y
 End Sub
 
-Public Sub ImageSetZoom(iZoom As Integer)
+Public Sub ImageSetZoom(ByVal iZoom As Integer, Optional ByVal sFileName As String)
+      If sFileName = "" Then sFileName = agEditor.tag
       If iZoom > sliZoom.Max Then
             iZoom = sliZoom.Max
       ElseIf iZoom < 0 Then
@@ -3675,7 +3695,7 @@ Public Sub ImageSetZoom(iZoom As Integer)
       
       gtImageData.OutPic.Move gtImageData.OutPic.Left, gtImageData.OutPic.Top, _
             gtImageData.DefaultWidth * CSng(iZoom) / 100#, gtImageData.DefaultHeight * CSng(iZoom) / 100#
-      Caption = agEditor.tag & "  (" & iZoom & "%)"
+      SetCaption sFileName & "  (" & iZoom & "%)"
       sliZoom.Value = iZoom
 End Sub
 
@@ -3983,14 +4003,14 @@ Private Sub LoadRegistrySettings()
       ' rather than for a blank editor.
       
       DebugLog "Attempting to auto-load file: " & agEditor.tag & "..."
-      bFileLoaded = EditorLoadFile(agEditor.tag, GetViewMode(agEditor.tag, GetIconType(goFso.getextensionname(agEditor.tag))))
+      bFileLoaded = LoadFile(agEditor.tag, GetViewMode(agEditor.tag, GetIconType(goFso.getextensionname(agEditor.tag))))
       If bFileLoaded Then
             DebugLog "File loaded."
       Else
             DebugLog "File was NOT loaded."
       End If
 
-      If lRetVal = 0 Then
+      If lRetVal = 0 And bFileLoaded Then
             With tPrefs.EditorPrefs
                   ' If the file has been changed so that selection and scroll positions are meaningless,
                   ' just skip them...
@@ -4328,7 +4348,7 @@ Private Sub mnuBookmarksManage_Click()
 End Sub
 
 Private Sub mnuBookmark_Click(Index As Integer)
-      EditorLoadFile mnuBookmark(Index).tag, GetViewMode(mnuBookmark(Index).tag, eIconType.Bookmark)
+      LoadFile mnuBookmark(Index).tag, GetViewMode(mnuBookmark(Index).tag, eIconType.Bookmark)
       
       btnSyncContents_Click
 End Sub
@@ -4453,7 +4473,7 @@ Private Sub mnuFileExit_Click()
 End Sub
 
 Private Sub mnuFileHistory_Click(Index As Integer)
-      EditorLoadFile mnuFileHistory(Index).tag, GetViewMode(mnuFileHistory(Index).tag, eIconType.Bookmark)
+      LoadFile mnuFileHistory(Index).tag, GetViewMode(mnuFileHistory(Index).tag, eIconType.Bookmark)
       
       btnSyncContents_Click
 End Sub
@@ -4489,11 +4509,11 @@ Private Sub mnuFileSaveAs_Click()
       Dim vDate As Variant
       
       If Not agEditor.Visible Then
-            Caption = "ERROR: can only save in editor mode: " & sFileName
+            frmMain.Caption = "ERROR: can only save in editor mode: " & sFileName
             DebugLog Caption
             Exit Sub
       ElseIf chkReadOnly.Value = vbChecked Then
-            Caption = "ERROR: can't save in Read Only mode: " & sFileName
+            frmMain.Caption = "ERROR: can't save in Read Only mode: " & sFileName
             DebugLog Caption
             Exit Sub
       End If
@@ -4533,10 +4553,10 @@ End Sub
 
 Private Sub mnuFileSave_Click()
       If Not agEditor.Visible Then
-            Caption = "ERROR: can only save in editor mode."
+            frmMain.Caption = "ERROR: can only save in editor mode."
             Exit Sub
       ElseIf chkReadOnly.Value = vbChecked Then
-            Caption = "ERROR: can't save in Read Only mode."
+            frmMain.Caption = "ERROR: can't save in Read Only mode."
             Exit Sub
       End If
       
@@ -5328,7 +5348,7 @@ Public Function SaveFile(ByVal sFileName As String)
             End If
             staTusBar1.Panels(eStat.Modified) = ""
             agEditor.tag = sFileName
-            Caption = sFileName & "  (" & Format(lBytes, "#,#0") & " bytes saved on " _
+            frmMain.Caption = sFileName & "  (" & Format(lBytes, "#,#0") & " bytes saved on " _
                   & FileModifiedTime(sFileName) & ")"
             RefreshAll
             btnSyncContents_Click

@@ -112,6 +112,7 @@ Public Type TBrowserData
       MouseButton As Integer
       Shift As Integer
       RecentPath As Integer
+      DoneLoading As Boolean
 End Type
 
 Public Type TImageData
