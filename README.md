@@ -7,7 +7,7 @@ HISTORY
 Phlegmoirs was first written in 2004-05, and after eons of continued use it was acknowledged that this simple tool works for this simple purpose, so we are giving it a fresh coat of paint and keeping it around.
 
 <br/>
-<img src="scr1.jpg" width="50%" height="50%">
+<img src="scr1.jpg" width="760" height="702">
 <br/>
 
 MODERN CONTROLS FOR VB6:
