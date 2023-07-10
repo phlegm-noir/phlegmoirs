@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Options>
+  <ClassTypeTag>C</ClassTypeTag>
+  <EnumTypeTag>e</EnumTypeTag>
+  <StructTypeTag>t</StructTypeTag>
+  <InterfaceTypeTag>I</InterfaceTypeTag>
+  <DelegateTypeTag />
+  <ArrayTag />
+  <UseComponentTags>0</UseComponentTags>
+  <TypeTags>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Boolean</TypeName>
+      <Tag>b</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Date</TypeName>
+      <Tag>dt</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Integer</TypeName>
+      <Tag>i</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Object</TypeName>
+      <Tag>o</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>String</TypeName>
+      <Tag>s</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Long</TypeName>
+      <Tag>l</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Single</TypeName>
+      <Tag>f</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Byte</TypeName>
+      <Tag>c</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Double</TypeName>
+      <Tag>d</Tag>
+    </TypeTag>
+    <TypeTag>
+      <AssemblyFullName />
+      <TypeName>Variant</TypeName>
+      <Tag>v</Tag>
+    </TypeTag>
+  </TypeTags>
+</Options>
