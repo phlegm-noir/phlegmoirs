@@ -1,0 +1,106 @@
+[Root]
+Most Recent Package=v23 win2000 VM
+
+
+[Package|v23 win2000 VM|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=P:\setup\phlegmoirs0_23_1
+
+[Package|v23 win2000 VM|Configure DAO ISAMs]
+Applicable=No
+
+[Package|v23 win2000 VM|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|v23 win2000 VM|Files Found]
+
+[Package|v23 win2000 VM|Files Released]
+
+[Package|v23 win2000 VM|Missing Dependency Information]
+C:\WINDOWS\system32\agRichEdit.ocx=
+
+[Package|v23 win2000 VM|Out-of-Date Dependency Information]
+C:\WINDOWS\system32\MSCOMCTL.OCX=
+C:\WINDOWS\system32\COMDLG32.OCX=
+
+[Package|v23 win2000 VM|Files Added]
+c:\windows\system32\msvbvm50.dll=
+
+[Package|v23 win2000 VM|Files Removed]
+
+[Package|v23 win2000 VM|Files In Project]
+P:\workspace2000\phlegmoirs\phlegmoirs 0.23.1.exe=Yes
+C:\WINDOWS\system32\MSVBVM60.DLL=Yes
+C:\WINDOWS\system32\oleaut32.dll=Yes
+C:\WINDOWS\system32\olepro32.dll=Yes
+C:\WINDOWS\system32\asycfilt.dll=Yes
+C:\WINDOWS\system32\stdole2.tlb=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\WINDOWS\system32\COMDLG32.OCX=Yes
+C:\WINDOWS\system32\TABCTL32.OCX=Yes
+C:\WINDOWS\system32\agRichEdit.ocx=Yes
+C:\WINDOWS\system32\MSCOMCTL.OCX=Yes
+C:\WINDOWS\system32\msvbvm50.dll=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINDOWS\system32\VB6STKIT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+
+[Package|v23 win2000 VM|Configure Registry Files]
+Applicable=No
+
+[Package|v23 win2000 VM|Configure Remote Servers]
+Applicable=No
+
+[Package|v23 win2000 VM|Install Locations]
+P:\workspace2000\phlegmoirs\phlegmoirs 0.23.1.exe=$(AppPath)
+C:\WINDOWS\system32\MSVBVM60.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\oleaut32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\olepro32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\asycfilt.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\stdole2.tlb=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\COMDLG32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\TABCTL32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\agRichEdit.ocx=$(WinSysPath)
+C:\WINDOWS\system32\MSCOMCTL.OCX=$(WinSysPath)
+C:\WINDOWS\system32\msvbvm50.dll=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINDOWS\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+
+[Package|v23 win2000 VM|Configure Shared Files]
+Applicable=Yes
+P:\workspace2000\phlegmoirs\phlegmoirs 0.23.1.exe=No
+
+[Package|v23 win2000 VM|DepFile]
+DepCabFile=phlegmoirs 0.23.1.CAB
+DepCabRun=phlegmoirs 0.23.1.INF
+
+[Package|v23 win2000 VM|Distribution]
+Type=single
+Size=
+Title=phlegmoirs
+
+[Package|v23 win2000 VM|IconGroups]
+Group0=phlegmoirs
+PrivateGroup0=True
+Parent0=$(Programs)
+
+[Package|v23 win2000 VM|phlegmoirs]
+Icon1="phlegmoirs 0.23.1.exe"
+Title1=phlegmoirs 0.23.1
+StartIn1=$(AppPath)
+Key1=Icon1
+
+[Package|v23 win2000 VM|Package]
+PackageFolder=P:\setup\phlegmoirs0_23_1
+ProjectFolder=P:\workspace2000\phlegmoirs
+ServerSideCab=
+File1=P:\setup\phlegmoirs0_23_1\setup.exe
+File2=P:\setup\phlegmoirs0_23_1\Setup.Lst
+File3=P:\setup\phlegmoirs0_23_1\phlegmoirs 0.23.1.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz

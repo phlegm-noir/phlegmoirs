@@ -6,7 +6,7 @@ Begin VB.Form frmAbout
    Caption         =   "About phlegmoirs"
    ClientHeight    =   1590
    ClientLeft      =   2340
-   ClientTop       =   1935
+   ClientTop       =   1755
    ClientWidth     =   4950
    ClipControls    =   0   'False
    Icon            =   "frmAbout.frx":0000
@@ -28,10 +28,10 @@ Begin VB.Form frmAbout
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   240
-      Picture         =   "frmAbout.frx":10CA
-      ScaleHeight     =   337.12
+      Picture         =   "frmAbout.frx":0CCA
+      ScaleHeight     =   331.934
       ScaleMode       =   0  'User
-      ScaleWidth      =   337.12
+      ScaleWidth      =   331.934
       TabIndex        =   1
       Top             =   360
       Width           =   480
@@ -52,7 +52,7 @@ Begin VB.Form frmAbout
       BackColor       =   &H80000005&
       BeginProperty Font 
          Name            =   "Terminal"
-         Size            =   13.5
+         Size            =   9
          Charset         =   255
          Weight          =   400
          Underline       =   0   'False
