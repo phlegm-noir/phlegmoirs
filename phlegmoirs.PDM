@@ -1,190 +1,102 @@
 [Root]
-Most Recent Package=phlg092
+Most Recent Package=classic win2000 VM
 
 
-[Package|phlegm pack 1|Root]
+[Package|classic win2000 VM|Root]
 SubWizProgID=PDWizard.SetupPkgSubWiz
-BuildFolder=C:\My Documents\perfect\phlegmoirs\setup
+BuildFolder=P:\setup\phlegmoirs0_9_23
 
-[Package|phlegm pack 1|Configure DAO ISAMs]
+[Package|classic win2000 VM|Configure DAO ISAMs]
 Applicable=No
 
-[Package|phlegm pack 1|Configure DAO ODBC]
+[Package|classic win2000 VM|Configure DAO ODBC]
 JetWorkspace=
 ODBCDirect=
 
-[Package|phlegm pack 1|Files Found]
+[Package|classic win2000 VM|Files Found]
 
-[Package|phlegm pack 1|Files Released]
+[Package|classic win2000 VM|Files Released]
 
-[Package|phlegm pack 1|Missing Dependency Information]
+[Package|classic win2000 VM|Missing Dependency Information]
 C:\WINDOWS\system32\agRichEdit.ocx=
 
-[Package|phlegm pack 1|Out-of-Date Dependency Information]
+[Package|classic win2000 VM|Out-of-Date Dependency Information]
+C:\WINDOWS\system32\MSCOMCTL.OCX=
+C:\WINDOWS\system32\COMDLG32.OCX=
 
-[Package|phlegm pack 1|Files Added]
+[Package|classic win2000 VM|Files Added]
+C:\WINDOWS\system32\msvbvm50.dll=
 
-[Package|phlegm pack 1|Files Removed]
+[Package|classic win2000 VM|Files Removed]
 
-[Package|phlegm pack 1|Files In Project]
-C:\My Documents\perfect\phlegmoirs\phlegmoirs 0.8.91.exe=Yes
-C:\WINDOWS\system32\msvbvm60.dll=Yes
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=Yes
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=Yes
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=Yes
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=Yes
+[Package|classic win2000 VM|Files In Project]
+P:\workspace2000\phlegmoirs classic\phlegmoirs 0.9.23.exe=Yes
+C:\WINDOWS\system32\MSVBVM60.DLL=Yes
+C:\WINDOWS\system32\oleaut32.dll=Yes
+C:\WINDOWS\system32\olepro32.dll=Yes
+C:\WINDOWS\system32\asycfilt.dll=Yes
+C:\WINDOWS\system32\stdole2.tlb=Yes
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
-C:\WINDOWS\system32\MSCOMCTL.OCX=Yes
 C:\WINDOWS\system32\COMDLG32.OCX=Yes
 C:\WINDOWS\system32\agRichEdit.ocx=Yes
+C:\WINDOWS\system32\TABCTL32.OCX=Yes
+C:\WINDOWS\system32\MSCOMCTL.OCX=Yes
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
 C:\WINDOWS\system32\VB6STKIT.DLL=Yes
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+C:\WINDOWS\system32\msvbvm50.dll=Yes
 
-[Package|phlegm pack 1|Configure Registry Files]
+[Package|classic win2000 VM|Configure Registry Files]
 Applicable=No
 
-[Package|phlegm pack 1|Configure Remote Servers]
+[Package|classic win2000 VM|Configure Remote Servers]
 Applicable=No
 
-[Package|phlegm pack 1|Install Locations]
-C:\My Documents\perfect\phlegmoirs\phlegmoirs 0.8.91.exe=$(AppPath)
-C:\WINDOWS\system32\msvbvm60.dll=$(WinSysPathSysFile)
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=$(WinSysPathSysFile)
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=$(WinSysPathSysFile)
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=$(WinSysPathSysFile)
-C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=$(WinSysPathSysFile)
+[Package|classic win2000 VM|Install Locations]
+P:\workspace2000\phlegmoirs classic\phlegmoirs 0.9.23.exe=$(AppPath)
+C:\WINDOWS\system32\MSVBVM60.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\oleaut32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\olepro32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\asycfilt.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\stdole2.tlb=$(WinSysPathSysFile)
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
-C:\WINDOWS\system32\MSCOMCTL.OCX=$(WinSysPath)
 C:\WINDOWS\system32\COMDLG32.OCX=$(WinSysPath)
 C:\WINDOWS\system32\agRichEdit.ocx=$(WinSysPath)
+C:\WINDOWS\system32\TABCTL32.OCX=$(WinSysPath)
+C:\WINDOWS\system32\MSCOMCTL.OCX=$(WinSysPath)
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
 C:\WINDOWS\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
 C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+C:\WINDOWS\system32\msvbvm50.dll=$(WinSysPathSysFile)
 
-[Package|phlegm pack 1|Configure Shared Files]
+[Package|classic win2000 VM|Configure Shared Files]
 Applicable=Yes
-C:\My Documents\perfect\phlegmoirs\phlegmoirs 0.8.91.exe=No
+P:\workspace2000\phlegmoirs classic\phlegmoirs 0.9.23.exe=No
 
-[Package|phlegm pack 1|Distribution]
+[Package|classic win2000 VM|Distribution]
 Type=single
 Size=
-Title=phlegmoirs 0.8.91
+Title=phlegmoirs
 
-[Package|phlegm pack 1|IconGroups]
-Group0=phlegmoirs 0.8.91
-PrivateGroup0=-1
+[Package|classic win2000 VM|IconGroups]
+Group0=phlegmoirs
+PrivateGroup0=True
 Parent0=$(Programs)
 
-[Package|phlegm pack 1|phlegmoirs 0.8.91]
-Icon1="phlegmoirs 0.8.91.exe"
-Title1=phlegmoirs 0.8.91 setup
+[Package|classic win2000 VM|phlegmoirs]
+Icon1="phlegmoirs 0.9.23.exe"
+Title1=phlegmoirs 0.9.23
 StartIn1=$(AppPath)
 Key1=Icon1
 
-[Package|phlegm pack 1|Package]
-PackageFolder=C:\My Documents\perfect\phlegmoirs\setup
-ProjectFolder=C:\My Documents\perfect\phlegmoirs
+[Package|classic win2000 VM|Package]
+PackageFolder=P:\setup\phlegmoirs0_9_23
+ProjectFolder=P:\workspace2000\phlegmoirs classic
 ServerSideCab=
-File1=C:\My Documents\perfect\phlegmoirs\setup\setup.exe
-File2=C:\My Documents\perfect\phlegmoirs\setup\Setup.Lst
-File3=C:\My Documents\perfect\phlegmoirs\setup\phlegmoirs 0.8.91.CAB
+File1=P:\setup\phlegmoirs0_9_23\setup.exe
+File2=P:\setup\phlegmoirs0_9_23\Setup.Lst
+File3=P:\setup\phlegmoirs0_9_23\phlegmoirs 0.9.23.CAB
 Handler1=PDWizard.FolderDplySubWiz
 Handler2=PDWizard.WebPostDplySubWiz
-
-
-[Package|phlg092|Root]
-SubWizProgID=PDWizard.SetupPkgSubWiz
-BuildFolder=F:\Dox\code\phlegmoirs\Package2
-
-[Package|phlg092|Configure DAO ISAMs]
-Applicable=No
-
-[Package|phlg092|Configure DAO ODBC]
-JetWorkspace=
-ODBCDirect=
-
-[Package|phlg092|Files Found]
-
-[Package|phlg092|Files Released]
-
-[Package|phlg092|Missing Dependency Information]
-F:\WINNT\system32\agRichEdit.ocx=
-
-[Package|phlg092|Out-of-Date Dependency Information]
-
-[Package|phlg092|Files Added]
-
-[Package|phlg092|Files Removed]
-
-[Package|phlg092|Files In Project]
-F:\Dox\code\phlegmoirs\phlegmoirs 0.9.2.exe=Yes
-F:\WINNT\system32\MSVBVM60.DLL=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
-F:\WINNT\system32\MSCOMCTL.OCX=Yes
-F:\WINNT\system32\COMDLG32.OCX=Yes
-F:\WINNT\system32\agRichEdit.ocx=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
-F:\WINNT\system32\VB6STKIT.DLL=Yes
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
-
-[Package|phlg092|Configure Registry Files]
-Applicable=No
-
-[Package|phlg092|Configure Remote Servers]
-Applicable=No
-
-[Package|phlg092|Install Locations]
-F:\Dox\code\phlegmoirs\phlegmoirs 0.9.2.exe=$(AppPath)
-F:\WINNT\system32\MSVBVM60.DLL=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
-F:\WINNT\system32\MSCOMCTL.OCX=$(WinSysPath)
-F:\WINNT\system32\COMDLG32.OCX=$(WinSysPath)
-F:\WINNT\system32\agRichEdit.ocx=$(WinSysPath)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
-F:\WINNT\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
-F:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
-
-[Package|phlg092|Configure Shared Files]
-Applicable=Yes
-F:\Dox\code\phlegmoirs\phlegmoirs 0.9.2.exe=No
-
-[Package|phlg092|Distribution]
-Type=multi
-Size=1.44 MB
-Title=plgm092
-
-[Package|phlg092|IconGroups]
-Group0=phlegmoirs v0.9.2
-PrivateGroup0=0
-Parent0=$(Programs)
-
-[Package|phlg092|phlegmoirs v0.9.2]
-Icon1="phlegmoirs 0.9.2.exe"
-Title1=phlegmoirs v0.9.2
-StartIn1=$(AppPath)
-Key1=Icon1
-
-[Package|phlg092|Package]
-PackageFolder=F:\Dox\code\phlegmoirs\Package2
-ProjectFolder=F:\Dox\code\phlegmoirs
-ServerSideCab=
-File1=F:\Dox\code\phlegmoirs\Package2\setup.exe
-File2=F:\Dox\code\phlegmoirs\Package2\Setup.Lst
-File3=F:\Dox\code\phlegmoirs\Package2\phlegm1.CAB
-File4=F:\Dox\code\phlegmoirs\Package2\phlegm2.CAB
-Handler1=PDWizard.FloppyDplySubWiz
-Handler2=PDWizard.FolderDplySubWiz
-Handler3=PDWizard.WebPostDplySubWiz
