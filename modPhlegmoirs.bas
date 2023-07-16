@@ -438,7 +438,7 @@ Public Function GetIconType(sEx As String) As eIconType
       ' This function takes an extension (DO NOT INCLUDE DOT) and returns a mode
       
       Select Case sEx
-            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur", "png", "webp"
+            Case "bmp", "gif", "jpg", "jpeg", "ico", "cur", "png", "webp", "tif", "tiff"
                   GetIconType = eIconType.Picture
             
             Case "dll", "ocx", "exe", "zip", "msi", "sys", "cab", "7z"
@@ -516,7 +516,7 @@ Public Function GetViewMode(ByVal sFileName As String, ByVal eMode As eIconType)
             Case eIconType.Picture
                   oFileSize = GetFileSize(sFileName)
                   
-                  If sEx = "png" Or sEx = "webp" Or oFileSize > PIC_FILE_TOO_BIG Then
+                  If sEx = "webp" Or oFileSize > PIC_FILE_TOO_BIG Then
                         GetViewMode = eViewMode.PropertiesView
                   Else
                         GetViewMode = eViewMode.PictureView
@@ -648,7 +648,7 @@ Public Function ListViewProc(ByVal lHwnd As Long, ByVal lMsg As Long, _
                   End With
                   lRetVal = SendMessage(lHwnd, LVM_HITTEST, ByVal 0, tHitTestInfo)
 
-                  If (tHitTestInfo.flags And LVHT_BELOW) Or (tHitTestInfo.flags And LVHT_ABOVE) Then
+                  If (tHitTestInfo.Flags And LVHT_BELOW) Or (tHitTestInfo.Flags And LVHT_ABOVE) Then
                         Dim iTurn As Integer
                         If lWheelTurns > 0 Then
                               For iTurn = 1 To lWheelTurns * 3

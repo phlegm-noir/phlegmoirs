@@ -1,14 +1,14 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Object = "{DD32A320-6E5E-44C8-BCE6-5908CA400231}#1.0#0"; "agRichEdit.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMain 
    AutoRedraw      =   -1  'True
    Caption         =   "(New File)"
    ClientHeight    =   8250
-   ClientLeft      =   225
-   ClientTop       =   870
+   ClientLeft      =   165
+   ClientTop       =   825
    ClientWidth     =   11760
    ForeColor       =   &H80000005&
    Icon            =   "frmMain.frx":0000
@@ -2009,7 +2009,7 @@ End Sub
 Private Sub ageditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
-            If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "agEditor") And _
+            If GetForegroundWindow = frmMain.hWnd And Not (ActiveControl.Name = "agEditor") And _
                   Not ActiveControl.Name = "txtFind" And Not ActiveControl.Name = "txtReplace" Then
                   agEditor.SetFocus
             End If
@@ -2090,17 +2090,17 @@ End Sub
 
 Private Sub AutosizeColumns()
       If AUTOSIZE_COLUMNS And gtBrowserData.DoneLoading Then
-            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
-            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
-            SendMessage lvwBrowser.hwnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
-            If lvwBrowser.ColumnHeaders.Item("Type").Width <= COLUMN_TOO_SMALL Then
-                  lvwBrowser.ColumnHeaders.Item("Type").Width = COLUMN_TOO_SMALL
+            SendMessage lvwBrowser.hWnd, LVM_SETCOLUMNWIDTH, ByVal 1, LVSCW_AUTOSIZE
+            SendMessage lvwBrowser.hWnd, LVM_SETCOLUMNWIDTH, ByVal 2, LVSCW_AUTOSIZE
+            SendMessage lvwBrowser.hWnd, LVM_SETCOLUMNWIDTH, ByVal 3, LVSCW_AUTOSIZE
+            If lvwBrowser.ColumnHeaders.item("Type").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.item("Type").Width = COLUMN_TOO_SMALL
             End If
-            If lvwBrowser.ColumnHeaders.Item("Size").Width <= COLUMN_TOO_SMALL Then
-                  lvwBrowser.ColumnHeaders.Item("Size").Width = COLUMN_TOO_SMALL
+            If lvwBrowser.ColumnHeaders.item("Size").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.item("Size").Width = COLUMN_TOO_SMALL
             End If
-            If lvwBrowser.ColumnHeaders.Item("Modified").Width <= COLUMN_TOO_SMALL Then
-                  lvwBrowser.ColumnHeaders.Item("Modified").Width = COLUMN_TOO_SMALL
+            If lvwBrowser.ColumnHeaders.item("Modified").Width <= COLUMN_TOO_SMALL Then
+                  lvwBrowser.ColumnHeaders.item("Modified").Width = COLUMN_TOO_SMALL
             End If
       End If
 End Sub
@@ -2170,7 +2170,7 @@ Private Sub BrowserDeleteSelected()
       sTheDamned = gtBrowserData.Dir & lvwBrowser.SelectedItem
       
       If gtBrowserData.BookmarkMode Then
-            sBookKey = lvwBrowser.SelectedItem.key
+            sBookKey = lvwBrowser.SelectedItem.Key
             lvwBrowser.ListItems.Remove sBookKey
             BookmarkSaveChanges
             Exit Sub
@@ -2697,7 +2697,7 @@ Private Sub btnFont_Click()
       
       'make the dialog choices begin with what the agEditor shows
       With dlgFont
-            .flags = CF_SCREEN_FONTS + cdlCFApply + CF_EFFECTS ' btw, Apply doesn't work
+            .Flags = CF_SCREEN_FONTS + cdlCFApply + CF_EFFECTS ' btw, Apply doesn't work
             .FontName = oTempFont.Name
             .FontBold = oTempFont.Bold
             .FontUnderline = oTempFont.Underline
@@ -3170,12 +3170,13 @@ Private Function LoadEditorFile(ByVal sFileName As String, Optional ByVal iMode 
 End Function
 
 Private Function LoadPictureFile(ByVal sFileName As String, Optional ByVal iMode As eViewMode) As Boolean
-      
+       
+      Dim cRenderer As New stdPicEx2
       LoadPictureFile = True
       On Error Resume Next
       Dim oPic As IPictureDisp
       Set gtImageData.OutPic.Picture = Nothing
-      Set oPic = LoadPicture(sFileName)
+      Set oPic = cRenderer.LoadPictureEx(sFileName, mgtAutoSelect)
       gtImageData.DefaultWidth = ScaleX(oPic.Width, vbHimetric, vbTwips)
       gtImageData.DefaultHeight = ScaleY(oPic.Height, vbHimetric, vbTwips)
       
@@ -3261,7 +3262,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   geEditorMode = iMode
                   agEditor.Visible = True
                   Image1.Visible = False
-                  Image1.Picture = LoadPicture
+                  Image1.Picture = Nothing
                   sstProperties.Visible = False
                   btnFont.Visible = True
                   chkWordWrap.Visible = False
@@ -3301,7 +3302,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   btnFitImage.Visible = True
                   
                   If glOldpicEditorProc = 0 Then
-                        glOldpicEditorProc = SetWindowLong(picEditor.hwnd, GWL_WNDPROC, _
+                        glOldpicEditorProc = SetWindowLong(picEditor.hWnd, GWL_WNDPROC, _
                               AddressOf TrackMouseWheel)
                   End If
                   
@@ -3316,7 +3317,7 @@ Private Sub EditorSetMode(iMode As eViewMode)
                   agEditor.Visible = False
                   agEditor.Text = ""
                   Image1.Visible = False
-                  Image1.Picture = LoadPicture
+                  Image1.Picture = Nothing
                   sstProperties.Visible = True
                   
                   btnFont.Visible = True
@@ -3468,7 +3469,7 @@ Private Sub Form_Load()
       staTusBar1.Panels(eStat.Modified) = ""
 
       If Not DEBUGGING Then
-            glOldLvwProc = SetWindowLong(lvwBrowser.hwnd, GWL_WNDPROC, AddressOf ListViewProc)
+            glOldLvwProc = SetWindowLong(lvwBrowser.hWnd, GWL_WNDPROC, AddressOf ListViewProc)
       End If
       
       If agEditor.Visible Then
@@ -3527,12 +3528,12 @@ Private Sub Form_Unload(Cancel As Integer)
       Unload frmAbout
       Unload frmFullScreen
       If Not DEBUGGING Then
-            SetWindowLong lvwBrowser.hwnd, GWL_WNDPROC, glOldLvwProc
+            SetWindowLong lvwBrowser.hWnd, GWL_WNDPROC, glOldLvwProc
             glOldLvwProc = 0
       End If
       
       If glOldpicEditorProc <> 0 Then
-            SetWindowLong picEditor.hwnd, GWL_WNDPROC, glOldpicEditorProc
+            SetWindowLong picEditor.hWnd, GWL_WNDPROC, glOldpicEditorProc
             glOldpicEditorProc = 0
       End If
       DebugLog "", 2
@@ -3546,14 +3547,14 @@ Private Sub GatherBrowserPrefs(ByRef rtPrefs As TBrowserPrefs)
             .SortMethod = lvwBrowser.SortOrder
             .SortKey = lvwBrowser.SortKey
             On Error GoTo 0
-            .NameColumnIndex = lvwBrowser.ColumnHeaders.Item("Name").Position
-            .TypeColumnIndex = lvwBrowser.ColumnHeaders.Item("Type").Position
-            .SizeColumnIndex = lvwBrowser.ColumnHeaders.Item("Size").Position
-            .ModifiedColumnIndex = lvwBrowser.ColumnHeaders.Item("Modified").Position
-            .NameColumnWidth = lvwBrowser.ColumnHeaders.Item("Name").Width
-            .TypeColumnWidth = lvwBrowser.ColumnHeaders.Item("Type").Width
-            .SizeColumnWidth = lvwBrowser.ColumnHeaders.Item("Size").Width
-            .ModifiedColumnWidth = lvwBrowser.ColumnHeaders.Item("Modified").Width
+            .NameColumnIndex = lvwBrowser.ColumnHeaders.item("Name").Position
+            .TypeColumnIndex = lvwBrowser.ColumnHeaders.item("Type").Position
+            .SizeColumnIndex = lvwBrowser.ColumnHeaders.item("Size").Position
+            .ModifiedColumnIndex = lvwBrowser.ColumnHeaders.item("Modified").Position
+            .NameColumnWidth = lvwBrowser.ColumnHeaders.item("Name").Width
+            .TypeColumnWidth = lvwBrowser.ColumnHeaders.item("Type").Width
+            .SizeColumnWidth = lvwBrowser.ColumnHeaders.item("Size").Width
+            .ModifiedColumnWidth = lvwBrowser.ColumnHeaders.item("Modified").Width
             On Error Resume Next
       End With
 End Sub
@@ -3615,8 +3616,8 @@ End Sub
 
 Private Sub GatherWindowPrefs(ByRef rtPrefs As TWindowPrefs)
       With rtPrefs
-            .WNP.Length = LenB(.WNP)
-            GetWindowPlacement hwnd, .WNP
+            .WNP.length = LenB(.WNP)
+            GetWindowPlacement hWnd, .WNP
             If .WNP.showCmd = SW_MINIMIZE Then
                   .WNP.showCmd = SW_RESTORE
             ElseIf .WNP.showCmd = SW_SHOWMINIMIZED Then  '  <-- It'll be this one, not SW_MINIMIZE.
@@ -3646,7 +3647,7 @@ Private Sub Image1_DblClick()
       Dim tPicBoxRect As RECT
       
       GetCursorPos tPrev
-      GetWindowRect picEditor.hwnd, tPicBoxRect
+      GetWindowRect picEditor.hWnd, tPicBoxRect
       
       gtImageData.PrevX = (tPrev.X - tPicBoxRect.Left) * Screen.TwipsPerPixelX - Image1.Left
       gtImageData.PrevY = (tPrev.Y - tPicBoxRect.Top) * Screen.TwipsPerPixelY - Image1.Top
@@ -3666,7 +3667,7 @@ End Sub
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
-            If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
+            If GetForegroundWindow = frmMain.hWnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
             End If
             On Error GoTo 0
@@ -3854,16 +3855,16 @@ Private Sub LoadBrowserPrefs(ByRef rtPrefs As TBrowserPrefs)
             lvwBrowser.SortKey = .SortKey
             If ALLOW_REARRANGE_COLUMNS Then
                   lvwBrowser.AllowColumnReorder = True
-                  lvwBrowser.ColumnHeaders.Item("Name").Position = .NameColumnIndex
-                  lvwBrowser.ColumnHeaders.Item("Type").Position = .TypeColumnIndex
-                  lvwBrowser.ColumnHeaders.Item("Size").Position = .SizeColumnIndex
-                  lvwBrowser.ColumnHeaders.Item("Modified").Position = .ModifiedColumnIndex
+                  lvwBrowser.ColumnHeaders.item("Name").Position = .NameColumnIndex
+                  lvwBrowser.ColumnHeaders.item("Type").Position = .TypeColumnIndex
+                  lvwBrowser.ColumnHeaders.item("Size").Position = .SizeColumnIndex
+                  lvwBrowser.ColumnHeaders.item("Modified").Position = .ModifiedColumnIndex
             End If
-            lvwBrowser.ColumnHeaders.Item("Name").Width = .NameColumnWidth
+            lvwBrowser.ColumnHeaders.item("Name").Width = .NameColumnWidth
             If Not AUTOSIZE_COLUMNS Then
-                  lvwBrowser.ColumnHeaders.Item("Type").Width = .TypeColumnWidth
-                  lvwBrowser.ColumnHeaders.Item("Size").Width = .SizeColumnWidth
-                  lvwBrowser.ColumnHeaders.Item("Modified").Width = .ModifiedColumnWidth
+                  lvwBrowser.ColumnHeaders.item("Type").Width = .TypeColumnWidth
+                  lvwBrowser.ColumnHeaders.item("Size").Width = .SizeColumnWidth
+                  lvwBrowser.ColumnHeaders.item("Modified").Width = .ModifiedColumnWidth
             End If
             sCboPath = Trim(CstringToVBstring(.AutoLoadPath))
             If agEditor.tag = "" Then
@@ -4038,8 +4039,8 @@ Private Sub LoadWindowPrefs(ByRef rtPrefs As TWindowPrefs)
       With rtPrefs
             BrowserResizeHorizontal .BrowserWidth
 
-            .WNP.Length = LenB(.WNP)
-            SetWindowPlacement hwnd, .WNP
+            .WNP.length = LenB(.WNP)
+            SetWindowPlacement hWnd, .WNP
 
             chkFileBrowser.Value = -CInt(.ShowFileBrowser)
             chkFileBrowser_Click
@@ -4115,7 +4116,7 @@ Private Sub lvwBrowser_ColumnClick(ByVal oColumnHeader As MSComctlLib.ColumnHead
 '                  lRetVal = SendMessage(.hwnd, LVM_SORTITEMSEX, ByVal .SortOrder, _
 '                        AddressOf CompareLong)
 
-            If oColumnHeader.key = "Size" Then
+            If oColumnHeader.Key = "Size" Then
                   iNewKey = 4  ' Doing the switch... 5th column stores size invisibly, with leading zeroes for text sorting.
             Else
                   iNewKey = oColumnHeader.Index - 1
@@ -4166,9 +4167,9 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                         ' Ctrl+left = scroll left.  No additional coding needed.
                   ElseIf Shift = vbShiftMask Then
                         ' Shift+left is going to size column width
-                        If lvwBrowser.ColumnHeaders.Item(1).Width >= COLUMN_SIZE_INC Then
-                              lvwBrowser.ColumnHeaders.Item(1).Width = _
-                                    lvwBrowser.ColumnHeaders.Item(1).Width - COLUMN_SIZE_INC
+                        If lvwBrowser.ColumnHeaders.item(1).Width >= COLUMN_SIZE_INC Then
+                              lvwBrowser.ColumnHeaders.item(1).Width = _
+                                    lvwBrowser.ColumnHeaders.item(1).Width - COLUMN_SIZE_INC
                         End If
                   Else
                         btnFolderUp_Click   ' Ordinary left arrow...
@@ -4184,8 +4185,8 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   
                   If Shift = vbShiftMask Then
                         ' Oh, and shift+right is going to increase column width
-                        lvwBrowser.ColumnHeaders.Item("Name").Width = _
-                              lvwBrowser.ColumnHeaders.Item("Name").Width + COLUMN_SIZE_INC
+                        lvwBrowser.ColumnHeaders.item("Name").Width = _
+                              lvwBrowser.ColumnHeaders.item("Name").Width + COLUMN_SIZE_INC
                               
                   ElseIf lvwBrowser.ListItems.Count > 0 Then
                         With lvwBrowser.SelectedItem
@@ -4213,13 +4214,13 @@ Private Sub lvwBrowser_KeyDown(KeyCode As Integer, Shift As Integer)
                   End If
                   
             Case vbKeyN
-                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.Item("Name")
+                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.item("Name")
             Case vbKeyT
-                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.Item("Type")
+                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.item("Type")
             Case vbKeyZ
-                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.Item("Size")
+                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.item("Size")
             Case vbKeyM
-                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.Item("Modified")
+                  lvwBrowser_ColumnClick lvwBrowser.ColumnHeaders.item("Modified")
             
             Case vbKeyDelete
                   If Shift = 0 Then BrowserDeleteSelected
@@ -4271,7 +4272,7 @@ Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, X As Singl
             ' But we don't do that from within cboPath, because it would be very annoying to
             ' have your typing of a directory interrupted by stray movement of the mouse.
             On Error Resume Next
-            If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "lvwBrowser") _
+            If GetForegroundWindow = frmMain.hWnd And Not (ActiveControl.Name = "lvwBrowser") _
                   And Not (ActiveControl.Name = "cboPath") Then
                   lvwBrowser.SetFocus
             End If
@@ -5084,7 +5085,7 @@ End Sub
 Private Sub picEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
-            If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "picEditor") Then
+            If GetForegroundWindow = frmMain.hWnd And Not (ActiveControl.Name = "picEditor") Then
                   picEditor.SetFocus
             End If
             On Error GoTo 0
@@ -5410,7 +5411,7 @@ End Sub
 Private Sub sliZoom_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
       If FOCUS_FOLLOWS_MOUSE Then
             On Error Resume Next
-            If GetForegroundWindow = frmMain.hwnd And Not (ActiveControl.Name = "sliZoom") Then
+            If GetForegroundWindow = frmMain.hWnd And Not (ActiveControl.Name = "sliZoom") Then
                   sliZoom.SetFocus
             End If
             On Error GoTo 0
