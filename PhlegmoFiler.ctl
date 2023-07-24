@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.UserControl PhlegmoFiler 
    Alignable       =   -1  'True
    BackStyle       =   0  'Transparent
@@ -9,137 +9,137 @@ Begin VB.UserControl PhlegmoFiler
    ClientWidth     =   4140
    ScaleHeight     =   5670
    ScaleWidth      =   4140
-   Begin VB.CommandButton btnPathBack 
+   Begin VB.CommandButton btnScrollToTop 
       Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   0
+      Height          =   360
+      Left            =   2730
       MaskColor       =   &H00FFFFFF&
       Picture         =   "PhlegmoFiler.ctx":0000
+      Style           =   1  'Graphical
+      TabIndex        =   9
+      TabStop         =   0   'False
+      ToolTipText     =   "Scroll To Top"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   390
+   End
+   Begin VB.CommandButton btnSyncContents 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   2340
+      MaskColor       =   &H80000001&
+      Picture         =   "PhlegmoFiler.ctx":04B6
+      Style           =   1  'Graphical
+      TabIndex        =   8
+      TabStop         =   0   'False
+      ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnDeleteSelected 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   1950
+      MaskColor       =   &H00000000&
+      Picture         =   "PhlegmoFiler.ctx":07F8
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      TabStop         =   0   'False
+      ToolTipText     =   "Delete File (Del)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnRefresh 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   1560
+      MaskColor       =   &H80000005&
+      Picture         =   "PhlegmoFiler.ctx":0B3A
+      Style           =   1  'Graphical
+      TabIndex        =   6
+      TabStop         =   0   'False
+      ToolTipText     =   "Refresh Files (F5)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnSort 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   1170
+      MaskColor       =   &H80000005&
+      Picture         =   "PhlegmoFiler.ctx":0E7C
+      Style           =   1  'Graphical
+      TabIndex        =   5
+      TabStop         =   0   'False
+      ToolTipText     =   "Reverse the sort order (Ctrl+H)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnFolderUp 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   780
+      MaskColor       =   &H00FFFFFF&
+      Picture         =   "PhlegmoFiler.ctx":11BE
+      Style           =   1  'Graphical
+      TabIndex        =   4
+      TabStop         =   0   'False
+      ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnPathForward 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   390
+      MaskColor       =   &H00FFFFFF&
+      Picture         =   "PhlegmoFiler.ctx":1500
+      Style           =   1  'Graphical
+      TabIndex        =   3
+      TabStop         =   0   'False
+      ToolTipText     =   "Go forward a directory (Alt+Right)"
+      Top             =   360
+      UseMaskColor    =   -1  'True
+      Width           =   405
+   End
+   Begin VB.CommandButton btnPathBack 
+      Appearance      =   0  'Flat
+      Height          =   360
+      Left            =   0
+      MaskColor       =   &H00FFFFFF&
+      Picture         =   "PhlegmoFiler.ctx":197A
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
       ToolTipText     =   "Go back a directory (Alt+Left)"
-      Top             =   420
+      Top             =   360
       UseMaskColor    =   -1  'True
-      Width           =   340
+      Width           =   405
    End
    Begin VB.ComboBox cboPath 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   7.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   300
-      ItemData        =   "PhlegmoFiler.ctx":047A
+      Height          =   315
+      ItemData        =   "PhlegmoFiler.ctx":1DF4
       Left            =   0
-      List            =   "PhlegmoFiler.ctx":047C
+      List            =   "PhlegmoFiler.ctx":1DF6
       TabIndex        =   0
-      Text            =   "*"
+      Text            =   "c:\windows\system32"
       ToolTipText     =   "Type a directory into here, or select one below.  You can even specify a file extension.  Example:   c:\windows\*.dll"
-      Top             =   100
+      Top             =   0
       Width           =   2295
-   End
-   Begin VB.CommandButton btnPathForward 
-      Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   340
-      MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":047E
-      Style           =   1  'Graphical
-      TabIndex        =   3
-      TabStop         =   0   'False
-      ToolTipText     =   "Go forward a directory (Alt+Right)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnFolderUp 
-      Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   680
-      MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":08F8
-      Style           =   1  'Graphical
-      TabIndex        =   4
-      TabStop         =   0   'False
-      ToolTipText     =   "Go up a directory (Left arrow key or Ctrl+F6)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnSort 
-      Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   1020
-      MaskColor       =   &H80000005&
-      Picture         =   "PhlegmoFiler.ctx":0C3A
-      Style           =   1  'Graphical
-      TabIndex        =   5
-      TabStop         =   0   'False
-      ToolTipText     =   "Reverse the sort order (Ctrl+H)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnRefresh 
-      Appearance      =   0  'Flat
-      Height          =   350
-      Left            =   1360
-      MaskColor       =   &H80000005&
-      Picture         =   "PhlegmoFiler.ctx":0F7C
-      Style           =   1  'Graphical
-      TabIndex        =   6
-      TabStop         =   0   'False
-      ToolTipText     =   "Refresh Files (F5)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnDeleteSelected 
-      Appearance      =   0  'Flat
-      Height          =   350
-      Left            =   1700
-      MaskColor       =   &H00000000&
-      Picture         =   "PhlegmoFiler.ctx":12BE
-      Style           =   1  'Graphical
-      TabIndex        =   7
-      TabStop         =   0   'False
-      ToolTipText     =   "Delete File (Del)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnSyncContents 
-      Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   2040
-      MaskColor       =   &H80000001&
-      Picture         =   "PhlegmoFiler.ctx":1600
-      Style           =   1  'Graphical
-      TabIndex        =   8
-      TabStop         =   0   'False
-      ToolTipText     =   "Jump to the directory containing your open file... (Ctrl+F5)"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
-   End
-   Begin VB.CommandButton btnScrollToTop 
-      Appearance      =   0  'Flat
-      Height          =   340
-      Left            =   2380
-      MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":1942
-      Style           =   1  'Graphical
-      TabIndex        =   9
-      TabStop         =   0   'False
-      ToolTipText     =   "Scroll To Top"
-      Top             =   420
-      UseMaskColor    =   -1  'True
-      Width           =   340
    End
    Begin MSComctlLib.ImageList ilsFileIcons2 
       Left            =   2475
@@ -216,7 +216,7 @@ Begin VB.UserControl PhlegmoFiler
       Left            =   0
       TabIndex        =   10
       Tag             =   "c:\test\"
-      Top             =   840
+      Top             =   780
       Width           =   2295
       _ExtentX        =   4048
       _ExtentY        =   7646
@@ -295,9 +295,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Const INITIAL_WIDTH = 4140
-Const RIGHT_MARGIN = 117
-Const BOTTOM_MARGIN = 30
-Const MIN_WIDTH = 1000
+Const RIGHT_MARGIN = 105
+Const BOTTOM_MARGIN = 0
+Const MIN_WIDTH = 995
 Private mlInitialPointerX As Long
 Private mlPrevPointerX As Long
 Private mlMaxWidth As Long
@@ -329,12 +329,12 @@ Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, X As Singl
       Dim lDeltaX As Long
       
       lDeltaX = GetCursorPosX() * Screen.TwipsPerPixelX - mlPrevPointerX
-      If Abs(lDeltaX) > 15 And (lblDivider.Left + lDeltaX > MIN_WIDTH) And lblDivider.MousePointer = vbSizeWE And lblDivider.Tag = "Resizing" Then
+      If Abs(lDeltaX) > 15 And (lblDivider.Left + lDeltaX > MIN_WIDTH) And (lblDivider.Left + lDeltaX < mlMaxWidth) _
+                  And lblDivider.MousePointer = vbSizeWE And lblDivider.Tag = "Resizing" Then
             lblDivider.Tag = "Busy"
             
             mlPrevPointerX = mlPrevPointerX + lDeltaX
             RearrangeControls lblDivider.Left + lDeltaX
-            DoEvents
             If lblDivider.Tag = "Busy" Then lblDivider.Tag = "Resizing"
       Else
             lblDivider.MousePointer = vbSizeWE
@@ -371,15 +371,11 @@ Private Sub RearrangeControls(Optional ByVal lSupposedWidth As Long = -1)
 End Sub
 
 Private Sub UserControl_Initialize()
-      ' Debug.Print "Filer_Init (w, sw, h, sh): " & Width & ", " & ScaleWidth & ", " & Height & ", " & ScaleHeight
-      
       mlMaxWidth = 10000
       RearrangeControls INITIAL_WIDTH - RIGHT_MARGIN
       miInitializings = miInitializings + 1
 End Sub
 
 Private Sub UserControl_Resize()
-      ' Debug.Print "Filer_Resize (w, sw, h, sh): " & Width & ", " & ScaleWidth & ", " & Height & ", " & ScaleHeight
-      
-      lvwBrowser.Height = ScaleHeight - BOTTOM_MARGIN
+      lvwBrowser.Height = ScaleHeight - lvwBrowser.Top - BOTTOM_MARGIN
 End Sub

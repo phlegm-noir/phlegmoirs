@@ -28,7 +28,7 @@ Begin VB.Form frmAbout
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   240
-      Picture         =   "frmAbout.frx":10CA
+      Picture         =   "frmAbout.frx":0CCA
       ScaleHeight     =   337.12
       ScaleMode       =   0  'User
       ScaleWidth      =   337.12
@@ -98,7 +98,7 @@ Private Sub cmdOK_Click()
 End Sub
 
 Private Sub Form_Load()
-      Me.Caption = "About " & App.title
+      Me.Caption = "About " & App.Title
       lblVersion.Caption = "Version " & App.Major & "." & App.Minor & "." & App.Revision
-      lblTitle.Caption = App.title
+      lblTitle.Caption = App.Title
 End Sub

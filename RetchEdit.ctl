@@ -18,7 +18,7 @@ Begin VB.UserControl RechEdit
       _ExtentX        =   12621
       _ExtentY        =   11880
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Rockwell"
+         Name            =   "Arial"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -31,6 +31,7 @@ Begin VB.UserControl RechEdit
       ScrollBars      =   2
       SelectionBar    =   -1  'True
       TextMode        =   1
+      TextRTF         =   "RetchEdit.ctx":0000
    End
 End
 Attribute VB_Name = "RechEdit"
@@ -41,7 +42,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Const INITIAL_WIDTH = 8070
-Const TOP_MARGIN = 100
+Const TOP_MARGIN = 0
 
 Public Sub Resize()
       UserControl_Resize

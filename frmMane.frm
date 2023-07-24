@@ -1,10 +1,10 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMane 
    Caption         =   "phlegmoirs"
    ClientHeight    =   8985
-   ClientLeft      =   225
-   ClientTop       =   870
+   ClientLeft      =   165
+   ClientTop       =   825
    ClientWidth     =   12285
    Icon            =   "frmMane.frx":0000
    LinkTopic       =   "Form1"
@@ -12,389 +12,28 @@ Begin VB.Form frmMane
    ScaleWidth      =   12285
    StartUpPosition =   3  'Windows Default
    Begin phlegmoirs.RechEdit Editor 
-      Align           =   4  'Align Right
-      Height          =   8085
+      Height          =   8070
       Left            =   4215
-      TabIndex        =   18
-      Top             =   600
+      TabIndex        =   16
+      Top             =   615
       Width           =   8070
       _ExtentX        =   14235
-      _ExtentY        =   14261
+      _ExtentY        =   14235
    End
    Begin phlegmoirs.PhlegmoFiler Filer 
-      Align           =   3  'Align Left
-      Height          =   8085
+      Height          =   8070
       Left            =   0
-      TabIndex        =   17
-      Top             =   600
+      TabIndex        =   15
+      Top             =   615
       Width           =   4140
       _ExtentX        =   7303
-      _ExtentY        =   14261
-   End
-   Begin VB.PictureBox picToolBar 
-      Align           =   1  'Align Top
-      ClipControls    =   0   'False
-      Height          =   600
-      Left            =   0
-      ScaleHeight     =   540
-      ScaleWidth      =   12225
-      TabIndex        =   0
-      TabStop         =   0   'False
-      Top             =   0
-      Width           =   12285
-      Begin VB.CheckBox chkFileBrowser 
-         CausesValidation=   0   'False
-         DownPicture     =   "frmMane.frx":0CCA
-         Height          =   570
-         Left            =   0
-         MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMane.frx":13CC
-         Style           =   1  'Graphical
-         TabIndex        =   1
-         TabStop         =   0   'False
-         ToolTipText     =   "Show/Hide the File Browser (F8)"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Value           =   1  'Checked
-         Width           =   615
-      End
-      Begin VB.CommandButton btnNewFile 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   600
-         MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMane.frx":1ACE
-         Style           =   1  'Graphical
-         TabIndex        =   2
-         TabStop         =   0   'False
-         ToolTipText     =   "New File (Ctrl+N)"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Width           =   615
-      End
-      Begin VB.CommandButton btnSave 
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   1200
-         MaskColor       =   &H00000000&
-         Picture         =   "frmMane.frx":21D0
-         Style           =   1  'Graphical
-         TabIndex        =   6
-         TabStop         =   0   'False
-         ToolTipText     =   "Save File (Ctrl+S)"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Width           =   615
-      End
-      Begin VB.CommandButton btnFullScreen 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   1200
-         MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMane.frx":28D2
-         Style           =   1  'Graphical
-         TabIndex        =   4
-         TabStop         =   0   'False
-         ToolTipText     =   "Full Screen (F11)"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Visible         =   0   'False
-         Width           =   615
-      End
-      Begin VB.CheckBox chkWordWrap 
-         Caption         =   "W"
-         CausesValidation=   0   'False
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   1200
-         Style           =   1  'Graphical
-         TabIndex        =   3
-         TabStop         =   0   'False
-         ToolTipText     =   "Toggle Word Wrap (Ctrl+W)"
-         Top             =   0
-         Value           =   1  'Checked
-         Visible         =   0   'False
-         Width           =   615
-      End
-      Begin VB.CommandButton btnEdit 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   1200
-         MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMane.frx":2C14
-         Style           =   1  'Graphical
-         TabIndex        =   5
-         TabStop         =   0   'False
-         ToolTipText     =   "Edit This File"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Visible         =   0   'False
-         Width           =   615
-      End
-      Begin VB.CheckBox chkReadOnly 
-         Caption         =   "read only"
-         CausesValidation=   0   'False
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   7200
-         Style           =   1  'Graphical
-         TabIndex        =   11
-         TabStop         =   0   'False
-         ToolTipText     =   "Toggle Read-Only mode"
-         Top             =   0
-         Visible         =   0   'False
-         Width           =   615
-      End
-      Begin VB.CommandButton btnFont 
-         Caption         =   "MS Sans Serif"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   270
-         Left            =   1800
-         TabIndex        =   8
-         TabStop         =   0   'False
-         ToolTipText     =   "Set Font (Shift+Ctrl+F)"
-         Top             =   0
-         Width           =   1815
-      End
-      Begin VB.CommandButton btnZoomOut 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   320
-         Left            =   1800
-         MaskColor       =   &H00000000&
-         Picture         =   "frmMane.frx":2F56
-         Style           =   1  'Graphical
-         TabIndex        =   12
-         TabStop         =   0   'False
-         ToolTipText     =   "Zoom Out"
-         Top             =   260
-         UseMaskColor    =   -1  'True
-         Width           =   460
-      End
-      Begin VB.CommandButton btnFitImage 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   320
-         Left            =   2250
-         MaskColor       =   &H00000000&
-         Picture         =   "frmMane.frx":3298
-         Style           =   1  'Graphical
-         TabIndex        =   13
-         TabStop         =   0   'False
-         ToolTipText     =   "Fit Image To Window"
-         Top             =   260
-         UseMaskColor    =   -1  'True
-         Visible         =   0   'False
-         Width           =   460
-      End
-      Begin VB.CommandButton btnZoomDefault 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   320
-         Left            =   2700
-         MaskColor       =   &H00000000&
-         Picture         =   "frmMane.frx":35DA
-         Style           =   1  'Graphical
-         TabIndex        =   14
-         TabStop         =   0   'False
-         ToolTipText     =   "Reset Zoom"
-         Top             =   260
-         UseMaskColor    =   -1  'True
-         Visible         =   0   'False
-         Width           =   460
-      End
-      Begin VB.CommandButton btnZoomIn 
-         Appearance      =   0  'Flat
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   320
-         Left            =   3150
-         MaskColor       =   &H00000000&
-         Picture         =   "frmMane.frx":391C
-         Style           =   1  'Graphical
-         TabIndex        =   15
-         TabStop         =   0   'False
-         ToolTipText     =   "Zoom In"
-         Top             =   260
-         UseMaskColor    =   -1  'True
-         Width           =   470
-      End
-      Begin VB.CommandButton btnPrevFile 
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   3600
-         MaskColor       =   &H80000005&
-         Picture         =   "frmMane.frx":3C5E
-         Style           =   1  'Graphical
-         TabIndex        =   9
-         TabStop         =   0   'False
-         ToolTipText     =   "Next file up (Ctrl+""["")"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Width           =   615
-      End
-      Begin VB.CommandButton btnNextFile 
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   570
-         Left            =   4200
-         MaskColor       =   &H80000005&
-         Picture         =   "frmMane.frx":4360
-         Style           =   1  'Graphical
-         TabIndex        =   10
-         TabStop         =   0   'False
-         ToolTipText     =   "Next file down (Ctrl+""]"")"
-         Top             =   0
-         UseMaskColor    =   -1  'True
-         Width           =   615
-      End
-      Begin MSComctlLib.Slider sliZoom 
-         Height          =   330
-         Left            =   1800
-         TabIndex        =   7
-         TabStop         =   0   'False
-         ToolTipText     =   "Adjust picture zoom"
-         Top             =   0
-         Width           =   1836
-         _ExtentX        =   3228
-         _ExtentY        =   582
-         _Version        =   393216
-         LargeChange     =   100
-         SmallChange     =   10
-         Max             =   500
-         SelStart        =   100
-         TickFrequency   =   100
-         Value           =   100
-      End
-      Begin VB.Label lblFontSize 
-         Alignment       =   2  'Center
-         Caption         =   "8"
-         BeginProperty Font 
-            Name            =   "Small Fonts"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   180
-         Left            =   2240
-         TabIndex        =   16
-         Top             =   320
-         Width           =   960
-      End
+      _ExtentY        =   14235
    End
    Begin MSComctlLib.StatusBar staTusBar1 
       Align           =   2  'Align Bottom
       Height          =   300
       Left            =   0
-      TabIndex        =   19
+      TabIndex        =   17
       Top             =   8685
       Width           =   12285
       _ExtentX        =   21669
@@ -450,6 +89,319 @@ Begin VB.Form frmMane
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+   End
+   Begin VB.PictureBox picToolBar 
+      ClipControls    =   0   'False
+      Height          =   600
+      Left            =   0
+      ScaleHeight     =   540
+      ScaleWidth      =   4770
+      TabIndex        =   0
+      TabStop         =   0   'False
+      Top             =   0
+      Width           =   4830
+      Begin VB.CommandButton btnNextFile 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   4200
+         MaskColor       =   &H80000005&
+         Picture         =   "frmMane.frx":0CCA
+         Style           =   1  'Graphical
+         TabIndex        =   9
+         TabStop         =   0   'False
+         ToolTipText     =   "Next file down (Ctrl+""]"")"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Width           =   615
+      End
+      Begin VB.CommandButton btnPrevFile 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   3600
+         MaskColor       =   &H80000005&
+         Picture         =   "frmMane.frx":13CC
+         Style           =   1  'Graphical
+         TabIndex        =   8
+         TabStop         =   0   'False
+         ToolTipText     =   "Next file up (Ctrl+""["")"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Width           =   615
+      End
+      Begin VB.CommandButton btnZoomIn 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   320
+         Left            =   3150
+         MaskColor       =   &H00000000&
+         Picture         =   "frmMane.frx":1ACE
+         Style           =   1  'Graphical
+         TabIndex        =   13
+         TabStop         =   0   'False
+         ToolTipText     =   "Zoom In"
+         Top             =   260
+         UseMaskColor    =   -1  'True
+         Width           =   470
+      End
+      Begin VB.CommandButton btnZoomDefault 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Small Fonts"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   320
+         Left            =   2700
+         MaskColor       =   &H00000000&
+         Picture         =   "frmMane.frx":1E10
+         Style           =   1  'Graphical
+         TabIndex        =   12
+         TabStop         =   0   'False
+         ToolTipText     =   "Reset Zoom"
+         Top             =   260
+         UseMaskColor    =   -1  'True
+         Visible         =   0   'False
+         Width           =   460
+      End
+      Begin VB.CommandButton btnFitImage 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Small Fonts"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   320
+         Left            =   2250
+         MaskColor       =   &H00000000&
+         Picture         =   "frmMane.frx":2152
+         Style           =   1  'Graphical
+         TabIndex        =   11
+         TabStop         =   0   'False
+         ToolTipText     =   "Fit Image To Window"
+         Top             =   260
+         UseMaskColor    =   -1  'True
+         Visible         =   0   'False
+         Width           =   460
+      End
+      Begin VB.CommandButton btnZoomOut 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   320
+         Left            =   1800
+         MaskColor       =   &H00000000&
+         Picture         =   "frmMane.frx":2494
+         Style           =   1  'Graphical
+         TabIndex        =   10
+         TabStop         =   0   'False
+         ToolTipText     =   "Zoom Out"
+         Top             =   260
+         UseMaskColor    =   -1  'True
+         Width           =   460
+      End
+      Begin VB.CommandButton btnFont 
+         Caption         =   "MS Sans Serif"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   1800
+         TabIndex        =   7
+         TabStop         =   0   'False
+         ToolTipText     =   "Set Font (Shift+Ctrl+F)"
+         Top             =   0
+         Width           =   1815
+      End
+      Begin VB.CommandButton btnSave 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   1200
+         MaskColor       =   &H00000000&
+         Picture         =   "frmMane.frx":27D6
+         Style           =   1  'Graphical
+         TabIndex        =   5
+         TabStop         =   0   'False
+         ToolTipText     =   "Save File (Ctrl+S)"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Width           =   615
+      End
+      Begin VB.CommandButton btnNewFile 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   600
+         MaskColor       =   &H00FFFFFF&
+         Picture         =   "frmMane.frx":2ED8
+         Style           =   1  'Graphical
+         TabIndex        =   2
+         TabStop         =   0   'False
+         ToolTipText     =   "New File (Ctrl+N)"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Width           =   615
+      End
+      Begin VB.CheckBox chkFileBrowser 
+         CausesValidation=   0   'False
+         DownPicture     =   "frmMane.frx":35DA
+         Height          =   570
+         Left            =   0
+         MaskColor       =   &H00FFFFFF&
+         Picture         =   "frmMane.frx":3CDC
+         Style           =   1  'Graphical
+         TabIndex        =   1
+         TabStop         =   0   'False
+         ToolTipText     =   "Show/Hide the File Browser (F8)"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Value           =   1  'Checked
+         Width           =   615
+      End
+      Begin VB.CommandButton btnFullScreen 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Small Fonts"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   1200
+         MaskColor       =   &H00FFFFFF&
+         Picture         =   "frmMane.frx":43DE
+         Style           =   1  'Graphical
+         TabIndex        =   3
+         TabStop         =   0   'False
+         ToolTipText     =   "Full Screen (F11)"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Visible         =   0   'False
+         Width           =   615
+      End
+      Begin VB.CommandButton btnEdit 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   570
+         Left            =   1200
+         MaskColor       =   &H00FFFFFF&
+         Picture         =   "frmMane.frx":4720
+         Style           =   1  'Graphical
+         TabIndex        =   4
+         TabStop         =   0   'False
+         ToolTipText     =   "Edit This File"
+         Top             =   0
+         UseMaskColor    =   -1  'True
+         Visible         =   0   'False
+         Width           =   615
+      End
+      Begin MSComctlLib.Slider sliZoom 
+         Height          =   330
+         Left            =   1800
+         TabIndex        =   6
+         TabStop         =   0   'False
+         ToolTipText     =   "Adjust picture zoom"
+         Top             =   0
+         Width           =   1836
+         _ExtentX        =   3228
+         _ExtentY        =   582
+         _Version        =   393216
+         LargeChange     =   100
+         SmallChange     =   10
+         Max             =   500
+         SelStart        =   100
+         TickFrequency   =   100
+         Value           =   100
+      End
+      Begin VB.Label lblFontSize 
+         Alignment       =   2  'Center
+         Caption         =   "8"
+         BeginProperty Font 
+            Name            =   "Small Fonts"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   180
+         Left            =   2240
+         TabIndex        =   14
+         Top             =   320
+         Width           =   960
+      End
    End
    Begin VB.Menu mnuPlus 
       Caption         =   "="
@@ -654,15 +606,21 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Const MIN_EDITOR_WIDTH = 3000
-Const MIN_HEIGHT = 2500
+Const MIN_HEIGHT = 3300
+Const TOP_MARGIN = 105
 Private mlFormMarginsHoriz As Long
+Private mePrevWindowState As FormWindowStateConstants
+Private mtPrevWindowPos As POINTAPI
+Private mtPrevWindowSize As POINTAPI
 
 Private Sub chkFileBrowser_Click()
-      Filer.Visible = chkFileBrowser.Value
-      mnuViewFilebrowser.Checked = chkFileBrowser.Value
-      ' staTusBar1.Panels(eStat.BrowserStats).Visible = chkFileBrowser.Value
+      Filer.Visible = (vbChecked = chkFileBrowser.Value)
+      DoEvents
+      mnuViewFilebrowser.Checked = Filer.Visible
       
+      FormAdjustWidthIfTooSmall
       Form_Resize
+      SizeLimiterHook Me.hWnd, GetFilerWidth() + MIN_EDITOR_WIDTH, MIN_HEIGHT
 End Sub
 
 Private Sub Filer_ResizeHorizontal(ByVal lWidth As Long)
@@ -675,40 +633,83 @@ Private Sub Filer_SeriousResize(ByVal lWidth As Long)
 End Sub
 
 Private Sub Form_Load()
-      ' Debug.Print "frmMane_Init (w, sw, h, sh): " & Width & ", " & ScaleWidth & ", " & Height & ", " & ScaleHeight
-      
       mlFormMarginsHoriz = Me.Width - Me.ScaleWidth
-      SizeLimiterHook Me.hWnd, Filer.Width + MIN_EDITOR_WIDTH, MIN_HEIGHT
+      SizeLimiterHook Me.hWnd, GetFilerWidth() + MIN_EDITOR_WIDTH, MIN_HEIGHT
 End Sub
 
 Private Sub Form_Resize()
-      ' Debug.Print "frmMane_Resize (w, sw, h, sh): " & Width & ", " & ScaleWidth & ", " & Height & ", " & ScaleHeight
+      If (mePrevWindowState <> vbNormal) And (Me.WindowState = vbNormal) Then
+            FormAdjustWidthIfTooSmall
+      End If
+      mePrevWindowState = Me.WindowState
+      mtPrevWindowPos.X = Me.Left
+      mtPrevWindowPos.Y = Me.Top
+      mtPrevWindowSize.X = Me.Width
+      mtPrevWindowSize.Y = Me.Height
       
-      ' Me.Width = Max(Me.Width, GetFilerWidth() + MIN_EDITOR_WIDTH + mlFormMarginsHoriz)
+      If Me.WindowState = vbMinimized Then Exit Sub
       
-      Editor.Width = Me.Width - GetFilerWidth() - mlFormMarginsHoriz
+      Dim lFilerHeight, lEditorTop As Long
+      lFilerHeight = Me.ScaleHeight - GetToolbarHeight - GetStatusbarHeight
+      lEditorTop = Ternary(GetFilerWidth > picToolBar.Width + 105, 0, GetToolbarHeight)
+      
+      Editor.Move GetFilerWidth, lEditorTop, Me.Width - GetFilerWidth - mlFormMarginsHoriz, Me.ScaleHeight - GetStatusbarHeight - lEditorTop
+      If Filer.Visible Then
+            Filer.Move Filer.Left, GetToolbarHeight, Filer.Width, lFilerHeight
+      End If
       Filer.SetMaxWidth (Me.Width - MIN_EDITOR_WIDTH - mlFormMarginsHoriz)
 End Sub
 
-Private Function GetFilerWidth() As Long
-      If chkFileBrowser Then
-            GetFilerWidth = Filer.Width
-      Else
-            GetFilerWidth = 0
+Private Sub FormAdjustWidthIfTooSmall()
+      If GetFilerWidth() + MIN_EDITOR_WIDTH > frmMane.ScaleWidth Then
+            frmMane.Width = Filer.Width + MIN_EDITOR_WIDTH
       End If
+End Sub
+
+Private Function GetFilerWidth() As Long
+      GetFilerWidth = Ternary(chkFileBrowser, Filer.Width + Filer.Left, 0)
 End Function
 
-Private Function GetMinFilerWidth() As Long
-      Const MIN_FILER_WIDTH = 1500
-      
-      If chkFileBrowser Then
-            GetMinFilerWidth = MIN_FILER_WIDTH
-      Else
-            GetMinFilerWidth = 0
-      End If
+Private Function GetStatusbarHeight() As Long
+      GetStatusbarHeight = Ternary(mnuViewStatusBar.Checked, staTusBar1.Height, 0)
+End Function
+
+Private Function GetToolbarHeight() As Long
+      GetToolbarHeight = Ternary(mnuViewToolbar.Checked, picToolBar.Height + picToolBar.Top + TOP_MARGIN, 0)
 End Function
 
 Private Sub Form_Unload(Cancel As Integer)
       SizeLimiterUnhook Me.hWnd
       Unload frmAbout
+End Sub
+
+Private Sub mnuNext_Click()
+      btnNextFile_Click
+End Sub
+
+Private Sub mnuPlus_Click()
+      mnuViewToolbar_Click
+End Sub
+
+Private Sub mnuPrev_Click()
+      btnPrevFile_Click
+End Sub
+
+Private Sub mnuViewFilebrowser_Click()
+      chkFileBrowser.Value = Ternary(mnuViewFilebrowser.Checked, vbUnchecked, vbChecked)
+End Sub
+
+Private Sub mnuViewStatusBar_Click()
+      mnuViewStatusBar.Checked = Not mnuViewStatusBar.Checked
+      staTusBar1.Visible = mnuViewStatusBar.Checked
+      Form_Resize
+End Sub
+
+Private Sub mnuViewToolbar_Click()
+      mnuViewToolbar.Checked = Not mnuViewToolbar.Checked
+      picToolBar.Visible = mnuViewToolbar.Checked
+      mnuPlus.Caption = Ternary(mnuViewToolbar.Checked, "=", "+")
+      mnuNext.Visible = Not mnuViewToolbar.Checked
+      mnuPrev.Visible = Not mnuViewToolbar.Checked
+      Form_Resize
 End Sub
