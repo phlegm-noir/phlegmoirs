@@ -2,6 +2,8 @@ Attribute VB_Name = "modUtils"
 Option Explicit
 Option Compare Binary
 
+Public Const MAX_DWORD As Currency = 4294967295@ ' double word = 8 bytes = 16 ^ 8 - 1
+
 Public Function Max(ByVal v1 As Variant, ByVal v2 As Variant) As Variant
       If (v1 > v2) Then
             Max = v1
@@ -35,5 +37,98 @@ End Function
 Public Function GetCursorPosX() As Long
       Dim tRect As POINTAPI
       GetCursorPos tRect
-      GetCursorPosX = tRect.X
+      GetCursorPosX = tRect.x
+End Function
+
+Public Function NullOr(ByVal FirstThing As Variant, ByVal OtherThing As Variant)
+      If Not IsNull(FirstThing) Then
+            NullOr = FirstThing
+      Else
+            NullOr = OtherThing
+      End If
+End Function
+
+Public Function TrimTrailingSlash(ByVal sPath As String) As String
+      If Right(sPath, 1) = "\" Then
+            TrimTrailingSlash = Left(sPath, Len(sPath) - 1)
+      Else
+            TrimTrailingSlash = sPath
+      End If
+End Function
+
+Public Function ParentDirectoryOf(ByVal sPath As String)
+      Dim iSlash As Integer
+      
+      If sPath = "\" Then
+            ParentDirectoryOf = ""
+      Else
+            iSlash = InStrRev(sPath, "\", Len(sPath) - 1)
+            ParentDirectoryOf = Left(sPath, iSlash)
+      End If
+End Function
+
+Public Function SnipPath(ByVal sPath As String) As String
+      Dim iSlash As Integer
+      iSlash = InStrRev(sPath, "\")
+      SnipPath = Right(sPath, Len(sPath) - iSlash)
+End Function
+
+Public Function SnipFileName(ByVal sPath As String) As String
+      Dim iSlash As Integer
+      iSlash = InStrRev(sPath, "\")
+      SnipFileName = Left(sPath, iSlash)
+End Function
+
+Public Function CstringToVBstring(ByVal sCstring As String) As String
+      ' Removes first null character and anything following it.
+      On Error GoTo CONVERSION_ERROR
+      Dim lNullPos As Long
+      
+      lNullPos = InStr(1, sCstring, Chr(0))
+      If lNullPos = 0 Then
+            CstringToVBstring = sCstring
+      Else
+            CstringToVBstring = Left(sCstring, lNullPos - 1)
+      End If
+      Exit Function
+CONVERSION_ERROR:
+      DebugLog "CONVERSION ERROR: " & sCstring, 2
+End Function
+
+Public Function FormatNonLocalFileTime(rtNlft As FILETIME) As String
+      ' example date string:   2005-03-15 6:14:21
+      
+      Dim tLocalTime As FILETIME
+      Dim tSysTime As SYSTEMTIME
+      
+      FileTimeToLocalFileTime rtNlft, tLocalTime
+      FileTimeToSystemTime tLocalTime, tSysTime
+      With tSysTime
+            FormatNonLocalFileTime = .wYear & "-" & Format(.wMonth, "00") & "-" & Format(.wDay, "00") _
+                  & ", " & Format(.wHour, "00") & ":" & Format(.wMinute, "00") & ":" & Format(.wSecond, "00")
+      End With
+End Function
+
+' Long (unsigned, positive values) only range from 1 to HALF of 4294967296 (16 ^ 8)
+' So for the upper half of them, a DWORD from the API cannot be represented by a Long
+'
+' Whereas Currency goes up to 922,337,203,685,477.5807
+' Even without leveraging the decimal places, that's enough bytes to describe any file
+' in the high terabytes, close to a petabyte.
+'
+Public Function SignedLongToCurrency(ByVal lLng As Long) As Currency
+      SignedLongToCurrency = lLng
+      If lLng < 0 Then
+            SignedLongToCurrency = CCur(lLng) + MAX_DWORD + 1
+      End If
+End Function
+
+Public Function GetBigFileSize(ByRef rtWfd As WIN32_FIND_DATA, ByVal sFileName As String, _
+      ByVal sDir As String, ByRef roFso As Object) As Currency
+      
+      GetBigFileSize = SignedLongToCurrency(rtWfd.nFileSizeLow)
+      If rtWfd.nFileSizeHigh > 0 Then
+            GetBigFileSize = rtWfd.nFileSizeHigh * (MAX_DWORD + 1) + GetBigFileSize
+      End If
+      LogBigFileSize rtWfd, sFileName, sDir, roFso, GetBigFileSize
 End Function
