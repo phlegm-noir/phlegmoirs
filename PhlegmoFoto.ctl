@@ -34,6 +34,20 @@ Private mbDragging As Boolean
 Private mbMoved As Boolean
 Private mbZoomed As Boolean
 
+Public Event Hover()
+
+Public Event ZoomChanged(iZoom As Integer)
+
+Public Event NextImage() ' probably need next/prev *file* for when not fullscreen?
+
+Public Event PrevImage()
+
+Public Event ToggleFullScreen()
+
+Public Sub LoadImage()
+
+End Sub
+
 Public Sub Resize()
       UserControl_Resize
 End Sub

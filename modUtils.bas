@@ -37,7 +37,7 @@ End Function
 Public Function GetCursorPosX() As Long
       Dim tRect As POINTAPI
       GetCursorPos tRect
-      GetCursorPosX = tRect.x
+      GetCursorPosX = tRect.X
 End Function
 
 Public Function NullOr(ByVal FirstThing As Variant, ByVal OtherThing As Variant)
@@ -131,4 +131,31 @@ Public Function GetBigFileSize(ByRef rtWfd As WIN32_FIND_DATA, ByVal sFileName A
             GetBigFileSize = rtWfd.nFileSizeHigh * (MAX_DWORD + 1) + GetBigFileSize
       End If
       LogBigFileSize rtWfd, sFileName, sDir, roFso, GetBigFileSize
+End Function
+
+Function FormatBytes(ByVal oBytes, iPrecision As Integer) As String
+      ' Takes a quantity of bytes as a currency value (because it's 64-bit),
+      ' format it to read like:
+      
+      ' 45.2 MB
+      ' 300.2 KB
+      ' 666 Bytes
+      ' 99.4444 GB
+      ' 20000 TB  (not supporting terabytes at the moment)
+      
+      ' ...with iPrecision digits after the demical.
+      
+      If oBytes = 1 Then
+            FormatBytes = CStr(oBytes) & " byte"
+      ElseIf oBytes < 1024@ Then
+            FormatBytes = CStr(oBytes) & " bytes"
+      ElseIf oBytes < 1048576@ Then
+            FormatBytes = CStr(Round(oBytes / 1024@, iPrecision)) & " KB"
+      ElseIf oBytes < 1073741824@ Then
+            FormatBytes = CStr(Round(oBytes / 1048576@, iPrecision)) & " MB"
+      ElseIf oBytes < 1099511627776@ Then
+            FormatBytes = CStr(Round(oBytes / 1073741824@, iPrecision)) & " GB"
+      Else
+            FormatBytes = "Size Unknown"
+      End If
 End Function

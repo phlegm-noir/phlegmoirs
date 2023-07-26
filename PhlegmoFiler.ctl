@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{7020C36F-09FC-41FE-B822-CDE6FBB321EB}#1.3#0"; "VBCCR17.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
 Begin VB.UserControl PhlegmoFiler 
    Alignable       =   -1  'True
    BackStyle       =   0  'Transparent
@@ -38,6 +38,7 @@ Begin VB.UserControl PhlegmoFiler
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      MouseIcon       =   "PhlegmoFiler.ctx":0000
       NumItems        =   6
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Key             =   "Name"
@@ -97,7 +98,7 @@ Begin VB.UserControl PhlegmoFiler
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Text            =   "PhlegmoFiler.ctx":0000
+      Text            =   "PhlegmoFiler.ctx":031A
       ScrollTrack     =   0   'False
    End
    Begin VB.CommandButton btnScrollToTop 
@@ -105,7 +106,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   2730
       MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":0036
+      Picture         =   "PhlegmoFiler.ctx":0350
       Style           =   1  'Graphical
       TabIndex        =   8
       TabStop         =   0   'False
@@ -119,7 +120,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   2340
       MaskColor       =   &H80000001&
-      Picture         =   "PhlegmoFiler.ctx":04EC
+      Picture         =   "PhlegmoFiler.ctx":0806
       Style           =   1  'Graphical
       TabIndex        =   7
       TabStop         =   0   'False
@@ -133,7 +134,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   1950
       MaskColor       =   &H00000000&
-      Picture         =   "PhlegmoFiler.ctx":082E
+      Picture         =   "PhlegmoFiler.ctx":0B48
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
@@ -147,7 +148,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   1560
       MaskColor       =   &H80000005&
-      Picture         =   "PhlegmoFiler.ctx":0B70
+      Picture         =   "PhlegmoFiler.ctx":0E8A
       Style           =   1  'Graphical
       TabIndex        =   5
       TabStop         =   0   'False
@@ -161,7 +162,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   1170
       MaskColor       =   &H80000005&
-      Picture         =   "PhlegmoFiler.ctx":0EB2
+      Picture         =   "PhlegmoFiler.ctx":11CC
       Style           =   1  'Graphical
       TabIndex        =   4
       TabStop         =   0   'False
@@ -175,7 +176,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   780
       MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":11F4
+      Picture         =   "PhlegmoFiler.ctx":150E
       Style           =   1  'Graphical
       TabIndex        =   3
       TabStop         =   0   'False
@@ -189,7 +190,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   390
       MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":1536
+      Picture         =   "PhlegmoFiler.ctx":1850
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
@@ -203,7 +204,7 @@ Begin VB.UserControl PhlegmoFiler
       Height          =   360
       Left            =   0
       MaskColor       =   &H00FFFFFF&
-      Picture         =   "PhlegmoFiler.ctx":19B0
+      Picture         =   "PhlegmoFiler.ctx":1CCA
       Style           =   1  'Graphical
       TabIndex        =   1
       TabStop         =   0   'False
@@ -225,59 +226,59 @@ Begin VB.UserControl PhlegmoFiler
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   14
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":1E2A
+            Picture         =   "PhlegmoFiler.ctx":2144
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":217C
+            Picture         =   "PhlegmoFiler.ctx":2496
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":24CE
+            Picture         =   "PhlegmoFiler.ctx":27E8
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":2820
+            Picture         =   "PhlegmoFiler.ctx":2B3A
             Key             =   ""
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":2B72
+            Picture         =   "PhlegmoFiler.ctx":2E8C
             Key             =   ""
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":2EC4
+            Picture         =   "PhlegmoFiler.ctx":31DE
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":3216
+            Picture         =   "PhlegmoFiler.ctx":3530
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":3568
+            Picture         =   "PhlegmoFiler.ctx":3882
             Key             =   ""
          EndProperty
          BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":38BA
+            Picture         =   "PhlegmoFiler.ctx":3BD4
             Key             =   ""
          EndProperty
          BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":3C0C
+            Picture         =   "PhlegmoFiler.ctx":3F26
             Key             =   ""
          EndProperty
          BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":3F5E
+            Picture         =   "PhlegmoFiler.ctx":4278
             Key             =   ""
          EndProperty
          BeginProperty ListImage12 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":42B0
+            Picture         =   "PhlegmoFiler.ctx":45CA
             Key             =   ""
          EndProperty
          BeginProperty ListImage13 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":4602
+            Picture         =   "PhlegmoFiler.ctx":491C
             Key             =   ""
          EndProperty
          BeginProperty ListImage14 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "PhlegmoFiler.ctx":4954
+            Picture         =   "PhlegmoFiler.ctx":4C6E
             Key             =   ""
          EndProperty
       EndProperty
@@ -289,6 +290,47 @@ Begin VB.UserControl PhlegmoFiler
       Top             =   0
       Width           =   375
    End
+   Begin VB.Menu mnuList 
+      Caption         =   "List"
+      Visible         =   0   'False
+      Begin VB.Menu mnuListCancel 
+         Caption         =   "Canc&el"
+      End
+      Begin VB.Menu mnuListOpen 
+         Caption         =   "&Open"
+      End
+      Begin VB.Menu mnuListOpenDefault 
+         Caption         =   "Open In Default &Application..."
+      End
+      Begin VB.Menu mnuListDiv1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuListCopyPath 
+         Caption         =   "&Copy Full File Name"
+      End
+      Begin VB.Menu mnuListRename 
+         Caption         =   "&Rename"
+         Shortcut        =   {F2}
+      End
+      Begin VB.Menu mnuListDelete 
+         Caption         =   "&Delete File..."
+      End
+      Begin VB.Menu mnuListDiv2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuListShowOnly 
+         Caption         =   "&Show only this file type"
+      End
+      Begin VB.Menu mnuListProperties 
+         Caption         =   "&Properties..."
+      End
+      Begin VB.Menu mnuListDiv3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuListHideFileBrowser 
+         Caption         =   "&Hide File Browser"
+      End
+   End
 End
 Attribute VB_Name = "PhlegmoFiler"
 Attribute VB_GlobalNameSpace = False
@@ -297,7 +339,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Const AUTOSIZE_COLUMNS As Boolean = False ' Will autosize type, size, and modified while retaining filename width
+Private Const AUTOSIZE_COLUMNS As Boolean = True ' Will autosize type, size, and modified while retaining filename width
 Private Const COLUMN_TOO_SMALL = 600 ' We won't keep the auto-size if it's beneath a certain point
 
 ' This is not fully implemented, especially any possible conflicts with AUTOSIZE_COLUMNS
@@ -314,6 +356,7 @@ Private mlUserCtlMaxWidth As Long
 Private miInitializings As Integer ' Did we initialize? Multiple times for some reason? Just checking
 
 Private msDir As String
+Private msOpenedFile As String
 Private meMode As eFilerMode
 Private moFso As Object
 
@@ -330,12 +373,16 @@ Private mbItemClicked As Boolean
 Private mbDoneLoading As Boolean
 
 Private msRealSortKey As String ' always end on a sort of IsFolder to keep folders separate; need to track "real" order
-Private miRealSortOrder As Integer
 
+Public Event BookmarksChanged()
+Public Event ErrorHappened(ByVal sErrText As String)
+Public Event HoverItem(ByVal sItemText As String)
+Public Event NewHistoryItem()
+Public Event OpenFile(ByVal sFileName As String)
 Public Event ResizeHorizontal(ByVal lWidth As Long)
-
 ' Sent less frequently, use this to hard-limit the form's min-width via API calls
 Public Event SeriousResize(ByVal lWidth As Long)
+Public Event StatsUpdate(ByVal sFilerStats As String)
 
 Private Function AutoSelectListItem()
       Dim oCurrentItem As ListItem
@@ -420,6 +467,29 @@ Private Sub btnSort_Click()
       End With
 End Sub
 
+' What this really does is:
+'     1. go to directory containing open file
+'     2. select open file from list
+'
+Private Sub btnSyncContents_Click()
+      If msOpenedFile = "" Then Exit Sub
+      
+      Dim oCurrentFile As ListItem
+      Set oCurrentFile = lvwBrowser.FindItem(SnipPath(msOpenedFile))
+      
+      If oCurrentFile Is Nothing Then
+            cboPath = SnipFileName(msOpenedFile)
+            Set oCurrentFile = lvwBrowser.FindItem(SnipPath(msOpenedFile))
+            If oCurrentFile Is Nothing Then
+                  MsgBox "It seems that your file was deleted by another application." & _
+                        "  If you wish to keep it, save at once!"
+                  Exit Sub
+            End If
+      End If
+      oCurrentFile.Selected = True
+      ' If Not gbFullScreenMode Then oCurrentFile.EnsureVisible
+End Sub
+
 Private Sub cboPath_Change()
       
       ParsePath cboPath
@@ -487,6 +557,161 @@ Private Sub cboPath_GotFocus()
             If iExtensionLength > 0 Then iExtensionLength = iExtensionLength + 1 ' include the dot
             cboPath.SelStart = Len(cboPath) - iExtensionLength
       End If
+End Sub
+
+Private Sub ExecuteItem(ByVal oItem As MSComctlLib.ListItem)
+      If lvwBrowser.ListItems.Count = 0 Then Exit Sub
+      
+      Dim sItemName As String
+      sItemName = msDir & oItem.Text
+      
+      Select Case oItem.SmallIcon
+      
+            Case eIconType.Directory, eIconType.Drive, eIconType.Floppy, eIconType.Cdrom, eIconType.Network
+                  ' Open the folder, or go up a folder.
+                  If oItem.Text = ".." Then
+                        btnFolderUp_Click
+                  Else
+                        cboPath = sItemName & "\"
+                  End If
+            
+            Case Else
+                  msOpenedFile = sItemName
+                  RaiseEvent OpenFile(sItemName)
+      End Select
+End Sub
+
+'   Select the next item after the selection, and open it.
+'
+Public Sub ExecuteNext(Optional ByVal bReverse As Boolean = False)
+      DoEvents
+      Dim iIndex As Integer, oNext As ListItem
+      Dim iInc As Integer, iLimit As Integer
+      Dim eMode As eViewMode
+
+      ' Open the item next to the open file, not next to whatever thing is selected,
+      ' since it is possible to select something else via arrow keys or right-click + cancel.
+      ' So we start with a sync.
+      If msOpenedFile <> "" And meMode = Files Then
+            btnSyncContents_Click
+      End If
+      
+      If lvwBrowser.ListItems.Count = 0 Then Exit Sub
+      
+      If bReverse Then
+            iInc = -1
+            iLimit = 1
+      Else
+            iInc = 1
+            iLimit = lvwBrowser.ListItems.Count
+      End If
+      iIndex = lvwBrowser.SelectedItem.Index
+      
+      ' Fullscreen mode is for image view only.
+      ' So want the next item to be the next image, skipping over the rest.
+'      If gbFullScreenMode Then
+'            Do While iIndex <> iLimit
+'                  iIndex = iIndex + iInc
+'                  Set oNext = lvwBrowser.ListItems(iIndex)
+'                  eMode = GetViewMode(cboPath.Text & oNext.Text, oNext.SmallIcon)
+'                  If eMode = eViewMode.PictureView Then
+'                        oNext.Selected = True
+'                        BrowserExecuteItem oNext
+'                        Exit Do
+'                  End If
+'            Loop
+'      Else
+'            If iIndex <> iLimit Then
+'                  Set oNext = lvwBrowser.ListItems(iIndex + iInc)
+'                  If oNext.SmallIcon <> eIconType.Directory Then
+'                        oNext.EnsureVisible
+'                        oNext.Selected = True
+'                        BrowserExecuteItem oNext
+'                  End If
+'            End If
+'      End If
+End Sub
+
+Private Sub lblDivider_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+      
+      If lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "" Then
+            lblDivider.tag = "Resizing"
+            mlInitialPointerX = GetCursorPosX() * Screen.TwipsPerPixelX
+            mlPrevPointerX = mlInitialPointerX
+      End If
+End Sub
+
+Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      Dim lDeltaX As Long
+      
+      lDeltaX = GetCursorPosX() * Screen.TwipsPerPixelX - mlPrevPointerX
+      If Abs(lDeltaX) > 15 And (lblDivider.Left + lDeltaX > MIN_WIDTH) And (lblDivider.Left + lDeltaX < mlUserCtlMaxWidth) _
+                  And lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "Resizing" Then
+            lblDivider.tag = "Busy"
+            
+            mlPrevPointerX = mlPrevPointerX + lDeltaX
+            RearrangeControls lblDivider.Left + lDeltaX
+            If lblDivider.tag = "Busy" Then lblDivider.tag = "Resizing"
+      Else
+            lblDivider.MousePointer = vbSizeWE
+      End If
+End Sub
+
+Private Sub lblDivider_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+      If lblDivider.MousePointer = vbSizeWE Then
+            ' SaveSettingsToRegistry
+            RaiseEvent SeriousResize(Width)
+      End If
+      lblDivider.MousePointer = 0
+      lblDivider.tag = ""
+      DebugLog "We are no longer resizing the Filer"
+End Sub
+
+Private Sub ListMenuDisable()
+
+      If Not mnuListOpenDefault.Enabled Then Exit Sub
+      
+      mnuListOpenDefault.Enabled = False
+      mnuListOpen.Enabled = False
+      mnuListDelete.Enabled = False
+      mnuListRename.Enabled = False
+      mnuListCopyPath.Enabled = False
+      mnuListShowOnly.Enabled = False
+      mnuListProperties.Enabled = False
+End Sub
+
+Private Sub ListMenuEnable(oHoverItem As ListItem)
+      ' This will be called when a listitem is clicked, and it will enable or disable parts
+      ' of the right click menu, based on the sort of listitem is passed to it.
+      
+      mnuListOpenDefault.Enabled = True
+      mnuListOpen.Enabled = True
+      mnuListOpenDefault.Caption = "Open With Default Program..." & vbTab & "Shift+Ctrl+Enter"
+      mnuListCopyPath.Enabled = True
+      mnuListProperties.Enabled = True
+      
+      If meMode = Bookmarks Then
+            mnuListShowOnly.Enabled = False
+            mnuListDelete.Caption = "&Delete Bookmark" & vbTab & "Del"
+      
+      ElseIf meMode = History Then
+            mnuListShowOnly.Enabled = False
+            mnuListRename.Enabled = False
+            mnuListDelete.Enabled = False
+            mnuListDelete.Caption = "&Delete File..." & vbTab & "Del"
+      Else
+            mnuListDelete.Enabled = True
+            mnuListRename.Enabled = True
+            mnuListShowOnly.Enabled = True
+            mnuListDelete.Caption = "&Delete File..." & vbTab & "Del"
+      End If
+      
+      If oHoverItem.SmallIcon = eIconType.Directory Or oHoverItem.SmallIcon = eIconType.Drive Then
+            mnuListOpenDefault.Caption = "Explore..." & vbTab & "Shift+Ctrl+Enter"
+            mnuListDelete = False
+            If oHoverItem.Text = ".." Or oHoverItem.SmallIcon = eIconType.Drive Then mnuListRename = False
+      End If
+
 End Sub
 
 Private Sub LoadBookmarks() ' TODO
@@ -563,7 +788,7 @@ Private Sub LoadDrives()
       lvwBrowser.SortKey = lvwBrowser.ColumnHeaders(msRealSortKey).Index - 1
       lvwBrowser.Sorted = True
       
-      ' staTusBar.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " drives"
+      RaiseEvent StatsUpdate(lvwBrowser.ListItems.Count & " drives")
       Exit Sub
 
 LOAD_DRIVES_ERROR:
@@ -637,8 +862,7 @@ Private Sub LoadFilesAndFolders()
             End If
       
       Loop While FindNextFile(lNextFile, tWfd) <> 0
-           
-      
+                 
       If msFilter = "*" Then msFilter = ""
       If msRealSortKey = "" Then msRealSortKey = "Name"
       lvwBrowser.SortKey = lvwBrowser.ColumnHeaders(msRealSortKey).Index - 1
@@ -649,9 +873,8 @@ Private Sub LoadFilesAndFolders()
 
 '      If bHadFocus Then lvwBrowser.SetFocus
       
-'      staTusBar.Panels(eStat.BrowserStats).Text = FormatBytes(oTotalBytes, 1) & " in " & _
-'            (lvwBrowser.ListItems.Count - 1) & " objects"  ' -1 for the ".." folder
-      
+      RaiseEvent StatsUpdate(FormatBytes(oTotalBytes, 1) & " in " & (lvwBrowser.ListItems.Count - 1) & " objects")
+                                                                                    ' -1 for the ".." folder
       lvwBrowser.Visible = True
       Screen.MousePointer = vbDefault
       
@@ -685,6 +908,91 @@ Private Sub LoadHistory() ' TODO
 '      If Not gtBrowserData.ListEmpty Then AutosizeColumns
 '      lvwBrowser.Visible = True
 '      staTusBar.Panels(eStat.BrowserStats).Text = lvwBrowser.ListItems.Count & " most recent files"
+End Sub
+
+Private Sub lvwBrowser_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
+      If meMode = History Then Exit Sub
+      
+      Dim lNewKey As Long
+      Dim sNewKey As String
+      
+      With lvwBrowser
+            sNewKey = ColumnHeader.Text
+            If ColumnHeader.Text = "Size" Then sNewKey = "SortedSize"
+            lNewKey = .ColumnHeaders(sNewKey).Index - 1
+            
+            .Sorted = True
+            If msRealSortKey = sNewKey Then
+                  .SortOrder = Abs(.SortOrder - 1)
+                  .SortKey = .ColumnHeaders("Name").Index - 1
+            End If
+            msRealSortKey = sNewKey
+            .SortKey = lNewKey
+            .SortKey = .ColumnHeaders("IsFolder").Index - 1
+            
+            DebugLog "Sorted: " & .Sorted & "; Key: " & msRealSortKey & "; Order: " & .SortOrder _
+                  & "; Column: " & ColumnHeader.Text & " (" & ColumnHeader.Index & ")"
+      End With
+      
+      ' If meMode = Bookmarks Then BookmarkSaveChanges
+End Sub
+
+Private Sub lvwBrowser_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+      ' lvwBrowser_MouseMove Button, Shift, X, Y
+End Sub
+
+Private Sub lvwBrowser_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+      
+      Dim oHoverItem As ListItem
+      
+      ' See if we're over an item.
+      Set oHoverItem = lvwBrowser.HitTest(x, y)
+      
+      ' Show file names in statusbar on mouseover.
+      If Not (oHoverItem Is Nothing) Then
+            RaiseEvent HoverItem(oHoverItem.Text)
+            lvwBrowser.MousePointer = ccCustom
+            
+            If Button = vbLeftButton Or Button = vbRightButton Then
+                  oHoverItem.Selected = True
+            End If
+      Else
+            RaiseEvent HoverItem("")
+            lvwBrowser.MousePointer = ccDefault
+      End If
+End Sub
+
+Private Sub lvwBrowser_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+      Dim oHoverItem As ListItem
+      
+      Set oHoverItem = lvwBrowser.HitTest(x, y)  ' To see if we're over an item.
+      If oHoverItem Is Nothing Then
+            DebugLog "Clicked on nothing."
+      Else
+            DebugLog "Clicked on: " & oHoverItem.Text & "; icon: " & oHoverItem.SmallIcon
+      End If
+      
+      If Button = vbRightButton And Shift = 0 Then
+            If oHoverItem Is Nothing Then
+                  ListMenuDisable
+            Else
+                  ListMenuEnable oHoverItem
+            End If
+            PopupMenu mnuList
+      
+      ElseIf Button = vbLeftButton And Shift = 0 Then
+            
+            If Not (oHoverItem Is Nothing) Then
+                  ' Open the file/folder on an ordinary left click.
+                  ExecuteItem oHoverItem
+            Else
+                  ' Clicking on empty space deselects the selected item.
+                  If lvwBrowser.ListItems.Count > 0 Then lvwBrowser.SelectedItem.Selected = False
+            End If
+      
+      ElseIf Button = vbMiddleButton And Shift = 0 Then
+            If oHoverItem Is Nothing Then PathBack
+      End If
 End Sub
 
 '   Much can be learned that is locked within cboPath.
@@ -840,41 +1148,6 @@ Public Sub SetMaxWidth(ByVal lMaxWidth As Long)
       DebugLog "Filer max width has been set to: " & mlUserCtlMaxWidth
 End Sub
 
-Private Sub lblDivider_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-      
-      If lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "" Then
-            lblDivider.tag = "Resizing"
-            mlInitialPointerX = GetCursorPosX() * Screen.TwipsPerPixelX
-            mlPrevPointerX = mlInitialPointerX
-      End If
-End Sub
-
-Private Sub lblDivider_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-      Dim lDeltaX As Long
-      
-      lDeltaX = GetCursorPosX() * Screen.TwipsPerPixelX - mlPrevPointerX
-      If Abs(lDeltaX) > 15 And (lblDivider.Left + lDeltaX > MIN_WIDTH) And (lblDivider.Left + lDeltaX < mlUserCtlMaxWidth) _
-                  And lblDivider.MousePointer = vbSizeWE And lblDivider.tag = "Resizing" Then
-            lblDivider.tag = "Busy"
-            
-            mlPrevPointerX = mlPrevPointerX + lDeltaX
-            RearrangeControls lblDivider.Left + lDeltaX
-            If lblDivider.tag = "Busy" Then lblDivider.tag = "Resizing"
-      Else
-            lblDivider.MousePointer = vbSizeWE
-      End If
-End Sub
-
-Private Sub lblDivider_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-      If lblDivider.MousePointer = vbSizeWE Then
-            ' SaveSettingsToRegistry
-            RaiseEvent SeriousResize(Width)
-      End If
-      lblDivider.MousePointer = 0
-      lblDivider.tag = ""
-      DebugLog "We are no longer resizing the Filer"
-End Sub
-
 Private Sub RearrangeControls(Optional ByVal lSupposedWidth As Long = -1)
       Dim lRightWall As Long, lToolbarRightEdge As Long
       
@@ -897,31 +1170,8 @@ Private Sub RearrangeControls(Optional ByVal lSupposedWidth As Long = -1)
       btnScrollToTop.Left = Max(lRightWall, lToolbarRightEdge)
 End Sub
 
-Private Sub lvwBrowser_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-      If meMode = History Then Exit Sub
-      
-      Dim lNewKey As Long
-      Dim sNewKey As String
-      
-      With lvwBrowser
-            sNewKey = ColumnHeader.Text
-            If ColumnHeader.Text = "Size" Then sNewKey = "SortedSize"
-            lNewKey = .ColumnHeaders(sNewKey).Index - 1
-            
-            .Sorted = True
-            If msRealSortKey = sNewKey Then
-                  .SortOrder = Abs(.SortOrder - 1)
-                  .SortKey = .ColumnHeaders("Name").Index - 1
-            End If
-            msRealSortKey = sNewKey
-            .SortKey = lNewKey
-            .SortKey = .ColumnHeaders("IsFolder").Index - 1
-            
-            DebugLog "Sorted: " & .Sorted & "; Key: " & msRealSortKey & "; Order: " & .SortOrder _
-                  & "; Column: " & ColumnHeader.Text & " (" & ColumnHeader.Index & ")"
-      End With
-      
-      ' If meMode = Bookmarks Then BookmarkSaveChanges
+Public Sub SyncToFile()
+
 End Sub
 
 Private Sub UserControl_Initialize()

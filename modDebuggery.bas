@@ -47,7 +47,7 @@ End Function
 Public Sub LogBigFileSize(ByRef rtWfd As WIN32_FIND_DATA, ByVal sFileName As String, _
             ByVal sDir As String, ByRef roFso As Object, ByVal oTry1 As Variant)
       
-      If LOG_BIG_FILE_SIZES And rtWfd.nFileSizeHigh > 0 Or rtWfd.nFileSizeLow < 0 Then
+      If LOG_BIG_FILE_SIZES And (rtWfd.nFileSizeHigh > 0 Or rtWfd.nFileSizeLow < 0) Then
             Dim oTry2
             oTry2 = roFso.GetFile(sDir + sFileName).Size
             DebugLog ""

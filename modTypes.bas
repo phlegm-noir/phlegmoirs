@@ -27,11 +27,11 @@ End Enum
 
 Enum eStat
       BrowserStats = 1
-      Stats = 2
-      encoding = 3
+      CharStats = 2
+      Encoding = 3
       Modified = 4
       SelText = 5
-      Tips = 6
+      StatTips = 6
 End Enum
 
 Enum eDirection

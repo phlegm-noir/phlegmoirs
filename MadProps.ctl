@@ -34,6 +34,9 @@ Const BOTTOM_MARGIN = 300
 Const LEFT_MARGIN = 240
 Const RIGHT_MARGIN = 300
 
+Public Sub LoadFile(ByVal sFileName As String)
+
+End Sub
 
 Public Sub Resize()
       UserControl_Resize

@@ -165,7 +165,35 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Event Closing()
+Public Event FindClicked()
+Public Event NextClicked()
+Public Event PrevClicked()
+Public Event ReplaceClicked()
 
 Private Sub btnCloseFind_Click()
       RaiseEvent Closing
+End Sub
+
+Public Sub ClearFind()
+
+End Sub
+
+Public Sub ClearReplace()
+
+End Sub
+
+Public Sub CloseReplaceMode()
+
+End Sub
+
+Public Sub Find()
+
+End Sub
+
+Public Sub FoundResult(ByVal iIndex As Integer)
+
+End Sub
+
+Public Sub Replace()
+
 End Sub

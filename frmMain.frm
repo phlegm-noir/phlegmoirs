@@ -2,13 +2,13 @@ VERSION 5.00
 Object = "{7020C36F-09FC-41FE-B822-CDE6FBB321EB}#1.3#0"; "VBCCR17.OCX"
 Begin VB.Form frmMain 
    Caption         =   "phlegmoirs"
-   ClientHeight    =   12300
-   ClientLeft      =   165
-   ClientTop       =   825
+   ClientHeight    =   10005
+   ClientLeft      =   225
+   ClientTop       =   870
    ClientWidth     =   13290
    Icon            =   "frmMain.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   12300
+   ScaleHeight     =   10005
    ScaleWidth      =   13290
    StartUpPosition =   3  'Windows Default
    Begin phlegmoirs.PhlegmoFinder Finder 
@@ -62,7 +62,7 @@ Begin VB.Form frmMain
       Align           =   2  'Align Bottom
       Height          =   360
       Left            =   0
-      Top             =   11940
+      Top             =   9645
       Width           =   13290
       _ExtentX        =   23442
       _ExtentY        =   635
@@ -100,7 +100,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   4200
          MaskColor       =   &H80000005&
-         Picture         =   "frmMain.frx":14CE
+         Picture         =   "frmMain.frx":159A
          Style           =   1  'Graphical
          TabIndex        =   13
          TabStop         =   0   'False
@@ -122,7 +122,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   3600
          MaskColor       =   &H80000005&
-         Picture         =   "frmMain.frx":1BD0
+         Picture         =   "frmMain.frx":1C9C
          Style           =   1  'Graphical
          TabIndex        =   12
          TabStop         =   0   'False
@@ -145,7 +145,7 @@ Begin VB.Form frmMain
          Height          =   320
          Left            =   3150
          MaskColor       =   &H00000000&
-         Picture         =   "frmMain.frx":22D2
+         Picture         =   "frmMain.frx":239E
          Style           =   1  'Graphical
          TabIndex        =   10
          TabStop         =   0   'False
@@ -168,7 +168,7 @@ Begin VB.Form frmMain
          Height          =   320
          Left            =   2700
          MaskColor       =   &H00000000&
-         Picture         =   "frmMain.frx":2614
+         Picture         =   "frmMain.frx":26E0
          Style           =   1  'Graphical
          TabIndex        =   9
          TabStop         =   0   'False
@@ -192,7 +192,7 @@ Begin VB.Form frmMain
          Height          =   320
          Left            =   2250
          MaskColor       =   &H00000000&
-         Picture         =   "frmMain.frx":2956
+         Picture         =   "frmMain.frx":2A22
          Style           =   1  'Graphical
          TabIndex        =   8
          TabStop         =   0   'False
@@ -216,7 +216,7 @@ Begin VB.Form frmMain
          Height          =   320
          Left            =   1800
          MaskColor       =   &H00000000&
-         Picture         =   "frmMain.frx":2C98
+         Picture         =   "frmMain.frx":2D64
          Style           =   1  'Graphical
          TabIndex        =   7
          TabStop         =   0   'False
@@ -258,7 +258,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMain.frx":2FDA
+         Picture         =   "frmMain.frx":30A6
          Style           =   1  'Graphical
          TabIndex        =   5
          TabStop         =   0   'False
@@ -282,7 +282,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMain.frx":331C
+         Picture         =   "frmMain.frx":33E8
          Style           =   1  'Graphical
          TabIndex        =   3
          TabStop         =   0   'False
@@ -305,7 +305,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   1200
          MaskColor       =   &H00000000&
-         Picture         =   "frmMain.frx":365E
+         Picture         =   "frmMain.frx":372A
          Style           =   1  'Graphical
          TabIndex        =   4
          TabStop         =   0   'False
@@ -328,7 +328,7 @@ Begin VB.Form frmMain
          Height          =   570
          Left            =   600
          MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMain.frx":3D60
+         Picture         =   "frmMain.frx":3E2C
          Style           =   1  'Graphical
          TabIndex        =   2
          TabStop         =   0   'False
@@ -339,11 +339,11 @@ Begin VB.Form frmMain
       End
       Begin VB.CheckBox chkFileBrowser 
          CausesValidation=   0   'False
-         DownPicture     =   "frmMain.frx":4462
+         DownPicture     =   "frmMain.frx":452E
          Height          =   570
          Left            =   0
          MaskColor       =   &H00FFFFFF&
-         Picture         =   "frmMain.frx":4B64
+         Picture         =   "frmMain.frx":4C30
          Style           =   1  'Graphical
          TabIndex        =   1
          TabStop         =   0   'False
@@ -602,7 +602,7 @@ Private mtPrevWindowPos As POINTAPI
 Private mtPrevWindowSize As POINTAPI
 
 Private msFileName As String
-Private mvView As Variant
+Private mvView As Variant  ' holds the active usercontrol on the right side of the screen
 Private meMode As eViewMode
 Private mbHideFind As Boolean
 
@@ -651,6 +651,14 @@ Private Sub chkFileBrowser_Click()
       SizeLimiterHook Me.hwnd, GetFilerWidth() + MIN_EDITOR_WIDTH, MIN_HEIGHT
 End Sub
 
+Private Sub Filer_HoverItem(ByVal sItemText As String)
+      staTusBar.Panels(eStat.StatTips).Text = sItemText
+End Sub
+
+Private Sub Filer_OpenFile(ByVal sFileName As String)
+      Editor.LoadFile sFileName
+End Sub
+
 Private Sub Filer_ResizeHorizontal(ByVal lWidth As Long)
       Form_Resize
 End Sub
@@ -658,6 +666,10 @@ End Sub
 Private Sub Filer_SeriousResize(ByVal lWidth As Long)
       Form_Resize
       SizeLimiterHook Me.hwnd, lWidth + MIN_EDITOR_WIDTH
+End Sub
+
+Private Sub Filer_StatsUpdate(ByVal sFilerStats As String)
+      staTusBar.Panels(eStat.BrowserStats).Text = sFilerStats
 End Sub
 
 Private Sub Finder_Closing()
@@ -696,7 +708,14 @@ Private Sub Form_Resize()
       End If
       Filer.SetMaxWidth (Me.Width - MIN_EDITOR_WIDTH - mlFormMarginsHoriz)
       
-      staTusBar.Panels("statTips").Width = staTusBar.Width - staTusBar.Panels("statTips").Left
+      ' Workaround because the statusbar refuses to update its maximized width AND refuses to let you set a width when aligned-bottom
+      If Me.WindowState = vbMaximized Then
+            staTusBar.Align = vbAlignNone
+            staTusBar.Width = Me.ScaleWidth
+            staTusBar.Align = vbAlignBottom
+      End If
+      staTusBar.Panels(eStat.StatTips).Width = Max(0, staTusBar.Width - staTusBar.Panels(eStat.StatTips).Left)
+      DebugLog "Statusbar width: " & staTusBar.Width & "; Form scalewidth: " & Me.ScaleWidth
 End Sub
 
 Private Sub FormAdjustWidthIfTooSmall()
@@ -796,15 +815,13 @@ Private Sub SetMode(eMode As eViewMode)
                   btnZoomDefault.Visible = False
                   btnFitImage.Visible = False
                   
-'                  staTusBar.Panels(eStat.encoding).Visible = True
-'                  staTusBar.Panels(eStat.Modified).Visible = True
-'                  staTusBar.Panels(eStat.Stats).Visible = True
-'                  staTusBar.Panels(eStat.SelText).Visible = True
+                  staTusBar.Panels(eStat.Encoding).Visible = True
+                  staTusBar.Panels(eStat.Modified).Visible = True
+                  staTusBar.Panels(eStat.CharStats).Visible = True
+                  staTusBar.Panels(eStat.SelText).Visible = True
       
             Case eViewMode.PictureView
-'                  geEditorMode = eViewMode.PictureView
                   Editor.Visible = False
-'                  agEditor.Text = ""
                   Foto.Visible = True
                   Props.Visible = False
                   Set mvView = Foto
@@ -824,15 +841,14 @@ Private Sub SetMode(eMode As eViewMode)
 '                        glOldpicEditorProc = SetWindowLong(picEditor.hWnd, GWL_WNDPROC, _
 '                              AddressOf TrackMouseWheel)
 '                  End If
-'
-'                  staTusBar.Panels(eStat.encoding).Visible = False
-'                  staTusBar.Panels(eStat.Modified).Visible = False
-'                  staTusBar.Panels(eStat.Stats).Visible = False
-'                  staTusBar.Panels(eStat.SelText).Visible = False
+
+                  staTusBar.Panels(eStat.Encoding).Visible = False
+                  staTusBar.Panels(eStat.Modified).Visible = False
+                  staTusBar.Panels(eStat.CharStats).Visible = False
+                  staTusBar.Panels(eStat.SelText).Visible = False
                   
             Case eViewMode.PropertiesView
             
-'                  geEditorMode = eViewMode.PropertiesView
                   Editor.Visible = False
 '                  agEditor.Text = ""
                   Foto.Visible = False
@@ -851,13 +867,13 @@ Private Sub SetMode(eMode As eViewMode)
                   btnZoomDefault.Visible = False
                   btnFitImage.Visible = False
                   
-'                  staTusBar.Panels(eStat.encoding).Visible = False
-'                  staTusBar.Panels(eStat.Modified).Visible = False
-'                  staTusBar.Panels(eStat.Stats).Visible = False
-'                  staTusBar.Panels(eStat.SelText).Visible = False
+                  staTusBar.Panels(eStat.Encoding).Visible = False
+                  staTusBar.Panels(eStat.Modified).Visible = False
+                  staTusBar.Panels(eStat.CharStats).Visible = False
+                  staTusBar.Panels(eStat.SelText).Visible = False
             
             Case Else
-                  ' DebugLog "How did we get to the ERROR ViewMode? agEditor.tag: """ + agEditor.Tag + """"
+                  DebugLog "How did we get to the ERROR ViewMode? Filename: """ + msFileName + """", 2
       End Select
       
       Form_Resize

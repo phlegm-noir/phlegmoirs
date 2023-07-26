@@ -29,9 +29,9 @@ Begin VB.UserControl RetchEdit
       HideSelection   =   0   'False
       MultiLine       =   -1  'True
       ScrollBars      =   2
+      AutoURLDetect   =   0   'False
       SelectionBar    =   -1  'True
       TextMode        =   1
-      TextRTF         =   "RetchEdit.ctx":0000
    End
 End
 Attribute VB_Name = "RetchEdit"
@@ -48,6 +48,32 @@ Const BOTTOM_MARGIN = 15
 Private mbEditorLoading As Boolean
 Private miTextEncoding As Integer
 
+Public Event SelectionChanged()
+
+Public Sub FindNext()
+
+End Sub
+
+Public Sub FindPrev()
+
+End Sub
+
+Public Sub ForceRefresh()
+      rtEditor.Refresh
+End Sub
+
+Public Sub GetFileName()
+
+End Sub
+
+Public Sub LoadFile(ByVal sFileName As String)
+      rtEditor.LoadFile sFileName, RtfLoadSaveFormatText
+End Sub
+
+Public Sub Replace()
+
+End Sub
+
 Public Sub Resize()
       UserControl_Resize
 End Sub
@@ -56,8 +82,8 @@ Public Sub SetFont(ByVal oFont As StdFont)
       rtEditor.Font = oFont
 End Sub
 
-Public Sub ForceRefresh()
-      rtEditor.Refresh
+Public Sub SetWordWrap()
+
 End Sub
 
 Public Sub Save(Optional ByVal sDir As String, Optional ByVal sFileName As String)
@@ -150,11 +176,15 @@ Public Sub OpenFontDialog(ByRef sName As String, ByRef iSize As Integer)
       
 End Sub
 
+Private Sub rtEditor_LinkEvent(ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal LinkStart As Long, ByVal LinkEnd As Long)
+      DebugLog "We have a link event? range: " & LinkStart & " - " & LinkEnd
+End Sub
+
 Private Sub UserControl_Initialize()
       DebugLog "Editor_Init (w, sw, h, sh): " & Width & ", " & ScaleWidth & ", " & Height & ", " & ScaleHeight, 0
       
-'      rtEditor.LoadFile "D:\workspace-vb6\phlegmoirs_v1\utf8wbom.txt", RtfLoadSaveFormatText
-      rtEditor.LoadFile "P:\workspace2000\phlegmoirs_v1\name1.txt", RtfLoadSaveFormatText
+      rtEditor.LoadFile "D:\workspace-vb6\phlegmoirs_v1\utf8wbom.txt", RtfLoadSaveFormatText
+'      rtEditor.LoadFile "P:\workspace2000\phlegmoirs_v1\name1.txt", RtfLoadSaveFormatText
 End Sub
 
 Private Sub UserControl_Resize()
