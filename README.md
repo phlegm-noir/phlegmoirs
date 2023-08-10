@@ -3,7 +3,7 @@ PHLEGMOIRS
 A text editor written in visual basic intended for simple journaling, with an integrated file browser pane for efficient navigation of any file that can be loaded as text. When navigating to images it becomes an image viewer, and for other other non-textual file types it shows extended properties. Should be compatible with any version of Windows from 2000 to 11.
 
 <br/>
-<img src="scr1.jpg" width="896" height="671">
+<img src="scr1.jpg" width="946" height="671">
 <br/>
 
 ICONS:
